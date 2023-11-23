@@ -2,9 +2,12 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-You need to have node with version 20+ installed.
+1. You need to have node with version 20+ installed.
+2. Make sure the global-bundle.pem file is inside the secrets folder (src/secrets)
+3. Make sure you have a .env.local file with DATABASE_URL configured
+4. Run npm install
 
-First, run the development server:
+Run the development server:
 
 ```bash
 npm run dev
