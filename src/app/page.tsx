@@ -11,18 +11,13 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading && !user) {
+    if (loading) return;
+    if (!user) {
       router.push("/login");
+    } else {
+      router.push("/home");
     }
   }, [loading, user]);
 
-  return (
-    <div>
-      {loading ? (
-        <div>Loading...</div>
-      ) : (
-        <div>{user && <div> Logged in as {user.name} </div>}</div>
-      )}
-    </div>
-  );
+  return <div>{loading && <div>Loading...</div>}</div>;
 }
