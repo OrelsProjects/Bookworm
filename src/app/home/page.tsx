@@ -1,9 +1,9 @@
 "use client";
 
-import useAuth, { Auth } from "../../../hooks/useAuth";
+import useAuth, { Auth } from "../../hooks/useAuth";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "../../../components/button";
+import { Button } from "../../components/button";
 
 export default function Home() {
   const { signOut, user, loading }: Auth = useAuth();
