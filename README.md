@@ -2,7 +2,12 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+1. You need to have node with version 20+ installed.
+2. Make sure the global-bundle.pem file is inside the secrets folder (src/secrets)
+3. Make sure you have a .env.local file with DATABASE_URL configured
+4. Run npm install
+
+Run the development server:
 
 ```bash
 npm run dev
@@ -34,4 +39,5 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
 # Bookworm

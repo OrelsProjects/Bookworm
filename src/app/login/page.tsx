@@ -1,7 +1,7 @@
 "use client";
 
-import useAuth, { Auth } from "../../../hooks/useAuth";
-import { Button } from "../../../components/button";
+import useAuth, { Auth } from "../../hooks/useAuth";
+import { Button } from "../../components/button";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
