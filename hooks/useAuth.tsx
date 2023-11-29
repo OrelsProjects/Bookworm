@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { signIn, signOut as nextAuthSignOut } from "next-auth/react";
 import { auth } from "../firebase.config";
 import {
   signInWithPopup,
@@ -40,9 +41,13 @@ const useAuth = (): Auth => {
     const provider = new GoogleAuthProvider();
     try {
       if (user) return user;
-      const result = await signInWithPopup(auth, provider); // TODO: Handle auth/cancelled-popup-request error
-      return firebaseUserToUser(result.user);
+      debugger;
+      const result = await signIn("google");
+      // const result = await signInWithPopup(auth, provider); // TODO: Handle auth/cancelled-popup-request error
+      // return firebaseUserToUser(result.user);
+      return result as User;
     } catch (error) {
+      debugger;
       console.error(error);
       throw error;
     }

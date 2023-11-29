@@ -17,6 +17,13 @@ export default function Home() {
     }
   }, [loading, user]);
 
+  const testAPIAuth = async () => {
+    console.log("testing");
+    const res = await fetch("/api/test");
+    const data = await res.json();
+    console.log(data);
+  };
+
   return (
     <div>
       {loading ? (
@@ -27,6 +34,17 @@ export default function Home() {
             <h1 className="font-bold text-3xl mb-3">Bookworm</h1>
             <Button variant="outline" onClick={() => signInWithGoogle()}>
               Sign in with Google
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => {
+                console.log("clicked");
+                testAPIAuth()
+                  .then(() => console.log("done"))
+                  .catch(() => console.log("error"));
+              }}
+            >
+              Test API
             </Button>
           </div>
         </div>
