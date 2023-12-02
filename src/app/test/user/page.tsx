@@ -10,10 +10,10 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../../components/form";
+} from "../../../components/form";
 
-import { Input } from "../../components/input";
-import { Button } from "../../components/button";
+import { Input } from "../../../components/input";
+import { Button } from "../../../components/button";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Label } from "@radix-ui/react-label";
