@@ -40,7 +40,7 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-bookwormapp-dev-190910-deployment/amplify-cfn-templates/auth/bookwormapp7ee6ffe0-cloudformation-template.json",
         "logicalId": "authbookwormapp7ee6ffe0"
       },
-      "lastPushTimeStamp": "2023-12-11T17:16:27.522Z",
+      "lastPushTimeStamp": "2023-12-12T09:51:52.018Z",
       "output": {
         "UserPoolId": "us-east-1_zrN8ybbfG",
         "AppClientIDWeb": "2snktqi1sn96uhpgsf4860gn6d",

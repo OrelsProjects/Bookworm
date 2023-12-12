@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from "react";
-import awsConfig from "@/aws-exports";
 import { Amplify } from "aws-amplify";
 import { User } from "../types/user";
 import {
@@ -11,6 +10,7 @@ import {
   getCurrentUser,
 } from "aws-amplify/auth";
 import { Hub } from "aws-amplify/utils";
+import awsConfig from "../amplifyconfiguration.json";
 
 export interface IAuthHook {
   user: User | null;

@@ -1,15 +1,16 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
-import { Hub } from "@aws-amplify/core";
+import { Hub } from "aws-amplify/utils";
 import {
   signInWithRedirect,
   signOut,
   getCurrentUser,
   AuthUser,
-  deleteUser,
 } from "aws-amplify/auth";
+import { Amplify } from "aws-amplify";
 import awsConfig from "../amplifyconfiguration.json";
-import { Amplify } from "@aws-amplify/core";
+
 Amplify.configure(awsConfig);
 
 function App() {
@@ -19,7 +20,6 @@ function App() {
 
   useEffect(() => {
     const unsubscribe = Hub.listen("auth", ({ payload }) => {
-      debugger;
       switch (payload.event) {
         case "signInWithRedirect":
           getUser();
@@ -28,7 +28,7 @@ function App() {
           setError("An error has ocurred during the OAuth flow.");
           break;
         case "customOAuthState":
-          setCustomState(payload.data); // this is the customState provided on signInWithRedirect function
+          setCustomState(payload.data);
           break;
       }
     });
@@ -51,21 +51,6 @@ function App() {
   return (
     <div className="flex flex-col justify-center items-center">
       <button
-        onClick={() => signInWithRedirect({ customState: "shopping-cart" })}
-      >
-        Open Hosted UI
-      </button>
-      <button
-        onClick={() =>
-          signInWithRedirect({
-            provider: "Facebook",
-            customState: "shopping-cart",
-          })
-        }
-      >
-        Open Facebook
-      </button>
-      <button
         onClick={() =>
           signInWithRedirect({
             provider: "Google",
@@ -75,28 +60,8 @@ function App() {
       >
         Open Google
       </button>
-      <button
-        onClick={() =>
-          signInWithRedirect({
-            provider: "Amazon",
-            customState: "shopping-cart",
-          })
-        }
-      >
-        Open Amazon
-      </button>
-      <button
-        onClick={() =>
-          signInWithRedirect({
-            provider: "Apple",
-            customState: "shopping-cart",
-          })
-        }
-      >
-        Open Apple
-      </button>
+
       <button onClick={() => signOut()}>Sign Out</button>
-      <button onClick={() => deleteUser()}>Delete User</button>
       <div>{user?.username}</div>
       <div>{customState}</div>
     </div>
