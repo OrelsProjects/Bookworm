@@ -19,13 +19,14 @@ export default function Home() {
 
   return (
     <div>
-      {loading ? (
-        <div>Loading...</div>
+      {!loading ? (
+        <div className=""
+        >Loading...</div>
       ) : (
         <div>
           <div className="flex flex-col justify-center items-center">
             <h1 className="font-bold text-3xl mb-3">Bookworm</h1>
-            <Button variant="outline" onClick={() => signInWithGoogle()}>
+            <Button onClick={() => signInWithGoogle()}>
               Sign in with Google
             </Button>
           </div>

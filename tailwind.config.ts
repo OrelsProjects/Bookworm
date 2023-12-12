@@ -52,8 +52,8 @@ module.exports = {
         },
       },
       backgroundColor: {
-        linkedin: "#017fbc",
-        linkedinHover: "#0071a7",
+        'statistic-card-gradient-start': "hsla(var(--statistic-card-gradient-start), 0.5)",
+        'statistic-card-gradient-end': "hsla(var(--statistic-card-gradient-end), 0.035)",
       },
       transitionDuration: {
         "250": "250ms",
