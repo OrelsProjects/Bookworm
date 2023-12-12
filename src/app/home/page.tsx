@@ -1,21 +1,22 @@
 "use client";
 
-import useAuth, { IAuthHook } from "@/src/hooks/useAuth";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import SearchBar from "@/src/components/searchBar";
 import VideoBackground from "@/src/components/videoBackground";
+import { signInWithRedirect, signOut } from "aws-amplify/auth";
+import { Button } from "@/src/components/button";
+import { selectAuth } from "@/src/lib/features/auth/authSlice";
 
 export default function Home() {
-  const { signOut, user, loading }: IAuthHook = useAuth();
+  const { user, loading, error } = useSelector(selectAuth);
 
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!loading && !user) {
-      router.push("/login");
-    }
-  }, [loading, user]);
+  const loginWithGoogle = async (): Promise<void> => {
+    await signInWithRedirect({
+      provider: "Google",
+    });
+  };
 
   return (
     <div>
@@ -24,8 +25,9 @@ export default function Home() {
       ) : (
         <div className="h-screen v-screen flex flex-col justify-center items-center">
           <VideoBackground />
-          <div className="w-full px-16">
+          <div className="w-full px-16 z-30">
             <SearchBar />
+            <div>User: {`${JSON.stringify(user)}`}</div>
           </div>
         </div>
       )}

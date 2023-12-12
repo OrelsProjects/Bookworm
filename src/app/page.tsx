@@ -1,18 +1,14 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { Amplify } from "aws-amplify";
-import awsConfig from "../amplifyconfiguration.json";
-import useAuth from "../hooks/useAuth";
+import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
-
-Amplify.configure(awsConfig);
+import { selectAuth } from "../lib/features/auth/authSlice";
 
 function App() {
   const router = useRouter();
 
-  const { user, loading, customState, error, signInWithGoogle, signOut } =
-    useAuth();
+  const { user, loading, error } = useSelector(selectAuth);
 
   useEffect(() => {
     if (!loading && user) {
@@ -26,12 +22,12 @@ function App() {
         <div>Loading...</div>
       ) : (
         <>
-          <button onClick={() => signInWithGoogle()}>Open Google</button>
-          <button onClick={() => signOut()}>Sign Out</button>
+          {/* <button onClick={() => signInWithGoogle()}>Open Google</button>
+          <button onClick={() => signOut()}>Sign Out</button> */}
           <div>{user?.id}</div>
           <div>{user?.email}</div>
           <div>{user?.token}</div>
-          <div>{customState}</div>
+          {/* <div>{customState}</div> */}
         </>
       )}
     </div>

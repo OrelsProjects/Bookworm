@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@aws-amplify/ui-react": "^6.0.5",
+    "@redux-devtools/extension": "^3.3.0",
+    "@reduxjs/toolkit": "^2.0.1",
     "aws-amplify": "^6.0.6",
     "clsx": "^2.0.0",
     "formik": "^2.4.5",
@@ -19,6 +21,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.49.0",
+    "react-redux": "^9.0.4",
     "tailwind-merge": "^2.0.0",
     "tailwindcss-animate": "^1.0.7"
   },
