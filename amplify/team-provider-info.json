@@ -1,0 +1,21 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-bookwormapp-dev-190910-authRole",
+      "UnauthRoleArn": "arn:aws:iam::332097003591:role/amplify-bookwormapp-dev-190910-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::332097003591:role/amplify-bookwormapp-dev-190910-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-bookwormapp-dev-190910-deployment",
+      "UnauthRoleName": "amplify-bookwormapp-dev-190910-unauthRole",
+      "StackName": "amplify-bookwormapp-dev-190910",
+      "StackId": "arn:aws:cloudformation:us-east-1:332097003591:stack/amplify-bookwormapp-dev-190910/0259f060-9848-11ee-a50e-0af4a0ce6ecf",
+      "AmplifyAppId": "d3epkvakkdmlzk"
+    },
+    "categories": {
+      "auth": {
+        "bookwormappa64641f7": {},
+        "bookwormapp7ee6ffe0": {}
+      }
+    }
+  }
+}
