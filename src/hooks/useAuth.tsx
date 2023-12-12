@@ -3,18 +3,20 @@ import { Amplify } from "aws-amplify";
 import { User } from "../types/user";
 import {
   signInWithRedirect,
-  fetchAuthSession,
   SignInWithRedirectInput,
   signOut as signOutAuth,
-  AuthUser,
-  getCurrentUser,
+  fetchAuthSession,
 } from "aws-amplify/auth";
 import { Hub } from "aws-amplify/utils";
 import awsConfig from "../amplifyconfiguration.json";
+import { AuthSession as AWSAuthSession } from "@aws-amplify/core/dist/esm/singleton/Auth/types";
+import { convert as convertUser } from "../types/user_converter";
 
 export interface IAuthHook {
   user: User | null;
   loading: boolean;
+  error: unknown;
+  customState: string | null;
   signInWithGoogle: () => Promise<User | null>;
   signUpWithGoogle: () => Promise<User | null>;
   signOut: () => Promise<void>;
@@ -22,25 +24,25 @@ export interface IAuthHook {
 
 const useAuth = (): IAuthHook => {
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<AuthUser | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [error, setError] = useState<unknown>(null);
   const [customState, setCustomState] = useState<string | null>(null);
 
   Amplify.configure(awsConfig);
 
   useEffect(() => {
-    debugger;
     const unsubscribe = Hub.listen("auth", ({ payload }) => {
-      debugger;
       switch (payload.event) {
         case "signInWithRedirect":
           getUser();
           break;
         case "signInWithRedirect_failure":
           setError("An error has ocurred during the OAuth flow.");
+          setLoading(false);
           break;
         case "customOAuthState":
           setCustomState(payload.data); // this is the customState provided on signInWithRedirect function
+          setLoading(false);
           break;
       }
     });
@@ -52,11 +54,13 @@ const useAuth = (): IAuthHook => {
 
   const getUser = async (): Promise<void> => {
     try {
-      const currentUser = await getCurrentUser();
-      setUser(currentUser);
+      const authSession: AWSAuthSession = await fetchAuthSession();
+      setUser(convertUser(authSession));
     } catch (error) {
       console.error(error);
       console.log("Not signed in");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -76,17 +80,6 @@ const useAuth = (): IAuthHook => {
     return null;
   }, []);
 
-  const signInWithEmail = useCallback(async (): Promise<User | null> => {
-    return null;
-  }, []);
-
-  const signUpWithEmail = useCallback(
-    async (email: string, password: string): Promise<User | null> => {
-      return null;
-    },
-    []
-  );
-
   const signOut = useCallback(async (): Promise<void> => {
     await signOutAuth();
   }, []);
@@ -96,7 +89,9 @@ const useAuth = (): IAuthHook => {
     signUpWithGoogle,
     signOut,
     user,
+    customState,
     loading,
+    error,
   };
 };
 
