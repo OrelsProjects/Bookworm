@@ -22,7 +22,7 @@ export default function Home() {
         <div>Loading...</div>
       ) : (
         <div>
-          LOGIN
+          LOGOUT
           <div className="flex flex-col justify-center items-center">
             <h1 className="font-bold text-3xl mb-3">Bookworm</h1>
             <Button onClick={() => signInWithGoogle()}>
