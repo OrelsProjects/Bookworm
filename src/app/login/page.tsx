@@ -4,7 +4,6 @@ import useAuth, { IAuthHook } from "../../hooks/useAuth";
 import { Button } from "../../components/button";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import SearchBar from "@/src/components/search-bar";
 
 export default function Home() {
   const { signInWithGoogle, signOut, user, loading }: IAuthHook = useAuth();
@@ -12,9 +11,9 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    // if (!loading && user) {
-    //   router.push("/home");
-    // }
+    if (!loading && user) {
+      router.push("/home");
+    }
   }, [loading, user]);
 
   return (
@@ -29,7 +28,6 @@ export default function Home() {
             <Button onClick={() => signInWithGoogle()}>
               Sign in with Google
             </Button>
-            <SearchBar />
             <Button variant="outline" onClick={() => signOut()}>
               sign out
             </Button>

@@ -17,17 +17,17 @@ module.exports = {
     },
     extend: {
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        border: "rgb(var(--border))",
+        input: "rgb(var(--input))",
+        ring: "rgb(var(--ring))",
+        background: "rgb(var(--background))",
+        foreground: "rgb(var(--foreground))",
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: "rgb(var(--primary))",
+          // foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
+          DEFAULT: "rgb(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
         },
         destructive: {
@@ -52,8 +52,10 @@ module.exports = {
         },
       },
       backgroundColor: {
-        'statistic-card-gradient-start': "hsla(var(--statistic-card-gradient-start), 0.5)",
-        'statistic-card-gradient-end': "hsla(var(--statistic-card-gradient-end), 0.035)",
+        "statistic-card-gradient-start":
+          "hsla(var(--statistic-card-gradient-start), 0.5)",
+        "statistic-card-gradient-end":
+          "hsla(var(--statistic-card-gradient-end), 0.035)",
       },
       transitionDuration: {
         "250": "250ms",

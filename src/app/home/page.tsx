@@ -1,9 +1,10 @@
 "use client";
 
-import useAuth, { IAuthHook } from "../../hooks/useAuth";
+import useAuth, { IAuthHook } from "@/src/hooks/useAuth";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "../../components/button";
+import SearchBar from "@/src/components/searchBar";
+import VideoBackground from "@/src/components/videoBackground";
 
 export default function Home() {
   const { signOut, user, loading }: IAuthHook = useAuth();
@@ -21,10 +22,11 @@ export default function Home() {
       {loading ? (
         <div>Loading...</div>
       ) : (
-        <div className="flex flex-col justify-center items-center">
-          <h1 className="font-bold text-3xl mb-3">Bookworm</h1>
-          {user && <div>Logged in as {user.name}</div>}
-          <Button onClick={() => signOut()}>Sign Out</Button>
+        <div className="h-screen v-screen flex flex-col justify-center items-center">
+          <VideoBackground />
+          <div className="w-full px-16">
+            <SearchBar />
+          </div>
         </div>
       )}
     </div>

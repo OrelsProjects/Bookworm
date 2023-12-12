@@ -4,29 +4,30 @@
 
 @layer base {
   :root {
-    --background: 219, 100%, 8%;
-
-    --primary: 204, 100%, 50%;
-    /* Convert #0E2A44 (not selected button) to HSL */
-    --secondary: 216, 59%, 17%;
-    /* Text main color (white) */
-    --foreground: 0, 0%, 100%;
-    /* Text secondary color */
-    --muted: 214, 14%, 80%;
+    /* Selected button (Primary/Default) */
+    --primary: 0, 157, 255;
+    /* Not selected button (Surface/Secondary) */
+    --secondary: 21, 63, 102;
+    --background: 0, 17, 42;
+    /* Text main color (Neutral/Default) */
+    --foreground: 255, 255, 255;
+    /* Text secondary color (Neutral/Strong) */
+    --muted: 193, 202, 209;
     /* Surface/Primary */
-    --card: 210, 30%, 20%;
+    --card: 21, 63, 102;
     /* Status/Success/Default */
-    --accent: 151, 64%, 46%;
+    --accent: 28, 197, 135;
     /* Stars rating color */
-    --rating: 37, 100%, 70%;
-    /* Statistic card gradient colors */
-    --statistic-card-gradient-start: 204, 100%, 50%; /* 50% opacity */
-    --statistic-card-gradient-end: 204, 100%, 50%; /* 3.5% opacity */
+    --rating: 255, 177, 60;
+
+    /* Statistic card gradient colors - using RGBA for opacity */
+    --statistic-card-gradient-start: 0, 157, 255, 0.5; /* 50% opacity */
+    --statistic-card-gradient-end: 0, 157, 255, 0.035; /* 3.5% opacity */
 
     /* Borders and Inputs */
-    --border: 214, 14%, 80%;
-    --input: 214, 14%, 80%;
-    --ring: 204, 100%, 50%;
+    --border: 193, 202, 209;
+    --input: 193, 202, 209;
+    --ring: 0, 157, 255;
 
     /* Border Radius */
     --radius: 0.5rem;
@@ -81,5 +82,12 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  body,
+  input,
+  textarea,
+  select,
+  button {
+    @apply font-sans;
   }
 }
