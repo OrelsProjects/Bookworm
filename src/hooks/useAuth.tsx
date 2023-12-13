@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Amplify } from "aws-amplify";
-import { User } from "../types/user";
+import { User } from "../models/user";
 import {
   signInWithRedirect,
   SignInWithRedirectInput,
@@ -10,7 +10,7 @@ import {
 import { Hub } from "aws-amplify/utils";
 import awsConfig from "../amplifyconfiguration.json";
 import { AuthSession as AWSAuthSession } from "@aws-amplify/core/dist/esm/singleton/Auth/types";
-import { convert as convertUser } from "../types/user_converter";
+import { convert as convertUser } from "../models/converters/userConverter";
 
 export interface IAuthHook {
   user: User | null;

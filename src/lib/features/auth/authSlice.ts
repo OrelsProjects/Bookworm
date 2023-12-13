@@ -1,7 +1,7 @@
 // authSlice.ts
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import type { RootState } from '../../store'; // Adjust the import path as necessary
-import { User } from '@/src/types/user';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import type { RootState } from "../../store"; // Adjust the import path as necessary
+import { User } from "@/src/models";
 
 interface AuthState {
   user: User | null;
@@ -16,7 +16,7 @@ const initialState: AuthState = {
 };
 
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     setUser: (state, action: PayloadAction<User | null>) => {
@@ -33,6 +33,6 @@ const authSlice = createSlice({
 
 export const { setUser, setLoading, setError } = authSlice.actions;
 
-export const selectAuth = (state: RootState) => state.auth;
+export const selectAuth = (state: RootState): AuthState => state.auth;
 
 export default authSlice.reducer;

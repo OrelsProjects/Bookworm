@@ -11,7 +11,7 @@ import {
 } from "../lib/features/auth/authSlice"; // Adjust the import path as necessary
 import { Amplify } from "aws-amplify";
 import { fetchAuthSession, signInWithRedirect } from "aws-amplify/auth";
-import { convert as convertUser } from "../types/user_converter";
+import { convert as convertUser } from "../models/converters/userConverter";
 import { Hub } from "aws-amplify/utils";
 import awsConfig from "../amplifyconfiguration.json";
 
