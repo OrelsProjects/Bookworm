@@ -1,9 +1,11 @@
+"use client";
+
 import Image from "next/image";
 import React from "react";
 
 const VideoBackground = () => {
   return (
-    <div className="absolute w-full h-full z-0 overflow-hidden">
+    <div className="absolute w-screen h-screen z-0 overflow-hidden pointer-events-none">
       <div className="relative w-full h-full">
         <Image
           className="absolute left-0 right-0 -top-36 w-full h-full z-20"

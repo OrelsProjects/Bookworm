@@ -3,5 +3,6 @@ import Book from "./book";
 import Genre from "./genre";
 import BookSubGenre from "./bookSubGenre";
 import GoodreadsData from "./goodreadsData";
+import UserBook from "./userBook";
 
-export { User, Book, Genre, BookSubGenre, GoodreadsData };
+export { User, Book, Genre, BookSubGenre, GoodreadsData, UserBook };

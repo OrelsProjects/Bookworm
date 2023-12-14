@@ -17,7 +17,7 @@ function App() {
   }, [loading, user]);
 
   return (
-    <div className="flex flex-col justify-center items-center">
+    <div className="flex flex-col justify-center items-center ">
       {loading ? (
         <div>Loading...</div>
       ) : (

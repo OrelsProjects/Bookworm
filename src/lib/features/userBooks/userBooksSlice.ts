@@ -1,10 +1,10 @@
 // completeUserBookSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../../store"; // Adjust the import path as necessary
-import { CompleteUserBook } from "@/src/types/completeData";
+import { CompleteBookData } from "../../../types/completeData";
 
 interface userBooksState {
-  data: CompleteUserBook[] | null;
+  data: CompleteBookData[] | null;
   loading: boolean;
   error: string | null;
 }
@@ -21,7 +21,7 @@ const userBooksSlice = createSlice({
   reducers: {
     setCompleteUserBook: (
       state,
-      action: PayloadAction<CompleteUserBook[] | null>
+      action: PayloadAction<CompleteBookData[] | null>
     ) => {
       state.data = action.payload;
     },

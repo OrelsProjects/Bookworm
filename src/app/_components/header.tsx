@@ -1,0 +1,82 @@
+"use client";
+import { Button, Tabs } from "@/src/components";
+import React, { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { selectAuth } from "@/src/lib/features/auth/authSlice";
+import { useSelector } from "react-redux";
+
+const tabs = [
+  {
+    label: "Home",
+    href: "/home",
+    selected: true,
+  },
+  {
+    label: "My Library",
+    href: "/my-library",
+  },
+  {
+    label: "Statistics",
+    href: "/statistics",
+  },
+];
+
+export interface HeaderProps {
+  className?: string;
+}
+
+const Header = ({ className }: HeaderProps): React.ReactNode => {
+  const { user, loading, error } = useSelector(selectAuth);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (error) {
+      console.log(error);
+    }
+  }, [error]);
+
+  const navigateTo = (href: string) => {
+    router.push(href);
+  };
+
+  const NavTabs = (): React.ReactNode => {
+    return <Tabs items={tabs} onClick={(href) => navigateTo(href)}></Tabs>;
+  };
+
+  return (
+    !loading && (
+      <div
+        className={`flex justify-between items-start w-full h-12 z-30 relative ${className}`}
+      >
+        <div
+          className="bg-primary-foreground h-12 w-48 rounded-full flex justify-center items-center cursor-pointer"
+          onClick={() => router.push("/home")}
+        >
+          <Image
+            src="/BookWormText.png"
+            height={24}
+            width={140}
+            alt={""}
+            className="text input  pointer-events-none"
+          />
+        </div>
+        <NavTabs />
+        <div className="flex flex-row items-center gap-4">
+          <Button size={"md"} variant="selected" className="w-32">
+            Import Books +
+          </Button>
+          {user ? (
+            <Image src="/avatar.png" height={48} width={48} alt={"avatar"} />
+          ) : (
+            <Button size={"md"} variant="selected" className="w-32">
+              Login
+            </Button>
+          )}
+        </div>
+      </div>
+    )
+  );
+};
+
+export default Header;

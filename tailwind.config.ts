@@ -24,6 +24,7 @@ module.exports = {
         foreground: "rgb(var(--foreground))",
         primary: {
           DEFAULT: "rgb(var(--primary))",
+          foreground: "rgb(var(--primary-foreground))",
           // foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
@@ -78,6 +79,12 @@ module.exports = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+      },
+      fontSize: {
+        "6.5xl": "4rem",
+      },
+      lineHeight: {
+        "16": "4rem",
       },
     },
   },

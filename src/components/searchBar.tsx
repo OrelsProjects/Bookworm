@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import Image from "next/image";
 import { Input } from "./input";
@@ -22,15 +24,18 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   return (
     <div
-      className={`w-full flex justify-between items-center rounded-full bg-secondary px-6 ${className}`}
+      className={`w-full flex justify-between items-center rounded-full bg-secondary ${className}`}
     >
-      <form onSubmit={handleSearch} className={`w-full py-2`}>
-        <label htmlFor="search-bar" className="relative flex flex-row w-full bg-secondary rounded-full px-6 py-4">
+      <form onSubmit={handleSearch} className={`w-full`}>
+        <label
+          htmlFor="search-bar"
+          className="relative flex flex-row w-full bg-secondary rounded-full px-6 py-4"
+        >
           <Image src="search.svg" alt="Search" height={32} width={32} />
           <Input
             type="text"
             id="search-bar"
-            className="py-2 w-full rounded-full bg-secondary text-white placeholder-gray-300 focus:outline-none focus:ring focus:border-blue-300"
+            className="py-2 w-full h-full rounded-full bg-secondary text-white placeholder-gray-300 focus:outline-none border-none"
             placeholder="Search for the book"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}

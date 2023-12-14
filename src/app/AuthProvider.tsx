@@ -10,7 +10,7 @@ import {
   setError,
 } from "../lib/features/auth/authSlice"; // Adjust the import path as necessary
 import { Amplify } from "aws-amplify";
-import { fetchAuthSession, signInWithRedirect } from "aws-amplify/auth";
+import { fetchAuthSession } from "aws-amplify/auth";
 import { convert as convertUser } from "../models/converters/userConverter";
 import { Hub } from "aws-amplify/utils";
 import awsConfig from "../amplifyconfiguration.json";
@@ -43,6 +43,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     dispatch(setLoading(true));
+    // dispatch(setLoading(false)); // For faster testing
     const unsubscribe = Hub.listen("auth", ({ payload }) => {
       switch (payload.event) {
         case "signInWithRedirect":

@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "./button";
 import { useEffect, useState } from "react";
 
@@ -30,14 +32,14 @@ const Tabs = ({ items, onClick }: TabsProps) => {
   };
 
   return (
-    <div className="flex flex-row">
+    <div className="bg-primary-foreground p-2 rounded-full flex justify-center items-center gap-2">
       {items.map((item) => (
         <Button
           key={item.href}
           onClick={() => handleClick(item.href)}
-          variant={`${selectedValue === item.href ? "default" : "outline"}`}
-          // Round the corners of the first and last buttons
-          className="rounded-none first:rounded-r-md last:rounded-l-md"
+          variant={`${selectedValue === item.href ? "selected" : "default"}`}
+          className="rounded-full"
+          size={"md"}
         >
           {item.label}
         </Button>

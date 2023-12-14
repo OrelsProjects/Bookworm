@@ -6,6 +6,8 @@
   :root {
     /* Selected button (Primary/Default) */
     --primary: 0, 157, 255;
+    /* Primary/Medium */
+    --primary-foreground: 9, 72, 123;
     /* Not selected button (Surface/Secondary) */
     --secondary: 21, 63, 102;
     --background: 0, 17, 42;
