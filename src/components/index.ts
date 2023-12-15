@@ -4,7 +4,7 @@ import { Input } from "./input";
 import { Label } from "./label";
 import Tabs from "./tabs";
 import Toggle from "./toggle";
-import SearchBar from "./searchBar";
+import SearchBar from "./search/searchBar";
 import VideoBackground from "./videoBackground";
 
 export {

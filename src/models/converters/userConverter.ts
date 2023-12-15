@@ -8,5 +8,5 @@ export const convert = (session: AWSAuthSession) =>
     session?.tokens?.accessToken?.payload?.email?.toString() ??
       session?.tokens?.idToken?.payload?.email?.toString() ??
       "",
-    session.credentials?.sessionToken ?? ""
+    session.tokens?.accessToken?.toString() ?? ""
   );

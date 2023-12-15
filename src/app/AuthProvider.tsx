@@ -10,7 +10,7 @@ import {
   setError,
 } from "../lib/features/auth/authSlice"; // Adjust the import path as necessary
 import { Amplify } from "aws-amplify";
-import { fetchAuthSession } from "aws-amplify/auth";
+import { fetchAuthSession, getCurrentUser, decodeJWT } from "aws-amplify/auth";
 import { convert as convertUser } from "../models/converters/userConverter";
 import { Hub } from "aws-amplify/utils";
 import awsConfig from "../amplifyconfiguration.json";
@@ -30,10 +30,11 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const getUser = async () => {
+  const fetchUser = async () => {
     try {
       const authSession = await fetchAuthSession();
-      dispatch(setUser({ ...convertUser(authSession) }));
+      const user = convertUser(authSession);
+      dispatch(setUser({ ...user }));
     } catch (error) {
       console.error(error);
     } finally {
@@ -47,7 +48,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const unsubscribe = Hub.listen("auth", ({ payload }) => {
       switch (payload.event) {
         case "signInWithRedirect":
-          getUser();
+          fetchUser();
           break;
         case "signInWithRedirect_failure":
           dispatch(setError("An error has occurred"));
@@ -60,7 +61,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
     });
 
-    getUser();
+    fetchUser();
 
     return unsubscribe;
   }, [dispatch]);

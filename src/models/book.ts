@@ -42,6 +42,19 @@ class Book {
     this.datePublished = datePublished;
     this.authors = authors;
   }
+
+  // Another ocnstructor:
+  /**
+   * this.title,
+      this.authors,
+      this.published_date,
+      this.page_count,
+      this.language,
+      this.isbn,
+      this.isbn10,
+      this.thumbnail_url,
+      this.medium_image_url
+   */
 }
 
 export default Book;

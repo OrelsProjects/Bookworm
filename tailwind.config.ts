@@ -25,38 +25,38 @@ module.exports = {
         primary: {
           DEFAULT: "rgb(var(--primary))",
           foreground: "rgb(var(--primary-foreground))",
-          // foreground: "hsl(var(--primary-foreground))",
+          // foreground: "rgb(var(--primary-foreground))",
         },
         secondary: {
           DEFAULT: "rgb(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+          foreground: "rgb(var(--secondary-foreground))",
         },
         destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+          DEFAULT: "rgb(var(--destructive))",
+          foreground: "rgb(var(--destructive-foreground))",
         },
         muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+          DEFAULT: "rgb(var(--muted))",
+          foreground: "rgb(var(--muted-foreground))",
         },
         accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+          DEFAULT: "rgb(var(--accent))",
+          foreground: "rgb(var(--accent-foreground))",
         },
         popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
+          DEFAULT: "rgb(var(--popover))",
+          foreground: "rgb(var(--popover-foreground))",
         },
         card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
+          DEFAULT: "rgb(var(--card))",
+          foreground: "rgb(var(--card-foreground))",
         },
       },
       backgroundColor: {
         "statistic-card-gradient-start":
-          "hsla(var(--statistic-card-gradient-start), 0.5)",
+          "rgba(var(--statistic-card-gradient-start), 0.5)",
         "statistic-card-gradient-end":
-          "hsla(var(--statistic-card-gradient-end), 0.035)",
+          "rgba(var(--statistic-card-gradient-end), 0.035)",
       },
       transitionDuration: {
         "250": "250ms",
@@ -85,6 +85,9 @@ module.exports = {
       },
       lineHeight: {
         "16": "4rem",
+      },
+      height: {
+        "22": "5.5rem",
       },
     },
   },

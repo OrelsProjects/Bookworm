@@ -2,6 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Override Chrome, Safari, and Edge styles */
+input[type="text"]:-webkit-autofill,
+input[type="text"]:-webkit-autofill:hover,
+input[type="text"]:-webkit-autofill:focus,
+input[type="text"]:-webkit-autofill:active {
+  @apply bg-transparent border border-gray-300; /* Add your Tailwind border utilities if needed */
+  transition: background-color 5000s ease-in-out 0s, color 5000s ease-in-out 0s; /* Long transition for background and color */
+  -webkit-text-fill-color: inherit !important; /* Inherit the color from the input's text color */
+}
+
+/* Ensure the text color remains consistent, not black */
+input[type="text"]:-webkit-autofill {
+  -webkit-text-fill-color: inherit !important;
+}
+
+/* For Firefox, if needed */
+input[type="text"]:-moz-ui-autofill {
+  @apply bg-transparent border border-gray-300; /* Add your Tailwind border utilities if needed */
+}
+
 @layer base {
   :root {
     /* Selected button (Primary/Default) */
