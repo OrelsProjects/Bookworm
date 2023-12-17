@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { Input } from "../input";
 import useSearch, { UseSearchResult } from "../../hooks/useSearch";
-import SearchItem from "./searchItem";
+import SearchItem, { SearchItemSkeleton } from "./searchItem";
 
 export interface SearchBarProps {
   className?: string;
@@ -16,27 +16,24 @@ const SearchBar: React.FC<SearchBarProps> = ({
   onChange,
 }: SearchBarProps) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const { searchValue, setSearchValue, data }: UseSearchResult = useSearch();
+  const { loading, setSearchValue, data }: UseSearchResult = useSearch();
 
   const handleSearch = async (event: any) => {
+    debugger;
     event.preventDefault();
     if (event.target) {
       setSearchValue(event.target.value);
     }
   };
 
-  const classItems = "";
-  const classNoItems = "";
+  const classItems = "px-6 py-4 rounded-t-3xl rounded-b-lg";
+  const classNoItems = "rounded-full";
 
   return (
     <div className="w-full h-full flex flex-col gap-4">
       <div
         className={`w-full flex justify-between items-center bg-secondary 
-        ${
-          data && data.length > 0
-            ? "px-6 py-4 rounded-t-3xl rounded-b-lg"
-            : "rounded-full"
-        }
+        ${data && data.length > 0 ? classItems : classNoItems}
         ${className}`}
       >
         <form
@@ -60,26 +57,41 @@ const SearchBar: React.FC<SearchBarProps> = ({
           </label>
         </form>
       </div>
-      <div>
-        {data && data.length > 0 && (
-          <div className="flex flex-col gap-1 overflow-auto">
-            <div>Top 3 Results</div>
-            {data.map(
-              (book, i) =>
-                i < 3 && (
-                  <SearchItem
-                    key={
-                      book.title + book.isbn10 + book.datePublished + book.isbn
-                    }
-                    title={book.title}
-                    author={book.authors ? book.authors.join(", ") : "Unknown"}
-                    pageCount={book.numberOfPages ?? 0}
-                    thumbnail={book.thumbnailUrl}
-                    onAddToLibrary={() => {}}
-                  />
-                )
-            )}
-          </div>
+      <div className="flex flex-col gap-1 overflow-auto">
+        {!loading ? (
+          <>
+            <SearchItemSkeleton />
+            <SearchItemSkeleton />
+            <SearchItemSkeleton />
+          </>
+        ) : (
+          loading &&
+          data &&
+          data.length > 0 && (
+            <>
+              <div>Top 3 Results</div>
+              {data.map(
+                (book, i) =>
+                  i < 3 && (
+                    <SearchItem
+                      key={
+                        book.title +
+                        book.isbn10 +
+                        book.datePublished +
+                        book.isbn
+                      }
+                      title={book.title}
+                      author={
+                        book.authors ? book.authors.join(", ") : "Unknown"
+                      }
+                      pageCount={book.numberOfPages ?? 0}
+                      thumbnail={book.thumbnailUrl}
+                      onAddToLibrary={() => {}}
+                    />
+                  )
+              )}
+            </>
+          )
         )}
       </div>
     </div>

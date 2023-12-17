@@ -10,14 +10,17 @@ export interface UseSearchResult {
   searchValue: string;
   setSearchValue: React.Dispatch<React.SetStateAction<string>>;
   data: Book[] | null;
+  loading: boolean;
 }
 
 function useSearch(): UseSearchResult {
   const [searchValue, setSearchValue] = useState<string>("");
   const [data, setData] = useState<Book[] | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const fetchData = async (value: string) => {
     try {
+      setLoading(true);
       if (!value) {
         setData(null);
         return;
@@ -34,6 +37,8 @@ function useSearch(): UseSearchResult {
       const axiosError = error as AxiosError;
       console.error("Error fetching data:", axiosError.message);
       setData(null);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -42,6 +47,9 @@ function useSearch(): UseSearchResult {
 
   // Effect to trigger the API call
   useEffect(() => {
+    if (searchValue === "") {
+      setData(null);
+    }
     if (searchValue) {
       debouncedFetchData(searchValue);
     }
@@ -49,7 +57,7 @@ function useSearch(): UseSearchResult {
     return () => debouncedFetchData.cancel();
   }, [searchValue]);
 
-  return { searchValue, setSearchValue, data };
+  return { searchValue, setSearchValue, data, loading };
 }
 
 export default useSearch;

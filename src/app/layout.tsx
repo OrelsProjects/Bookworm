@@ -21,7 +21,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} px-16 py-8`}>
+      <body
+        className={`${inter.className} px-16 py-8  overflow-hidden overscroll-none sm:overscroll-auto`}
+      >
         <StoreProvider>
           <AuthProvider>
             <APIProvider>
