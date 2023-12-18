@@ -3,6 +3,7 @@ import axios from "axios";
 import { debounce } from "lodash";
 import { Book } from "../models";
 import { IResponse } from "../models/dto/response";
+import { Books } from "../models/book";
 
 // Define a type for the hook's return value
 export interface UseSearchResult {
@@ -33,7 +34,13 @@ function useSearch(): UseSearchResult {
       const response = await axios.get<IResponse<Book[]>>(
         `/api/google-books?query=${value}`
       );
-      setBooks(response.data.result);
+      const books: Books = response.data.result;
+      const response1 = await axios.post<IResponse<Book>>(
+        "api/books",
+        books
+      );
+      debugger;
+      setBooks(books);
     } catch (error) {
       console.error("Error fetching data:", error);
       return [];
