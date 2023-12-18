@@ -16,13 +16,19 @@ const SearchBar: React.FC<SearchBarProps> = ({
   onChange,
 }: SearchBarProps) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const { loading, setSearchValue, data }: UseSearchResult = useSearch();
+  const { loading, updateSearchValue: setSearchValue, data }: UseSearchResult = useSearch();
 
   const handleSearch = async (event: any) => {
-    debugger;
     event.preventDefault();
     if (event.target) {
       setSearchValue(event.target.value);
+    }
+  };
+
+  const handleSubmit = async (event: any) => {
+    event.preventDefault();
+    if (event.target) {
+      setSearchValue(event.target[0].value);
     }
   };
 
@@ -38,7 +44,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
       >
         <form
           onChange={handleSearch}
-          onSubmit={handleSearch}
+          onSubmit={handleSubmit}
           className={`w-full`}
         >
           <label
@@ -58,14 +64,13 @@ const SearchBar: React.FC<SearchBarProps> = ({
         </form>
       </div>
       <div className="flex flex-col gap-1 overflow-auto">
-        {!loading ? (
+        {loading ? (
           <>
             <SearchItemSkeleton />
             <SearchItemSkeleton />
             <SearchItemSkeleton />
           </>
         ) : (
-          loading &&
           data &&
           data.length > 0 && (
             <>

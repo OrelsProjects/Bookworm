@@ -8,7 +8,7 @@ import { BookDTO, bookDTOToBook } from "../models/dto/bookDTO";
 // Define a type for the hook's return value
 export interface UseSearchResult {
   searchValue: string;
-  setSearchValue: React.Dispatch<React.SetStateAction<string>>;
+  updateSearchValue: (value: string) => void;
   data: Book[] | null;
   loading: boolean;
 }
@@ -17,6 +17,13 @@ function useSearch(): UseSearchResult {
   const [searchValue, setSearchValue] = useState<string>("");
   const [data, setData] = useState<Book[] | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const updateSearchValue = (value: string) => {
+    if (value === searchValue) {
+      return;
+    }
+    setSearchValue(value);
+  };
 
   const fetchData = async (value: string) => {
     try {
@@ -50,6 +57,7 @@ function useSearch(): UseSearchResult {
     if (searchValue === "") {
       setData(null);
     }
+
     if (searchValue) {
       debouncedFetchData(searchValue);
     }
@@ -57,7 +65,7 @@ function useSearch(): UseSearchResult {
     return () => debouncedFetchData.cancel();
   }, [searchValue]);
 
-  return { searchValue, setSearchValue, data, loading };
+  return { searchValue, updateSearchValue, data, loading };
 }
 
 export default useSearch;

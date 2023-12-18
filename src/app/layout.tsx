@@ -31,7 +31,7 @@ export default function RootLayout({
               <div className="absolute top-0 right-0 left-0 bottom-0 z-0">
                 <VideoBackground />
               </div>
-              {children}
+              <div className="h-screen v-screen z-10">{children}</div>
             </APIProvider>
           </AuthProvider>
         </StoreProvider>
