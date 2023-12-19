@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Input } from "../input";
 import useSearch, { UseSearchResult } from "../../hooks/useSearch";
 import SearchItem, { SearchItemSkeleton } from "./searchItem";
+import { Book } from "../../models";
 
 export interface SearchBarProps {
   className?: string;
@@ -16,19 +17,33 @@ const SearchBar: React.FC<SearchBarProps> = ({
   onChange,
 }: SearchBarProps) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const { loading, updateSearchValue: setSearchValue, data }: UseSearchResult = useSearch();
+  const {
+    loading,
+    updateSearchValue,
+    books,
+    addBookToLibrary,
+  }: UseSearchResult = useSearch();
 
   const handleSearch = async (event: any) => {
     event.preventDefault();
     if (event.target) {
-      setSearchValue(event.target.value);
+      updateSearchValue(event.target.value);
     }
   };
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     if (event.target) {
-      setSearchValue(event.target[0].value);
+      updateSearchValue(event.target[0].value);
+    }
+  };
+
+  const addToLibrary = async (book: Book) => {
+    try {
+      const bookList = [book];
+      const response = await addBookToLibrary(bookList[0]);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -39,7 +54,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
     <div className="w-full h-full flex flex-col gap-4">
       <div
         className={`w-full flex justify-between items-center bg-secondary 
-        ${data && data.length > 0 ? classItems : classNoItems}
+        ${books && books.length > 0 ? classItems : classNoItems}
         ${className}`}
       >
         <form
@@ -71,11 +86,11 @@ const SearchBar: React.FC<SearchBarProps> = ({
             <SearchItemSkeleton />
           </>
         ) : (
-          data &&
-          data.length > 0 && (
+          books &&
+          books.length > 0 && (
             <>
               <div>Top 3 Results</div>
-              {data.map(
+              {books.map(
                 (book, i) =>
                   i < 3 && (
                     <SearchItem
@@ -84,14 +99,11 @@ const SearchBar: React.FC<SearchBarProps> = ({
                         book.isbn10 +
                         book.datePublished +
                         book.isbn
-                      }
-                      title={book.title}
-                      author={
-                        book.authors ? book.authors.join(", ") : "Unknown"
-                      }
-                      pageCount={book.numberOfPages ?? 0}
-                      thumbnail={book.thumbnailUrl}
-                      onAddToLibrary={() => {}}
+                      } // isbn/isbn10 might be null
+                      book={book}
+                      onAddToLibrary={(book) => {
+                        addToLibrary(book);
+                      }}
                     />
                   )
               )}

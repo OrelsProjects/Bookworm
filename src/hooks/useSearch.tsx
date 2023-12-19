@@ -9,8 +9,9 @@ import { Books } from "../models/book";
 export interface UseSearchResult {
   searchValue: string;
   updateSearchValue: (value: string) => void;
-  data: Book[] | null;
+  books: Book[] | null;
   loading: boolean;
+  addBookToLibrary: (book: Book) => void;
 }
 
 function useSearch(): UseSearchResult {
@@ -19,9 +20,9 @@ function useSearch(): UseSearchResult {
   const [loading, setLoading] = useState<boolean>(false);
 
   const updateSearchValue = (value: string) => {
-    // if (value === searchValue) {
-    //   return;
-    // }
+    if (value === searchValue) {
+      return;
+    }
     setSearchValue(value);
   };
 
@@ -44,10 +45,21 @@ function useSearch(): UseSearchResult {
     }
   };
 
+  const addBookToLibrary = async (book: Book) => {
+    try {
+      const bookList = [book];
+      const response = await axios.post<IResponse<Book[]>>(
+        "api/books",
+        bookList
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // Debounced function
   const debouncedFetchData = debounce(fetchBooks, 300);
 
-  // Effect to trigger the API call
   useEffect(() => {
     if (searchValue === "") {
       setBooks(null);
@@ -56,11 +68,10 @@ function useSearch(): UseSearchResult {
     if (searchValue) {
       debouncedFetchData(searchValue);
     }
-    // Cancel the debounced call if the component is unmounted or the value changes
     return () => debouncedFetchData.cancel();
   }, [searchValue]);
 
-  return { searchValue, updateSearchValue, data: books, loading };
+  return { searchValue, updateSearchValue, books, loading, addBookToLibrary };
 }
 
 export default useSearch;
