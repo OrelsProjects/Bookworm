@@ -68,7 +68,9 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     if (!loading) {
-      router.push("/home");
+      if (!user) {
+        router.push("/home");
+      }
     }
   }, [loading, user, router]);
 

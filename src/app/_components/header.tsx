@@ -1,10 +1,11 @@
 "use client";
 import { Button, Tabs } from "@/src/components";
 import React, { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
 import { selectAuth } from "@/src/lib/features/auth/authSlice";
 import { useSelector } from "react-redux";
+import toast from "react-hot-toast";
 
 const tabs = [
   {
@@ -29,10 +30,21 @@ export interface HeaderProps {
 const Header = ({ className }: HeaderProps): React.ReactNode => {
   const { user, loading, error } = useSelector(selectAuth);
   const router = useRouter();
+  const pathname: string = usePathname();
+
+  useEffect(() => {
+    tabs.map((tab) => {
+      if (tab.href === pathname) {
+        tab.selected = true;
+      } else {
+        tab.selected = false;
+      }
+    });
+  }, [pathname]);
 
   useEffect(() => {
     if (error) {
-      console.log(error);
+      toast.error(error);
     }
   }, [error]);
 
@@ -41,7 +53,13 @@ const Header = ({ className }: HeaderProps): React.ReactNode => {
   };
 
   const NavTabs = (): React.ReactNode => {
-    return <Tabs items={tabs} onClick={(href) => navigateTo(href)}></Tabs>;
+    return (
+      <Tabs
+        items={tabs}
+        manualSelection
+        onClick={(href) => navigateTo(href)}
+      ></Tabs>
+    );
   };
 
   return (

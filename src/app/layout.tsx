@@ -7,6 +7,7 @@ import "./globals.css";
 import Header from "./_components/header";
 import { VideoBackground } from "../components";
 import APIProvider from "./APIProvider";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,6 +33,15 @@ export default function RootLayout({
                 <VideoBackground />
               </div>
               <div className="h-screen v-screen z-10">{children}</div>
+              <Toaster
+                toastOptions={{
+                  style: {
+                    // Card color or variable named --card
+                    background: "var(--background)",
+                    color: "#fff",
+                  },
+                }}
+              />
             </APIProvider>
           </AuthProvider>
         </StoreProvider>

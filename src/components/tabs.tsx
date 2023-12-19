@@ -11,10 +11,11 @@ interface TabItem {
 
 interface TabsProps {
   items: TabItem[];
+  manualSelection?: boolean; // Should the selected be set by the parent
   onClick?: (href: string) => void; // Change the prop name to onClick
 }
 
-const Tabs = ({ items, onClick }: TabsProps) => {
+const Tabs = ({ items, manualSelection: manualSelected, onClick }: TabsProps) => {
   const [selectedValue, setSelectedValue] = useState<string>("");
 
   useEffect(() => {
@@ -25,7 +26,9 @@ const Tabs = ({ items, onClick }: TabsProps) => {
   }, [items]);
 
   const handleClick = (href: string) => {
-    setSelectedValue(items.find((item) => item.href === href)?.href ?? ""); // Find the index of the clicked item
+    if (!manualSelected) {
+      setSelectedValue(items.find((item) => item.href === href)?.href ?? ""); // Find the index of the clicked item
+    }
     if (onClick) {
       onClick(href);
     }
