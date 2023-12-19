@@ -8,6 +8,7 @@ import Header from "./_components/header";
 import { VideoBackground } from "../components";
 import APIProvider from "./APIProvider";
 import { Toaster } from "react-hot-toast";
+import { createPortal } from "react-dom";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,25 +24,21 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.className} px-16 py-8  overflow-hidden overscroll-none sm:overscroll-auto`}
+        className={`${inter.className} w-screen h-screen px-16 py-8 flex flex-col overflow-hidden overscroll-none sm:overscroll-auto`}
       >
         <StoreProvider>
           <AuthProvider>
             <APIProvider>
-              <Header className="mb-20" />
+              <div
+                id="portal"
+                className="absolute top-0 right-0 left-0 bottom-0 z-10"
+              />
+              <Header className="absolute top-0 mb-12" />
               <div className="absolute top-0 right-0 left-0 bottom-0 z-0">
                 <VideoBackground />
               </div>
-              <div className="h-screen v-screen z-10">{children}</div>
-              <Toaster
-                toastOptions={{
-                  style: {
-                    // Card color or variable named --card
-                    background: "var(--background)",
-                    color: "#fff",
-                  },
-                }}
-              />
+              <div className="h-full w-full z-10 relative">{children}</div>
+              <Toaster />
             </APIProvider>
           </AuthProvider>
         </StoreProvider>

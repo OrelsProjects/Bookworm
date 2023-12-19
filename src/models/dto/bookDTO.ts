@@ -1,6 +1,6 @@
 import Book from "../book";
 
-export class BookDTO {
+export default class BookDTO {
   title: string;
   main_genre_id: number;
   book_id: string;

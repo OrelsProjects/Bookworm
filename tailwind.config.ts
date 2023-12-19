@@ -86,8 +86,13 @@ module.exports = {
       lineHeight: {
         "16": "4rem",
       },
+      width: {
+        "22": "5.5rem",
+        "288": "72rem",
+      },
       height: {
         "22": "5.5rem",
+        "288": "72rem",
       },
     },
   },

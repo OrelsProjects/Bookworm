@@ -4,5 +4,14 @@ import Genre from "./genre";
 import BookSubGenre from "./bookSubGenre";
 import GoodreadsData from "./goodreadsData";
 import UserBook from "./userBook";
+import UserBookData from "./userBookData";
 
-export { User, Book, Genre, BookSubGenre, GoodreadsData, UserBook };
+export {
+  User,
+  Book,
+  Genre,
+  BookSubGenre,
+  GoodreadsData,
+  UserBook,
+  UserBookData,
+};

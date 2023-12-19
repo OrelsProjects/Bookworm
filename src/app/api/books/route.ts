@@ -1,5 +1,5 @@
 import { Book } from "@/src/models";
-import { BookDTO, bookDTOToBook } from "@/src/models/dto/bookDTO";
+import BookDTO, { bookDTOToBook } from "@/src/models/dto/bookDTO";
 import { GetAxiosInstance } from "@/src/utils/axiosInstance";
 import { NextRequest, NextResponse } from "next/server";
 

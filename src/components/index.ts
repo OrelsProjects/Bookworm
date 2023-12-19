@@ -3,7 +3,7 @@ import { Switch } from "./switch";
 import { Input } from "./input";
 import { Label } from "./label";
 import Tabs from "./tabs";
-import Toggle from "./toggle";
+import Toggle from "./toggleButtons";
 import SearchBar from "./search/searchBar";
 import VideoBackground from "./videoBackground";
 

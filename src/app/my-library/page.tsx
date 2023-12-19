@@ -1,21 +1,20 @@
 "use client";
 
-import React, { useEffect } from "react";
-import SearchBar from "../../components/search/searchBar";
-import toast from "react-hot-toast";
+import React from "react";
+
+import BooksTable from "../../components/booksTable/booksTable";
+import ToggleButtons from "../../components/toggleButtons";
 
 export default function Home(): React.ReactNode {
-  useEffect(() => {
-    // toast.success("Welcome to Bookworm!");
-  }, []);
-
   return (
-    <div className="h-screen v-screen">
-      <div className="w-full h-full z-30">
-        <div className="w-full z-30">
-          <SearchBar />
-        </div>
+    <div className="w-full h-full flex justify-start item-start flex-col">
+      <div className="w-full ">
+        <ToggleButtons
+          labels={["To read", "Books I’ve read"]}
+          onToggle={(index) => console.log(index)}
+        />
       </div>
+      <BooksTable />
     </div>
   );
 }

@@ -33,7 +33,9 @@ const SearchItem: React.FC<SearchItemProps> = ({ book, onAddToLibrary }) => {
         <div className="flex flex-row gap-2">
           <Button
             variant="selected"
-            onClick={() => {}}
+            onClick={() => {
+              onAddToLibrary(book);
+            }}
             className="rounded-full"
           >
             Add to library
@@ -83,7 +85,7 @@ export const SearchItemSkeleton: React.FC<SearchItemSkeletonProps> = ({
       <div className="flex flex-row gap-2 items-center">
         <LineSkeleton className="h-4 w-14 rounded-full" />
         <LineSkeleton className="h-4 w-14 rounded-full" />
-        
+
         <SquareSkeleton className="h-10 w-24 rounded-full" />
         <SquareSkeleton className="h-10 w-24 rounded-full" />
       </div>

@@ -6,6 +6,7 @@ import { Input } from "../input";
 import useSearch, { UseSearchResult } from "../../hooks/useSearch";
 import SearchItem, { SearchItemSkeleton } from "./searchItem";
 import { Book } from "../../models";
+import toast from "react-hot-toast";
 
 export interface SearchBarProps {
   className?: string;
@@ -42,6 +43,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
     try {
       const bookList = [book];
       const response = await addBookToLibrary(bookList[0]);
+      toast.success("Book added to library!");
     } catch (error) {
       console.log(error);
     }
