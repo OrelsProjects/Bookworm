@@ -2,7 +2,7 @@ export type Books = Book[];
 
 class Book {
   title: string;
-  mainGenreId: number;
+  mainGenreId?: number;
   bookId: string;
   thumbnailUrl?: string;
   subtitle?: string;

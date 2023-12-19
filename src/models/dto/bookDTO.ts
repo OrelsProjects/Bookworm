@@ -2,51 +2,49 @@ import Book from "../book";
 
 export class BookDTO {
   title: string;
-  authors?: string[];
-  published_date?: string;
-  page_count?: number;
-  language?: string;
-  isbn?: string;
-  isbn10?: string;
+  main_genre_id: number;
+  book_id: string;
   thumbnail_url?: string;
+  subtitle?: string;
+  original_date_published?: string;
+  number_of_pages?: number;
   medium_image_url?: string;
+  language?: string;
+  isbn10?: string;
+  isbn?: string;
+  date_published?: string;
+  authors?: string[];
 
-  constructor(
-    title: string,
-    authors?: string[],
-    published_date?: string,
-    page_count?: number,
-    language?: string,
-    isbn?: string,
-    isbn10?: string,
-    thumbnail_url?: string,
-    medium_image_url?: string
-  ) {
-    this.title = title;
-    this.authors = authors;
-    this.published_date = published_date;
-    this.page_count = page_count;
-    this.language = language;
-    this.isbn = isbn;
-    this.isbn10 = isbn10;
-    this.thumbnail_url = thumbnail_url;
-    this.medium_image_url = medium_image_url;
+  constructor(book: Book) {
+    this.title = book.title;
+    this.main_genre_id = book.mainGenreId ?? 0;
+    this.book_id = book.bookId;
+    this.thumbnail_url = book.thumbnailUrl;
+    this.subtitle = book.subtitle;
+    this.original_date_published = book.originalDatePublished;
+    this.number_of_pages = book.numberOfPages;
+    this.medium_image_url = book.mediumImageUrl;
+    this.language = book.language;
+    this.isbn10 = book.isbn10;
+    this.isbn = book.isbn;
+    this.date_published = book.datePublished;
+    this.authors = book.authors;
   }
 }
 
 export const bookDTOToBook = (bookDTO: BookDTO): Book =>
   new Book(
     bookDTO.title,
-    0, // mainGenreId
-    "", // bookId
+    bookDTO.main_genre_id,
+    bookDTO.book_id,
     bookDTO.thumbnail_url,
-    "", // subtitle
-    bookDTO.published_date,
-    bookDTO.page_count,
-    "", // mediumImageUrl
+    bookDTO.subtitle,
+    bookDTO.original_date_published,
+    bookDTO.number_of_pages,
+    bookDTO.medium_image_url,
     bookDTO.language,
-    bookDTO.isbn,
     bookDTO.isbn10,
-    bookDTO.published_date ?? "", // datePublished
+    bookDTO.isbn,
+    bookDTO.date_published,
     bookDTO.authors
   );

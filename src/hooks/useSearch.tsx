@@ -35,11 +35,6 @@ function useSearch(): UseSearchResult {
         `/api/google-books?query=${value}`
       );
       const books: Books = response.data.result;
-      const response1 = await axios.post<IResponse<Book>>(
-        "api/books",
-        books
-      );
-      debugger;
       setBooks(books);
     } catch (error) {
       console.error("Error fetching data:", error);
