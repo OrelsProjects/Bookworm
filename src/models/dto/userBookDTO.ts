@@ -1,12 +1,13 @@
-import { BookDTO, GenreDTO, GoodreadsDataDTO, ReadingStatusDTO } from "../dto";
+import { ReadingStatusDTO } from "../dto";
+import { BookDTOCompleteData } from "./bookDTO";
 
 class UserBookDTO {
-  user_book_id: string;
-  user_id: string;
-  book_id: string;
-  reading_status_id: number;
-  date_added: string;
-  is_deleted: boolean;
+  book_id: number;
+  reading_status_id?: number;
+  date_added?: string;
+  is_deleted?: boolean;
+  user_book_id?: number;
+  user_id?: string;
   is_favorite?: boolean;
   user_rating?: number;
   user_comments?: string;
@@ -15,12 +16,12 @@ class UserBookDTO {
   reading_finish_date?: string;
 
   constructor(
-    user_book_id: string,
-    user_id: string,
-    book_id: string,
-    reading_status_id: number,
-    date_added: string,
-    is_deleted: boolean,
+    book_id: number,
+    reading_status_id?: number,
+    date_added?: string,
+    is_deleted?: boolean,
+    user_id?: string,
+    user_book_id?: number,
     is_favorite?: boolean,
     user_rating?: number,
     user_comments?: string,
@@ -43,7 +44,7 @@ class UserBookDTO {
   }
 }
 
-export type UserBookDataDTO = {
+export type UserBookDataResponseDTO = {
   user_book_id: number;
   user_id: string;
   suggestion_source?: string;
@@ -54,12 +55,7 @@ export type UserBookDataDTO = {
   reading_finish_date?: string;
   is_deleted: boolean;
   is_favorite: boolean;
-  book_data: {
-    book: BookDTO;
-    main_genre: GenreDTO;
-    subgenres: GenreDTO[];
-    goodreads_data?: GoodreadsDataDTO;
-  };
+  book_data: BookDTOCompleteData;
   reading_status: ReadingStatusDTO;
 };
 

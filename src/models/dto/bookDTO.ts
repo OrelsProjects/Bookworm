@@ -1,9 +1,11 @@
 import Book from "../book";
+import GenreDTO from "./genreDTO";
+import GoodreadsDataDTO from "./goodreadsDataDTO";
 
 export default class BookDTO {
   title: string;
   main_genre_id: number;
-  book_id: string;
+  book_id: number;
   thumbnail_url?: string;
   subtitle?: string;
   original_date_published?: string;
@@ -48,3 +50,16 @@ export const bookDTOToBook = (bookDTO: BookDTO): Book =>
     bookDTO.date_published,
     bookDTO.authors
   );
+
+export type BookDTOCompleteData = {
+  book: BookDTO;
+  main_genre: GenreDTO;
+  subgenres: GenreDTO[];
+  goodreads_data?: GoodreadsDataDTO;
+};
+
+export type BookDTOResponse = {
+  success: BookDTOCompleteData[];
+  duplicates: BookDTOCompleteData[];
+  failed: BookDTOCompleteData[];
+};

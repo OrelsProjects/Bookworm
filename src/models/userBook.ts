@@ -1,10 +1,10 @@
 class UserBook {
-  userBookId: string;
-  userId: string;
-  bookId: string;
-  readingStatusId: number;
-  dateAdded: string;
-  isDeleted: boolean;
+  bookId: number;
+  userBookId?: number;
+  userId?: string;
+  readingStatusId?: number;
+  dateAdded?: string;
+  isDeleted?: boolean;
   isFavorite?: boolean;
   userRating?: number;
   userComments?: string;
@@ -13,12 +13,12 @@ class UserBook {
   readingFinishDate?: string;
 
   constructor(
-    userBookId: string,
-    userId: string,
-    bookId: string,
-    readingStatusId: number,
-    dateAdded: string,
-    isDeleted: boolean,
+    bookId: number,
+    readingStatusId?: number,
+    dateAdded?: string,
+    isDeleted?: boolean,
+    userId?: string,
+    userBookId?: number,
     isFavorite?: boolean,
     userRating?: number,
     userComments?: string,

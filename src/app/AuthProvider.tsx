@@ -23,8 +23,6 @@ interface AuthProviderProps {
 
 const AuthContext = createContext<AuthProviderProps>({});
 
-export const useAuth = () => useContext(AuthContext);
-
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const { user, loading, error } = useSelector(selectAuth);
   const dispatch = useDispatch();

@@ -11,6 +11,8 @@ export interface UseSearchResult {
   updateSearchValue: (value: string) => void;
   books: Book[] | null;
   loading: boolean;
+  loadingAddBook: Book | null;
+  error: string | null;
   addBookToLibrary: (book: Book) => void;
 }
 
@@ -18,6 +20,8 @@ function useSearch(): UseSearchResult {
   const [searchValue, setSearchValue] = useState<string>("");
   const [books, setBooks] = useState<Book[] | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [loadingAddBook, setLoadingAddBook] = useState<Book | null>(null);
 
   const updateSearchValue = (value: string) => {
     if (value === searchValue) {
@@ -29,6 +33,7 @@ function useSearch(): UseSearchResult {
   const fetchBooks = async (value: string) => {
     try {
       setLoading(true);
+      setError(null);
       if (!value) {
         return [];
       }
@@ -37,8 +42,8 @@ function useSearch(): UseSearchResult {
       );
       const books: Books = response.data.result;
       setBooks(books);
-    } catch (error) {
-      console.error("Error fetching data:", error);
+    } catch (error: any) {
+      setError(error.message);
       return [];
     } finally {
       setLoading(false);
@@ -47,13 +52,17 @@ function useSearch(): UseSearchResult {
 
   const addBookToLibrary = async (book: Book) => {
     try {
-      const bookList = [book];
-      const response = await axios.post<IResponse<Book[]>>(
-        "api/books",
-        bookList
-      );
+      if (loadingAddBook) {
+        return;
+      }
+      debugger;
+      setLoadingAddBook(book);
+      const bookList = [book]; // Expected to be an array in the backend
+      await axios.post<IResponse<Book[]>>("api/books", bookList);
     } catch (error) {
-      console.log(error);
+      throw error;
+    } finally {
+      setLoadingAddBook(null);
     }
   };
 
@@ -71,7 +80,15 @@ function useSearch(): UseSearchResult {
     return () => debouncedFetchData.cancel();
   }, [searchValue]);
 
-  return { searchValue, updateSearchValue, books, loading, addBookToLibrary };
+  return {
+    searchValue,
+    updateSearchValue,
+    books,
+    loading,
+    loadingAddBook,
+    error,
+    addBookToLibrary,
+  };
 }
 
 export default useSearch;

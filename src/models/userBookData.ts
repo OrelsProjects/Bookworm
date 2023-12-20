@@ -2,7 +2,7 @@ import Book from "./book";
 import { convertToBook } from "./converters/bookConverter";
 import { convertToGoodreadsData } from "./converters/goodreadsDataConverter";
 import { convertToReadingStatus } from "./converters/readingStatusConverter";
-import { UserBookDataDTO } from "./dto/userBookDTO";
+import { UserBookDataResponseDTO } from "./dto/userBookDTO";
 import Genre from "./genre";
 import GoodreadsData from "./goodreadsData";
 import ReadingStatus from "./readingStatus";
@@ -26,7 +26,7 @@ class UserBookData {
   };
   readingStatus: ReadingStatus;
 
-  constructor(userBookData: UserBookDataDTO) {
+  constructor(userBookData: UserBookDataResponseDTO) {
     this.userBookId = userBookData.user_book_id;
     this.userId = userBookData.user_id;
     this.suggestionSource = userBookData.suggestion_source;

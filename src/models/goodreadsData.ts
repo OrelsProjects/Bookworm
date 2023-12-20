@@ -1,12 +1,12 @@
 class GoodreadsData {
-  bookId: string;
+  bookId: number;
   goodreadsRating?: number;
   goodreadsUrl?: string;
   goodreadsRatingsCount?: number;
   updatedAt?: string;
 
   constructor(
-    bookId: string,
+    bookId: number,
     goodreadsRating?: number,
     goodreadsUrl?: string,
     goodreadsRatingsCount?: number,

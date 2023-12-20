@@ -3,9 +3,10 @@ import { Button, Tabs } from "@/src/components";
 import React, { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
-import { selectAuth } from "@/src/lib/features/auth/authSlice";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
+import { selectAuth } from "@/src/lib/features/auth/authSlice";
+import useAuth from "@/src/hooks/useAuth";
 
 const tabs = [
   {
@@ -29,6 +30,7 @@ export interface HeaderProps {
 
 const Header = ({ className }: HeaderProps): React.ReactNode => {
   const { user, loading, error } = useSelector(selectAuth);
+  const { signInWithGoogle, signUpWithGoogle, signOut } = useAuth();
   const router = useRouter();
   const pathname: string = usePathname();
 
@@ -87,7 +89,12 @@ const Header = ({ className }: HeaderProps): React.ReactNode => {
           {user ? (
             <Image src="/avatar.png" height={48} width={48} alt={"avatar"} />
           ) : (
-            <Button size={"md"} variant="selected" className="w-32">
+            <Button
+              size={"md"}
+              variant="selected"
+              className="w-32"
+              onClick={() => signInWithGoogle()}
+            >
               Login
             </Button>
           )}

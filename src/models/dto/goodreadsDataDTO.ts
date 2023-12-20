@@ -1,12 +1,12 @@
 class GoodreadsDataDTO {
-  book_id: string;
+  book_Id: number;
   goodreads_rating?: number;
   goodreads_url?: string;
   goodreads_ratings_count?: number;
   updated_at?: string;
 
   constructor(
-    book_id: string,
+    book_Id: number,
     goodreads_rating?: number,
     goodreads_url?: string,
     goodreads_ratings_count?: number,

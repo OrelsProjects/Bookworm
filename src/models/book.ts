@@ -3,7 +3,7 @@ export type Books = Book[];
 class Book {
   title: string;
   mainGenreId?: number;
-  bookId: string;
+  bookId: number;
   thumbnailUrl?: string;
   subtitle?: string;
   originalDatePublished?: string;
@@ -18,7 +18,7 @@ class Book {
   constructor(
     title: string,
     mainGenreId: number,
-    bookId: string,
+    bookId: number,
     thumbnailUrl?: string,
     subtitle?: string,
     originalDatePublished?: string,

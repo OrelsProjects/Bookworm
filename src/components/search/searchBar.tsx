@@ -1,12 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { Input } from "../input";
 import useSearch, { UseSearchResult } from "../../hooks/useSearch";
 import SearchItem, { SearchItemSkeleton } from "./searchItem";
 import { Book } from "../../models";
 import toast from "react-hot-toast";
+
+const TOP_RESULTS_COUNT = 3;
 
 export interface SearchBarProps {
   className?: string;
@@ -18,12 +20,32 @@ const SearchBar: React.FC<SearchBarProps> = ({
   onChange,
 }: SearchBarProps) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [loadingToastId, setLoadingToastId] = useState<string | null>(null);
   const {
     loading,
+    loadingAddBook,
+    error,
     updateSearchValue,
     books,
     addBookToLibrary,
   }: UseSearchResult = useSearch();
+
+  useEffect(() => {
+    if (loadingAddBook) {
+      const toastId = toast.loading(
+        `Adding ${loadingAddBook.title} to library...`
+      );
+      setLoadingToastId(toastId);
+    } else if (loadingToastId) {
+      toast.dismiss(loadingToastId);
+    }
+  }, [loadingAddBook]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error("Failed to fetch books");
+    }
+  }, [error]);
 
   const handleSearch = async (event: any) => {
     event.preventDefault();
@@ -42,10 +64,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
   const addToLibrary = async (book: Book) => {
     try {
       const bookList = [book];
-      const response = await addBookToLibrary(bookList[0]);
+      await addBookToLibrary(bookList[0]);
       toast.success("Book added to library!");
     } catch (error) {
-      console.log(error);
+      toast.error("Error adding book to library!");
     }
   };
 
@@ -91,10 +113,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
           books &&
           books.length > 0 && (
             <>
-              <div>Top 3 Results</div>
+              <div>Top {TOP_RESULTS_COUNT} Results</div>
               {books.map(
                 (book, i) =>
-                  i < 3 && (
+                  i < TOP_RESULTS_COUNT && (
                     <SearchItem
                       key={
                         book.title +

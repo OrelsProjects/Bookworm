@@ -1,4 +1,4 @@
-import { UserBookDataDTO } from "@/src/models/dto/userBookDTO";
+import { UserBookDataResponseDTO } from "@/src/models/dto/userBookDTO";
 import UserBookData from "@/src/models/userBookData";
 import { GetAxiosInstance } from "@/src/utils/axiosInstance";
 import { NextRequest, NextResponse } from "next/server";
@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest) {
   try {
     const axios = GetAxiosInstance(req);
-    const response = await axios.get<UserBookDataDTO[]>("/user-book");
+    const response = await axios.get<UserBookDataResponseDTO[]>("/user-book");
     const userBookData: UserBookData[] = response.data?.map(
       (userBookDataDTO) => new UserBookData(userBookDataDTO)
     );

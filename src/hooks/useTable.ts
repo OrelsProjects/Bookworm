@@ -22,14 +22,23 @@ const useTable = () => {
     const fetchData = async () => {
       dispatch(setLoading(true));
       try {
-        // const response = await axios.get<IResponse<UserBookData[]>>(
-        //   `api/user-books?page=${currentPage}&size=${pageSize}`
-        // );
+        localStorage.clear();
+        // if (localStorage.getItem("userBooks")) {
+        //   const userBooks = localStorage.getItem("userBooks");
+        //   if (userBooks) {
+        //     const parsedUserBooks = JSON.parse(userBooks);
+        //     console.log(parsedUserBooks)
+        //     dispatch(setCompleteUserBook(parsedUserBooks));
+        //     dispatch(setTotalRecords(parsedUserBooks.length));
+        //     dispatch(setError(null));
+        //   }
+        //   return;
+        // }
         const response = await axios.get<IResponse<UserBookData[]>>(
           `api/user-books`
         );
         const { result } = response.data;
-        console.log(result);
+        localStorage.setItem("userBooks", JSON.stringify(result));
         dispatch(setCompleteUserBook(result));
         dispatch(setTotalRecords(result.length));
         dispatch(setError(null));
