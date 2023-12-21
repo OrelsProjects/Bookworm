@@ -1,5 +1,5 @@
-import { ReadingStatusDTO } from "../dto";
-import { BookDTOCompleteData } from "./bookDTO";
+import { BookDTO, GenreDTO, ReadingStatusDTO } from "../dto";
+import UserBook from "../userBook";
 
 class UserBookDTO {
   book_id: number;
@@ -42,9 +42,25 @@ class UserBookDTO {
     this.reading_start_date = reading_start_date;
     this.reading_finish_date = reading_finish_date;
   }
+  static FromResponse(userBookDTO: UserBookDTO): UserBook {
+    return new UserBook(
+      userBookDTO.book_id,
+      userBookDTO.reading_status_id,
+      userBookDTO.date_added,
+      userBookDTO.is_deleted,
+      userBookDTO.user_id,
+      userBookDTO.user_book_id,
+      userBookDTO.is_favorite,
+      userBookDTO.user_rating,
+      userBookDTO.user_comments,
+      userBookDTO.suggestion_source,
+      userBookDTO.reading_start_date,
+      userBookDTO.reading_finish_date
+    );
+  }
 }
 
-export type UserBookDataResponseDTO = {
+export type GetUserBooksResponseDTO = {
   user_book_id: number;
   user_id: string;
   suggestion_source?: string;
@@ -55,7 +71,11 @@ export type UserBookDataResponseDTO = {
   reading_finish_date?: string;
   is_deleted: boolean;
   is_favorite: boolean;
-  book_data: BookDTOCompleteData;
+  book_data: {
+    book: BookDTO;
+    main_genre?: GenreDTO;
+    subgenres?: GenreDTO[];
+  };
   reading_status: ReadingStatusDTO;
 };
 

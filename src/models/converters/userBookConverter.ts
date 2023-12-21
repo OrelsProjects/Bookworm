@@ -1,5 +1,5 @@
 import UserBook from "../userBook";
-import UserBookDTO, { UserBookDataResponseDTO } from "../dto/userBookDTO";
+import UserBookDTO, { GetUserBooksResponseDTO } from "../dto/userBookDTO";
 import { BookDTOCompleteData } from "../dto/bookDTO";
 
 export function convertToUserBook(userBookDTO: UserBookDTO): UserBook {
@@ -21,7 +21,7 @@ export function convertToUserBook(userBookDTO: UserBookDTO): UserBook {
 
 export function convertBookDTOCompleteDataToUserBookDTO(
   userBookResponseDTO: BookDTOCompleteData,
-  userBookDataResponseDTO?: UserBookDataResponseDTO
+  userBookDataResponseDTO?: GetUserBooksResponseDTO
 ) {
   return new UserBookDTO(
     userBookResponseDTO.book.book_id,

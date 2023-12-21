@@ -32,34 +32,33 @@ export default class BookDTO {
     this.date_published = book.datePublished;
     this.authors = book.authors;
   }
+  static FromResponse = (bookDTO: BookDTO): Book =>
+    new Book(
+      bookDTO.title,
+      bookDTO.main_genre_id,
+      bookDTO.book_id,
+      bookDTO.thumbnail_url,
+      bookDTO.subtitle,
+      bookDTO.original_date_published,
+      bookDTO.number_of_pages,
+      bookDTO.medium_image_url,
+      bookDTO.language,
+      bookDTO.isbn10,
+      bookDTO.isbn,
+      bookDTO.date_published,
+      bookDTO.authors
+    );
 }
 
-export const bookDTOToBook = (bookDTO: BookDTO): Book =>
-  new Book(
-    bookDTO.title,
-    bookDTO.main_genre_id,
-    bookDTO.book_id,
-    bookDTO.thumbnail_url,
-    bookDTO.subtitle,
-    bookDTO.original_date_published,
-    bookDTO.number_of_pages,
-    bookDTO.medium_image_url,
-    bookDTO.language,
-    bookDTO.isbn10,
-    bookDTO.isbn,
-    bookDTO.date_published,
-    bookDTO.authors
-  );
-
-export type BookDTOCompleteData = {
-  book: BookDTO;
-  main_genre: GenreDTO;
-  subgenres: GenreDTO[];
-  goodreads_data?: GoodreadsDataDTO;
+export type CreateBooksResponseDTO = {
+  success: BookDTO[];
+  duplicates: BookDTO[];
+  failure: BookDTO[];
 };
 
-export type BookDTOResponse = {
-  success: BookDTOCompleteData[];
-  duplicates: BookDTOCompleteData[];
-  failed: BookDTOCompleteData[];
+export type GetBooksResponseDTO = {
+  book: BookDTO;
+  main_genre?: GenreDTO;
+  subgenres?: GenreDTO[];
+  goodreads_data?: GoodreadsDataDTO;
 };

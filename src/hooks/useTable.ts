@@ -11,7 +11,7 @@ import {
 } from "../lib/features/userBooks/userBooksSlice";
 import axios from "axios";
 import { IResponse } from "../models/dto/response";
-import UserBookData from "../models/userBookData";
+import { UserBookData } from "../models";
 
 const useTable = () => {
   const dispatch = useDispatch();
@@ -22,11 +22,12 @@ const useTable = () => {
     const fetchData = async () => {
       dispatch(setLoading(true));
       try {
+        localStorage.clear();
         if (localStorage.getItem("userBooks")) {
           const userBooks = localStorage.getItem("userBooks");
           if (userBooks) {
             const parsedUserBooks = JSON.parse(userBooks);
-            console.log(parsedUserBooks)
+            console.log(parsedUserBooks);
             dispatch(setCompleteUserBook(parsedUserBooks));
             dispatch(setTotalRecords(parsedUserBooks.length));
             dispatch(setError(null));

@@ -69,11 +69,9 @@ const BooksTable: React.FC = () => {
     <div className="container mx-auto my-4">
       <TableHeader items={headers} />
       {books && books.length > 0 ? (
-        books.map((bookData, index) => (
-          <BookItem key={index} bookData={bookData} />
-        ))
+        books.map((bookData, index) => <BookItem key={index} item={bookData} />)
       ) : (
-        <EmptyTable /> // This component is used when there are no books
+        <EmptyTable />
       )}
     </div>
   );
