@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import EmptyTable from "./emptyTable";
-import useTable from "@/src/hooks/useTable";
+import useTable from "../../hooks/useTable";
 import TableHeader, {
   TableHeaderDirection,
   TableHeaderItem,
