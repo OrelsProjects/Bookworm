@@ -22,18 +22,17 @@ const useTable = () => {
     const fetchData = async () => {
       dispatch(setLoading(true));
       try {
-        localStorage.clear();
-        // if (localStorage.getItem("userBooks")) {
-        //   const userBooks = localStorage.getItem("userBooks");
-        //   if (userBooks) {
-        //     const parsedUserBooks = JSON.parse(userBooks);
-        //     console.log(parsedUserBooks)
-        //     dispatch(setCompleteUserBook(parsedUserBooks));
-        //     dispatch(setTotalRecords(parsedUserBooks.length));
-        //     dispatch(setError(null));
-        //   }
-        //   return;
-        // }
+        if (localStorage.getItem("userBooks")) {
+          const userBooks = localStorage.getItem("userBooks");
+          if (userBooks) {
+            const parsedUserBooks = JSON.parse(userBooks);
+            console.log(parsedUserBooks)
+            dispatch(setCompleteUserBook(parsedUserBooks));
+            dispatch(setTotalRecords(parsedUserBooks.length));
+            dispatch(setError(null));
+          }
+          return;
+        }
         const response = await axios.get<IResponse<UserBookData[]>>(
           `api/user-books`
         );
