@@ -8,7 +8,6 @@ import Header from "./_components/header";
 import { VideoBackground } from "../components";
 import APIProvider from "./APIProvider";
 import { Toaster } from "react-hot-toast";
-import { createPortal } from "react-dom";
 
 const inter = Inter({ subsets: ["latin"] });
 

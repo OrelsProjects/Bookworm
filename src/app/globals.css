@@ -28,6 +28,8 @@ input[type="text"]:-moz-ui-autofill {
     --primary: 0, 157, 255;
     /* Primary/Medium */
     --primary-foreground: 9, 72, 123;
+    /* Primary/weak */
+    --primary-weak: 0, 42, 77;
     /* Not selected button (Surface/Secondary) */
     --secondary: 21, 63, 102;
     --background: 0, 17, 42;
@@ -103,7 +105,7 @@ input[type="text"]:-moz-ui-autofill {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
   }
   body,
   input,
@@ -145,4 +147,3 @@ input[type="text"]:-moz-ui-autofill {
   );
   animation: shimmer 2s infinite;
 }
-

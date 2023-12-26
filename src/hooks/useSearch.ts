@@ -8,12 +8,11 @@ import { Books } from "../models/book";
 // Define a type for the hook's return value
 export interface UseSearchResult {
   searchValue: string;
-  updateSearchValue: (value: string) => void;
   books: Book[] | null;
   loading: boolean;
   loadingAddBook: Book | null;
   error: string | null;
-  addBookToLibrary: (book: Book) => void;
+  updateSearchValue: (value: string) => void;
 }
 
 function useSearch(): UseSearchResult {
@@ -40,29 +39,13 @@ function useSearch(): UseSearchResult {
       const response = await axios.get<IResponse<Book[]>>(
         `/api/google-books?query=${value}`
       );
-      const books: Books = response.data.result;
+      const books: Books = response.data.result ?? [];
       setBooks(books);
     } catch (error: any) {
       setError(error.message);
       return [];
     } finally {
       setLoading(false);
-    }
-  };
-
-  const addBookToLibrary = async (book: Book) => {
-    try {
-      if (loadingAddBook) {
-        return;
-      }
-      debugger;
-      setLoadingAddBook(book);
-      const bookList = [book]; // Expected to be an array in the backend
-      await axios.post<IResponse<Book[]>>("api/books", bookList);
-    } catch (error) {
-      throw error;
-    } finally {
-      setLoadingAddBook(null);
     }
   };
 
@@ -87,7 +70,6 @@ function useSearch(): UseSearchResult {
     loading,
     loadingAddBook,
     error,
-    addBookToLibrary,
   };
 }
 

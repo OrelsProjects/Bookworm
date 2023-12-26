@@ -1,13 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  setCompleteUserBook,
-  setLoading,
   setError,
-  setCurrentPage,
-  setPageSize,
-  setTotalRecords,
-  selectCompleteUserBook,
+  selectUserBooks,
+  addUserBooks,
 } from "../lib/features/userBooks/userBooksSlice";
 import axios from "axios";
 import { IResponse } from "../models/dto/response";
@@ -15,12 +11,16 @@ import { UserBookData } from "../models";
 
 const useTable = () => {
   const dispatch = useDispatch();
-  const { data, loading, error, currentPage, pageSize, totalRecords } =
-    useSelector(selectCompleteUserBook);
+  const { userBooksData: data, error } = useSelector(selectUserBooks);
+
+  const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [totalRecords, setTotalRecords] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
-      dispatch(setLoading(true));
+      setLoading(true);
       try {
         localStorage.clear();
         if (localStorage.getItem("userBooks")) {
@@ -28,8 +28,8 @@ const useTable = () => {
           if (userBooks) {
             const parsedUserBooks = JSON.parse(userBooks);
             console.log(parsedUserBooks);
-            dispatch(setCompleteUserBook(parsedUserBooks));
-            dispatch(setTotalRecords(parsedUserBooks.length));
+            addUserBooks(parsedUserBooks);
+            setTotalRecords(parsedUserBooks.length);
             dispatch(setError(null));
           }
           return;
@@ -39,13 +39,13 @@ const useTable = () => {
         );
         const { result } = response.data;
         localStorage.setItem("userBooks", JSON.stringify(result));
-        dispatch(setCompleteUserBook(result));
-        dispatch(setTotalRecords(result.length));
+        dispatch(addUserBooks(result));
+        setTotalRecords(result.length);
         dispatch(setError(null));
       } catch (error: any) {
         dispatch(setError(error.message));
       } finally {
-        dispatch(setLoading(false));
+        setLoading(false);
       }
     };
 
@@ -53,11 +53,11 @@ const useTable = () => {
   }, [dispatch, currentPage, pageSize]);
 
   const handlePageChange = (page: number) => {
-    dispatch(setCurrentPage(page));
+    setCurrentPage(page);
   };
 
   const handlePageSizeChange = (size: number) => {
-    dispatch(setPageSize(size));
+    setPageSize(size);
   };
 
   return {

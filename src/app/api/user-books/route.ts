@@ -1,7 +1,11 @@
-import { UserBookData } from "@/src/models";
+import { Book, UserBook, UserBookData } from "@/src/models";
 import { BookDTO, GenreDTO, ReadingStatusDTO } from "@/src/models/dto";
+import { CreateBooksResponseDTO } from "@/src/models/dto/bookDTO";
 import { IResponse } from "@/src/models/dto/response";
-import { GetUserBooksResponseDTO } from "@/src/models/dto/userBookDTO";
+import UserBookDTO, {
+  CreateUserBookBody,
+  GetUserBooksResponseDTO,
+} from "@/src/models/dto/userBookDTO";
 import { GetAxiosInstance } from "@/src/utils/axiosInstance";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -40,6 +44,31 @@ export async function GET(req: NextRequest) {
       result: userBookData,
     };
     return NextResponse.json(result, { status: 200 });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({}, { status: 500 });
+  }
+}
+
+export async function POST(req: NextRequest) {
+  try {
+    const { createUserBookBody }: { createUserBookBody: CreateUserBookBody } =
+      await req.json();
+    const axios = GetAxiosInstance(req);
+    const response = await axios.post<UserBookDTO>(
+      "/user-book",
+      createUserBookBody
+    );
+
+    const userBookDTO = response.data;
+    const userBook = UserBookDTO.FromResponse(userBookDTO);
+
+    return NextResponse.json(
+      {
+        result: [userBook],
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error(error);
     return NextResponse.json({}, { status: 500 });
