@@ -4,7 +4,7 @@ import ReadingStatus from "./readingStatus";
 
 class UserBook {
   bookId: number;
-  userBookId?: number;
+  userBookId: number;
   userId?: string;
   readingStatusId?: number;
   dateAdded?: string;
@@ -18,11 +18,11 @@ class UserBook {
 
   constructor(
     bookId: number,
-    readingStatusId?: number,
+    userBookId: number,
     dateAdded?: string,
+    readingStatusId?: number,
     isDeleted?: boolean,
     userId?: string,
-    userBookId?: number,
     isFavorite?: boolean,
     userRating?: number,
     userComments?: string,
@@ -65,11 +65,11 @@ class UserBook {
 export class UserBookData {
   userBook: UserBook;
   bookData: {
-    book: Book;
+    book?: Book;
     mainGenre?: Genre;
-    subgenres?: (Genre | undefined)[] | undefined
+    subgenres?: (Genre | undefined)[] | undefined;
   };
-  readingStatus: ReadingStatus;
+  readingStatus?: ReadingStatus;
 
   /**
    * 
@@ -104,11 +104,11 @@ export class UserBookData {
   ) {
     this.userBook = new UserBook(
       book_data.book.bookId,
-      readingStatus.readingStatusId,
+      userBookId,
       dateAdded,
+      readingStatus.readingStatusId,
       isDeleted,
       userId,
-      userBookId,
       isFavorite,
       userRating,
       userComments,

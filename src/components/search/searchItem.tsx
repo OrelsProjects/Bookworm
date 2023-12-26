@@ -1,21 +1,46 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { Button } from "../button";
 import { SquareSkeleton, LineSkeleton } from "../skeleton";
-import { Book } from "../../models";
+import { Book, UserBookData } from "../../models";
+import { RootState } from "@/src/lib/store";
+import { useSelector } from "react-redux";
+import useBook from "@/src/hooks/useBook";
+import { FavoriteButton, BacklogButton } from "../buttons/bookButtons";
+import { compareBooks } from "@/src/models/book";
 
 interface SearchItemProps {
   book: Book;
   onAddToLibrary: (book: Book) => void;
+  onShowDetails?: (book: Book) => void;
 }
 
-const SearchItem: React.FC<SearchItemProps> = ({ book, onAddToLibrary }) => {
+const SearchItem: React.FC<SearchItemProps> = ({
+  book,
+  onAddToLibrary,
+  onShowDetails,
+}) => {
+  const { favoriteBook } = useBook();
+  const [userBookData, setUserBookData] = useState<UserBookData | undefined>(
+    undefined
+  ); // [1
+  const userBooksData: UserBookData[] = useSelector(
+    (state: RootState) => state.userBooks.userBooksData
+  );
+
+  useEffect(() => {
+    const userBookData = userBooksData.find((userBookData) =>
+      compareBooks(userBookData.bookData.book, book)
+    );
+    setUserBookData(userBookData);
+  }, [userBooksData]);
+
   return (
     <div className="bg-card h-22 rounded-lg text-foreground p-2 flex justify-between items-center shadow-md">
       <div className="flex flex-row justify-start items-center gap-3 w-2/5">
         <div className="flex-shrink-0">
           <Image
-            src={book.thumbnailUrl ?? "/noCoverThumbnail.png"}
+            src={book.thumbnailUrl ?? "/thumbnailPlaceholder.png"}
             alt="Book cover"
             height={72}
             width={48}
@@ -31,28 +56,20 @@ const SearchItem: React.FC<SearchItemProps> = ({ book, onAddToLibrary }) => {
         <p className="text-primary">by {book.authors?.join(", ")}</p>
         <p className="text-muted">{book.numberOfPages} Pages</p>
         <div className="flex flex-row gap-2">
-          <Button
-            variant="selected"
-            onClick={() => {
-              onAddToLibrary(book);
-            }}
-            className="rounded-full"
-          >
-            Add to library
-          </Button>
+          {userBookData && (
+            <FavoriteButton
+              onClick={() => favoriteBook(userBookData.userBook)}
+              isFavorite={userBookData.userBook.isFavorite ?? false}
+            />
+          )}
+          <BacklogButton onClick={() => onAddToLibrary(book)} />
           <Button
             variant="outline"
-            onClick={() => onAddToLibrary(book)}
+            onClick={() => onShowDetails && onShowDetails(book)}
             className="rounded-full border-none"
           >
             <div className="flex flex-row gap-1">
               <h2 className="text-primary">Details</h2>
-              <Image
-                src="/externalLink.png"
-                alt="External Link"
-                height={16}
-                width={16}
-              />
             </div>
           </Button>
           {/* Add more buttons as needed */}

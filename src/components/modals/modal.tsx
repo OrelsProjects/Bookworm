@@ -57,14 +57,8 @@ const Modal: React.FC<Props> = ({ children, isOpen, onClose, className }) => {
         >
           <div
             ref={modalRef}
-            className="bg-background p-4 rounded-lg shadow-lg relative"
+            className="bg-secondary p-4 rounded-lg shadow-lg relative"
           >
-            <div
-              className="absolute top-0 right-0 p-2 text-foreground text-xl cursor-pointer"
-              onClick={onClose}
-            >
-              X
-            </div>
             {children}
           </div>
         </div>

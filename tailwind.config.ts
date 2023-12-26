@@ -25,6 +25,7 @@ module.exports = {
         primary: {
           DEFAULT: "rgb(var(--primary))",
           foreground: "rgb(var(--primary-foreground))",
+          weak: "rgb(var(--primary-weak))",
           // foreground: "rgb(var(--primary-foreground))",
         },
         secondary: {
@@ -93,6 +94,9 @@ module.exports = {
       height: {
         "22": "5.5rem",
         "288": "72rem",
+      },
+      fontFamily: {
+        sans: ["DM Sans", "sans-serif"],
       },
     },
   },

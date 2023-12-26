@@ -11,9 +11,9 @@ import {
 } from "../lib/features/auth/authSlice"; // Adjust the import path as necessary
 import { Amplify } from "aws-amplify";
 import { fetchAuthSession, getCurrentUser, decodeJWT } from "aws-amplify/auth";
-import { convert as convertUser } from "../models/converters/userConverter";
 import { Hub } from "aws-amplify/utils";
 import awsConfig from "../amplifyconfiguration.json";
+import { User } from "../models";
 
 Amplify.configure(awsConfig);
 
@@ -30,8 +30,16 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const fetchUser = async () => {
     try {
-      const authSession = await fetchAuthSession();
-      const user = convertUser(authSession);
+      dispatch(setLoading(true));
+      const session = await fetchAuthSession();
+      const user = new User(
+        session.userSub ?? "",
+        "",
+        session?.tokens?.accessToken?.payload?.email?.toString() ??
+          session?.tokens?.idToken?.payload?.email?.toString() ??
+          "",
+        session.tokens?.accessToken?.toString() ?? ""
+      );
       dispatch(setUser({ ...user }));
     } catch (error) {
       console.error(error);
@@ -42,7 +50,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     dispatch(setLoading(true));
-    // dispatch(setLoading(false)); // For faster testing
     const unsubscribe = Hub.listen("auth", ({ payload }) => {
       switch (payload.event) {
         case "signInWithRedirect":
@@ -51,6 +58,9 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         case "signInWithRedirect_failure":
           dispatch(setError("An error has occurred"));
           dispatch(setLoading(false));
+          break;
+        case "signedIn":
+          fetchUser();
           break;
         case "customOAuthState":
           //   setCustomState(payload.data); // this is the customState provided on signInWithRedirect function

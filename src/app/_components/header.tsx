@@ -87,7 +87,13 @@ const Header = ({ className }: HeaderProps): React.ReactNode => {
             Import Books +
           </Button>
           {user ? (
-            <Image src="/avatar.png" height={48} width={48} alt={"avatar"} />
+            <Image
+              src="/avatar.png"
+              height={48}
+              width={48}
+              alt={"avatar"}
+              onClick={() => signOut()}
+            />
           ) : (
             <Button
               size={"md"}

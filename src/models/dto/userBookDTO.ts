@@ -3,10 +3,10 @@ import UserBook from "../userBook";
 
 class UserBookDTO {
   book_id: number;
-  reading_status_id?: number;
+  reading_status_id: number;
   date_added?: string;
   is_deleted?: boolean;
-  user_book_id?: number;
+  user_book_id: number;
   user_id?: string;
   is_favorite?: boolean;
   user_rating?: number;
@@ -17,11 +17,11 @@ class UserBookDTO {
 
   constructor(
     book_id: number,
-    reading_status_id?: number,
+    reading_status_id: number,
+    user_book_id: number,
     date_added?: string,
     is_deleted?: boolean,
     user_id?: string,
-    user_book_id?: number,
     is_favorite?: boolean,
     user_rating?: number,
     user_comments?: string,
@@ -45,11 +45,11 @@ class UserBookDTO {
   static FromResponse(userBookDTO: UserBookDTO): UserBook {
     return new UserBook(
       userBookDTO.book_id,
-      userBookDTO.reading_status_id,
+      userBookDTO.user_book_id,
       userBookDTO.date_added,
+      userBookDTO.reading_status_id,
       userBookDTO.is_deleted,
       userBookDTO.user_id,
-      userBookDTO.user_book_id,
       userBookDTO.is_favorite,
       userBookDTO.user_rating,
       userBookDTO.user_comments,
@@ -77,6 +77,42 @@ export type GetUserBooksResponseDTO = {
     subgenres?: GenreDTO[];
   };
   reading_status: ReadingStatusDTO;
+};
+
+/**
+ *  'book_id': {'type': 'integer', 'required': True},
+    'reading_status_id': {'type': 'integer'},
+    'suggestion_source': {'type': 'string'},
+    'user_comments': {'type': 'string'},
+    'date_added': {'type': 'string'},
+    'user_rating': {'type': 'float'},
+    'reading_start_date': {'type': 'string'},
+    'reading_finish_date': {'type': 'string'},
+    'is_deleted': {'type': 'boolean'},
+    'is_favorite': {'type': 'boolean'}
+ */
+export type CreateUserBookBody = {
+  book_id: number;
+  is_favorite?: boolean;
+  suggestion_source?: string;
+  user_comments?: string;
+  date_added?: string;
+  user_rating?: number;
+  reading_start_date?: string | Date;
+  reading_finish_date?: string | Date;
+  is_deleted?: boolean;
+};
+
+export type UpdateUserBookBody = {
+  user_book_id: number;
+  is_favorite?: boolean;
+  suggestion_source?: string;
+  user_comments?: string;
+  date_added?: string;
+  user_rating?: number;
+  reading_start_date?: Date;
+  reading_finish_date?: Date;
+  is_deleted?: boolean;
 };
 
 export default UserBookDTO;

@@ -7,7 +7,7 @@ import { selectAuth } from "../lib/features/auth/authSlice";
 
 function App() {
   const router = useRouter();
-
+  const [shouldShowError, setShouldShowError] = React.useState(false);
   const { user, loading, error } = useSelector(selectAuth);
 
   useEffect(() => {
@@ -16,19 +16,28 @@ function App() {
     }
   }, [loading, user]);
 
+  // Sometimes the redirect of google returns with an error and 300ms later it returns with the user
+  // So if error is not null, we wait 1s to present error.
+  useEffect(() => {
+    let timeout: NodeJS.Timeout | null = null;
+    if (error) {
+      timeout = setTimeout(() => {
+        setShouldShowError(true);
+      }, 1000);
+    }
+    return () => {
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+    };
+  });
+
   return (
     <div className="flex flex-col justify-center items-center ">
       {loading ? (
         <div>Loading...</div>
       ) : (
-        <>
-          {/* <button onClick={() => signInWithGoogle()}>Open Google</button>
-          <button onClick={() => signOut()}>Sign Out</button> */}
-          <div>{user?.id}</div>
-          <div>{user?.email}</div>
-          <div>{user?.token}</div>
-          {/* <div>{customState}</div> */}
-        </>
+        <>{shouldShowError && <div>{error}</div>}</>
       )}
     </div>
   );

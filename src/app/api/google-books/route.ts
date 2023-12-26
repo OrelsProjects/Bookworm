@@ -3,7 +3,6 @@ import { GetAxiosInstance } from "../../../utils/axiosInstance";
 import { Book } from "../../../models";
 import { BookDTO } from "../../../models/dto";
 import { NextRequest, NextResponse } from "next/server";
-import { bookDTOToBook } from "@/src/models/dto/bookDTO";
 
 export async function GET(req: NextRequest) {
   try {
@@ -15,7 +14,9 @@ export async function GET(req: NextRequest) {
     }
     const response = await axios.get<BookDTO[]>(`/google-books?query=${query}`);
     const bookDTOs: BookDTO[] = response.data ?? [];
-    const books: Book[] = bookDTOs.map((bookDTO) => bookDTOToBook(bookDTO));
+    const books: Book[] = bookDTOs.map((bookDTO) =>
+      BookDTO.FromResponse(bookDTO)
+    );
     return NextResponse.json({ result: books }, { status: 200 });
   } catch (error: any) {
     console.log(error);

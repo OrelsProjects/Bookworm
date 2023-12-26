@@ -1,3 +1,6 @@
+import Genre from "./genre";
+import GoodreadsData from "./goodreadsData";
+
 export type Books = Book[];
 
 class Book {
@@ -14,6 +17,7 @@ class Book {
   isbn?: string;
   datePublished?: string;
   authors?: string[];
+  description?: string;
 
   constructor(
     title: string,
@@ -28,7 +32,8 @@ class Book {
     isbn10?: string,
     isbn?: string,
     datePublished?: string,
-    authors?: string[]
+    authors?: string[],
+    description?: string
   ) {
     this.title = title;
     this.mainGenreId = mainGenreId;
@@ -43,13 +48,24 @@ class Book {
     this.isbn = isbn;
     this.datePublished = datePublished;
     this.authors = authors;
+    this.description = description;
   }
 }
 
+export const compareBooks = (book1?: Book, book2?: Book): boolean =>
+  book1?.isbn10 === book2?.isbn10 || book1?.isbn === book2?.isbn;
+
 export type CreateBooksResponse = {
-  success: Book[];
-  duplicates: Book[];
-  failure: Book[];
+  success?: Book[];
+  duplicates?: Book[];
+  failure?: Book[];
+};
+
+export type GetBooksResponse = {
+  book: Book;
+  main_genre?: Genre;
+  subgenres?: Genre[];
+  goodreads_data?: GoodreadsData;
 };
 
 export default Book;

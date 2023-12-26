@@ -1,42 +1,45 @@
 import { Book } from "@/src/models";
-import { convertBookDTOCompleteDataToUserBookDTO } from "@/src/models/converters/userBookConverter";
-import { UserBookDTO } from "@/src/models/dto";
-import BookDTO, {
-  BookDTOResponse,
-  bookDTOToBook,
+import { CreateBooksResponse } from "@/src/models/book";
+import { BookDTO } from "@/src/models/dto";
+import {
+  CreateBookBody,
+  CreateBooksResponseDTO,
 } from "@/src/models/dto/bookDTO";
+import { IResponse } from "@/src/models/dto/response";
 import { GetAxiosInstance } from "@/src/utils/axiosInstance";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: NextRequest) {
+export async function POST(
+  req: NextRequest
+): Promise<NextResponse<IResponse<CreateBooksResponse>>> {
   try {
-    const books: Book[] = await req.json();
-    const bookDTOs = books.map((book) => new BookDTO(book));
+    const book: Book = await req.json();
+    const bookDTO = new BookDTO(book);
+    const createBookBody: CreateBookBody = {
+      books: [bookDTO],
+    };
+    createBookBody.books[0].description = "";
     const axios = GetAxiosInstance(req);
-    const response = await axios.post<BookDTOResponse>("/book", bookDTOs);
-    const bookDTOsWithIds = response.data;
-    let booksDTOsToAdd: UserBookDTO[] = [];
-    booksDTOsToAdd = booksDTOsToAdd.concat(
-      bookDTOsWithIds.success.map((bookDTO) =>
-        convertBookDTOCompleteDataToUserBookDTO(bookDTO)
-      )
+    const response = await axios.post<CreateBooksResponseDTO>(
+      "/book",
+      createBookBody
     );
-    booksDTOsToAdd = booksDTOsToAdd.concat(
-      bookDTOsWithIds.duplicates.map((bookDTO) =>
-        convertBookDTOCompleteDataToUserBookDTO(bookDTO)
-      )
-    );
+    const bookDTOsWithIds = response.data ?? {};
+    const createBooksResponse = {
+      success: bookDTOsWithIds.success?.map((bookDTO) =>
+        BookDTO.FromResponse(bookDTO)
+      ),
+      duplicates: bookDTOsWithIds.duplicates?.map((bookDTO) =>
+        BookDTO.FromResponse(bookDTO)
+      ),
+      failure: bookDTOsWithIds.failure?.map((bookDTO) =>
+        BookDTO.FromResponse(bookDTO)
+      ),
+    };
 
-    if (booksDTOsToAdd.length > 0) {
-      await axios.post("/user-book", booksDTOsToAdd[0]); // Fix [0] later
-    } else {
-      throw new Error("No books were added");
-    }
-    // TODO: Return a report of lists of all success/duplicates/failures (Create a class for this)
-    // const booksResult = bookDTOsWithIds.success.map((bookDTO) => bookDTOToBook(bookDTO));
     return NextResponse.json(
       {
-        result: [],
+        result: createBooksResponse,
       },
       { status: 200 }
     );
