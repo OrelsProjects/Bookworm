@@ -8,6 +8,7 @@ import Header from "./_components/header";
 import { VideoBackground } from "../components";
 import APIProvider from "./APIProvider";
 import { Toaster } from "react-hot-toast";
+import DataProvider from "./DataProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,16 +29,18 @@ export default function RootLayout({
         <StoreProvider>
           <AuthProvider>
             <APIProvider>
-              <div
-                id="portal"
-                className="absolute top-0 right-0 left-0 bottom-0 z-10"
-              />
-              <Header className="absolute top-0 mb-12" />
-              <div className="absolute top-0 right-0 left-0 bottom-0 z-0">
-                <VideoBackground />
-              </div>
-              <div className="h-full w-full z-10 relative">{children}</div>
-              <Toaster />
+              <DataProvider>
+                <div
+                  id="portal"
+                  className="absolute top-0 right-0 left-0 bottom-0 z-10"
+                />
+                <Header className="absolute top-0 mb-12" />
+                <div className="absolute top-0 right-0 left-0 bottom-0 z-0">
+                  <VideoBackground />
+                </div>
+                <div className="h-full w-full z-10 relative">{children}</div>
+                <Toaster />
+              </DataProvider>
             </APIProvider>
           </AuthProvider>
         </StoreProvider>

@@ -45,7 +45,7 @@ const headers: TableHeaderItem[] = [
 
 const BooksTable: React.FC = () => {
   const {
-    data: books,
+    userBooksData,
     loading,
     error,
     currentPage,
@@ -62,14 +62,14 @@ const BooksTable: React.FC = () => {
   if (error) {
     return <div>{error}</div>;
   }
-  if (!books) {
+  if (!userBooksData) {
     return <EmptyTable />;
   }
   return (
     <div className="container mx-auto my-4">
       <TableHeader items={headers} />
-      {books && books.length > 0 ? (
-        books.map((bookData, index) => <BookItem key={index} item={bookData} />)
+      {userBooksData && userBooksData.length > 0 ? (
+        userBooksData.map((bookData, index) => <BookItem key={index} item={bookData} />)
       ) : (
         <EmptyTable />
       )}

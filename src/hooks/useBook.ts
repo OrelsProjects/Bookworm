@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Book, UserBook, UserBookData } from "../models";
+import { Book, User, UserBook, UserBookData } from "../models";
 import axios from "axios";
 import { Books, CreateBooksResponse } from "../models/book";
 import {
@@ -10,9 +10,11 @@ import {
 import { useDispatch } from "react-redux";
 import {
   addUserBooks,
+  setUserBooks,
   updateUserBook,
 } from "../lib/features/userBooks/userBooksSlice";
 import { IResponse } from "../models/dto/response";
+import { setError } from "../lib/features/auth/authSlice";
 
 const useBook = () => {
   const [loading, setLoading] = useState(false);
@@ -60,7 +62,6 @@ const useBook = () => {
         "/api/books",
         book
       );
-      debugger;
       const createBookResponse = responseAddBooks.data.result ?? {};
       const books: Books =
         createBookResponse.success?.concat(
@@ -80,14 +81,12 @@ const useBook = () => {
         reading_start_date: readingStartDate ?? new Date().toISOString(),
         reading_finish_date: readingFinishDate ?? new Date().toISOString(),
       };
-      debugger;
       const responseAddUserBooks = await axios.post<IResponse<UserBook>>(
         "/api/user-books",
         {
           createUserBookBody,
         }
       );
-      debugger;
       const userBook: UserBook | undefined = responseAddUserBooks.data.result;
 
       if (!userBook) {
@@ -99,7 +98,7 @@ const useBook = () => {
           book: bookToAdd,
         },
       };
-      dispatch(addUserBooks([userBookData]));
+      dispatch(setUserBooks([userBookData]));
       return userBook;
     } catch (error) {
       console.error(error);
@@ -109,7 +108,33 @@ const useBook = () => {
     }
   };
 
+  const loadUserBooks = async (user?: User): Promise<void> => {
+    try {
+      if (loading) {
+        throw new Error("Cannot load user books while another book is loading");
+      }
+      setLoading(true);
+
+      if (user) {
+        axios.defaults.headers.common["Authorization"] = user.token;
+        axios.defaults.headers.common["user_id"] = user.id;
+      }
+
+      const response = await axios.get<IResponse<UserBookData[]>>(
+        `api/user-books`
+      );
+      const { result } = response.data;
+      dispatch(setUserBooks(result ?? []));
+      dispatch(setError(null));
+    } catch (error: any) {
+      dispatch(setError(error.message));
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return {
+    loadUserBooks,
     addUserBook,
     favoriteBook,
     loading,

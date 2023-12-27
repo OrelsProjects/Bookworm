@@ -20,14 +20,18 @@ class GoodreadsDataDTO {
     this.goodreads_ratings_count = goodreads_ratings_count;
     this.updated_at = updated_at;
   }
-  static FromResponse(goodreadsDataDTO: GoodreadsDataDTO): GoodreadsData {
-    return new GoodreadsData(
-      goodreadsDataDTO.book_id,
-      goodreadsDataDTO.goodreads_rating,
-      goodreadsDataDTO.goodreads_url,
-      goodreadsDataDTO.goodreads_ratings_count,
-      goodreadsDataDTO.updated_at
-    );
+  static FromResponse(
+    goodreadsDataDTO?: GoodreadsDataDTO
+  ): GoodreadsData | undefined {
+    return goodreadsDataDTO
+      ? new GoodreadsData(
+          goodreadsDataDTO.book_id,
+          goodreadsDataDTO.goodreads_rating,
+          goodreadsDataDTO.goodreads_url,
+          goodreadsDataDTO.goodreads_ratings_count,
+          goodreadsDataDTO.updated_at
+        )
+      : undefined;
   }
 }
 

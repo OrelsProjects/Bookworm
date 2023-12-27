@@ -1,5 +1,6 @@
 import Book from "./book";
 import Genre from "./genre";
+import GoodreadsData from "./goodreadsData";
 import ReadingStatus from "./readingStatus";
 
 class UserBook {
@@ -69,6 +70,7 @@ export class UserBookData {
     mainGenre?: Genre;
     subgenres?: (Genre | undefined)[] | undefined;
   };
+  goodreadsData?: GoodreadsData;
   readingStatus?: ReadingStatus;
 
   /**
@@ -100,7 +102,8 @@ export class UserBookData {
     readingStartDate?: string,
     readingFinishDate?: string,
     isDeleted?: boolean,
-    isFavorite?: boolean
+    isFavorite?: boolean,
+    goodreadsData?: GoodreadsData
   ) {
     this.userBook = new UserBook(
       book_data.book.bookId,
@@ -118,6 +121,7 @@ export class UserBookData {
     );
     this.bookData = book_data;
     this.readingStatus = readingStatus;
+    this.goodreadsData = goodreadsData;
   }
 }
 

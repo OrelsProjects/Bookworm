@@ -1,4 +1,4 @@
-import { BookDTO, GenreDTO, ReadingStatusDTO } from "../dto";
+import { BookDTO, GenreDTO, GoodreadsDataDTO, ReadingStatusDTO } from "../dto";
 import UserBook from "../userBook";
 
 class UserBookDTO {
@@ -76,21 +76,10 @@ export type GetUserBooksResponseDTO = {
     main_genre?: GenreDTO;
     subgenres?: GenreDTO[];
   };
+  goodreads_data?: GoodreadsDataDTO;
   reading_status: ReadingStatusDTO;
 };
 
-/**
- *  'book_id': {'type': 'integer', 'required': True},
-    'reading_status_id': {'type': 'integer'},
-    'suggestion_source': {'type': 'string'},
-    'user_comments': {'type': 'string'},
-    'date_added': {'type': 'string'},
-    'user_rating': {'type': 'float'},
-    'reading_start_date': {'type': 'string'},
-    'reading_finish_date': {'type': 'string'},
-    'is_deleted': {'type': 'boolean'},
-    'is_favorite': {'type': 'boolean'}
- */
 export type CreateUserBookBody = {
   book_id: number;
   is_favorite?: boolean;

@@ -1,6 +1,10 @@
 import { Book, UserBook, UserBookData } from "@/src/models";
-import { BookDTO, GenreDTO, ReadingStatusDTO } from "@/src/models/dto";
-import { CreateBooksResponseDTO } from "@/src/models/dto/bookDTO";
+import {
+  BookDTO,
+  GenreDTO,
+  GoodreadsDataDTO,
+  ReadingStatusDTO,
+} from "@/src/models/dto";
 import { IResponse } from "@/src/models/dto/response";
 import UserBookDTO, {
   CreateUserBookBody,
@@ -30,7 +34,8 @@ const userBookDataDTOFromResponse = (
     userBookDataDTO.reading_start_date,
     userBookDataDTO.reading_finish_date,
     userBookDataDTO.is_deleted,
-    userBookDataDTO.is_favorite
+    userBookDataDTO.is_favorite,
+    GoodreadsDataDTO.FromResponse(userBookDataDTO.goodreads_data)
   );
 
 export async function GET(req: NextRequest) {

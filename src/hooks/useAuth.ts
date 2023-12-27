@@ -7,9 +7,12 @@ import {
 
 import { Amplify } from "aws-amplify";
 import awsConfig from "../amplifyconfiguration.json";
+import { useDispatch } from "react-redux";
 Amplify.configure(awsConfig);
 
 const useAuth = () => {
+  const dispatch = useDispatch();
+
   const signUpWithGoogle = useCallback(async () => {
     const signInWithRedirectInput: SignInWithRedirectInput = {
       provider: "Google",
@@ -27,6 +30,7 @@ const useAuth = () => {
 
   const signOut = useCallback(async () => {
     await signOutAuth();
+    dispatch(clearUser());
   }, []);
 
   return {
@@ -37,3 +41,6 @@ const useAuth = () => {
 };
 
 export default useAuth;
+function clearUser(): any {
+  throw new Error("Function not implemented.");
+}
