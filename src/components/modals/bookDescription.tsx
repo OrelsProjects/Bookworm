@@ -1,8 +1,7 @@
-import { Book, UserBookData } from "@/src/models";
+import { Book, UserBook, UserBookData } from "@/src/models";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import Rating from "../rating";
-import { Button } from "../button";
 import { useSelector } from "react-redux";
 import { RootState } from "@/src/lib/store";
 import {
@@ -12,6 +11,7 @@ import {
 } from "../buttons/bookButtons";
 import useBook from "@/src/hooks/useBook";
 import { compareBooks } from "@/src/models/book";
+import toast from "react-hot-toast";
 
 export interface BookDescriptionProps {
   book: Book;
@@ -25,7 +25,10 @@ export function BookDescription({
   book,
   className,
 }: BookDescriptionProps): React.ReactNode {
-  const { favoriteBook, addUserBook } = useBook();
+  const { favoriteBook, addUserBook, getBookGoodreadsData } = useBook();
+  const [goodreadsData, setGoodreadsData] = useState<any>(null);
+  const [loadingFavorite, setLoadingFavorite] = useState(false);
+  const [loadingGoodreadsData, setGoodreadsDataLoading] = useState(false);
   const [showAddBookToBacklog, setShowAddBookToBacklog] = useState(false);
   const [showAddBookToReadList, setShowAddBookToReadList] = useState(false);
   const [userBookData, setUserBookData] = useState<UserBookData | undefined>();
@@ -33,11 +36,32 @@ export function BookDescription({
     (state: RootState) => state.userBooks.userBooksData
   );
 
+  const loadBookGoodreadsData = async () => {
+    if (loadingGoodreadsData) {
+      return;
+    }
+    setGoodreadsDataLoading(true);
+
+    try {
+      const result = await getBookGoodreadsData(book);
+      setGoodreadsData(result);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setGoodreadsDataLoading(false);
+    }
+  };
+
   useEffect(() => {
     const userBookData = userBooksData.find((userBookData) =>
       compareBooks(userBookData.bookData.book, book)
     );
     setUserBookData(userBookData);
+    setGoodreadsData(userBookData?.goodreadsData);
+
+    if (!userBookData || !userBookData?.goodreadsData) {
+      loadBookGoodreadsData();
+    }
   }, [userBooksData]);
 
   const BookTitle = (): React.ReactNode => {
@@ -74,6 +98,17 @@ export function BookDescription({
     );
   };
 
+  const onFavorite = async (userBook: UserBook) => {
+    try {
+      setLoadingFavorite(true);
+      await favoriteBook(userBook);
+    } catch (error) {
+      toast.error("Something went wrong.. We're on it!");
+    } finally {
+      setLoadingFavorite(false);
+    }
+  };
+
   return (
     <div className={`flex flex-row gap-8 ${className}`}>
       <Image
@@ -91,21 +126,26 @@ export function BookDescription({
         <AuthorsAndPages />
         <PublishDate />
         <Rating
-          rating={3.6}
-          totalRatings={300}
-          userRating={4.2}
-          goodreadsUrl="www.goodreads.com/"
+          loading={loadingGoodreadsData}
+          rating={goodreadsData?.goodreadsRating}
+          totalRatings={goodreadsData?.goodreadsRatingsCount}
+          userRating={userBookData?.userBook.userRating}
+          goodreadsUrl={goodreadsData?.goodreadsUrl}
         />
       </div>
 
       <div className="flex flex-row items-end gap-2">
-        <BacklogButton onClick={() => setShowAddBookToReadList(true)} />
-        <ReadListButton onClick={() => setShowAddBookToReadList(true)} />
-        {userBookData && (
+        {userBookData ? (
           <FavoriteButton
-            onClick={() => favoriteBook(userBookData.userBook)}
+            loading={loadingFavorite}
+            onClick={() => onFavorite(userBookData.userBook)}
             isFavorite={userBookData.userBook.isFavorite ?? false}
           />
+        ) : (
+          <BacklogButton onClick={() => setShowAddBookToReadList(true)} />
+        )}
+        {userBookData && userBookData.readingStatus?.readingStatusId !== 1 && (
+          <ReadListButton onClick={() => setShowAddBookToReadList(true)} />
         )}
       </div>
     </div>

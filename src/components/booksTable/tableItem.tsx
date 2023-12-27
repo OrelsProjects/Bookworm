@@ -2,21 +2,21 @@ import React from "react";
 import { UserBookData } from "../../models";
 
 interface itemProps {
-  item: UserBookData;
+  userBookData: UserBookData;
 }
 
-const item: React.FC<itemProps> = ({ item }) => {
+const item: React.FC<itemProps> = ({ userBookData }) => {
   return (
-    <div className="flex justify-between items-center p-4 bg-white border-b">
+    <div className="flex justify-between items-center p-4 border-b">
       <div className="flex items-center space-x-3">
         <img
           className="w-12 h-12"
-          src={item.bookData.book.thumbnailUrl}
-          alt={item.bookData.book.title}
+          src={userBookData.bookData.book?.thumbnailUrl}
+          alt={userBookData.bookData.book?.title}
         />
         <div>
-          <div>{item.bookData.book.title}</div>
-          <div>{item.bookData.book.authors?.join(", ")}</div>
+          <div>{userBookData.bookData.book?.title}</div>
+          <div>{userBookData.bookData.book?.authors?.join(", ")}</div>
         </div>
       </div>
       {/* ... other book details */}

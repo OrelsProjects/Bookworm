@@ -24,8 +24,8 @@ const Star: React.FC<StarProps> = ({ filled, user }) => {
 };
 
 type RatingProps = {
-  rating: number;
-  totalRatings: number;
+  rating?: number;
+  totalRatings?: number;
   userRating?: number;
   goodreadsUrl?: string;
   loading?: boolean;
@@ -38,10 +38,10 @@ const Rating: React.FC<RatingProps> = ({
   userRating,
   loading,
 }) => {
-  const fullStars = Math.floor(rating);
-  const emptyStars = 5 - fullStars;
-  const fullStarsUser = Math.floor(userRating ?? 0);
-  const emptyStarsUser = 5 - fullStarsUser;
+  const fullStars = rating ? Math.floor(rating) : undefined;
+  const emptyStars = fullStars ? 5 - fullStars : undefined;
+  const fullStarsUser = userRating ? Math.floor(userRating) : undefined;
+  const emptyStarsUser = fullStarsUser ? 5 - fullStarsUser : undefined;
 
   const Loading = () => (
     <div className="flex items-center justify-start w-content py-4 px-6 rounded-full bg-primary-foreground">
@@ -106,7 +106,7 @@ const Rating: React.FC<RatingProps> = ({
       ) : (
         <div className="flex flex-col gap-2">
           {userRating && <RatingComponent user className="py-3" />}
-          <RatingComponent />
+          {rating && <RatingComponent />}
         </div>
       )}
     </>

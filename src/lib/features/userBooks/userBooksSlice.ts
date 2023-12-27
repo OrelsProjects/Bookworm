@@ -32,13 +32,23 @@ const userBooksSlice = createSlice({
         state.userBooksData[index].userBook = action.payload;
       }
     },
+    updateUserBookData: (state, action: PayloadAction<UserBookData>) => {
+      const index = state.userBooksData.findIndex(
+        (userBookData) =>
+          userBookData.userBook.userBookId ===
+          action.payload.userBook.userBookId
+      );
+      if (index !== -1) {
+        state.userBooksData[index] = action.payload;
+      }
+    },
     setError: (state, action: PayloadAction<string | null>) => {
       state.error = action.payload;
     },
   },
 });
 
-export const { setUserBooks, addUserBooks, updateUserBook, setError } =
+export const { setUserBooks, addUserBooks, updateUserBook, updateUserBookData, setError } =
   userBooksSlice.actions;
 
 export const selectUserBooks = (state: RootState): userBooksState =>

@@ -69,7 +69,7 @@ const BooksTable: React.FC = () => {
     <div className="container mx-auto my-4">
       <TableHeader items={headers} />
       {userBooksData && userBooksData.length > 0 ? (
-        userBooksData.map((bookData, index) => <BookItem key={index} item={bookData} />)
+        userBooksData.map((bookData, index) => <BookItem key={index} userBookData={bookData} />)
       ) : (
         <EmptyTable />
       )}

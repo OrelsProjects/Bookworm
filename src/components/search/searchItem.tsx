@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { Button } from "../button";
 import { SquareSkeleton, LineSkeleton } from "../skeleton";
-import { Book, UserBookData } from "../../models";
+import { Book, UserBook, UserBookData } from "../../models";
 import { RootState } from "@/src/lib/store";
 import { useSelector } from "react-redux";
 import useBook from "@/src/hooks/useBook";
 import { FavoriteButton, BacklogButton } from "../buttons/bookButtons";
 import { compareBooks } from "@/src/models/book";
+import toast from "react-hot-toast";
 
 interface SearchItemProps {
   book: Book;
@@ -21,6 +22,7 @@ const SearchItem: React.FC<SearchItemProps> = ({
   onShowDetails,
 }) => {
   const { favoriteBook } = useBook();
+  const [loadingFavorite, setLoadingFavorite] = useState(false);
   const [userBookData, setUserBookData] = useState<UserBookData | undefined>(
     undefined
   ); // [1
@@ -34,6 +36,17 @@ const SearchItem: React.FC<SearchItemProps> = ({
     );
     setUserBookData(userBookData);
   }, [userBooksData]);
+
+  const onFavorite = async (userBook: UserBook) => {
+    try {
+      setLoadingFavorite(true);
+      await favoriteBook(userBook);
+    } catch (error) {
+      toast.error("Something went wrong.. We're on it!");
+    } finally {
+      setLoadingFavorite(false);
+    }
+  };
 
   return (
     <div className="bg-card h-22 rounded-lg text-foreground p-2 flex justify-between items-center shadow-md">
@@ -56,12 +69,13 @@ const SearchItem: React.FC<SearchItemProps> = ({
         <p className="text-primary">by {book.authors?.join(", ")}</p>
         <p className="text-muted">{book.numberOfPages} Pages</p>
         <div className="flex flex-row gap-2">
-          {userBookData && (
+          {/* {userBookData && (
             <FavoriteButton
-              onClick={() => favoriteBook(userBookData.userBook)}
+              loading={loadingFavorite}
+              onClick={() => onFavorite(userBookData.userBook)}
               isFavorite={userBookData.userBook.isFavorite ?? false}
             />
-          )}
+          )} */}
           <BacklogButton onClick={() => onAddToLibrary(book)} />
           <Button
             variant="outline"

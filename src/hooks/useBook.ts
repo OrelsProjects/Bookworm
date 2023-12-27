@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Book, User, UserBook, UserBookData } from "../models";
+import { Book, GoodreadsData, User, UserBook, UserBookData } from "../models";
 import axios from "axios";
 import { Books, CreateBooksResponse } from "../models/book";
 import {
@@ -12,6 +12,7 @@ import {
   addUserBooks,
   setUserBooks,
   updateUserBook,
+  updateUserBookData,
 } from "../lib/features/userBooks/userBooksSlice";
 import { IResponse } from "../models/dto/response";
 import { setError } from "../lib/features/auth/authSlice";
@@ -26,15 +27,19 @@ const useBook = () => {
     }
     setLoading(true);
     try {
+      const isFavorite = !userBook.isFavorite;
       const updateUserBookBody: UpdateUserBookBody = {
         user_book_id: userBook.userBookId,
-        is_favorite: true,
+        is_favorite: isFavorite,
       };
-      const response = await axios.put<UserBook>(
-        `/api/user-books`,
-        updateUserBookBody
+      await axios.put<UserBook>(`/api/user-books`, updateUserBookBody);
+
+      dispatch(
+        updateUserBook({
+          ...userBook,
+          isFavorite,
+        })
       );
-      dispatch(updateUserBook(response.data));
     } catch (error) {
       console.error(error);
       throw error;
@@ -133,7 +138,33 @@ const useBook = () => {
     }
   };
 
+  const getBookGoodreadsData = async (book: Book): Promise<GoodreadsData> => {
+    try {
+      const isbn = book.isbn;
+      if (!isbn) {
+        throw new Error("No isbn found for book");
+      }
+      const response = await axios.get<IResponse<GoodreadsData>>(
+        `/api/goodreads`,
+        {
+          params: {
+            isbn,
+          },
+        }
+      );
+      const { result } = response.data;
+      if (!result) {
+        throw new Error("No goodreads data returned from backend");
+      }
+      return result;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
   return {
+    getBookGoodreadsData,
     loadUserBooks,
     addUserBook,
     favoriteBook,

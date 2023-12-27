@@ -1,15 +1,30 @@
+import { GoodreadsData } from "@/src/models";
+import { GoodreadsDataDTO } from "@/src/models/dto";
+import { IResponse } from "@/src/models/dto/response";
 import { GetAxiosInstance } from "@/src/utils/axiosInstance";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: NextRequest) {
+export async function GET(
+  req: NextRequest
+): Promise<NextResponse<IResponse<GoodreadsData | undefined>>> {
   try {
+    const url = req.nextUrl;
+    const isbn = url.searchParams.get("isbn");
+    if (!isbn) {
+      throw new Error("Missing isbn parameter");
+    }
     const axios = GetAxiosInstance(req);
-  
-    // TODO: Return a report of lists of all success/duplicates/failures (Create a class for this)
-    // const booksResult = bookDTOsWithIds.success.map((bookDTO) => bookDTOToBook(bookDTO));
+
+    const response = await axios.get<GoodreadsDataDTO>(`goodreads-book`, {
+      params: {
+        bookISBN: isbn,
+      },
+    });
+    const { data } = response;
+    const goodreadsData = GoodreadsDataDTO.FromResponse(data);
     return NextResponse.json(
       {
-        result: [],
+        result: goodreadsData,
       },
       { status: 200 }
     );

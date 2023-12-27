@@ -8,6 +8,7 @@ import Toggle from "./toggleButtons";
 import SearchBar from "./search/searchBar";
 import VideoBackground from "./videoBackground";
 import Rating from "./rating";
+import Loading from "./loading";
 
 export {
   Button,
@@ -20,4 +21,5 @@ export {
   VideoBackground,
   Modal,
   Rating,
+  Loading,
 };

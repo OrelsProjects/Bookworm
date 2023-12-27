@@ -45,24 +45,7 @@ class UserBook {
     this.readingFinishDate = readingFinishDate;
   }
 }
-/**
- *  user_book_id: number;
-  user_id: string;
-  suggestion_source?: string;
-  user_comments?: string;
-  date_added: string;
-  user_rating?: number;
-  reading_start_date?: string;
-  reading_finish_date?: string;
-  is_deleted: boolean;
-  is_favorite: boolean;
-  book_data: {
-    book: BookDTO;
-    main_genre?: GenreDTO;
-    subgenres?: GenreDTO[];
-  };
-  reading_status: ReadingStatusDTO;
- */
+
 export class UserBookData {
   userBook: UserBook;
   bookData: {
@@ -70,22 +53,9 @@ export class UserBookData {
     mainGenre?: Genre;
     subgenres?: (Genre | undefined)[] | undefined;
   };
-  goodreadsData?: GoodreadsData;
+  goodreadsData?: GoodreadsData | null;
   readingStatus?: ReadingStatus;
 
-  /**
-   * 
-   user_book_id: number;
-  user_id: string;
-  suggestion_source?: string;
-  user_comments?: string;
-  date_added: string;
-  user_rating?: number;
-  reading_start_date?: string;
-  reading_finish_date?: string;
-  is_deleted: boolean;
-  is_favorite: boolean;
-   */
   constructor(
     book_data: {
       book: Book;
@@ -121,7 +91,7 @@ export class UserBookData {
     );
     this.bookData = book_data;
     this.readingStatus = readingStatus;
-    this.goodreadsData = goodreadsData;
+    this.goodreadsData = goodreadsData ?? null;
   }
 }
 

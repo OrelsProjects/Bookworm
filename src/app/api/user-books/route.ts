@@ -9,6 +9,7 @@ import { IResponse } from "@/src/models/dto/response";
 import UserBookDTO, {
   CreateUserBookBody,
   GetUserBooksResponseDTO,
+  UpdateUserBookBody,
 } from "@/src/models/dto/userBookDTO";
 import { GetAxiosInstance } from "@/src/utils/axiosInstance";
 import { NextRequest, NextResponse } from "next/server";
@@ -74,6 +75,19 @@ export async function POST(req: NextRequest) {
       },
       { status: 200 }
     );
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({}, { status: 500 });
+  }
+}
+
+export async function PUT(req: NextRequest) {
+  try {
+    const updateUserBookBody = await req.json();
+    const axios = GetAxiosInstance(req);
+    await axios.put<UserBookDTO>("/user-book", updateUserBookBody);
+
+    return NextResponse.json({}, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json({}, { status: 500 });
