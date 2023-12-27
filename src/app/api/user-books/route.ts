@@ -36,7 +36,7 @@ const userBookDataDTOFromResponse = (
     userBookDataDTO.reading_finish_date,
     userBookDataDTO.is_deleted,
     userBookDataDTO.is_favorite,
-    GoodreadsDataDTO.FromResponse(userBookDataDTO.goodreads_data)
+    GoodreadsDataDTO.FromResponse(userBookDataDTO.book_data.goodreads_data)
   );
 
 export async function GET(req: NextRequest) {

@@ -56,47 +56,51 @@ const Rating: React.FC<RatingProps> = ({
     user?: boolean;
     className?: string;
   }) => {
-    return (
-      <div
-        className={`flex items-center justify-start gap-2 w-fit p-1 rounded-full bg-primary-foreground ${className}`}
-      >
-        <div className="flex items-center justify-start px-3">
-          {[...Array(user ? fullStarsUser : fullStars)].map((_, index) => (
-            <Star key={index} filled={true} user={user} />
-          ))}
-          {[...Array(user ? emptyStarsUser : emptyStars)].map((_, index) => (
-            <Star key={index} filled={false} />
-          ))}
-          <p className="ms-1 text-sm font-thin text-foreground">
-            {(user ? userRating : rating)?.toFixed(2)}
-            {!user && ` (${totalRatings})`}
-          </p>
-        </div>
-        {goodreadsUrl && !user && (
-          <Button
-            variant="outline"
-            asChild
-            className="rounded-full border-none"
+    return user
+      ? emptyStarsUser
+      : emptyStars && (
+          <div
+            className={`flex items-center justify-start gap-2 w-fit p-1 rounded-full bg-primary-foreground ${className}`}
           >
-            <div className="flex flex-row gap-2">
-              <a
-                className="text-sm text-primary hover:underline"
-                href={goodreadsUrl}
-                target="_blank"
-              >
-                View Details on Goodreads
-              </a>
-              <Image
-                src="/externalLink.png"
-                alt="External Link"
-                width={16}
-                height={16}
-              />
+            <div className="flex items-center justify-start px-3">
+              {[...Array(user ? fullStarsUser : fullStars)].map((_, index) => (
+                <Star key={index} filled={true} user={user} />
+              ))}
+              {[...Array(user ? emptyStarsUser : emptyStars)].map(
+                (_, index) => (
+                  <Star key={index} filled={false} />
+                )
+              )}
+              <p className="ms-1 text-sm font-thin text-foreground">
+                {(user ? userRating : rating)?.toFixed(2)}
+                {!user && ` (${totalRatings})`}
+              </p>
             </div>
-          </Button>
-        )}
-      </div>
-    );
+            {goodreadsUrl && !user && (
+              <Button
+                variant="outline"
+                asChild
+                className="rounded-full border-none"
+              >
+                <div className="flex flex-row gap-2">
+                  <a
+                    className="text-sm text-primary hover:underline"
+                    href={goodreadsUrl}
+                    target="_blank"
+                  >
+                    View Details on Goodreads
+                  </a>
+                  <Image
+                    src="/externalLink.png"
+                    alt="External Link"
+                    width={16}
+                    height={16}
+                  />
+                </div>
+              </Button>
+            )}
+          </div>
+        );
   };
 
   return (

@@ -75,8 +75,8 @@ export type GetUserBooksResponseDTO = {
     book: BookDTO;
     main_genre?: GenreDTO;
     subgenres?: GenreDTO[];
+    goodreads_data?: GoodreadsDataDTO;
   };
-  goodreads_data?: GoodreadsDataDTO;
   reading_status: ReadingStatusDTO;
 };
 

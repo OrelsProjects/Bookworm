@@ -69,13 +69,13 @@ const SearchItem: React.FC<SearchItemProps> = ({
         <p className="text-primary">by {book.authors?.join(", ")}</p>
         <p className="text-muted">{book.numberOfPages} Pages</p>
         <div className="flex flex-row gap-2">
-          {/* {userBookData && (
+          {userBookData && (
             <FavoriteButton
               loading={loadingFavorite}
               onClick={() => onFavorite(userBookData.userBook)}
               isFavorite={userBookData.userBook.isFavorite ?? false}
             />
-          )} */}
+          )}
           <BacklogButton onClick={() => onAddToLibrary(book)} />
           <Button
             variant="outline"
