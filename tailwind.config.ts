@@ -16,6 +16,9 @@ module.exports = {
       },
     },
     extend: {
+      gridTemplateColumns: {
+        "header-table": "minmax(0, 0.5fr) 1fr 2fr 2fr 1.2fr 1fr",
+      },
       colors: {
         border: "rgb(var(--border))",
         input: "rgb(var(--input))",

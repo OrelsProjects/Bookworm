@@ -103,7 +103,7 @@ const useBook = () => {
           book: bookToAdd,
         },
       };
-      dispatch(setUserBooks([userBookData]));
+      dispatch(addUserBooks([userBookData]));
       return userBook;
     } catch (error) {
       console.error(error);

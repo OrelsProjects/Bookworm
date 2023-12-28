@@ -25,7 +25,7 @@ const SearchItem: React.FC<SearchItemProps> = ({
   const [loadingFavorite, setLoadingFavorite] = useState(false);
   const [userBookData, setUserBookData] = useState<UserBookData | undefined>(
     undefined
-  ); // [1
+  ); 
   const userBooksData: UserBookData[] = useSelector(
     (state: RootState) => state.userBooks.userBooksData
   );

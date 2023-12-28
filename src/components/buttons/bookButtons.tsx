@@ -2,6 +2,9 @@ import React from "react";
 import { Button } from "../button";
 import Image from "next/image";
 import Loading from "../loading";
+import { Book } from "@/src/models";
+import { useDispatch } from "react-redux";
+import { showBookDetailsModal } from "@/src/lib/features/modal/modalSlice";
 
 export interface BookButtonProps {
   loading?: boolean;
@@ -9,7 +12,7 @@ export interface BookButtonProps {
   onClick?: () => void;
 }
 
-export const FavoriteButton = ({
+const FavoriteButton = ({
   loading,
   className,
   onClick,
@@ -33,7 +36,7 @@ export const FavoriteButton = ({
   </Button>
 );
 
-export const ReadListButton = ({
+const ReadListButton = ({
   loading,
   className,
   onClick,
@@ -47,7 +50,7 @@ export const ReadListButton = ({
   </Button>
 );
 
-export const BacklogButton = ({
+const BacklogButton = ({
   loading,
   className,
   onClick,
@@ -60,3 +63,30 @@ export const BacklogButton = ({
     {loading ? <Loading /> : "Add to library"}
   </Button>
 );
+
+const ShowDetailsButton = ({
+  loading,
+  className,
+  book,
+}: BookButtonProps & {
+  book: Book;
+}): React.ReactNode => {
+  const dispatch = useDispatch();
+  return (
+    <Button
+      variant="outline"
+      onClick={() => dispatch(showBookDetailsModal(book))}
+      className={`rounded-full border-none w-28 h-10 ${className}`}
+    >
+      {loading ? (
+        <Loading />
+      ) : (
+        <div className="flex flex-row gap-1">
+          <h2 className="text-primary">Details</h2>
+        </div>
+      )}
+    </Button>
+  );
+};
+
+export { FavoriteButton, ReadListButton, BacklogButton, ShowDetailsButton };

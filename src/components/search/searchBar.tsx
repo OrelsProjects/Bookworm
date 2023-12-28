@@ -8,9 +8,11 @@ import SearchItem, { SearchItemSkeleton } from "./searchItem";
 import { Book } from "../../models";
 import toast from "react-hot-toast";
 import Modal from "../modals/modal";
-import BookDescription from "../modals/bookDescription";
+import BookDetails from "../modals/bookDescription";
 import useBook from "@/src/hooks/useBook";
 import { setLoading } from "@/src/lib/features/auth/authSlice";
+import { useDispatch } from "react-redux";
+import { showBookDetailsModal } from "@/src/lib/features/modal/modalSlice";
 
 const TOP_RESULTS_COUNT = 3;
 
@@ -23,14 +25,16 @@ const SearchBar: React.FC<SearchBarProps> = ({
   className,
   onChange,
 }: SearchBarProps) => {
+  const dispatch = useDispatch();
+  const { addUserBook } = useBook();
+  const { loading, error, updateSearchValue, books }: UseSearchResult =
+    useSearch();
+
   const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [bookToShowInModal, setBookToShowInModal] = useState<Book | null>(null);
   const [loadingToastId, setLoadingToastId] = useState<string | null>(null);
   const [loadingAddBook, setLoadingAddBook] = useState<Book | null>(null);
-  const { loading, error, updateSearchValue, books }: UseSearchResult =
-    useSearch();
-  const { addUserBook } = useBook();
 
   useEffect(() => {
     if (loadingAddBook) {
@@ -65,6 +69,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   const addToLibrary = async (book: Book) => {
     try {
+      if (loadingAddBook) {
+        return;
+      }
       setLoadingAddBook(book);
       await addUserBook(book);
       toast.success("Book added to library!");
@@ -135,6 +142,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
                       onShowDetails={(book) => {
                         setBookToShowInModal(book);
                         setIsModalOpen(true);
+                        dispatch(showBookDetailsModal(book));
                       }}
                     />
                   )
@@ -143,16 +151,16 @@ const SearchBar: React.FC<SearchBarProps> = ({
           )
         )}
       </div>
-      <Modal
+      {/* <Modal
         isOpen={isModalOpen}
         onClose={() => {
           setIsModalOpen(false);
         }}
       >
         {bookToShowInModal && (
-          <BookDescription book={bookToShowInModal} className="w-full h-full" />
+          <BookDetails book={bookToShowInModal} className="w-full h-full" />
         )}
-      </Modal>
+      </Modal> */}
     </div>
   );
 };

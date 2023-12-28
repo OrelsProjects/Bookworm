@@ -3,7 +3,7 @@
 import React from "react";
 import SearchBar from "../../components/search/searchBar";
 import { Modal } from "@/src/components";
-import BookDescription from "@/src/components/modals/bookDescription";
+import BookDetails from "@/src/components/modals/bookDescription";
 
 export default function Home(): React.ReactNode {
 

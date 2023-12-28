@@ -26,6 +26,7 @@ export function BookDescription({
   className,
 }: BookDescriptionProps): React.ReactNode {
   const { favoriteBook, addUserBook, getBookGoodreadsData } = useBook();
+  const [bookToShow, setBookToShow] = useState<Book | null>(null); // To avoid bugs when closing the modal
   const [goodreadsData, setGoodreadsData] = useState<any>(null);
   const [loadingFavorite, setLoadingFavorite] = useState(false);
   const [loadingGoodreadsData, setGoodreadsDataLoading] = useState(false);
@@ -53,6 +54,12 @@ export function BookDescription({
   };
 
   useEffect(() => {
+    if (book) {
+      setBookToShow(book);
+    }
+  }, [book]);
+
+  useEffect(() => {
     const userBookData = userBooksData.find((userBookData) =>
       compareBooks(userBookData.bookData.book, book)
     );
@@ -67,8 +74,8 @@ export function BookDescription({
   const BookTitle = (): React.ReactNode => {
     return (
       <div className="flex flex-col flex-wrap gap-2 max-w-2xl">
-        <p className="text-3xl line-clamp-1">{book.title}</p>
-        <p className="text-lg font-thin">{book.subtitle}</p>
+        <p className="text-3xl line-clamp-1">{bookToShow?.title}</p>
+        <p className="text-lg font-thin">{bookToShow?.subtitle}</p>
       </div>
     );
   };
@@ -76,7 +83,9 @@ export function BookDescription({
   const BookDescription = (): React.ReactNode => {
     return (
       <div className="flex flex-col flex-wrap gap-2 max-w-2xl">
-        <p className="text-md line-clamp-3 font-thin">{book.description}</p>
+        <p className="text-md line-clamp-3 font-thin">
+          {bookToShow?.description}
+        </p>
       </div>
     );
   };
@@ -84,8 +93,10 @@ export function BookDescription({
   const AuthorsAndPages = (): React.ReactNode => {
     return (
       <div className="flex flex-col">
-        <p className="text-md text-primary">{book.authors?.join(", ")}</p>
-        <p className="text-md font-thin">{book.numberOfPages} Pages</p>
+        <p className="text-md text-primary">
+          {bookToShow?.authors?.join(", ")}
+        </p>
+        <p className="text-md font-thin">{bookToShow?.numberOfPages} Pages</p>
       </div>
     );
   };
@@ -93,7 +104,7 @@ export function BookDescription({
   const PublishDate = (): React.ReactNode => {
     return (
       <div className="flex flex-col">
-        <p className="text-md">Published: {book.datePublished}</p>
+        <p className="text-md">Published: {bookToShow?.datePublished}</p>
       </div>
     );
   };
@@ -112,10 +123,10 @@ export function BookDescription({
   return (
     <div className={`flex flex-row gap-8 ${className}`}>
       <Image
-        src={book.thumbnailUrl ?? "/thumbnailPlaceholder.png"}
+        src={bookToShow?.thumbnailUrl ?? "/thumbnailPlaceholder.png"}
         placeholder="blur"
         blurDataURL="/thumbnailPlaceholder.png"
-        alt={book.title}
+        alt={bookToShow?.title ?? "Book cover"}
         width={250}
         height={350}
         className="rounded-lg"

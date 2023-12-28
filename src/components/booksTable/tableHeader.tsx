@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Image from "next/image";
 
 export enum TableHeaderDirection {
@@ -7,37 +7,20 @@ export enum TableHeaderDirection {
   NONE = "none",
 }
 
-export interface TableHeaderItem {
-  label: string;
-  canSort?: boolean;
-  direction?: TableHeaderDirection;
-  groupId?: string; // Used to group columns together.
-  onClick?: () => void;
+export enum TableHeaders {
+  TITLE = "title",
+  AUTHORS = "authors",
+  PAGES = "pages",
+  GENRE = "genre",
+  PUBLISH_YEAR = "publish_year",
+  RATING = "rating",
 }
 
 export interface TableHeaderProps {
-  items: TableHeaderItem[];
+  onSort?: (header: TableHeaders, direction: TableHeaderDirection) => void;
 }
-type GroupedItemsType = Record<string, TableHeaderItem[]>;
 
-const TableHeader: React.FC<TableHeaderProps> = ({ items }) => {
-  const [groupedItems, setGroupedItems] = useState<
-    Record<string, TableHeaderItem[]>
-  >({});
-
-  useEffect(() => {
-    const groups: GroupedItemsType = items.reduce((acc, item) => {
-      const groupId = item.groupId || item.label;
-      if (!acc[groupId]) {
-        acc[groupId] = [];
-      }
-      acc[groupId].push(item);
-      return acc;
-    }, {} as GroupedItemsType);
-
-    setGroupedItems(groups);
-  }, [items]);
-
+const TableHeader: React.FC<TableHeaderProps> = ({ onSort }) => {
   const RenderSortComponent = (
     direction: TableHeaderDirection = TableHeaderDirection.NONE
   ) => {
@@ -51,8 +34,8 @@ const TableHeader: React.FC<TableHeaderProps> = ({ items }) => {
           }
           height={12}
           width={12}
-          alt={"arrowUp"}
-          className="text input fill-foreground rotate-180  cursor-pointer"
+          alt="arrowUp"
+          className="text input fill-foreground rotate-180 cursor-pointer"
         />
         <Image
           src={
@@ -62,31 +45,66 @@ const TableHeader: React.FC<TableHeaderProps> = ({ items }) => {
           }
           height={12}
           width={12}
-          alt={"arrowDown"}
+          alt="arrowDown"
           className="text input cursor-pointer"
         />
       </div>
     );
   };
 
-  const HeaderItem = (item: TableHeaderItem) => (
-    <div key={item.label} className="flex flex-row gap-0.5">
-      {item.label}
-      {item.canSort && RenderSortComponent(item.direction)}
+  const HeaderItem = ({
+    label,
+    canSort,
+    direction,
+  }: {
+    label: string;
+    canSort?: boolean;
+    direction?: TableHeaderDirection;
+  }) => (
+    <div className="flex flex-row gap-0.5">
+      {label}
+      {canSort && RenderSortComponent(direction)}
     </div>
   );
 
-  const RenderGroup = (group: TableHeaderItem[]) => (
-    <div className="flex flex-col justify-center items-center gap-0.5">
-      {group.map(HeaderItem)}
-    </div>
-  );
-
+  // Use the grid-header-table class to align items in a grid
   return (
-    <div className="flex justify-around text-foreground uppercase tracking-wider bg-primary-foreground p-4">
-      {Object.values(groupedItems).map((group, index) => (
-        <div key={index}>{RenderGroup(group)}</div>
-      ))}
+    <div className="grid-header-table text-foreground rounded-lg tracking-wider bg-primary-foreground p-2 mb-2">
+      {/* Empty cell for the image */}
+      <div></div>
+      <HeaderItem
+        label="Title"
+        canSort={true}
+        direction={TableHeaderDirection.NONE}
+      />
+
+      <HeaderItem
+        label="Author"
+        canSort={true}
+        direction={TableHeaderDirection.NONE}
+      />
+      <div className="flex flex-row gap-3">
+        <HeaderItem
+          label="Pages"
+          canSort={true}
+          direction={TableHeaderDirection.NONE}
+        />
+        <HeaderItem
+          label="Genre"
+          canSort={true}
+          direction={TableHeaderDirection.NONE}
+        />
+        <HeaderItem
+          label="Publish"
+          canSort={true}
+          direction={TableHeaderDirection.NONE}
+        />
+      </div>
+      <HeaderItem
+        label="Goodread's rating"
+        canSort={true}
+        direction={TableHeaderDirection.NONE}
+      />
     </div>
   );
 };

@@ -1,27 +1,46 @@
 import React from "react";
 import { UserBookData } from "../../models";
+import Rating from "../rating";
+import { ReadListButton, ShowDetailsButton } from "../buttons/bookButtons";
 
-interface itemProps {
+interface TableItemProps {
   userBookData: UserBookData;
 }
 
-const item: React.FC<itemProps> = ({ userBookData }) => {
+const TableItem: React.FC<TableItemProps> = ({ userBookData }) => {
   return (
-    <div className="flex justify-between items-center p-4 border-b">
-      <div className="flex items-center space-x-3">
+    <div className="flex justify-center grid-header-table items-center bg-primary-foreground p-2 rounded-lg">
+      <div>
         <img
-          className="w-12 h-12"
+          className="w-16 h-20 rounded-lg"
           src={userBookData.bookData.book?.thumbnailUrl}
           alt={userBookData.bookData.book?.title}
         />
+      </div>
+      <div className="truncate">{userBookData.bookData.book?.title}</div>
+      <div className="text-primary font-semibold truncate">
+        {userBookData.bookData.book?.authors?.join(", ")}
+      </div>
+      <div className="flex flex-col truncate">
         <div>
-          <div>{userBookData.bookData.book?.title}</div>
-          <div>{userBookData.bookData.book?.authors?.join(", ")}</div>
+          <div>Pages: {userBookData.bookData.book?.numberOfPages}</div>
+          <div>Genre: {userBookData.bookData.book?.mainGenreId}</div>
+          <div>Date: {userBookData.bookData.book?.datePublished}</div>
         </div>
       </div>
-      {/* ... other book details */}
+      <Rating
+        rating={userBookData.goodreadsData?.goodreadsRating}
+        totalRatings={userBookData.goodreadsData?.goodreadsRatingsCount}
+        userRating={userBookData.userBook.userRating}
+      />
+      <div className="flex flex-row gap-2">
+        <ReadListButton />
+        {userBookData.bookData.book && (
+          <ShowDetailsButton book={userBookData.bookData.book} />
+        )}
+      </div>
     </div>
   );
 };
 
-export default item;
+export default TableItem;

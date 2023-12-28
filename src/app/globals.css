@@ -116,6 +116,12 @@ input[type="text"]:-moz-ui-autofill {
   }
 }
 
+@layer utilities {
+  .grid-header-table {
+    @apply grid grid-cols-header-table;
+  }
+}
+
 /* Animations */
 @keyframes shimmer {
   0% {

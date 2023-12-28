@@ -9,6 +9,7 @@ import { VideoBackground } from "../components";
 import APIProvider from "./APIProvider";
 import { Toaster } from "react-hot-toast";
 import DataProvider from "./DataProvider";
+import ModalProvider from "./ModalProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,6 +31,7 @@ export default function RootLayout({
           <AuthProvider>
             <APIProvider>
               <DataProvider>
+                <ModalProvider />
                 <div
                   id="portal"
                   className="absolute top-0 right-0 left-0 bottom-0 z-10"

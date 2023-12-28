@@ -18,7 +18,6 @@ export async function POST(
     const createBookBody: CreateBookBody = {
       books: [bookDTO],
     };
-    createBookBody.books[0].description = "";
     const axios = GetAxiosInstance(req);
     const response = await axios.post<CreateBooksResponseDTO>(
       "/book",
