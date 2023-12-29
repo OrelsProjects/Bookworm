@@ -24,7 +24,7 @@ export async function POST(
       createBookBody
     );
     const bookDTOsWithIds = response.data ?? {};
-    const createBooksResponse = {
+    const createBooksResponse = { 
       success: bookDTOsWithIds.success?.map((bookDTO) =>
         BookDTO.FromResponse(bookDTO)
       ),

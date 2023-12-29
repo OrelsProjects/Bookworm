@@ -5,10 +5,7 @@ import {
   signOut as signOutAuth,
 } from "aws-amplify/auth";
 
-import { Amplify } from "aws-amplify";
-import awsConfig from "../amplifyconfiguration.json";
 import { useDispatch } from "react-redux";
-Amplify.configure(awsConfig);
 
 const useAuth = () => {
   const dispatch = useDispatch();

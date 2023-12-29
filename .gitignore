@@ -63,3 +63,5 @@ amplifytools.xcconfig
 amplifyconfiguration.json
 aws-exports.js
 #amplify-do-not-edit-end
+
+.env

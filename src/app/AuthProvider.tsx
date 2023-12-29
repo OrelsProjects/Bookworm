@@ -8,14 +8,11 @@ import {
   setUser,
   setLoading,
   setError,
-} from "../lib/features/auth/authSlice"; 
-import { Amplify } from "aws-amplify";
+} from "../lib/features/auth/authSlice";
 import { fetchAuthSession } from "aws-amplify/auth";
 import { Hub } from "aws-amplify/utils";
-import awsConfig from "../amplifyconfiguration.json";
 import { User } from "../models";
-
-Amplify.configure(awsConfig);
+import "../amplifyconfiguration";
 
 interface AuthProviderProps {
   children?: React.ReactNode;
