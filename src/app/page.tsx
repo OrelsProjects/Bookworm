@@ -11,7 +11,7 @@ function App() {
   const { user, loading, error } = useSelector(selectAuth);
 
   useEffect(() => {
-    if (!loading && user) {
+    if (!loading) {
       router.push("/home");
     }
   }, [loading, user]);
