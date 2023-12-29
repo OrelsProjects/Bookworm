@@ -42,7 +42,7 @@ const useBook = () => {
       );
     } catch (error) {
       console.error(error);
-      throw error;
+      // throw error;
     } finally {
       setLoading(false);
     }

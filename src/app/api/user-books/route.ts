@@ -9,7 +9,6 @@ import { IResponse } from "@/src/models/dto/response";
 import UserBookDTO, {
   CreateUserBookBody,
   GetUserBooksResponseDTO,
-  UpdateUserBookBody,
 } from "@/src/models/dto/userBookDTO";
 import { GetAxiosInstance } from "@/src/utils/axiosInstance";
 import { NextRequest, NextResponse } from "next/server";
