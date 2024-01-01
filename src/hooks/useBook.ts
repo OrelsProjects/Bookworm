@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Book, GoodreadsData, User, UserBook, UserBookData } from "../models";
 import axios from "axios";
 import { Books, CreateBooksResponse } from "../models/book";
@@ -11,8 +11,9 @@ import { useDispatch } from "react-redux";
 import {
   addUserBooks,
   setUserBooks,
+  setUserBooksLoading,
   updateUserBook,
-  updateUserBookData,
+  updateUserBookGoodreadsData,
 } from "../lib/features/userBooks/userBooksSlice";
 import { IResponse } from "../models/dto/response";
 import { setError } from "../lib/features/auth/authSlice";
@@ -20,6 +21,10 @@ import { setError } from "../lib/features/auth/authSlice";
 const useBook = () => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setUserBooksLoading(loading));
+  }, [loading]);
 
   const favoriteBook = async (userBook: UserBook): Promise<void> => {
     if (loading) {
@@ -156,6 +161,7 @@ const useBook = () => {
       if (!result) {
         throw new Error("No goodreads data returned from backend");
       }
+      dispatch(updateUserBookGoodreadsData({ book, goodreadsData: result }));
       return result;
     } catch (error) {
       console.error(error);

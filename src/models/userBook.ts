@@ -46,13 +46,15 @@ class UserBook {
   }
 }
 
+export type BookData = {
+  book?: Book;
+  mainGenre?: Genre;
+  subgenres?: (Genre | undefined)[] | undefined;
+};
+
 export class UserBookData {
   userBook: UserBook;
-  bookData: {
-    book?: Book;
-    mainGenre?: Genre;
-    subgenres?: (Genre | undefined)[] | undefined;
-  };
+  bookData: BookData;
   goodreadsData?: GoodreadsData | null;
   readingStatus?: ReadingStatus;
 

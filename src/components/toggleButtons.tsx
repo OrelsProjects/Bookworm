@@ -2,13 +2,17 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { Button } from "./button";
+import { TableType } from "./booksTable/booksTable";
 
 interface ToggleButtonProps {
-  labels: string[];
-  onToggle: (index: number) => void;
+  values: {
+    type: TableType;
+    label: string;
+  }[];
+  onToggle: (type: TableType) => void;
 }
 
-const ToggleButtons: React.FC<ToggleButtonProps> = ({ labels, onToggle }) => {
+const ToggleButtons: React.FC<ToggleButtonProps> = ({ values, onToggle }) => {
   const [selected, setSelected] = useState(0);
   const [indicatorStyle, setIndicatorStyle] = useState({});
   const buttonsRef = useRef<(HTMLButtonElement | null)[]>([]);
@@ -33,19 +37,19 @@ const ToggleButtons: React.FC<ToggleButtonProps> = ({ labels, onToggle }) => {
         className="absolute left-0 top-1 bottom-0 bg-primary rounded-full transition-all duration-300 ease-in-out"
         style={{ ...indicatorStyle, zIndex: 0 }}
       />
-      {labels.map((label, index) => {
+      {values.map((value, index) => {
         return (
           <Button
-            key={label}
+            key={value.label}
             ref={(el) => (buttonsRef.current[index] = el)}
             variant={selected === index ? "selected" : "secondary"}
             className={`transition-colors duration-250 rounded-full px-4 py-2 relative z-10`}
             onClick={() => {
               setSelected(index);
-              onToggle(index);
+              onToggle(value.type);
             }}
           >
-            {label}
+            {value.label}
           </Button>
         );
       })}

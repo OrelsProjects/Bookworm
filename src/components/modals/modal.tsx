@@ -26,16 +26,15 @@ const Modal: React.FC<Props> = ({ children, isOpen, onClose, className }) => {
         modalRef.current &&
         !modalRef.current.contains(event.target as Node)
       ) {
-        let timeout: NodeJS.Timeout | null = null;
+        // let timeout: NodeJS.Timeout | null = null;
         onClose?.();
-        timeout = setTimeout(() => {
-          setIsRendered(false);
-        }, 1000);
-        return () => {
-          if (timeout) {
-            clearTimeout(timeout);
-          }
-        };
+        setIsRendered(false);
+        // timeout = setTimeout(() => {}, 1000);
+        // return () => {
+        //   if (timeout) {
+        //     clearTimeout(timeout);
+        //   }
+        // };
       }
     };
 

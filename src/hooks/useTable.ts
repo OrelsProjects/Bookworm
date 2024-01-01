@@ -5,19 +5,28 @@ import {
   selectUserBooks,
 } from "../lib/features/userBooks/userBooksSlice";
 import { UserBookData } from "../models";
+import { TableType } from "../components/booksTable/booksTable";
 
 const useTable = () => {
   const dispatch = useDispatch();
-  const {
+  const [tableType, setTableType] = useState<TableType>(TableType.READ);
+  let {
     userBooksData,
+    loading,
     error,
-  }: { userBooksData: UserBookData[]; error: string | null } =
+  }: { userBooksData: UserBookData[]; loading: boolean; error: string | null } =
     useSelector(selectUserBooks);
 
-  const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [totalRecords, setTotalRecords] = useState(0);
+
+  useEffect(() => {
+    debugger;
+    userBooksData = userBooksData.filter((userBook) => {
+      userBook.readingStatus?.readingStatusId === tableType;
+    });
+  }, [tableType, userBooksData]);
 
   useEffect(() => {
     setTotalRecords(userBooksData.length);
@@ -32,6 +41,10 @@ const useTable = () => {
     setPageSize(size);
   };
 
+  const updateTableType = (tableType: TableType) => {
+    setTableType(tableType);
+  };
+
   return {
     userBooksData,
     loading,
@@ -41,6 +54,7 @@ const useTable = () => {
     totalRecords,
     handlePageChange,
     handlePageSizeChange,
+    updateTableType,
   };
 };
 
