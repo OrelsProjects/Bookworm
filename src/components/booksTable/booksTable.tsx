@@ -54,13 +54,14 @@ const BooksTable: React.FC = () => {
 
   return (
     <div className="flex flex-col w-full h-full">
-      <div className="w-full flex flex-row justify-between mb-8">
+      <div className="w-full flex flex-row justify-between items-center mb-8">
         <ToggleButtons
           values={[
             { type: TableType.TO_READ, label: "To Read" },
             { type: TableType.READ, label: "Books I've Read" },
           ]}
           onToggle={(type: TableType) => updateTableType(type)}
+          className="h-12"
         />
         <div>
           <SearchBarComponent
