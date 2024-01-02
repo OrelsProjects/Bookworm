@@ -101,6 +101,7 @@ export type UpdateUserBookBody = {
   user_rating?: number;
   reading_start_date?: Date;
   reading_finish_date?: Date;
+  reading_status_id?: number;
   is_deleted?: boolean;
 };
 

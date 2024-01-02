@@ -12,7 +12,7 @@ import {
   addUserBooks,
   setUserBooks,
   setUserBooksLoading,
-  updateUserBook,
+  updateUserBook as updateUserBookRedux,
   updateUserBookGoodreadsData,
 } from "../lib/features/userBooks/userBooksSlice";
 import { IResponse } from "../models/dto/response";
@@ -21,10 +21,6 @@ import { setError } from "../lib/features/auth/authSlice";
 const useBook = () => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(setUserBooksLoading(loading));
-  }, [loading]);
 
   const favoriteBook = async (userBook: UserBook): Promise<void> => {
     if (loading) {
@@ -40,7 +36,7 @@ const useBook = () => {
       await axios.put<UserBook>(`/api/user-books`, updateUserBookBody);
 
       dispatch(
-        updateUserBook({
+        updateUserBookRedux({
           ...userBook,
           isFavorite,
         })
@@ -169,8 +165,31 @@ const useBook = () => {
     }
   };
 
+  const updateUserBook = async (
+    updateBookBody: UpdateUserBookBody
+  ): Promise<UserBook> => {
+    try {
+      setLoading(true);
+      const response = await axios.put<IResponse<UserBook>>("/api/user-books", {
+        updateBookBody,
+      });
+      const newUserBook = response.data.result;
+      if (!newUserBook) {
+        throw new Error("No user book returned from backend");
+      }
+      dispatch(updateUserBookRedux(newUserBook));
+      return newUserBook;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return {
     getBookGoodreadsData,
+    updateUserBook,
     loadUserBooks,
     addUserBook,
     favoriteBook,

@@ -18,10 +18,10 @@ const tabs = [
     label: "My Library",
     href: "/my-library",
   },
-  {
-    label: "Statistics",
-    href: "/statistics",
-  },
+  // {
+  //   label: "Statistics",
+  //   href: "/statistics",
+  // },
 ];
 
 export interface HeaderProps {

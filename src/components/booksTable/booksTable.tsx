@@ -15,7 +15,7 @@ export type BooksTableProps = {
 
 const BooksTable: React.FC<BooksTableProps> = ({ type }) => {
   const {
-    userBooksData,
+    userBooks,
     loading,
     error,
     currentPage,
@@ -23,12 +23,15 @@ const BooksTable: React.FC<BooksTableProps> = ({ type }) => {
     totalRecords,
     handlePageChange,
     handlePageSizeChange,
-  } = useTable();
+    updateTableType,
+  } = useTable({ initialType: type });
 
   const headerRef = useRef(null); // Reference to the header element
   const [tableHeight, setTableHeight] = useState(0); // State to store the calculated height
 
-
+  useEffect(() => {
+    updateTableType(type);
+  }, [type]);
 
   useEffect(() => {
     // Function to calculate the available height for the table
@@ -55,7 +58,7 @@ const BooksTable: React.FC<BooksTableProps> = ({ type }) => {
   if (error) {
     return <div>{error}</div>;
   }
-  if (!userBooksData) {
+  if (!userBooks) {
     return <EmptyTable />;
   }
   return (
@@ -67,8 +70,8 @@ const BooksTable: React.FC<BooksTableProps> = ({ type }) => {
         className="flex flex-col overflow-y-auto gap-2 scrollbar-hide"
         style={{ height: tableHeight }}
       >
-        {userBooksData && userBooksData.length > 0 ? (
-          userBooksData.map((bookData, index) => (
+        {userBooks && userBooks.length > 0 ? (
+          userBooks.map((bookData, index) => (
             <BookItem key={index} userBookData={bookData} />
           ))
         ) : (

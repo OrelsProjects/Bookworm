@@ -2,9 +2,11 @@ import React from "react";
 import { Button } from "../button";
 import Image from "next/image";
 import Loading from "../loading";
-import { Book } from "@/src/models";
+import { Book, UserBook } from "@/src/models";
 import { useDispatch } from "react-redux";
 import { showBookDetailsModal } from "@/src/lib/features/modal/modalSlice";
+import { ReadingStatusEnum } from "@/src/models/readingStatus";
+import useBook from "@/src/hooks/useBook";
 
 export interface BookButtonProps {
   loading?: boolean;
@@ -36,21 +38,44 @@ const FavoriteButton = ({
   </Button>
 );
 
-const ReadListButton = ({
-  loading,
+const AddToReadListButton = ({
+  userBook,
   className,
   onClick,
-}: BookButtonProps): React.ReactNode => (
-  <Button
-    variant="accent"
-    onClick={onClick}
-    className={`rounded-full ${className}`}
-  >
-    {loading ? <Loading /> : "I've read it"}
-  </Button>
-);
+}: { userBook: UserBook } & BookButtonProps): React.ReactNode => {
+  const { updateUserBook, loading } = useBook();
 
-const BacklogButton = ({
+  const addBookToList = async () => {
+    try {
+      await updateUserBook({
+        user_book_id: userBook.userBookId,
+        reading_status_id: ReadingStatusEnum.READ,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <Button
+      variant="accent"
+      onClick={() => {
+        onClick?.();
+        addBookToList();
+      }}
+      className={`rounded-full relative ${className}`}
+    >
+      <p className={`${loading ? "opacity-0" : ""}`}>I've read it</p>
+      {loading && (
+        <div className="absolute m-auto">
+          <Loading />
+        </div>
+      )}
+    </Button>
+  );
+};
+
+const AddToBacklogButton = ({
   loading,
   className,
   onClick,
@@ -89,4 +114,9 @@ const ShowDetailsButton = ({
   );
 };
 
-export { FavoriteButton, ReadListButton, BacklogButton, ShowDetailsButton };
+export {
+  FavoriteButton,
+  AddToReadListButton as ReadListButton,
+  AddToBacklogButton as BacklogButton,
+  ShowDetailsButton,
+};

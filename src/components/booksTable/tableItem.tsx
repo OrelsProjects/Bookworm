@@ -34,7 +34,9 @@ const TableItem: React.FC<TableItemProps> = ({ userBookData }) => {
         userRating={userBookData.userBook.userRating}
       />
       <div className="flex flex-row gap-2">
-        <ReadListButton />
+        <ReadListButton
+          userBook={userBookData.userBook}
+        />
         {userBookData.bookData.book && (
           <ShowDetailsButton book={userBookData.bookData.book} />
         )}

@@ -7,25 +7,27 @@ import {
 import { UserBookData } from "../models";
 import { TableType } from "../components/booksTable/booksTable";
 
-const useTable = () => {
+const useTable = ({ initialType }: { initialType: TableType }) => {
   const dispatch = useDispatch();
-  const [tableType, setTableType] = useState<TableType>(TableType.READ);
-  let {
+  const {
     userBooksData,
     loading,
     error,
-  }: { userBooksData: UserBookData[]; loading: boolean; error: string | null } =
-    useSelector(selectUserBooks);
-
+  } = useSelector(selectUserBooks);
+  
+  const [tableType, setTableType] = useState<TableType>(initialType);
+  const [userBooks, setUserBooks] = useState<UserBookData[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [totalRecords, setTotalRecords] = useState(0);
 
   useEffect(() => {
-    debugger;
-    userBooksData = userBooksData.filter((userBook) => {
-      userBook.readingStatus?.readingStatusId === tableType;
+    let newUserBooks = [...userBooksData];
+    newUserBooks = newUserBooks.filter((userBook) => {
+      return userBook.readingStatus?.readingStatusId === tableType;
     });
+
+    setUserBooks(newUserBooks);
   }, [tableType, userBooksData]);
 
   useEffect(() => {
@@ -46,7 +48,7 @@ const useTable = () => {
   };
 
   return {
-    userBooksData,
+    userBooks,
     loading,
     error,
     currentPage,
