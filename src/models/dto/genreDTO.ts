@@ -1,4 +1,5 @@
 import Genre from "../genre";
+import { z } from "zod";
 
 class GenreDTO {
   genre_id: number;
@@ -8,6 +9,11 @@ class GenreDTO {
     this.genre_id = genre_id;
     this.genre_name = genre_name;
   }
+
+  static schema = z.object({
+    genre_id: z.number(),
+    genre_name: z.string(),
+  });
 
   static FromResponse = (genreDTO?: GenreDTO): Genre | undefined =>
     genreDTO ? new Genre(genreDTO.genre_id, genreDTO.genre_name) : undefined;

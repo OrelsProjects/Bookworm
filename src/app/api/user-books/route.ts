@@ -8,10 +8,15 @@ import {
 import { IResponse } from "@/src/models/dto/response";
 import UserBookDTO, {
   CreateUserBookBody,
+  CreateUserBookBodySchema,
   GetUserBooksResponseDTO,
+  GetUserBooksResponseSchema,
+  UpdateUserBookBodySchema,
 } from "@/src/models/dto/userBookDTO";
 import { GetAxiosInstance } from "@/src/utils/axiosInstance";
+import DataValidator from "@/src/utils/dataValidator";
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
 const userBookDataDTOFromResponse = (
   userBookDataDTO: GetUserBooksResponseDTO
@@ -42,11 +47,17 @@ export async function GET(req: NextRequest) {
   try {
     const axios = GetAxiosInstance(req);
     const response = await axios.get<GetUserBooksResponseDTO[]>("/user-book");
-    const userBookData = response.data?.map((getUserBooksResponseDTO) =>
-      userBookDataDTOFromResponse(getUserBooksResponseDTO)
-    );
+    const userBookData = response.data;
+
+    if (!DataValidator.validate(userBookData, GetUserBooksResponseSchema)) {
+      console.error("Invalid response from API for get request /user-books");
+      return NextResponse.json({}, { status: 500 });
+    }
+
     const result: IResponse<UserBookData[]> = {
-      result: userBookData,
+      result: userBookData.map((userBookData) =>
+        userBookDataDTOFromResponse(userBookData)
+      ),
     };
     return NextResponse.json(result, { status: 200 });
   } catch (error) {
@@ -59,13 +70,26 @@ export async function POST(req: NextRequest) {
   try {
     const { createUserBookBody }: { createUserBookBody: CreateUserBookBody } =
       await req.json();
+
+    if (!DataValidator.validate(createUserBookBody, CreateUserBookBodySchema)) {
+      console.error("Invalid request body for post request /user-books");
+      return NextResponse.json({}, { status: 400 });
+    }
+
     const axios = GetAxiosInstance(req);
     const response = await axios.post<UserBookDTO>(
       "/user-book",
       createUserBookBody
     );
+    const userBookDTO = DataValidator.validateAndCreate<UserBookDTO>(
+      response.data,
+      UserBookDTO.schema
+    );
+    if (userBookDTO === null) {
+      console.error("Invalid response from API for post request /user-books");
+      return NextResponse.json({}, { status: 500 });
+    }
 
-    const userBookDTO = response.data;
     const userBook = UserBookDTO.FromResponse(userBookDTO);
 
     return NextResponse.json(
@@ -84,8 +108,13 @@ export async function PUT(req: NextRequest) {
   try {
     const updateUserBookBody = await req.json();
     const axios = GetAxiosInstance(req);
-    await axios.put<UserBookDTO>("/user-book", updateUserBookBody);
 
+    if (!DataValidator.validate(updateUserBookBody, UpdateUserBookBodySchema)) {
+      console.error("Invalid request body for put request /user-books");
+      return NextResponse.json({}, { status: 400 });
+    }
+    await axios.put<UserBookDTO>("/user-book", updateUserBookBody);
+    
     return NextResponse.json({}, { status: 200 });
   } catch (error) {
     console.error(error);

@@ -4,10 +4,13 @@ import { BookDTO } from "@/src/models/dto";
 import {
   CreateBookBody,
   CreateBooksResponseDTO,
+  CreateBooksResponseSchema,
 } from "@/src/models/dto/bookDTO";
 import { IResponse } from "@/src/models/dto/response";
 import { GetAxiosInstance } from "@/src/utils/axiosInstance";
+import DataValidator from "@/src/utils/dataValidator";
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
 export async function POST(
   req: NextRequest
@@ -15,6 +18,21 @@ export async function POST(
   try {
     const book: Book = await req.json();
     const bookDTO = new BookDTO(book);
+
+    if (!DataValidator.validate(bookDTO, BookDTO.schema)) {
+      console.error("Invalid request body for post request /books");
+      return NextResponse.json(
+        {
+          result: {
+            success: [],
+            duplicates: [],
+            failure: [],
+          },
+        },
+        { status: 400 }
+      );
+    }
+    
     const createBookBody: CreateBookBody = {
       books: [bookDTO],
     };
@@ -23,8 +41,22 @@ export async function POST(
       "/book",
       createBookBody
     );
-    const bookDTOsWithIds = response.data ?? {};
-    const createBooksResponse = { 
+    const bookDTOsWithIds = response.data;
+    if (!DataValidator.validate(bookDTOsWithIds, CreateBooksResponseSchema)) {
+      console.error("Invalid response from API for post request /books");
+      return NextResponse.json(
+        {
+          result: {
+            success: [],
+            duplicates: [],
+            failure: [],
+          },
+        },
+        { status: 500 }
+      );
+    }
+
+    const createBooksResponse = {
       success: bookDTOsWithIds.success?.map((bookDTO) =>
         BookDTO.FromResponse(bookDTO)
       ),

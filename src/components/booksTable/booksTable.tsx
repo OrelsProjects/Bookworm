@@ -61,6 +61,7 @@ const BooksTable: React.FC = () => {
             { type: TableType.READ, label: "Books I've Read" },
           ]}
           onToggle={(type: TableType) => updateTableType(type)}
+          className="h-12"
         />
         <div>
           <SearchBarComponent

@@ -2,6 +2,7 @@ import { GoodreadsData } from "@/src/models";
 import { GoodreadsDataDTO } from "@/src/models/dto";
 import { IResponse } from "@/src/models/dto/response";
 import { GetAxiosInstance } from "@/src/utils/axiosInstance";
+import DataValidator from "@/src/utils/dataValidator";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -20,7 +21,19 @@ export async function GET(
         bookISBN: isbn,
       },
     });
-    const { data } = response;
+
+    const data: GoodreadsDataDTO | null = DataValidator.validateAndCreate(
+      response.data,
+      GoodreadsDataDTO.schema
+    );
+
+    if (!data) {
+      console.error(
+        "Invalid response from API for get request /goodreads-book"
+      );
+      return NextResponse.json({}, { status: 500 });
+    }
+
     const goodreadsData = GoodreadsDataDTO.FromResponse(data);
     return NextResponse.json(
       {

@@ -10,9 +10,14 @@ interface ToggleButtonProps {
     label: string;
   }[];
   onToggle: (type: TableType) => void;
+  className?: string;
 }
 
-const ToggleButtons: React.FC<ToggleButtonProps> = ({ values, onToggle }) => {
+const ToggleButtons: React.FC<ToggleButtonProps> = ({
+  values,
+  onToggle,
+  className,
+}) => {
   const [selected, setSelected] = useState(0);
   const [indicatorStyle, setIndicatorStyle] = useState({});
   const buttonsRef = useRef<(HTMLButtonElement | null)[]>([]);
@@ -31,7 +36,9 @@ const ToggleButtons: React.FC<ToggleButtonProps> = ({ values, onToggle }) => {
   }, [selected]);
 
   return (
-    <div className="flex bg-secondary p-1 justify-center items-center rounded-full w-fit relative">
+    <div
+      className={`flex bg-secondary p-1 justify-center items-center rounded-full w-fit relative ${className}`}
+    >
       <div
         id="indicator"
         className="absolute left-0 top-1 bottom-0 bg-primary rounded-full transition-all duration-300 ease-in-out"

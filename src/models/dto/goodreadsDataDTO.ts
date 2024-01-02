@@ -1,4 +1,5 @@
 import GoodreadsData from "../goodreadsData";
+import { z } from "zod";
 
 class GoodreadsDataDTO {
   goodreads_rating?: number;
@@ -17,6 +18,14 @@ class GoodreadsDataDTO {
     this.goodreads_ratings_count = goodreads_ratings_count;
     this.updated_at = updated_at;
   }
+
+  static schema = z.object({
+    goodreads_rating: z.number().optional(),
+    goodreads_url: z.string().optional(),
+    goodreads_ratings_count: z.number().optional(),
+    updated_at: z.string().optional(),
+  });
+  
   static FromResponse(
     goodreadsDataDTO?: GoodreadsDataDTO
   ): GoodreadsData | undefined {

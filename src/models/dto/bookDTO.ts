@@ -1,3 +1,4 @@
+import { z } from "zod";
 import Book from "../book";
 import GenreDTO from "./genreDTO";
 import GoodreadsDataDTO from "./goodreadsDataDTO";
@@ -53,6 +54,24 @@ export default class BookDTO {
     this.authors = book.authors;
     this.description = book.description;
   }
+
+  static schema = z.object({
+    title: z.string(),
+    main_genre_id: z.number(),
+    book_id: z.number(),
+    thumbnail_url: z.string().optional(),
+    subtitle: z.string().optional(),
+    date_published: z.string().optional(),
+    original_date_published: z.string().optional(),
+    number_of_pages: z.number().optional(),
+    medium_image_url: z.string().optional(),
+    language: z.string().optional(),
+    isbn10: z.string().optional(),
+    isbn: z.string().optional(),
+    authors: z.array(z.string()).optional(),
+    description: z.string().optional(),
+  });
+
   static FromResponse = (bookDTO: BookDTO): Book =>
     new Book(
       bookDTO.title,
@@ -88,3 +107,16 @@ export type GetBooksResponseDTO = {
   subgenres?: GenreDTO[];
   goodreads_data?: GoodreadsDataDTO;
 };
+
+export const CreateBooksResponseSchema = z.object({
+  success: z.array(BookDTO.schema).optional(),
+  duplicates: z.array(BookDTO.schema).optional(),
+  failure: z.array(BookDTO.schema).optional(),
+});
+
+export const GetBooksResponseSchema = z.object({
+  book: BookDTO.schema,
+  main_genre: GenreDTO.schema.optional(),
+  subgenres: z.array(GenreDTO.schema).optional(),
+  goodreads_data: GoodreadsDataDTO.schema.optional(),
+});

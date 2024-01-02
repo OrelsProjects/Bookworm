@@ -3,6 +3,7 @@ import { GetAxiosInstance } from "../../../utils/axiosInstance";
 import { Book } from "../../../models";
 import { BookDTO } from "../../../models/dto";
 import { NextRequest, NextResponse } from "next/server";
+import DataValidator from "@/src/utils/dataValidator";
 
 export async function GET(req: NextRequest) {
   try {
@@ -13,7 +14,17 @@ export async function GET(req: NextRequest) {
       throw new Error("Missing query parameter");
     }
     const response = await axios.get<BookDTO[]>(`/google-books?query=${query}`);
-    const bookDTOs: BookDTO[] = response.data ?? [];
+
+    const bookDTOs: BookDTO[] | null = DataValidator.validateAndCreate(
+      response.data,
+      BookDTO.schema.array()
+    );
+
+    if (!bookDTOs) {
+      console.error("Invalid response from API for get request /google-books");
+      return NextResponse.json({}, { status: 500 });
+    }
+
     const books: Book[] = bookDTOs.map((bookDTO) =>
       BookDTO.FromResponse(bookDTO)
     );
