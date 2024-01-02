@@ -8,7 +8,6 @@ import { UserBookData } from "../models";
 import { TableType } from "../components/booksTable/booksTable";
 
 const useTable = ({ initialType }: { initialType: TableType }) => {
-  const dispatch = useDispatch();
   const { userBooksData, loading, error } = useSelector(selectUserBooks);
 
   const [tableType, setTableType] = useState<TableType>(initialType);
@@ -18,18 +17,22 @@ const useTable = ({ initialType }: { initialType: TableType }) => {
   const [totalRecords, setTotalRecords] = useState(0);
 
   useEffect(() => {
+    updateUserBooks();
+  }, [tableType]);
+
+  useEffect(() => {
+    debugger;
+    updateUserBooks();
+  }, [userBooksData]);
+
+  const updateUserBooks = () => {
     let newUserBooks = [...userBooksData];
     newUserBooks = newUserBooks.filter((userBook) => {
       return userBook.readingStatus?.readingStatusId === tableType;
     });
-
     setUserBooks(newUserBooks);
-  }, [tableType, userBooksData]);
-
-  useEffect(() => {
     setTotalRecords(userBooksData.length);
-    dispatch(setError(null));
-  }, [userBooksData]);
+  };
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);

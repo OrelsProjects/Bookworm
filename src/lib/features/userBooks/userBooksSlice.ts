@@ -32,13 +32,16 @@ const userBooksSlice = createSlice({
       state.userBooksData = action.payload;
     },
     updateUserBook: (state, action: PayloadAction<UserBook>) => {
+      debugger;
       state.loading = false;
       const index = state.userBooksData.findIndex(
         (userBookData) =>
           userBookData.userBook.userBookId === action.payload.userBookId
       );
       if (index !== -1) {
-        state.userBooksData[index].userBook = action.payload;
+        const userBooksDataNew = [...state.userBooksData];
+        userBooksDataNew[index].userBook = action.payload;
+        state.userBooksData = userBooksDataNew;
       }
     },
     updateUserBookGoodreadsData: (
@@ -54,6 +57,7 @@ const userBooksSlice = createSlice({
       }
     },
     updateUserBookData: (state, action: PayloadAction<UserBookData>) => {
+      debugger;
       state.loading = false;
       const index = state.userBooksData.findIndex(
         (userBookData) =>
@@ -61,7 +65,9 @@ const userBooksSlice = createSlice({
           action.payload.userBook.userBookId
       );
       if (index !== -1) {
-        state.userBooksData[index] = action.payload;
+        const userBooksDataNew = [...state.userBooksData];
+        userBooksDataNew[index] = action.payload;
+        state.userBooksData = userBooksDataNew;
       }
     },
     setError: (state, action: PayloadAction<string | null>) => {

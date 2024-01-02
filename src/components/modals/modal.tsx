@@ -45,7 +45,7 @@ const Modal: React.FC<Props> = ({ children, isOpen, onClose, className }) => {
   }, [onClose, isOpen]);
 
   return (
-    <>
+    <div className="flex justify-center items-center relative w-full h-full">
       {isOpen && (
         <div
           className={`fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-1000 ease-in-out ${
@@ -55,21 +55,17 @@ const Modal: React.FC<Props> = ({ children, isOpen, onClose, className }) => {
       )}
       {isRendered && (
         <div
-          className={`fixed inset-0 z-50 flex items-center justify-center w-full h-full transition-all duration-1000 ease-in-out ${
-            isOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-48"
-          }
-          ${className}
-          `}
+          className={`relative z-50 w-modal h-modal flex items-center justify-center ${className}`}
         >
           <div
             ref={modalRef}
-            className="bg-secondary p-4 rounded-lg shadow-lg relative"
+            className="bg-secondary p-4 rounded-lg shadow-lg"
           >
             {children}
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

@@ -6,19 +6,36 @@ import { Button } from "./button"; // Adjust the import path as necessary
 type StarProps = {
   filled: boolean;
   user?: boolean;
+  className?: string;
+  imageFill?: boolean;
+  onClick?: () => void;
 };
 
-const Star: React.FC<StarProps> = ({ filled, user }) => {
+export const RatingStar: React.FC<StarProps> = ({
+  imageFill,
+  filled,
+  user,
+  className,
+  onClick,
+}) => {
   const starSrc = filled
     ? user
       ? "/starUser.svg"
       : "/star.svg"
     : "/starEmpty.svg"; // Assuming you have an 'star-empty.svg' for empty stars
   return (
-    <div className="inline-block w-4 h-4">
-      {" "}
-      {/* Adjust width and height as needed */}
-      <Image src={starSrc} alt="Star" width={13} height={12} />
+    <div className={className}>
+      {imageFill ? (
+        <Image src={starSrc} alt="Star" fill onClick={onClick} />
+      ) : (
+        <img
+          src={starSrc}
+          alt="Star"
+          width={13}
+          height={13}
+          onClick={onClick}
+        />
+      )}
     </div>
   );
 };
@@ -64,11 +81,20 @@ const Rating: React.FC<RatingProps> = ({
           >
             <div className="flex items-center justify-start px-3">
               {[...Array(user ? fullStarsUser : fullStars)].map((_, index) => (
-                <Star key={index} filled={true} user={user} />
+                <RatingStar
+                  key={index}
+                  filled={true}
+                  user={user}
+                  className="inline-block w-4 h-4"
+                />
               ))}
               {[...Array(user ? emptyStarsUser : emptyStars)].map(
                 (_, index) => (
-                  <Star key={index} filled={false} />
+                  <RatingStar
+                    key={index}
+                    filled={false}
+                    className="inline-block w-4 h-4"
+                  />
                 )
               )}
               <p className="ms-1 text-sm font-thin text-foreground">

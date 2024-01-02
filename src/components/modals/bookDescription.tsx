@@ -6,8 +6,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/src/lib/store";
 import {
   FavoriteButton,
-  BacklogButton,
-  ReadListButton,
+  AddToBacklogButton,
 } from "../buttons/bookButtons";
 import useBook from "@/src/hooks/useBook";
 import { compareBooks } from "@/src/models/book";
@@ -153,10 +152,10 @@ export function BookDescription({
             isFavorite={userBookData.userBook.isFavorite ?? false}
           />
         ) : (
-          <BacklogButton onClick={() => setShowAddBookToReadList(true)} />
+          <AddToBacklogButton book={book} />
         )}
         {userBookData && userBookData.readingStatus?.readingStatusId !== 1 && (
-          <ReadListButton onClick={() => setShowAddBookToReadList(true)} />
+          <AddToBacklogButton book={book} />
         )}
       </div>
     </div>

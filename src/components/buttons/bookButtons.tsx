@@ -4,7 +4,7 @@ import Image from "next/image";
 import Loading from "../loading";
 import { Book, UserBook } from "@/src/models";
 import { useDispatch } from "react-redux";
-import { showBookDetailsModal } from "@/src/lib/features/modal/modalSlice";
+import { ModalTypes, showModal } from "@/src/lib/features/modal/modalSlice";
 import { ReadingStatusEnum } from "@/src/models/readingStatus";
 import useBook from "@/src/hooks/useBook";
 
@@ -78,16 +78,24 @@ const AddToReadListButton = ({
 const AddToBacklogButton = ({
   loading,
   className,
-  onClick,
-}: BookButtonProps): React.ReactNode => (
-  <Button
-    variant="selected"
-    onClick={onClick}
-    className={`rounded-full ${className}`}
-  >
-    {loading ? <Loading /> : "Add to library"}
-  </Button>
-);
+  book,
+}: BookButtonProps & {
+  book: Book;
+}): React.ReactNode => {
+  const dispatch = useDispatch();
+
+  return (
+    <Button
+      variant="selected"
+      onClick={() => {
+        dispatch(showModal({ book, type: ModalTypes.ADD_BOOK_TO_BACKLOG }));
+      }}
+      className={`rounded-full ${className}`}
+    >
+      {loading ? <Loading /> : "Add to library"}
+    </Button>
+  );
+};
 
 const ShowDetailsButton = ({
   loading,
@@ -100,7 +108,9 @@ const ShowDetailsButton = ({
   return (
     <Button
       variant="outline"
-      onClick={() => dispatch(showBookDetailsModal(book))}
+      onClick={() =>
+        dispatch(showModal({ book, type: ModalTypes.BOOK_DETAILS }))
+      }
       className={`rounded-full border-none w-28 h-10 ${className}`}
     >
       {loading ? (
@@ -116,7 +126,7 @@ const ShowDetailsButton = ({
 
 export {
   FavoriteButton,
-  AddToReadListButton as ReadListButton,
-  AddToBacklogButton as BacklogButton,
+  AddToReadListButton,
+  AddToBacklogButton,
   ShowDetailsButton,
 };

@@ -9,8 +9,7 @@ import { Book } from "../../models";
 import toast from "react-hot-toast";
 import useBook from "@/src/hooks/useBook";
 import { useDispatch } from "react-redux";
-import { showBookDetailsModal } from "@/src/lib/features/modal/modalSlice";
-import { Books } from "@/src/models/book";
+import { ModalTypes, showModal } from "@/src/lib/features/modal/modalSlice";
 import { SearchBarComponent } from "./searchBarComponent";
 
 const TOP_RESULTS_COUNT = 3;
@@ -105,11 +104,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ className }: SearchBarProps) => {
                       book={book}
                       onAddToLibrary={(book) => {
                         addToLibrary(book);
-                      }}
-                      onShowDetails={(book) => {
-                        setBookToShowInModal(book);
-                        setIsModalOpen(true);
-                        dispatch(showBookDetailsModal(book));
                       }}
                     />
                   )

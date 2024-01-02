@@ -1,7 +1,10 @@
 import React from "react";
 import { UserBookData } from "../../models";
 import Rating from "../rating";
-import { ReadListButton, ShowDetailsButton } from "../buttons/bookButtons";
+import {
+  AddToReadListButton,
+  ShowDetailsButton,
+} from "../buttons/bookButtons";
 
 interface TableItemProps {
   userBookData: UserBookData;
@@ -34,9 +37,7 @@ const TableItem: React.FC<TableItemProps> = ({ userBookData }) => {
         userRating={userBookData.userBook.userRating}
       />
       <div className="flex flex-row gap-2">
-        <ReadListButton
-          userBook={userBookData.userBook}
-        />
+        <AddToReadListButton userBook={userBookData.userBook} />
         {userBookData.bookData.book && (
           <ShowDetailsButton book={userBookData.bookData.book} />
         )}

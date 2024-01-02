@@ -1,31 +1,30 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { Button } from "../button";
 import { SquareSkeleton, LineSkeleton } from "../skeleton";
 import { Book, UserBook, UserBookData } from "../../models";
 import { RootState } from "@/src/lib/store";
 import { useSelector } from "react-redux";
 import useBook from "@/src/hooks/useBook";
-import { FavoriteButton, BacklogButton } from "../buttons/bookButtons";
+import {
+  AddToBacklogButton,
+  FavoriteButton,
+  ShowDetailsButton,
+} from "../buttons/bookButtons";
 import { compareBooks } from "@/src/models/book";
 import toast from "react-hot-toast";
+import AddBookToBacklog from "../modals/addBookToReadList";
 
 interface SearchItemProps {
   book: Book;
   onAddToLibrary: (book: Book) => void;
-  onShowDetails?: (book: Book) => void;
 }
 
-const SearchItem: React.FC<SearchItemProps> = ({
-  book,
-  onAddToLibrary,
-  onShowDetails,
-}) => {
+const SearchItem: React.FC<SearchItemProps> = ({ book, onAddToLibrary }) => {
   const { favoriteBook } = useBook();
   const [loadingFavorite, setLoadingFavorite] = useState(false);
   const [userBookData, setUserBookData] = useState<UserBookData | undefined>(
     undefined
-  ); 
+  );
   const userBooksData: UserBookData[] = useSelector(
     (state: RootState) => state.userBooks.userBooksData
   );
@@ -76,17 +75,8 @@ const SearchItem: React.FC<SearchItemProps> = ({
               isFavorite={userBookData.userBook.isFavorite ?? false}
             />
           )}
-          <BacklogButton onClick={() => onAddToLibrary(book)} />
-          <Button
-            variant="outline"
-            onClick={() => onShowDetails && onShowDetails(book)}
-            className="rounded-full border-none"
-          >
-            <div className="flex flex-row gap-1">
-              <h2 className="text-primary">Details</h2>
-            </div>
-          </Button>
-          {/* Add more buttons as needed */}
+          <AddToBacklogButton book={book} />
+          <ShowDetailsButton book={book} />
         </div>
       </div>
     </div>

@@ -2,6 +2,7 @@ import { Button } from "./button";
 import { Switch } from "./switch";
 import { Input } from "./input";
 import { Label } from "./label";
+import { TextArea } from "./textarea";
 import Modal from "./modals/modal";
 import Tabs from "./tabs";
 import Toggle from "./toggleButtons";

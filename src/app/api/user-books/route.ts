@@ -9,6 +9,7 @@ import { IResponse } from "@/src/models/dto/response";
 import UserBookDTO, {
   CreateUserBookBody,
   GetUserBooksResponseDTO,
+  UpdateUserBookBody,
 } from "@/src/models/dto/userBookDTO";
 import { GetAxiosInstance } from "@/src/utils/axiosInstance";
 import { NextRequest, NextResponse } from "next/server";
@@ -80,13 +81,19 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export async function PUT(req: NextRequest) {
+export async function PATCH(
+  req: NextRequest
+): Promise<NextResponse<IResponse<UserBook>>> {
   try {
-    const updateUserBookBody = await req.json();
+    const updateUserBookBody: UpdateUserBookBody = await req.json();
     const axios = GetAxiosInstance(req);
-    await axios.put<UserBookDTO>("/user-book", updateUserBookBody);
+    const response = await axios.patch<UserBookDTO>(
+      "/user-book",
+      updateUserBookBody
+    );
 
-    return NextResponse.json({}, { status: 200 });
+    const userBook: UserBook = UserBookDTO.FromResponse(response.data);
+    return NextResponse.json({ result: userBook }, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json({}, { status: 500 });

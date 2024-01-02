@@ -31,7 +31,9 @@ export default function RootLayout({
           <AuthProvider>
             <APIProvider>
               <DataProvider>
-                <ModalProvider />
+                <div className="absolute top-0 w-screen h-screen">
+                  <ModalProvider />
+                </div>
                 <div
                   id="portal"
                   className="absolute top-0 right-0 left-0 bottom-0 z-10"

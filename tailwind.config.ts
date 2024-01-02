@@ -93,10 +93,14 @@ module.exports = {
       width: {
         "22": "5.5rem",
         "288": "72rem",
+        comments: "33.5rem",
+        modal: "82rem",
       },
       height: {
         "22": "5.5rem",
+        "144": "36rem",
         "288": "72rem",
+        modal: "33.5rem" /* this is in pixels: 536px */,
       },
       fontFamily: {
         sans: ["DM Sans", "sans-serif"],

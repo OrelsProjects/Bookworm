@@ -7,20 +7,22 @@ import {
   CreateUserBookBody,
   UpdateUserBookBody,
 } from "../models/dto/userBookDTO";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   addUserBooks,
   setUserBooks,
-  setUserBooksLoading,
-  updateUserBook as updateUserBookRedux,
+  updateUserBookData,
   updateUserBookGoodreadsData,
 } from "../lib/features/userBooks/userBooksSlice";
 import { IResponse } from "../models/dto/response";
 import { setError } from "../lib/features/auth/authSlice";
+import { RootState } from "../lib/store";
+import ReadingStatus from "../models/readingStatus";
 
 const useBook = () => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+  const { userBooksData } = useSelector((state: RootState) => state.userBooks);
 
   const favoriteBook = async (userBook: UserBook): Promise<void> => {
     if (loading) {
@@ -33,14 +35,16 @@ const useBook = () => {
         user_book_id: userBook.userBookId,
         is_favorite: isFavorite,
       };
-      await axios.put<UserBook>(`/api/user-books`, updateUserBookBody);
-
-      dispatch(
-        updateUserBookRedux({
-          ...userBook,
-          isFavorite,
-        })
+      await axios.patch<UserBook>(`/api/user-books`, updateUserBookBody);
+      const userBookData: UserBookData | undefined = userBooksData.find(
+        (userBookData) =>
+          userBookData.userBook.userBookId === userBook.userBookId
       );
+      if (!userBookData) {
+        throw new Error("No user book data found");
+      }
+      userBookData.userBook.isFavorite = isFavorite;
+      dispatch(updateUserBookData(userBookData));
     } catch (error) {
       console.error(error);
       // throw error;
@@ -119,7 +123,7 @@ const useBook = () => {
       if (loading) {
         throw new Error("Cannot load user books while another book is loading");
       }
-      setLoading(true);
+      setLoading((loading) => !loading);
 
       if (user) {
         axios.defaults.headers.common["Authorization"] = user.token;
@@ -129,6 +133,7 @@ const useBook = () => {
       const response = await axios.get<IResponse<UserBookData[]>>(
         `api/user-books`
       );
+
       const { result } = response.data;
       dispatch(setUserBooks(result ?? []));
       dispatch(setError(null));
@@ -169,15 +174,31 @@ const useBook = () => {
     updateBookBody: UpdateUserBookBody
   ): Promise<UserBook> => {
     try {
+      debugger;
       setLoading(true);
-      const response = await axios.put<IResponse<UserBook>>("/api/user-books", {
-        updateBookBody,
-      });
+      const response = await axios.patch<IResponse<UserBook>>(
+        "/api/user-books",
+        updateBookBody
+      );
       const newUserBook = response.data.result;
       if (!newUserBook) {
         throw new Error("No user book returned from backend");
       }
-      dispatch(updateUserBookRedux(newUserBook));
+      let userBookData: UserBookData | undefined = userBooksData.find(
+        (userBookData) =>
+          userBookData.userBook.userBookId === newUserBook.userBookId
+      );
+
+      if (!userBookData) {
+        throw new Error("No user book data found");
+      }
+      userBookData = {
+        ...userBookData,
+        userBook: newUserBook,
+        readingStatus: new ReadingStatus(updateBookBody.reading_status_id),
+      };
+
+      dispatch(updateUserBookData(userBookData));
       return newUserBook;
     } catch (error) {
       console.error(error);
