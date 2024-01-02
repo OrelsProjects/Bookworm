@@ -10,16 +10,7 @@ export default function Home(): React.ReactNode {
 
   return (
     <div className="w-full h-full flex justify-start item-start flex-col gap-6">
-      <div className="w-full ">
-        <ToggleButtons
-          values={[
-            { type: TableType.TO_READ, label: "To Read" },
-            { type: TableType.READ, label: "Books I've Read" },
-          ]}
-          onToggle={(type: TableType) => setSelectedTableType(type)}
-        />
-      </div>
-      <BooksTable type={selectedTableType} />
+      <BooksTable />
     </div>
   );
 }

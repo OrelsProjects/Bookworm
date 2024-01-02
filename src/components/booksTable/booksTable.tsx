@@ -3,35 +3,21 @@ import EmptyTable from "./emptyTable";
 import useTable from "../../hooks/useTable";
 import TableHeader from "./tableHeader";
 import BookItem from "./tableItem";
+import ToggleButtons from "../toggleButtons";
+import { SearchBarComponent } from "../search/searchBarComponent";
 
 export enum TableType {
   READ = 1, // Numbers in backend
   TO_READ = 2,
 }
 
-export type BooksTableProps = {
-  type: TableType;
-};
-
-const BooksTable: React.FC<BooksTableProps> = ({ type }) => {
-  const {
-    userBooks,
-    loading,
-    error,
-    currentPage,
-    pageSize,
-    totalRecords,
-    handlePageChange,
-    handlePageSizeChange,
-    updateTableType,
-  } = useTable({ initialType: type });
+const BooksTable: React.FC = () => {
+  const { userBooks, loading, error, updateTableType, searchBooks } = useTable({
+    initialType: TableType.TO_READ,
+  });
 
   const headerRef = useRef(null); // Reference to the header element
   const [tableHeight, setTableHeight] = useState(0); // State to store the calculated height
-
-  useEffect(() => {
-    updateTableType(type);
-  }, [type]);
 
   useEffect(() => {
     // Function to calculate the available height for the table
@@ -61,8 +47,29 @@ const BooksTable: React.FC<BooksTableProps> = ({ type }) => {
   if (!userBooks) {
     return <EmptyTable />;
   }
+
+  const onSearch = (value: string) => {
+    searchBooks(value);
+  };
+
   return (
     <div className="flex flex-col w-full h-full">
+      <div className="w-full flex flex-row justify-between mb-8">
+        <ToggleButtons
+          values={[
+            { type: TableType.TO_READ, label: "To Read" },
+            { type: TableType.READ, label: "Books I've Read" },
+          ]}
+          onToggle={(type: TableType) => updateTableType(type)}
+        />
+        <div>
+          <SearchBarComponent
+            onSubmit={onSearch}
+            onChange={onSearch}
+            className="rounded-full"
+          />
+        </div>
+      </div>
       <div ref={headerRef}>
         <TableHeader />
       </div>

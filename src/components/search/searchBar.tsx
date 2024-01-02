@@ -7,30 +7,29 @@ import useSearch, { UseSearchResult } from "../../hooks/useSearch";
 import SearchItem, { SearchItemSkeleton } from "./searchItem";
 import { Book } from "../../models";
 import toast from "react-hot-toast";
-import Modal from "../modals/modal";
-import BookDetails from "../modals/bookDescription";
 import useBook from "@/src/hooks/useBook";
-import { setLoading } from "@/src/lib/features/auth/authSlice";
 import { useDispatch } from "react-redux";
 import { showBookDetailsModal } from "@/src/lib/features/modal/modalSlice";
+import { Books } from "@/src/models/book";
+import { SearchBarComponent } from "./searchBarComponent";
 
 const TOP_RESULTS_COUNT = 3;
 
-export interface SearchBarProps {
-  className?: string;
-  onChange?: (text: string) => void;
+export interface CustomSearchBarProps {
+  item: React.ReactNode;
+  onSearch: (text: string) => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({
-  className,
-  onChange,
-}: SearchBarProps) => {
+export interface SearchBarProps {
+  className?: string;
+}
+
+const SearchBar: React.FC<SearchBarProps> = ({ className }: SearchBarProps) => {
   const dispatch = useDispatch();
   const { addUserBook } = useBook();
   const { loading, error, updateSearchValue, books }: UseSearchResult =
     useSearch();
 
-  const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [bookToShowInModal, setBookToShowInModal] = useState<Book | null>(null);
   const [loadingToastId, setLoadingToastId] = useState<string | null>(null);
@@ -53,20 +52,6 @@ const SearchBar: React.FC<SearchBarProps> = ({
     }
   }, [error]);
 
-  const handleSearch = async (event: any) => {
-    event.preventDefault();
-    if (event.target) {
-      updateSearchValue(event.target.value);
-    }
-  };
-
-  const handleSubmit = async (event: any) => {
-    event.preventDefault();
-    if (event.target) {
-      updateSearchValue(event.target[0].value);
-    }
-  };
-
   const addToLibrary = async (book: Book) => {
     try {
       if (loadingAddBook) {
@@ -82,37 +67,19 @@ const SearchBar: React.FC<SearchBarProps> = ({
     }
   };
 
+  const onSubmit = (value: string) => updateSearchValue(value);
+  const onChange = (value: string) => updateSearchValue(value);
+
   const classItems = "px-6 py-4 rounded-t-3xl rounded-b-lg";
   const classNoItems = "rounded-full";
 
   return (
     <div className="w-full h-full flex flex-col gap-4">
-      <div
-        className={`w-full flex justify-between items-center bg-secondary 
-        ${books && books.length > 0 ? classItems : classNoItems}
-        ${className}`}
-      >
-        <form
-          onChange={handleSearch}
-          onSubmit={handleSubmit}
-          className={`w-full`}
-        >
-          <label
-            htmlFor="search-bar"
-            className="relative flex flex-row w-full bg-secondary rounded-full px-6 py-4"
-          >
-            <Image src="search.svg" alt="Search" height={32} width={32} />
-            <Input
-              type="text"
-              id="search-bar"
-              className="py-2 w-full h-full rounded-full bg-secondary text-white placeholder-gray-300 focus:outline-none border-none"
-              placeholder="Search for the book"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </label>
-        </form>
-      </div>
+      <SearchBarComponent
+        onSubmit={onSubmit}
+        onChange={onChange}
+        className={books && books.length > 0 ? classItems : classNoItems}
+      />
       <div className="flex flex-col gap-1 overflow-auto">
         {loading ? (
           <>

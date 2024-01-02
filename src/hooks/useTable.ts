@@ -9,12 +9,8 @@ import { TableType } from "../components/booksTable/booksTable";
 
 const useTable = ({ initialType }: { initialType: TableType }) => {
   const dispatch = useDispatch();
-  const {
-    userBooksData,
-    loading,
-    error,
-  } = useSelector(selectUserBooks);
-  
+  const { userBooksData, loading, error } = useSelector(selectUserBooks);
+
   const [tableType, setTableType] = useState<TableType>(initialType);
   const [userBooks, setUserBooks] = useState<UserBookData[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -47,6 +43,26 @@ const useTable = ({ initialType }: { initialType: TableType }) => {
     setTableType(tableType);
   };
 
+  /**
+   * Search books by title or author
+   * @param value - search value
+   */
+  const searchBooks = (value: string) => {
+    let newUserBooks = [...userBooksData];
+    newUserBooks = newUserBooks.filter((userBook) => {
+      return (
+        userBook.bookData?.book?.title
+          .toLowerCase()
+          .includes(value.toLowerCase()) ||
+        userBook.bookData?.book?.authors?.some((author) =>
+          author.toLowerCase().includes(value.toLowerCase())
+        )
+      );
+    });
+
+    setUserBooks(newUserBooks);
+  };
+
   return {
     userBooks,
     loading,
@@ -57,6 +73,7 @@ const useTable = ({ initialType }: { initialType: TableType }) => {
     handlePageChange,
     handlePageSizeChange,
     updateTableType,
+    searchBooks,
   };
 };
 
