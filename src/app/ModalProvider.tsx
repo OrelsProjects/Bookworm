@@ -46,7 +46,10 @@ const ModalProvider: React.FC<ProviderProps> = ({ children }) => {
 
   return (
     <div className="absolute w-screen h-screen">
-      <Modal isOpen={data !== null} onClose={() => dispatch(hideModal())}>
+      <Modal
+        isOpen={type !== null && data !== null}
+        onClose={() => dispatch(hideModal())}
+      >
         <RenderComponent />
       </Modal>
     </div>

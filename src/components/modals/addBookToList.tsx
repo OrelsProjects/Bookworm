@@ -6,13 +6,14 @@ import { TextArea } from "../textarea";
 import { FavoriteButton } from "../buttons/bookButtons";
 import { Button } from "../button";
 import useBook from "@/src/hooks/useBook";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/src/lib/store";
 import { ReadingStatusEnum } from "@/src/models/readingStatus";
 import toast from "react-hot-toast";
 import Loading from "../loading";
 import { compareBooks } from "@/src/models/book";
 import { Input } from "../input";
+import { hideModal } from "@/src/lib/features/modal/modalSlice";
 
 export enum ListType {
   BACKLOG,
@@ -26,6 +27,7 @@ interface AddBookToListProps {
 
 const AddBookToList: React.FC<AddBookToListProps> = ({ book, type }) => {
   const { updateUserBook, addUserBook, loading } = useBook();
+  const dispatch = useDispatch();
   const userBooksData: UserBookData[] = useSelector(
     (state: RootState) => state.userBooks.userBooksData
   );
@@ -59,6 +61,7 @@ const AddBookToList: React.FC<AddBookToListProps> = ({ book, type }) => {
         new Date().toISOString()
       );
       toast.success("Book added to backlog");
+      dispatch(hideModal());
     } catch (error) {
       toast.error("Something went wrong");
     } finally {
@@ -67,11 +70,8 @@ const AddBookToList: React.FC<AddBookToListProps> = ({ book, type }) => {
   };
 
   const addBookToReadList = async () => {
+    let toastId = toast.loading(`Adding ${book.title} to read list`);
     try {
-      debugger;
-      const test = userBooksData.find((userBookData) =>
-        compareBooks(userBookData.bookData.book, book)
-      );
       const userBook: UserBook | undefined = userBooksData.find(
         (userBookData) => compareBooks(userBookData.bookData.book, book)
       )?.userBook;
@@ -80,7 +80,6 @@ const AddBookToList: React.FC<AddBookToListProps> = ({ book, type }) => {
         console.log("userBook not found");
         return;
       }
-      debugger;
 
       await updateUserBook({
         user_book_id: userBook.userBookId,
@@ -90,9 +89,12 @@ const AddBookToList: React.FC<AddBookToListProps> = ({ book, type }) => {
         is_favorite: isFavorite,
       });
       toast.success("Book added to read list");
+      dispatch(hideModal());
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong");
+    } finally {
+      toast.dismiss(toastId);
     }
   };
 
@@ -226,7 +228,7 @@ const AddBookToList: React.FC<AddBookToListProps> = ({ book, type }) => {
           className="rounded-full relative"
           onClick={() => addBookToList()}
         >
-          <div className={`${loading ? "opacity-0" : ""}`}>I've read it</div>
+          <div className={`${loading ? "opacity-0" : ""}`}>I'm done</div>
           {loading && (
             <div className="absolute m-auto">
               <Loading />

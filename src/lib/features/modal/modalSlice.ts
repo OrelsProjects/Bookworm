@@ -59,7 +59,7 @@ const modalSlice = createSlice({
       state.error = null;
     },
     hideModal: (state) => {
-      state.data = null;
+      state.type = null;
       state.error = null;
     },
   },

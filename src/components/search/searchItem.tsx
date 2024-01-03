@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import useBook from "@/src/hooks/useBook";
 import {
   AddToBacklogButton,
+  AddToReadListButton,
   FavoriteButton,
   ShowDetailsButton,
 } from "../buttons/bookButtons";
@@ -15,10 +16,9 @@ import toast from "react-hot-toast";
 
 interface SearchItemProps {
   book: Book;
-  onAddToLibrary: (book: Book) => void;
 }
 
-const SearchItem: React.FC<SearchItemProps> = ({ book, onAddToLibrary }) => {
+const SearchItem: React.FC<SearchItemProps> = ({ book }) => {
   const { favoriteBook } = useBook();
   const [loadingFavorite, setLoadingFavorite] = useState(false);
   const [userBookData, setUserBookData] = useState<UserBookData | undefined>(
@@ -67,14 +67,18 @@ const SearchItem: React.FC<SearchItemProps> = ({ book, onAddToLibrary }) => {
         <p className="text-primary">by {book.authors?.join(", ")}</p>
         <p className="text-muted">{book.numberOfPages} Pages</p>
         <div className="flex flex-row gap-2">
-          {userBookData && (
-            <FavoriteButton
-              loading={loadingFavorite}
-              onClick={() => onFavorite(userBookData.userBook)}
-              isFavorite={userBookData.userBook.isFavorite ?? false}
-            />
+          {userBookData ? (
+            <>
+              <FavoriteButton
+                loading={loadingFavorite}
+                onClick={() => onFavorite(userBookData.userBook)}
+                isFavorite={userBookData.userBook.isFavorite ?? false}
+              />
+              <AddToReadListButton book={book} />
+            </>
+          ) : (
+            <AddToBacklogButton book={book} />
           )}
-          <AddToBacklogButton book={book} />
           <ShowDetailsButton book={book} />
         </div>
       </div>

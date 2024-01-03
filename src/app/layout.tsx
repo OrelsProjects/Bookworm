@@ -31,7 +31,7 @@ export default function RootLayout({
           <AuthProvider>
             <APIProvider>
               <DataProvider>
-                <div className="absolute top-0 w-screen h-screen">
+                <div className="absolute top-0 left-0 right-0 bottom-0 w-screen h-screen">
                   <ModalProvider />
                 </div>
                 <div

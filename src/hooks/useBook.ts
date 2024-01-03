@@ -36,14 +36,20 @@ const useBook = () => {
         is_favorite: isFavorite,
       };
       await axios.patch<UserBook>(`/api/user-books`, updateUserBookBody);
-      const userBookData: UserBookData | undefined = userBooksData.find(
+      let userBookData: UserBookData | undefined = userBooksData.find(
         (userBookData) =>
           userBookData.userBook.userBookId === userBook.userBookId
       );
       if (!userBookData) {
         throw new Error("No user book data found");
       }
-      userBookData.userBook.isFavorite = isFavorite;
+      userBookData = {
+        ...userBookData,
+        userBook: {
+          ...userBookData.userBook,
+          isFavorite,
+        },
+      };
       dispatch(updateUserBookData(userBookData));
     } catch (error) {
       console.error(error);

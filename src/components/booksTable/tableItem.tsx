@@ -12,7 +12,7 @@ const TableItem: React.FC<TableItemProps> = ({ userBookData }) => {
   const Thumbnail = (): React.ReactNode => (
     <img
       className="w-16 h-20 rounded-lg"
-      src={userBookData.bookData.book?.thumbnailUrl}
+      src={userBookData.bookData.book?.thumbnailUrl ?? "/thumbnailPlaceholder.png"}
       alt={userBookData.bookData.book?.title}
     />
   );

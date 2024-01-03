@@ -2,11 +2,9 @@ import React from "react";
 import { Button } from "../button";
 import Image from "next/image";
 import Loading from "../loading";
-import { Book, UserBook } from "@/src/models";
+import { Book } from "@/src/models";
 import { useDispatch } from "react-redux";
 import { ModalTypes, showModal } from "@/src/lib/features/modal/modalSlice";
-import { ReadingStatusEnum } from "@/src/models/readingStatus";
-import useBook from "@/src/hooks/useBook";
 
 export interface BookButtonProps {
   loading?: boolean;
