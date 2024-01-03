@@ -98,6 +98,7 @@ module.exports = {
       },
       height: {
         "22": "5.5rem",
+        "136": "34rem",
         "144": "36rem",
         "288": "72rem",
         modal: "33.5rem" /* this is in pixels: 536px */,

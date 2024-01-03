@@ -4,7 +4,15 @@ import { Button } from "../button";
 import Image from "next/image";
 import { createPortal } from "react-dom";
 
-export default function EmptyTable(): React.ReactNode {
+interface EmptyTableProps {
+  isSearch?: boolean;
+  className?: string;
+}
+
+export default function EmptyTable({
+  isSearch,
+  className,
+}: EmptyTableProps): React.ReactNode {
   const router = useRouter();
   const [portalEl, setPortalEl] = React.useState<HTMLElement | null>(null);
 
@@ -19,7 +27,9 @@ export default function EmptyTable(): React.ReactNode {
   };
 
   const Background = () => (
-    <div className="w-screen h-screen bg-background flex justify-start items-center">
+    <div
+      className={`w-screen h-screen bg-background flex justify-start items-center ${className}`}
+    >
       <div className="z-20 w-full h-full flex justify-center">
         <Image
           src="/emptyLibraryHeader.png"
@@ -45,21 +55,30 @@ export default function EmptyTable(): React.ReactNode {
           className="text input  pointer-events-none"
         />
       </div>
-      ,
     </div>
+  );
+
+  const SearchEmptyTable = (): React.ReactNode => (
+    <p className="text-6.5xl leading-16">No results found...</p>
   );
 
   return (
     <div className="h-full w-full flex flex-col justify-start items-center gap-6">
-      <p className="text-6.5xl leading-16">Your library is empty...</p>
-      <Button
-        variant="selected"
-        className="text-lg leading-5 font-semibold p-4 rounded-full"
-        onClick={onSearchClick}
-      >
-        Let me search
-      </Button>
-      {portalEl && createPortal(<Background />, portalEl)}
+      {isSearch ? (
+        <SearchEmptyTable />
+      ) : (
+        <>
+          <p className="text-6.5xl leading-16">Your library is empty...</p>
+          <Button
+            variant="selected"
+            className="text-lg leading-5 font-semibold p-4 rounded-full"
+            onClick={onSearchClick}
+          >
+            Let me search
+          </Button>
+          {/* {portalEl && createPortal(<Background />, portalEl)} */}
+        </>
+      )}
     </div>
   );
 }

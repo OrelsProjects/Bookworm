@@ -39,30 +39,20 @@ const FavoriteButton = ({
 );
 
 const AddToReadListButton = ({
-  userBook,
+  loading,
+  book,
   className,
   onClick,
-}: { userBook: UserBook } & BookButtonProps): React.ReactNode => {
-  const { updateUserBook, loading } = useBook();
-
-  const addBookToList = async () => {
-    try {
-      await updateUserBook({
-        user_book_id: userBook.userBookId,
-        reading_status_id: ReadingStatusEnum.READ,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
+}: { book: Book } & BookButtonProps): React.ReactNode => {
+  const dispatch = useDispatch();
   return (
     <Button
       variant="accent"
-      onClick={() => {
-        onClick?.();
-        addBookToList();
-      }}
+      onClick={() =>
+        dispatch(
+          showModal({ book: book, type: ModalTypes.ADD_BOOK_TO_READ_LIST })
+        )
+      }
       className={`rounded-full relative ${className}`}
     >
       <p className={`${loading ? "opacity-0" : ""}`}>I've read it</p>

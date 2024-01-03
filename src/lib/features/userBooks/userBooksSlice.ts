@@ -25,7 +25,15 @@ const userBooksSlice = createSlice({
     },
     addUserBooks: (state, action: PayloadAction<UserBookData[]>) => {
       state.loading = false;
-      state.userBooksData.push(...action.payload);
+      const bookExists = state.userBooksData.some((userBookData) =>
+        compareBooks(
+          userBookData.bookData.book,
+          action.payload[0].bookData.book
+        )
+      );
+      if (!bookExists) {
+        state.userBooksData.push(...action.payload);
+      }
     },
     setUserBooks: (state, action: PayloadAction<UserBookData[]>) => {
       state.loading = false;

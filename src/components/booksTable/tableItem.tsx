@@ -1,47 +1,75 @@
 import React from "react";
-import { UserBookData } from "../../models";
+import { Book, UserBookData } from "../../models";
 import Rating from "../rating";
-import {
-  AddToReadListButton,
-  ShowDetailsButton,
-} from "../buttons/bookButtons";
+import { AddToReadListButton, ShowDetailsButton } from "../buttons/bookButtons";
+import { DEFAULT_READING_STATUS } from "@/src/models/readingStatus";
 
 interface TableItemProps {
   userBookData: UserBookData;
 }
 
 const TableItem: React.FC<TableItemProps> = ({ userBookData }) => {
+  const Thumbnail = (): React.ReactNode => (
+    <img
+      className="w-16 h-20 rounded-lg"
+      src={userBookData.bookData.book?.thumbnailUrl}
+      alt={userBookData.bookData.book?.title}
+    />
+  );
+
+  const Title = (): React.ReactNode => (
+    <div className="truncate">{userBookData.bookData.book?.title}</div>
+  );
+
+  const Authors = (): React.ReactNode => (
+    <div className="text-primary font-semibold truncate">
+      {userBookData.bookData.book?.authors?.join(", ")}
+    </div>
+  );
+
+  const AddToListButton = ({ book }: { book: Book }): React.ReactNode => {
+    const bookReadingStatusId =
+      userBookData.readingStatus?.readingStatusId ?? DEFAULT_READING_STATUS;
+    switch (bookReadingStatusId) {
+      case 2:
+        return <AddToReadListButton book={book} />;
+      default:
+        return <></>;
+    }
+  };
+
+  const AditionalButtons = (): React.ReactNode => (
+    <div className="flex flex-row justify-center items-center gap-2">
+      {userBookData.bookData.book && (
+        <>
+          <AddToListButton book={userBookData.bookData.book} />
+          <ShowDetailsButton book={userBookData.bookData.book} />
+        </>
+      )}
+    </div>
+  );
+
+  const PagesGenreAndDate = (): React.ReactNode => (
+    <div className="flex flex-col truncate">
+      <div>Pages: {userBookData.bookData.book?.numberOfPages}</div>
+      <div>Genre: {userBookData.bookData.book?.mainGenreId}</div>
+      <div>Date: {userBookData.bookData.book?.datePublished}</div>
+    </div>
+  );
+
   return (
     <div className="flex justify-center grid-header-table items-center bg-primary-foreground p-2 rounded-lg">
-      <div>
-        <img
-          className="w-16 h-20 rounded-lg"
-          src={userBookData.bookData.book?.thumbnailUrl}
-          alt={userBookData.bookData.book?.title}
-        />
-      </div>
-      <div className="truncate">{userBookData.bookData.book?.title}</div>
-      <div className="text-primary font-semibold truncate">
-        {userBookData.bookData.book?.authors?.join(", ")}
-      </div>
-      <div className="flex flex-col truncate">
-        <div>
-          <div>Pages: {userBookData.bookData.book?.numberOfPages}</div>
-          <div>Genre: {userBookData.bookData.book?.mainGenreId}</div>
-          <div>Date: {userBookData.bookData.book?.datePublished}</div>
-        </div>
-      </div>
+      <Thumbnail />
+      <Title />
+      <Authors />
+      <PagesGenreAndDate />
       <Rating
+        title={userBookData.bookData.book?.title ?? ""}
         rating={userBookData.goodreadsData?.goodreadsRating}
         totalRatings={userBookData.goodreadsData?.goodreadsRatingsCount}
         userRating={userBookData.userBook.userRating}
       />
-      <div className="flex flex-row gap-2">
-        <AddToReadListButton userBook={userBookData.userBook} />
-        {userBookData.bookData.book && (
-          <ShowDetailsButton book={userBookData.bookData.book} />
-        )}
-      </div>
+      <AditionalButtons />
     </div>
   );
 };

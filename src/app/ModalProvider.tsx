@@ -7,11 +7,11 @@ import {
 } from "@/src/lib/features/modal/modalSlice";
 import { RootState } from "@/src/lib/store";
 import { Book } from "@/src/models";
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "../components";
 import BookDetails from "../components/modals/bookDescription";
-import AddBookToBacklog from "../components/modals/addBookToReadList";
+import AddBookToBacklog, { ListType } from "../components/modals/addBookToList";
 
 interface ProviderProps {
   children?: React.ReactNode;
@@ -28,14 +28,16 @@ const ModalProvider: React.FC<ProviderProps> = ({ children }) => {
       case ModalTypes.BOOK_DETAILS:
         return RenderBookDetails(data as Book);
       case ModalTypes.ADD_BOOK_TO_BACKLOG:
-        return RenderAddBookToBacklog(data as Book);
+        return RenderAddBookToBacklog(data as Book, ListType.BACKLOG);
+      case ModalTypes.ADD_BOOK_TO_READ_LIST:
+        return RenderAddBookToBacklog(data as Book, ListType.READ);
       default:
         return null;
     }
   };
 
-  const RenderAddBookToBacklog = (book: Book) => (
-    <AddBookToBacklog book={book} />
+  const RenderAddBookToBacklog = (book: Book, type: ListType) => (
+    <AddBookToBacklog book={book} type={type} />
   );
 
   const RenderBookDetails = (book: Book) => (

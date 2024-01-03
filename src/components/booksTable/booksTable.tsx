@@ -5,6 +5,7 @@ import TableHeader from "./tableHeader";
 import BookItem from "./tableItem";
 import ToggleButtons from "../toggleButtons";
 import { SearchBarComponent } from "../search/searchBarComponent";
+import Loading from "../loading";
 
 export enum TableType {
   READ = 1, // Numbers in backend
@@ -18,24 +19,24 @@ const BooksTable: React.FC = () => {
 
   const headerRef = useRef(null); // Reference to the header element
   const [tableHeight, setTableHeight] = useState(0); // State to store the calculated height
+  const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
     // Function to calculate the available height for the table
     const calculateTableHeight = () => {
       const headerHeight = (headerRef.current as any)?.offsetHeight || 0;
-      const availableHeight = window.innerHeight - headerHeight - 224;
+      const availableHeight = window.innerHeight - headerHeight - 250;
       setTableHeight(availableHeight);
     };
-
-    // Calculate the height on first render
     calculateTableHeight();
-
-    // Add event listener to recalculate on window resize
     window.addEventListener("resize", calculateTableHeight);
 
-    // Remove event listener on cleanup
     return () => window.removeEventListener("resize", calculateTableHeight);
   }, []);
+
+  useEffect(() => {
+    searchBooks(searchValue);
+  }, [searchValue]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -49,7 +50,7 @@ const BooksTable: React.FC = () => {
   }
 
   const onSearch = (value: string) => {
-    searchBooks(value);
+    setSearchValue(value);
   };
 
   return (
@@ -82,8 +83,10 @@ const BooksTable: React.FC = () => {
           userBooks.map((bookData, index) => (
             <BookItem key={index} userBookData={bookData} />
           ))
+        ) : loading ? (
+          <Loading />
         ) : (
-          <EmptyTable />
+          <EmptyTable isSearch={searchValue !== ""} />
         )}
       </div>
     </div>

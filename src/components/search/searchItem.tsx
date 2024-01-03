@@ -12,7 +12,6 @@ import {
 } from "../buttons/bookButtons";
 import { compareBooks } from "@/src/models/book";
 import toast from "react-hot-toast";
-import AddBookToBacklog from "../modals/addBookToReadList";
 
 interface SearchItemProps {
   book: Book;

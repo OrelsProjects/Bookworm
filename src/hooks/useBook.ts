@@ -9,7 +9,7 @@ import {
 } from "../models/dto/userBookDTO";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  addUserBooks,
+  addUserBooks as addUserBooksRedux,
   setUserBooks,
   updateUserBookData,
   updateUserBookGoodreadsData,
@@ -97,6 +97,7 @@ const useBook = () => {
           createUserBookBody,
         }
       );
+      debugger;
       const userBook: UserBook | undefined = responseAddUserBooks.data.result;
 
       if (!userBook) {
@@ -107,8 +108,9 @@ const useBook = () => {
         bookData: {
           book: bookToAdd,
         },
+        readingStatus: new ReadingStatus(userBook.readingStatusId),
       };
-      dispatch(addUserBooks([userBookData]));
+      dispatch(addUserBooksRedux([userBookData]));
       return userBook;
     } catch (error) {
       console.error(error);

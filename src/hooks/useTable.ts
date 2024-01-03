@@ -21,7 +21,6 @@ const useTable = ({ initialType }: { initialType: TableType }) => {
   }, [tableType]);
 
   useEffect(() => {
-    debugger;
     updateUserBooks();
   }, [userBooksData]);
 
@@ -51,7 +50,11 @@ const useTable = ({ initialType }: { initialType: TableType }) => {
    * @param value - search value
    */
   const searchBooks = (value: string) => {
-    let newUserBooks = [...userBooksData];
+    if (value === "") {
+      updateUserBooks();
+      return;
+    }
+    let newUserBooks = [...userBooks];
     newUserBooks = newUserBooks.filter((userBook) => {
       return (
         userBook.bookData?.book?.title

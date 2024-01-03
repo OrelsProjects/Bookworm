@@ -71,7 +71,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(
       {
-        result: [userBook],
+        result: userBook,
       },
       { status: 200 }
     );
@@ -91,7 +91,6 @@ export async function PATCH(
       "/user-book",
       updateUserBookBody
     );
-
     const userBook: UserBook = UserBookDTO.FromResponse(response.data);
     return NextResponse.json({ result: userBook }, { status: 200 });
   } catch (error) {
