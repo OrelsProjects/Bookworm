@@ -64,7 +64,6 @@ const TableItem: React.FC<TableItemProps> = ({ userBookData }) => {
       <Authors />
       <PagesGenreAndDate />
       <Rating
-        title={userBookData.bookData.book?.title ?? ""}
         rating={userBookData.goodreadsData?.goodreadsRating}
         totalRatings={userBookData.goodreadsData?.goodreadsRatingsCount}
         userRating={userBookData.userBook.userRating}

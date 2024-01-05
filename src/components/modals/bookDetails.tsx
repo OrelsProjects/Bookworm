@@ -7,20 +7,21 @@ import { RootState } from "@/src/lib/store";
 import {
   FavoriteButton,
   AddToBacklogButton,
+  AddToReadListButton,
 } from "../buttons/bookButtons";
 import useBook from "@/src/hooks/useBook";
 import { compareBooks } from "@/src/models/book";
 import toast from "react-hot-toast";
 
 export interface BookDescriptionProps {
-  book: Book;
+  book: Book | undefined;
   className?: string;
   onFavorite?: () => void;
   onAddToBacklog?: () => void;
   onAddToReadList?: () => void;
 }
 
-export function BookDescription({
+export function BookDetails({
   book,
   className,
 }: BookDescriptionProps): React.ReactNode {
@@ -37,6 +38,10 @@ export function BookDescription({
   );
 
   const loadBookGoodreadsData = async () => {
+    if (!book) {
+      return;
+    }
+
     if (loadingGoodreadsData) {
       return;
     }
@@ -60,7 +65,7 @@ export function BookDescription({
 
   useEffect(() => {
     const userBookData = userBooksData.find((userBookData) =>
-      compareBooks(userBookData.bookData.book, book)
+      compareBooks(userBookData?.bookData.book, book)
     );
     setUserBookData(userBookData);
     setGoodreadsData(userBookData?.goodreadsData);
@@ -108,6 +113,59 @@ export function BookDescription({
     );
   };
 
+  const NotesSection = ({
+    title,
+    body,
+  }: {
+    title: string;
+    body: React.ReactNode;
+  }): React.ReactNode => (
+    <div className="font-thin w-full flex flex-col">
+      <div className="text-base line-clamp-2">{title}</div>
+      <div className="text-xl line-clamp-5">{body}</div>
+    </div>
+  );
+
+  const Notes = (): React.ReactNode => {
+    return (
+      <div className="w-full h-96 bg-primary-foreground rounded-lg flex flex-col gap-6 justify-start items-start p-8">
+        <div className="text-5xl w-full">My notes</div>
+        <div className="flex flex-row w-full">
+          <div className="flex flex-col gap-6 text-foreground w-1/2 font-thin">
+            <NotesSection
+              title="Who recommended me this book?"
+              body={userBookData?.userBook.suggestionSource ?? ""}
+            />
+            <NotesSection
+              title="My personal thoughts before reading"
+              body={userBookData?.userBook.userComments ?? ""}
+            />
+          </div>
+          {userBookData?.userBook.readingStatusId !== 1 && (
+            <div className="flex flex-col gap-6 text-foreground text-5xl w-1/2 font-thin">
+              {" "}
+              <NotesSection
+                title="I've rated this book with"
+                body={
+                  userBookData?.userBook.userRating && (
+                    <Rating
+                      userRating={userBookData?.userBook.userRating}
+                      className="!p-0 !m-0"
+                    />
+                  )
+                }
+              />
+              <NotesSection
+                title="My personal thoughts after reading "
+                body={userBookData?.userBook.userComments ?? ""}
+              />
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
   const onFavorite = async (userBook: UserBook) => {
     try {
       setLoadingFavorite(true);
@@ -120,46 +178,49 @@ export function BookDescription({
   };
 
   return (
-    <div className={`flex flex-row gap-8 ${className}`}>
-      <Image
-        src={bookToShow?.thumbnailUrl ?? "/thumbnailPlaceholder.png"}
-        placeholder="blur"
-        blurDataURL="/thumbnailPlaceholder.png"
-        alt={bookToShow?.title ?? "Book cover"}
-        width={250}
-        height={350}
-        className="rounded-lg"
-      />
-      <div className="flex flex-col gap-4">
-        <BookTitle />
-        <BookDescription />
-        <AuthorsAndPages />
-        <PublishDate />
-        <Rating
-          loading={loadingGoodreadsData}
-          rating={goodreadsData?.goodreadsRating}
-          totalRatings={goodreadsData?.goodreadsRatingsCount}
-          userRating={userBookData?.userBook.userRating}
-          goodreadsUrl={goodreadsData?.goodreadsUrl}
+    <div className={`flex flex-col gap-6 ${className}`}>
+      <div className="flex flex-row gap-8 modal-background">
+        <Image
+          src={bookToShow?.thumbnailUrl ?? "/thumbnailPlaceholder.png"}
+          placeholder="blur"
+          blurDataURL="/thumbnailPlaceholder.png"
+          alt={bookToShow?.title ?? "Book cover"}
+          width={250}
+          height={350}
+          className="rounded-lg"
         />
-      </div>
-
-      <div className="flex flex-row items-end gap-2">
-        {userBookData ? (
-          <FavoriteButton
-            loading={loadingFavorite}
-            onClick={() => onFavorite(userBookData.userBook)}
-            isFavorite={userBookData.userBook.isFavorite ?? false}
+        <div className="flex flex-col gap-4">
+          <BookTitle />
+          <BookDescription />
+          <AuthorsAndPages />
+          <PublishDate />
+          <Rating
+            loading={loadingGoodreadsData}
+            rating={goodreadsData?.goodreadsRating}
+            totalRatings={goodreadsData?.goodreadsRatingsCount}
+            userRating={userBookData?.userBook.userRating}
+            goodreadsUrl={goodreadsData?.goodreadsUrl}
           />
-        ) : (
-          <AddToBacklogButton book={book} />
-        )}
-        {userBookData && userBookData.readingStatus?.readingStatusId !== 1 && (
-          <AddToBacklogButton book={book} />
-        )}
+        </div>
+
+        <div className="flex flex-row items-end gap-2">
+          {userBookData ? (
+            <FavoriteButton
+              loading={loadingFavorite}
+              onClick={() => onFavorite(userBookData?.userBook)}
+              isFavorite={userBookData?.userBook.isFavorite ?? false}
+            />
+          ) : (
+            book && <AddToBacklogButton book={book} />
+          )}
+          {userBookData &&
+            userBookData?.readingStatus?.readingStatusId !== 1 &&
+            book && <AddToReadListButton book={book} />}
+        </div>
       </div>
+      <Notes />
     </div>
   );
 }
 
-export default BookDescription;
+export default BookDetails;

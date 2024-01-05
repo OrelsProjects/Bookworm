@@ -42,7 +42,7 @@ export default function RootLayout({
                 <div className="absolute top-0 right-0 left-0 bottom-0 z-0">
                   <VideoBackground />
                 </div>
-                <div className="h-full w-full z-10 relative">{children}</div>
+                <div className="h-full w-full z-10 relative !font-sans">{children}</div>
                 <Toaster />
               </DataProvider>
             </APIProvider>

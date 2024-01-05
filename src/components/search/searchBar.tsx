@@ -1,15 +1,12 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
-import { Input } from "../input";
 import useSearch, { UseSearchResult } from "../../hooks/useSearch";
 import SearchItem, { SearchItemSkeleton } from "./searchItem";
 import { Book } from "../../models";
 import toast from "react-hot-toast";
 import useBook from "@/src/hooks/useBook";
 import { useDispatch } from "react-redux";
-import { ModalTypes, showModal } from "@/src/lib/features/modal/modalSlice";
 import { SearchBarComponent } from "./searchBarComponent";
 
 const TOP_RESULTS_COUNT = 3;
@@ -73,7 +70,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ className }: SearchBarProps) => {
   const classNoItems = "rounded-full";
 
   return (
-    <div className="w-full h-full flex flex-col gap-4">
+    <div className={`w-full h-full flex flex-col gap-4 ${className}`}>
       <SearchBarComponent
         onSubmit={onSubmit}
         onChange={onChange}
@@ -102,9 +99,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ className }: SearchBarProps) => {
                         book.isbn
                       } // isbn/isbn10 might be null
                       book={book}
-                      onAddToLibrary={(book) => {
-                        addToLibrary(book);
-                      }}
                     />
                   )
               )}

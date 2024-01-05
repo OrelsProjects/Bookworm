@@ -46,15 +46,16 @@ type RatingProps = {
   userRating?: number;
   goodreadsUrl?: string;
   loading?: boolean;
+  className?: string;
 };
 
-const Rating: React.FC<RatingProps & { title: string }> = ({
+const Rating: React.FC<RatingProps> = ({
   rating,
   totalRatings,
   goodreadsUrl,
   userRating,
   loading,
-  title,
+  className,
 }) => {
   const fullStars = rating ? Math.floor(rating) : undefined;
   const emptyStars = fullStars ? 5 - fullStars : undefined;
@@ -62,7 +63,9 @@ const Rating: React.FC<RatingProps & { title: string }> = ({
   const emptyStarsUser = fullStarsUser ? 5 - fullStarsUser : undefined;
 
   const Loading = () => (
-    <div className="flex items-center justify-start w-content py-4 px-6 rounded-full bg-primary-foreground">
+    <div
+      className={`flex items-center justify-start w-content py-4 px-6 rounded-full bg-primary-foreground ${className}`}
+    >
       <p className="ms-1 text-sm font-thin text-foreground">Loading...</p>
     </div>
   );
@@ -75,10 +78,8 @@ const Rating: React.FC<RatingProps & { title: string }> = ({
     className?: string;
   }) => {
     return (
-      <div
-        className={`flex items-center justify-start w-fit  p-1  rounded-full bg-primary-foreground ${className}`}
-      >
-        <div className="flex items-center justify-start px-3">
+      <div className="flex items-center justify-start w-fit p-1 rounded-full bg-primary-foreground">
+        <div className={`flex items-center justify-start px-3  ${className}`}>
           {[...Array(user ? fullStarsUser : fullStars)].map((_, index) => (
             <RatingStar
               key={index}
@@ -132,7 +133,7 @@ const Rating: React.FC<RatingProps & { title: string }> = ({
       ) : (
         <div className="flex flex-col gap-2">
           {userRating !== undefined && (fullStarsUser ?? 0) > 0 && (
-            <RatingComponent user />
+            <RatingComponent user className={className} />
           )}
           {rating && <RatingComponent />}
         </div>

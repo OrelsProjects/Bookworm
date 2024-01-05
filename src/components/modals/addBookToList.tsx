@@ -202,7 +202,7 @@ const AddBookToList: React.FC<AddBookToListProps> = ({ book, type }) => {
   );
 
   return (
-    <div className="flex flex-row justify-between items-end gap-2 h-144">
+    <div className="flex flex-row justify-between items-end gap-2 h-144 modal-background">
       <Image
         src={book.thumbnailUrl ?? "/thumbnailPlaceholder.png"}
         alt="Add book to backlog"

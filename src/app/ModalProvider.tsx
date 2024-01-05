@@ -10,7 +10,7 @@ import { Book } from "@/src/models";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "../components";
-import BookDetails from "../components/modals/bookDescription";
+import BookDetails from "../components/modals/bookDetails";
 import AddBookToBacklog, { ListType } from "../components/modals/addBookToList";
 
 interface ProviderProps {

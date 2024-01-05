@@ -186,3 +186,7 @@ input[type="text"]:-moz-ui-autofill {
   );
   animation: shimmer 2s infinite;
 }
+
+.modal-background {
+  @apply bg-secondary rounded-lg p-4
+}

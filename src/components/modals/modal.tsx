@@ -57,10 +57,7 @@ const Modal: React.FC<Props> = ({ children, isOpen, onClose, className }) => {
         <div
           className={`relative z-50 w-modal h-modal flex items-center justify-center ${className}`}
         >
-          <div
-            ref={modalRef}
-            className="bg-secondary p-4 rounded-lg shadow-lg"
-          >
+          <div ref={modalRef} className="rounded-lg shadow-lg font-sans">
             {children}
           </div>
         </div>
