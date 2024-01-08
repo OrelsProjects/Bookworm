@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import useSearch, { UseSearchResult } from "../../hooks/useSearch";
-import SearchItem, { SearchItemSkeleton } from "./searchItem";
+import BookComponent, { SearchItemSkeleton } from "./bookComponent";
 import { Book } from "../../models";
 import toast from "react-hot-toast";
 import useBook from "@/src/hooks/useBook";
@@ -91,7 +91,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ className }: SearchBarProps) => {
               {books.map(
                 (book, i) =>
                   i < TOP_RESULTS_COUNT && (
-                    <SearchItem
+                    <BookComponent
                       key={
                         book.title +
                         book.isbn10 +

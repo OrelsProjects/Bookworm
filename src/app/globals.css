@@ -146,13 +146,13 @@ input[type="text"]:-moz-ui-autofill {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: rgb(var( --foreground));
+  background: rgb(var(--foreground));
   border-radius: 5px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: rgb(var( --muted));
+  background: rgb(var(--muted));
 }
 
 /* Animations */
@@ -188,5 +188,9 @@ input[type="text"]:-moz-ui-autofill {
 }
 
 .modal-background {
-  @apply bg-secondary rounded-lg p-4
+  @apply bg-secondary rounded-lg p-4;
+}
+
+.title {
+  @apply line-clamp-1 text-5xl;
 }

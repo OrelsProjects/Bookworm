@@ -3,6 +3,7 @@ import { Book, UserBookData } from "../../models";
 import Rating from "../rating";
 import { AddToReadListButton, ShowDetailsButton } from "../buttons/bookButtons";
 import { DEFAULT_READING_STATUS } from "@/src/models/readingStatus";
+import Image from "next/image";
 
 interface TableItemProps {
   userBookData: UserBookData;
@@ -10,10 +11,14 @@ interface TableItemProps {
 
 const TableItem: React.FC<TableItemProps> = ({ userBookData }) => {
   const Thumbnail = (): React.ReactNode => (
-    <img
-      className="w-16 h-20 rounded-lg"
-      src={userBookData.bookData.book?.thumbnailUrl ?? "/thumbnailPlaceholder.png"}
-      alt={userBookData.bookData.book?.title}
+    <Image
+      src={
+        userBookData.bookData.book?.thumbnailUrl ?? "/thumbnailPlaceholder.png"
+      }
+      alt={userBookData.bookData.book?.title ?? "Book cover"}
+      width={64}
+      height={80}
+      className="rounded-lg"
     />
   );
 

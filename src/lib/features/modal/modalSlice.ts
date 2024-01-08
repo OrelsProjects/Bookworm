@@ -8,6 +8,7 @@ export enum ModalTypes {
   BOOK_DETAILS = "BOOK_DETAILS",
   ADD_BOOK_TO_BACKLOG = "ADD_BOOK_TO_BACKLOG",
   ADD_BOOK_TO_READ_LIST = "ADD_BOOK_TO_READ_LIST",
+  IMPORT_BOOKS = "IMPORT_BOOKS",
 }
 
 const testBook = new Book(
@@ -47,7 +48,7 @@ const modalSlice = createSlice({
   reducers: {
     showModal: (
       state,
-      action: PayloadAction<{ book: Book; type: ModalTypes }>
+      action: PayloadAction<{ book?: Book; type: ModalTypes }>
     ) => {
       state.data = action.payload.book;
       state.type = action.payload.type;

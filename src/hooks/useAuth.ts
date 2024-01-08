@@ -6,6 +6,7 @@ import {
 } from "aws-amplify/auth";
 
 import { useDispatch } from "react-redux";
+import { clearUser } from "../lib/features/auth/authSlice";
 
 const useAuth = () => {
   const dispatch = useDispatch();
@@ -38,6 +39,3 @@ const useAuth = () => {
 };
 
 export default useAuth;
-function clearUser(): any {
-  throw new Error("Function not implemented.");
-}

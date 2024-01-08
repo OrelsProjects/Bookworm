@@ -5,11 +5,18 @@ import React, { useEffect, useRef, useState } from "react";
 interface Props {
   children: React.ReactNode;
   isOpen: boolean;
+  outsideClickClose?: boolean;
   onClose?: () => void;
   className?: string;
 }
 
-const Modal: React.FC<Props> = ({ children, isOpen, onClose, className }) => {
+const Modal: React.FC<Props> = ({
+  children,
+  isOpen,
+  onClose,
+  className,
+  outsideClickClose,
+}) => {
   const [isRendered, setIsRendered] = useState(isOpen);
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -27,8 +34,12 @@ const Modal: React.FC<Props> = ({ children, isOpen, onClose, className }) => {
         !modalRef.current.contains(event.target as Node)
       ) {
         // let timeout: NodeJS.Timeout | null = null;
-        onClose?.();
-        setIsRendered(false);
+        if (outsideClickClose) {
+          onClose?.();
+          setIsRendered(false);
+        } else {
+          console.log("outside click. Use for event tracking");
+        }
         // timeout = setTimeout(() => {}, 1000);
         // return () => {
         //   if (timeout) {

@@ -14,11 +14,11 @@ import {
 import { compareBooks } from "@/src/models/book";
 import toast from "react-hot-toast";
 
-interface SearchItemProps {
+interface BookComponentProps {
   book: Book;
 }
 
-const SearchItem: React.FC<SearchItemProps> = ({ book }) => {
+const BookComponent: React.FC<BookComponentProps> = ({ book }) => {
   const { favoriteBook } = useBook();
   const [loadingFavorite, setLoadingFavorite] = useState(false);
   const [userBookData, setUserBookData] = useState<UserBookData | undefined>(
@@ -117,4 +117,4 @@ export const SearchItemSkeleton: React.FC<SearchItemSkeletonProps> = ({
   );
 };
 
-export default SearchItem;
+export default BookComponent;

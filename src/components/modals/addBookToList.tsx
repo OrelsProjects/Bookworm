@@ -99,7 +99,7 @@ const AddBookToList: React.FC<AddBookToListProps> = ({ book, type }) => {
   };
 
   const Title = (): React.ReactNode => (
-    <div className="line-clamp-1 text-5xl">{book.title}</div>
+    <div className="title">{book.title}</div>
   );
 
   const Description = (): React.ReactNode => (
@@ -213,7 +213,7 @@ const AddBookToList: React.FC<AddBookToListProps> = ({ book, type }) => {
         <Title />
         <Description />
         {type === ListType.BACKLOG ? SuggestionSource() : <RatingArea />}
-        {CommentsArea()}{" "}
+        {type === ListType.BACKLOG ? "" : CommentsArea()}{" "}
         {/* Avoid rerender when text changes in useState when using <CommentsArea/> */}
       </div>
       {type !== ListType.BACKLOG && (

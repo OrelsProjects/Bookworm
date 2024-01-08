@@ -40,7 +40,6 @@ const userBooksSlice = createSlice({
       state.userBooksData = action.payload;
     },
     updateUserBook: (state, action: PayloadAction<UserBook>) => {
-      debugger;
       state.loading = false;
       const index = state.userBooksData.findIndex(
         (userBookData) =>
@@ -65,7 +64,6 @@ const userBooksSlice = createSlice({
       }
     },
     updateUserBookData: (state, action: PayloadAction<UserBookData>) => {
-      debugger;
       state.loading = false;
       const index = state.userBooksData.findIndex(
         (userBookData) =>

@@ -3,10 +3,13 @@ import { Button, Tabs } from "@/src/components";
 import React, { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { selectAuth } from "@/src/lib/features/auth/authSlice";
 import useAuth from "@/src/hooks/useAuth";
+import { ModalTypes, showModal } from "@/src/lib/features/modal/modalSlice";
+import Dropdown from "@/src/components/dropdown";
+import Avatar from "./avatar";
 
 const tabs = [
   {
@@ -29,10 +32,13 @@ export interface HeaderProps {
 }
 
 const Header = ({ className }: HeaderProps): React.ReactNode => {
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const pathname = usePathname();
   const { user, loading, error } = useSelector(selectAuth);
   const { signInWithGoogle, signUpWithGoogle, signOut } = useAuth();
-  const router = useRouter();
-  const pathname: string = usePathname();
+
+  const [showDropdown, setShowDropdown] = React.useState<boolean>(false);
 
   useEffect(() => {
     tabs.map((tab) => {
@@ -83,17 +89,18 @@ const Header = ({ className }: HeaderProps): React.ReactNode => {
         </div>
         <NavTabs />
         <div className="flex flex-row items-center gap-4">
-          <Button size={"md"} variant="selected" className="w-32">
+          <Button
+            size={"md"}
+            variant="selected"
+            className="w-32"
+            onClick={() => {
+              dispatch(showModal({ type: ModalTypes.IMPORT_BOOKS }));
+            }}
+          >
             Import Books +
           </Button>
           {user ? (
-            <Image
-              src="/avatar.png"
-              height={48}
-              width={48}
-              alt={"avatar"}
-              onClick={() => signOut()}
-            />
+            <Avatar />
           ) : (
             <Button
               size={"md"}

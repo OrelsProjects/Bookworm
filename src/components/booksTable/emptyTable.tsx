@@ -28,7 +28,7 @@ export default function EmptyTable({
 
   const Background = () => (
     <div
-      className={`w-screen h-screen bg-background flex justify-start items-center ${className}`}
+      className={`w-screen h-screen bg-background flex justify-center items-center ${className}`}
     >
       <div className="z-20 w-full h-full flex justify-center">
         <Image
@@ -63,7 +63,7 @@ export default function EmptyTable({
   );
 
   return (
-    <div className="h-full w-full flex flex-col justify-start items-center gap-6">
+    <div className="h-full w-full flex flex-col justify-center mb-52 items-center gap-6">
       {isSearch ? (
         <SearchEmptyTable />
       ) : (

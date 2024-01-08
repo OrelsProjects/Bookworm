@@ -6,6 +6,7 @@ import BookItem from "./tableItem";
 import ToggleButtons from "../toggleButtons";
 import { SearchBarComponent } from "../search/searchBarComponent";
 import Loading from "../loading";
+import useBook from "@/src/hooks/useBook";
 
 export enum TableType {
   READ = 1, // Numbers in backend
@@ -16,6 +17,8 @@ const BooksTable: React.FC = () => {
   const { userBooks, loading, error, updateTableType, searchBooks } = useTable({
     initialType: TableType.TO_READ,
   });
+
+  const { loadUserBooks } = useBook();
 
   const headerRef = useRef(null); // Reference to the header element
   const [tableHeight, setTableHeight] = useState(0); // State to store the calculated height
@@ -83,10 +86,10 @@ const BooksTable: React.FC = () => {
           userBooks.map((bookData, index) => (
             <BookItem key={index} userBookData={bookData} />
           ))
-        ) : loading ? (
-          <Loading />
         ) : (
-          <EmptyTable isSearch={searchValue !== ""} />
+          <div className="h-full w-full flex flex-col justify-center items-center">
+            <EmptyTable isSearch={searchValue !== ""} />
+          </div>
         )}
       </div>
     </div>

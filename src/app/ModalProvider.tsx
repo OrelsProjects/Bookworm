@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "../components";
 import BookDetails from "../components/modals/bookDetails";
 import AddBookToBacklog, { ListType } from "../components/modals/addBookToList";
+import ImportBooks from "../components/modals/importBooks";
 
 interface ProviderProps {
   children?: React.ReactNode;
@@ -31,6 +32,8 @@ const ModalProvider: React.FC<ProviderProps> = ({ children }) => {
         return RenderAddBookToBacklog(data as Book, ListType.BACKLOG);
       case ModalTypes.ADD_BOOK_TO_READ_LIST:
         return RenderAddBookToBacklog(data as Book, ListType.READ);
+      case ModalTypes.IMPORT_BOOKS:
+        return RenderImportBooks();
       default:
         return null;
     }
@@ -44,11 +47,14 @@ const ModalProvider: React.FC<ProviderProps> = ({ children }) => {
     <BookDetails book={book} className="w-full h-full" />
   );
 
+  const RenderImportBooks = () => <ImportBooks />;
+
   return (
     <div className="absolute w-screen h-screen">
       <Modal
         isOpen={type !== null && data !== null}
         onClose={() => dispatch(hideModal())}
+        outsideClickClose={true}
       >
         <RenderComponent />
       </Modal>

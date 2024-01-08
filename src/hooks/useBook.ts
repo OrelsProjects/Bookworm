@@ -103,7 +103,6 @@ const useBook = () => {
           createUserBookBody,
         }
       );
-      debugger;
       const userBook: UserBook | undefined = responseAddUserBooks.data.result;
 
       if (!userBook) {
@@ -182,7 +181,6 @@ const useBook = () => {
     updateBookBody: UpdateUserBookBody
   ): Promise<UserBook> => {
     try {
-      debugger;
       setLoading(true);
       const response = await axios.patch<IResponse<UserBook>>(
         "/api/user-books",
