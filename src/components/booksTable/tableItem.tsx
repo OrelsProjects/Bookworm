@@ -10,17 +10,20 @@ interface TableItemProps {
 }
 
 const TableItem: React.FC<TableItemProps> = ({ userBookData }) => {
-  const Thumbnail = (): React.ReactNode => (
-    <Image
-      src={
-        userBookData.bookData.book?.thumbnailUrl ?? "/thumbnailPlaceholder.png"
-      }
-      alt={userBookData.bookData.book?.title ?? "Book cover"}
-      width={64}
-      height={80}
-      className="rounded-lg"
-    />
-  );
+  const Thumbnail = (): React.ReactNode => {
+    const thumbnail =
+      userBookData.bookData?.book?.thumbnailUrl ?? "/thumbnailPlaceholder.png";
+    console.log("THUMBNAIL: ", thumbnail);
+    return (
+      <Image
+        src={thumbnail}
+        alt={userBookData.bookData.book?.title ?? "Book cover"}
+        width={64}
+        height={80}
+        className="rounded-lg"
+      />
+    );
+  };
 
   const Title = (): React.ReactNode => (
     <div className="truncate">{userBookData.bookData.book?.title}</div>

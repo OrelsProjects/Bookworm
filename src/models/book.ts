@@ -38,11 +38,11 @@ class Book {
     this.title = title;
     this.mainGenreId = mainGenreId;
     this.bookId = bookId;
-    this.thumbnailUrl = thumbnailUrl;
+    this.thumbnailUrl = thumbnailUrl === "" ? undefined : thumbnailUrl;
     this.subtitle = subtitle;
     this.originalDatePublished = originalDatePublished;
     this.numberOfPages = numberOfPages;
-    this.mediumImageUrl = mediumImageUrl;
+    this.mediumImageUrl = mediumImageUrl === "" ? undefined : mediumImageUrl;
     this.language = language;
     this.isbn10 = isbn10;
     this.isbn = isbn;

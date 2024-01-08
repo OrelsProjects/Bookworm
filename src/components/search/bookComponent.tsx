@@ -52,7 +52,7 @@ const BookComponent: React.FC<BookComponentProps> = ({ book }) => {
         <div className="flex-shrink-0">
           <Image
             src={book.thumbnailUrl ?? "/thumbnailPlaceholder.png"}
-            alt="Book cover"
+            alt={book.title ?? "Book cover"}
             height={72}
             width={48}
             className="rounded-md"

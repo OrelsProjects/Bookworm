@@ -10,16 +10,16 @@ class User {
     this.email = email;
     this.token = token;
   }
-
-  FromResponse = (session: any) =>
-    new User(
-      session.userSub ?? "",
-      "",
-      session?.tokens?.accessToken?.payload?.email?.toString() ??
-        session?.tokens?.idToken?.payload?.email?.toString() ??
-        "",
-      session.tokens?.accessToken?.toString() ?? ""
-    );
 }
+
+export const FromResponseUser = (session: any) =>
+  new User(
+    session.userSub ?? "",
+    "",
+    session?.tokens?.accessToken?.payload?.email?.toString() ??
+      session?.tokens?.idToken?.payload?.email?.toString() ??
+      "",
+    session.tokens?.accessToken?.toString() ?? ""
+  );
 
 export default User;

@@ -182,10 +182,16 @@ const AddBookToList: React.FC<AddBookToListProps> = ({ book, type }) => {
   );
 
   const SuggestionSource = (): React.ReactNode => (
-    <form className="w-comments">
+    <form
+      className="w-comments"
+      onSubmit={(e) => {
+        e.preventDefault();
+      }}
+    >
       <label htmlFor="suggestion-source" className="">
         Who recommeneded this book to you?
       </label>
+
       <Input
         type="text"
         key={`suggestion-source`}
@@ -194,8 +200,10 @@ const AddBookToList: React.FC<AddBookToListProps> = ({ book, type }) => {
         placeholder=""
         value={suggestionSource}
         onChange={(e) => {
-          e.preventDefault();
           setSuggestionSource(e.target.value);
+        }}
+        onSubmit={() => {
+          console.log("submit");
         }}
       />
     </form>
