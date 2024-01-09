@@ -42,7 +42,11 @@ const BooksTable: React.FC = () => {
   }, [searchValue]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="w-full h-full justify-center items-center">
+        <Loading className="!w-12 !h-12" />
+      </div>
+    );
   }
 
   if (error) {

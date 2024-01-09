@@ -6,12 +6,11 @@ import { Button } from "../button";
 import toast from "react-hot-toast";
 
 const ImportBooks = () => {
-  const { importViaCSV, importViaGoodreadsUrl } = useImport();
+  const { importViaCSV, importViaGoodreadsUrl, loading } = useImport();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [booksBeingImported, setBooksBeingImported] =
-    useState<boolean>(false);
+  const [booksBeingImported, setBooksBeingImported] = useState<boolean>(false);
 
   const [fileSelected, setFileSelected] = useState<File | null>(null);
 
@@ -27,7 +26,7 @@ const ImportBooks = () => {
     }
   };
 
-  const uploadFile = async () => {
+  const handleImportViaCSV = async () => {
     if (!fileSelected) {
       return;
     }
@@ -84,7 +83,7 @@ const ImportBooks = () => {
       {fileSelected && (
         <div className="flex flex-col gap-2">
           <div className="text-primary">Selected file: {fileSelected.name}</div>
-          <Button variant="accent" onClick={() => importViaCSV(fileSelected)}>
+          <Button variant="accent" onClick={() => handleImportViaCSV()}>
             Import CSV
           </Button>
         </div>
