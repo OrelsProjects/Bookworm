@@ -55,9 +55,6 @@ const BookComponent: React.FC<BookComponentProps> = ({
     <div
       className={`h-22 relative bg-card rounded-lg text-foreground p-2 shadow-md`}
     >
-      {/* {isBookInLibrary && (
-        <div className="absolute w-full h-full left-0 top-0 bg-primary transition-colors opacity-50 rounded-lg" />
-      )} */}
       <div className="w-full h-full flex justify-between items-center z-20">
         <div className="flex flex-row justify-start items-center gap-3 w-2/5 z-20">
           <div className="flex-shrink-0">
@@ -74,7 +71,9 @@ const BookComponent: React.FC<BookComponentProps> = ({
         </div>
 
         <div className="flex flex-row gap-8 justify-center items-center z-20">
-          <p className="text-primary">by {book.authors?.join(", ")}</p>
+          {book.authors && (
+            <p className="text-primary">by {book.authors?.join(", ")}</p>
+          )}
           <p className="text-muted">{book.numberOfPages} Pages</p>
           <div className="flex flex-row gap-2">
             {userBookData ? (
@@ -84,7 +83,9 @@ const BookComponent: React.FC<BookComponentProps> = ({
                   onClick={() => onFavorite(userBookData.userBook)}
                   isFavorite={userBookData.userBook.isFavorite ?? false}
                 />
-                {userBookData.readingStatus?.readingStatusId !== 1 && <AddToReadListButton book={book} />}
+                {userBookData.readingStatus?.readingStatusId !== 1 && (
+                  <AddToReadListButton book={book} />
+                )}
               </>
             ) : (
               <AddToBacklogButton book={book} />

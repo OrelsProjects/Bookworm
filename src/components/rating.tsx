@@ -57,10 +57,11 @@ const Rating: React.FC<RatingProps> = ({
   loading,
   className,
 }) => {
-  const fullStars = rating ? Math.floor(rating) : undefined;
-  const emptyStars = fullStars ? 5 - fullStars : undefined;
-  const fullStarsUser = userRating ? Math.floor(userRating) : undefined;
-  const emptyStarsUser = fullStarsUser ? 5 - fullStarsUser : undefined;
+
+  const fullStars = rating ? Math.floor(rating) : 0;
+  const emptyStars = 5 - fullStars;
+  const fullStarsUser = userRating ? Math.floor(userRating) : 0;
+  const emptyStarsUser = 5 - fullStarsUser;
 
   const Loading = () => (
     <div
@@ -77,6 +78,7 @@ const Rating: React.FC<RatingProps> = ({
     user?: boolean;
     className?: string;
   }) => {
+    debugger;
     return (
       <div className="flex items-center justify-start w-fit p-1 rounded-full bg-primary-foreground">
         <div className={`flex items-center justify-start px-3  ${className}`}>
@@ -135,7 +137,7 @@ const Rating: React.FC<RatingProps> = ({
           {userRating !== undefined && (fullStarsUser ?? 0) > 0 && (
             <RatingComponent user className={className} />
           )}
-          {rating && <RatingComponent />}
+          {rating !== undefined && <RatingComponent />}
         </div>
       )}
     </>

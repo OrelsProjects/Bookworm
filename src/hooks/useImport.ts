@@ -50,11 +50,11 @@ const useImport = () => {
           "Content-Type": file.type,
         },
       });
-      // await axios.put(uploadURL, file, {
-      //   headers: {
-      //     "Content-Type": file.type,
-      //   },
-      // });
+      await axios.put(uploadURL, file, {
+        headers: {
+          "Content-Type": file.type,
+        },
+      });
       if (response.status !== 200) {
         throw new Error("Failed to upload CSV");
       }

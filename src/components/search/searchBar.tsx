@@ -81,7 +81,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ className }: SearchBarProps) => {
       <SearchBarComponent
         onSubmit={onSubmit}
         onChange={onChange}
-        className={books && books.length > 0 ? classItems : classNoItems}
+        className={`transition-all duration-300 ease-in-out ${
+          books && books.length > 0 ? classItems : classNoItems
+        }`}
       />
       <div className="flex flex-col gap-1 overflow-auto">
         {loading ? (
