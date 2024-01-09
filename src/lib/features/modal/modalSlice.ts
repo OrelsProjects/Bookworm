@@ -31,12 +31,14 @@ const testBook = new Book(
 export interface ModalState {
   data: Book | any | null;
   type: ModalTypes | null;
+  isOpen: boolean;
   error: string | null;
 }
 
 const initialState: ModalState = {
   data: null,
   type: null,
+  isOpen: false,
   // data: testBook,
   // type: ModalTypes.ADD_BOOK_TO_BACKLOG,
   error: null,
@@ -52,15 +54,17 @@ const modalSlice = createSlice({
     ) => {
       state.data = action.payload.book;
       state.type = action.payload.type;
+      state.isOpen = true;
       state.error = null;
     },
     showAddToReadListModal: (state, action: PayloadAction<UserBook>) => {
       state.data = action.payload;
       state.type = ModalTypes.ADD_BOOK_TO_READ_LIST;
+      state.isOpen = true;
       state.error = null;
     },
     hideModal: (state) => {
-      state.type = null;
+      state.isOpen = false;
       state.error = null;
     },
   },

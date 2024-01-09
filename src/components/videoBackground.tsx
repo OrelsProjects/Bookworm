@@ -14,7 +14,6 @@ const VideoBackground = () => {
           width={720}
           alt="background shadow spot"
         />
-        {/* Video */}
         <video
           autoPlay
           loop
@@ -24,9 +23,7 @@ const VideoBackground = () => {
           <source src="/background.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
-        {/* Overlay */}
-        <div className="absolute top-0 left-0 w-full h-full bg-background opacity-80 z-10" />
-        {/* Content can go here, and will be stacked above the overlay */}
+        <div className="absolute top-0 left-0 w-full h-full bg-background opacity-60 z-10" />
       </div>
     </div>
   );

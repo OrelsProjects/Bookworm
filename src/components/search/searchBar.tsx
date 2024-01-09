@@ -6,8 +6,10 @@ import BookComponent, { SearchItemSkeleton } from "./bookComponent";
 import { Book } from "../../models";
 import toast from "react-hot-toast";
 import useBook from "@/src/hooks/useBook";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SearchBarComponent } from "./searchBarComponent";
+import { RootState } from "@/src/lib/store";
+import { Books, compareBooks } from "@/src/models/book";
 
 const TOP_RESULTS_COUNT = 3;
 
@@ -25,11 +27,15 @@ const SearchBar: React.FC<SearchBarProps> = ({ className }: SearchBarProps) => {
   const { addUserBook } = useBook();
   const { loading, error, updateSearchValue, books }: UseSearchResult =
     useSearch();
+  const { userBooksData } = useSelector((state: RootState) => state.userBooks);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [bookToShowInModal, setBookToShowInModal] = useState<Book | null>(null);
   const [loadingToastId, setLoadingToastId] = useState<string | null>(null);
   const [loadingAddBook, setLoadingAddBook] = useState<Book | null>(null);
+  const [searchResultsInLibrary, setSearchResultsInLibrary] = useState<Books>(
+    []
+  );
 
   useEffect(() => {
     if (loadingAddBook) {
@@ -48,20 +54,21 @@ const SearchBar: React.FC<SearchBarProps> = ({ className }: SearchBarProps) => {
     }
   }, [error]);
 
-  const addToLibrary = async (book: Book) => {
-    try {
-      if (loadingAddBook) {
-        return;
-      }
-      setLoadingAddBook(book);
-      await addUserBook(book);
-      toast.success("Book added to library!");
-    } catch (error) {
-      toast.error("Error adding book to library!");
-    } finally {
-      setLoadingAddBook(null);
+  useEffect(() => {
+    if (books) {
+      const booksInLibrary = books.filter((book) =>
+        userBooksData.some((userBookData) =>
+          compareBooks(userBookData.bookData.book, book)
+        )
+      );
+      setSearchResultsInLibrary(booksInLibrary);
     }
-  };
+  }, [books]);
+
+  const isBookInLibrary = (book: Book) =>
+    searchResultsInLibrary.some((searchResult) =>
+      compareBooks(searchResult, book)
+    );
 
   const onSubmit = (value: string) => updateSearchValue(value);
   const onChange = (value: string) => updateSearchValue(value);
@@ -97,8 +104,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ className }: SearchBarProps) => {
                         book.isbn10 +
                         book.datePublished +
                         book.isbn
-                      } // isbn/isbn10 might be null
+                      }
                       book={book}
+                      isBookInLibrary={isBookInLibrary(book)}
                     />
                   )
               )}
@@ -106,16 +114,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ className }: SearchBarProps) => {
           )
         )}
       </div>
-      {/* <Modal
-        isOpen={isModalOpen}
-        onClose={() => {
-          setIsModalOpen(false);
-        }}
-      >
-        {bookToShowInModal && (
-          <BookDetails book={bookToShowInModal} className="w-full h-full" />
-        )}
-      </Modal> */}
     </div>
   );
 };

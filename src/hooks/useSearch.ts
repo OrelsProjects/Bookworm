@@ -17,7 +17,7 @@ export interface UseSearchResult {
 
 function useSearch(): UseSearchResult {
   const [searchValue, setSearchValue] = useState<string>("");
-  const [books, setBooks] = useState<Book[] | null>(null);
+  const [results, setResults] = useState<Book[] | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [loadingAddBook, setLoadingAddBook] = useState<Book | null>(null);
@@ -40,7 +40,7 @@ function useSearch(): UseSearchResult {
         `/api/google-books?query=${value}`
       );
       const books: Books = response.data.result ?? [];
-      setBooks(books);
+      setResults(books);
     } catch (error: any) {
       setError(error.message);
       return [];
@@ -54,7 +54,7 @@ function useSearch(): UseSearchResult {
 
   useEffect(() => {
     if (searchValue === "") {
-      setBooks(null);
+      setResults(null);
     }
 
     if (searchValue) {
@@ -66,7 +66,7 @@ function useSearch(): UseSearchResult {
   return {
     searchValue,
     updateSearchValue,
-    books,
+    books: results,
     loading,
     loadingAddBook,
     error,

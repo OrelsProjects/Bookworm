@@ -1,5 +1,4 @@
 import { Book, UserBook, UserBookData } from "@/src/models";
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import Rating from "../rating";
 import { useSelector } from "react-redux";
@@ -12,6 +11,7 @@ import {
 import useBook from "@/src/hooks/useBook";
 import { compareBooks } from "@/src/models/book";
 import toast from "react-hot-toast";
+import BookThumbnail from "../bookThumbnail";
 
 export interface BookDescriptionProps {
   book: Book | undefined;
@@ -25,17 +25,17 @@ export function BookDetails({
   book,
   className,
 }: BookDescriptionProps): React.ReactNode {
-  const { favoriteBook, addUserBook, getBookGoodreadsData } = useBook();
+  const { favoriteBook, getBookGoodreadsData } = useBook();
   const [bookToShow, setBookToShow] = useState<Book | null>(null); // To avoid bugs when closing the modal
   const [goodreadsData, setGoodreadsData] = useState<any>(null);
   const [loadingFavorite, setLoadingFavorite] = useState(false);
   const [loadingGoodreadsData, setGoodreadsDataLoading] = useState(false);
-  const [showAddBookToBacklog, setShowAddBookToBacklog] = useState(false);
-  const [showAddBookToReadList, setShowAddBookToReadList] = useState(false);
   const [userBookData, setUserBookData] = useState<UserBookData | undefined>();
   const userBooksData: UserBookData[] = useSelector(
     (state: RootState) => state.userBooks.userBooksData
   );
+
+  console.log(book);
 
   const loadBookGoodreadsData = async () => {
     if (!book) {
@@ -180,11 +180,10 @@ export function BookDetails({
   return (
     <div className={`flex flex-col gap-6 ${className}`}>
       <div className="flex flex-row gap-8 modal-background">
-        <Image
-          src={bookToShow?.thumbnailUrl ?? "/thumbnailPlaceholder.png"}
+        <BookThumbnail
+          src={bookToShow?.thumbnailUrl}
           placeholder="blur"
           blurDataURL="/thumbnailPlaceholder.png"
-          alt={bookToShow?.title ?? "Book cover"}
           width={250}
           height={350}
           className="rounded-lg"
@@ -218,7 +217,7 @@ export function BookDetails({
             book && <AddToReadListButton book={book} />}
         </div>
       </div>
-      <Notes />
+      {userBookData && <Notes />}
     </div>
   );
 }

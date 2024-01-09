@@ -13,12 +13,17 @@ import {
 } from "../buttons/bookButtons";
 import { compareBooks } from "@/src/models/book";
 import toast from "react-hot-toast";
+import BookThumbnail from "../bookThumbnail";
 
 interface BookComponentProps {
   book: Book;
+  isBookInLibrary?: boolean;
 }
 
-const BookComponent: React.FC<BookComponentProps> = ({ book }) => {
+const BookComponent: React.FC<BookComponentProps> = ({
+  book,
+  isBookInLibrary,
+}) => {
   const { favoriteBook } = useBook();
   const [loadingFavorite, setLoadingFavorite] = useState(false);
   const [userBookData, setUserBookData] = useState<UserBookData | undefined>(
@@ -47,39 +52,45 @@ const BookComponent: React.FC<BookComponentProps> = ({ book }) => {
   };
 
   return (
-    <div className="bg-card h-22 rounded-lg text-foreground p-2 flex justify-between items-center shadow-md">
-      <div className="flex flex-row justify-start items-center gap-3 w-2/5">
-        <div className="flex-shrink-0">
-          <Image
-            src={book.thumbnailUrl ?? "/thumbnailPlaceholder.png"}
-            alt={book.title ?? "Book cover"}
-            height={72}
-            width={48}
-            className="rounded-md"
-          />
+    <div
+      className={`h-22 relative bg-card rounded-lg text-foreground p-2 shadow-md`}
+    >
+      {/* {isBookInLibrary && (
+        <div className="absolute w-full h-full left-0 top-0 bg-primary transition-colors opacity-50 rounded-lg" />
+      )} */}
+      <div className="w-full h-full flex justify-between items-center z-20">
+        <div className="flex flex-row justify-start items-center gap-3 w-2/5 z-20">
+          <div className="flex-shrink-0">
+            <BookThumbnail
+              src={book.thumbnailUrl}
+              height={72}
+              width={48}
+              className="rounded-md"
+            />
+          </div>
+          <h2 className="text-xl text-foreground line-clamp-2 flex-grow">
+            {book.title}
+          </h2>
         </div>
-        <h2 className="text-xl text-foreground line-clamp-2 flex-grow">
-          {book.title}
-        </h2>
-      </div>
 
-      <div className="flex flex-row gap-8 justify-center items-center">
-        <p className="text-primary">by {book.authors?.join(", ")}</p>
-        <p className="text-muted">{book.numberOfPages} Pages</p>
-        <div className="flex flex-row gap-2">
-          {userBookData ? (
-            <>
-              <FavoriteButton
-                loading={loadingFavorite}
-                onClick={() => onFavorite(userBookData.userBook)}
-                isFavorite={userBookData.userBook.isFavorite ?? false}
-              />
-              <AddToReadListButton book={book} />
-            </>
-          ) : (
-            <AddToBacklogButton book={book} />
-          )}
-          <ShowDetailsButton book={book} />
+        <div className="flex flex-row gap-8 justify-center items-center z-20">
+          <p className="text-primary">by {book.authors?.join(", ")}</p>
+          <p className="text-muted">{book.numberOfPages} Pages</p>
+          <div className="flex flex-row gap-2">
+            {userBookData ? (
+              <>
+                <FavoriteButton
+                  loading={loadingFavorite}
+                  onClick={() => onFavorite(userBookData.userBook)}
+                  isFavorite={userBookData.userBook.isFavorite ?? false}
+                />
+                {userBookData.readingStatus?.readingStatusId !== 1 && <AddToReadListButton book={book} />}
+              </>
+            ) : (
+              <AddToBacklogButton book={book} />
+            )}
+            <ShowDetailsButton book={book} />
+          </div>
         </div>
       </div>
     </div>

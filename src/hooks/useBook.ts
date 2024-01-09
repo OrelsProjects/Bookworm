@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   addUserBooks as addUserBooksRedux,
   setUserBooks,
+  setUserBooksLoading,
   updateUserBookData,
   updateUserBookGoodreadsData,
 } from "../lib/features/userBooks/userBooksSlice";
@@ -130,8 +131,14 @@ const useBook = () => {
       if (loading) {
         throw new Error("Cannot load user books while another book is loading");
       }
-      setLoading((loading) => !loading);
 
+      setLoading((loading) => !loading);
+      dispatch(setUserBooksLoading(true));
+
+      const currentUserBooks = localStorage.getItem("userBooks");
+      if (currentUserBooks) {
+        dispatch(setUserBooks(JSON.parse(currentUserBooks)));
+      }
       if (user) {
         axios.defaults.headers.common["Authorization"] = user.token;
         axios.defaults.headers.common["user_id"] = user.id;
@@ -143,6 +150,7 @@ const useBook = () => {
 
       const { result } = response.data;
       dispatch(setUserBooks(result ?? []));
+      localStorage.setItem("userBooks", JSON.stringify(result));
       dispatch(setError(null));
     } catch (error: any) {
       dispatch(setError(error.message));

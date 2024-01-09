@@ -7,7 +7,7 @@ import {
 } from "@/src/lib/features/modal/modalSlice";
 import { RootState } from "@/src/lib/store";
 import { Book } from "@/src/models";
-import React from "react";
+import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "../components";
 import BookDetails from "../components/modals/bookDetails";
@@ -19,12 +19,13 @@ interface ProviderProps {
 }
 
 const ModalProvider: React.FC<ProviderProps> = ({ children }) => {
-  const { data, type, error }: ModalState = useSelector(
+  const { data, type, isOpen }: ModalState = useSelector(
     (state: RootState) => state.modal
   );
+
   const dispatch = useDispatch();
 
-  const RenderComponent = () => {
+  const RenderComponent = useCallback(() => {
     switch (type) {
       case ModalTypes.BOOK_DETAILS:
         return RenderBookDetails(data as Book);
@@ -37,7 +38,7 @@ const ModalProvider: React.FC<ProviderProps> = ({ children }) => {
       default:
         return null;
     }
-  };
+  }, [data, type]);
 
   const RenderAddBookToBacklog = (book: Book, type: ListType) => (
     <AddBookToBacklog book={book} type={type} />
@@ -51,11 +52,7 @@ const ModalProvider: React.FC<ProviderProps> = ({ children }) => {
 
   return (
     <div className="absolute w-screen h-screen">
-      <Modal
-        isOpen={type !== null && data !== null}
-        onClose={() => dispatch(hideModal())}
-        outsideClickClose={true}
-      >
+      <Modal isOpen={isOpen} onClose={() => dispatch(hideModal())}>
         <RenderComponent />
       </Modal>
     </div>

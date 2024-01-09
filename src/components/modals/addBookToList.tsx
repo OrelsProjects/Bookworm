@@ -14,6 +14,7 @@ import Loading from "../loading";
 import { compareBooks } from "@/src/models/book";
 import { Input } from "../input";
 import { hideModal } from "@/src/lib/features/modal/modalSlice";
+import BookThumbnail from "../bookThumbnail";
 
 export enum ListType {
   BACKLOG,
@@ -209,41 +210,55 @@ const AddBookToList: React.FC<AddBookToListProps> = ({ book, type }) => {
     </form>
   );
 
+  const MainSection = (): React.ReactNode => (
+    <div className="h-full w-1/2 flex flex-col justify-center items-start my-4 gap-4">
+      <Title />
+      <Description />
+      {type === ListType.BACKLOG ? SuggestionSource() : <RatingArea />}
+      {type === ListType.BACKLOG ? "" : CommentsArea()}{" "}
+    </div>
+  );
+
+  const Favorite = (): React.ReactNode =>
+    type !== ListType.BACKLOG && (
+      <FavoriteButton
+        isFavorite={isFavorite}
+        onClick={() => setIsFavorite(!isFavorite)}
+      />
+    );
+
+  const Continue = (): React.ReactNode => (
+    <Button
+      variant={type === ListType.BACKLOG ? "selected" : "accent"}
+      className="rounded-full relative"
+      onClick={() => addBookToList()}
+    >
+      <div className={`${loading ? "opacity-0" : ""}`}>I'm done</div>
+      {loading && (
+        <div className="absolute m-auto">
+          <Loading />
+        </div>
+      )}
+    </Button>
+  );
+
+  const Buttons = (): React.ReactNode => (
+    <div className="flex flex-row gap-2">
+      <Favorite />
+      <Continue />
+    </div>
+  );
+
   return (
     <div className="flex flex-row justify-between items-end gap-2 h-144 modal-background">
-      <Image
-        src={book.thumbnailUrl ?? "/thumbnailPlaceholder.png"}
-        alt="Add book to backlog"
+      <BookThumbnail
+        src={book.thumbnailUrl}
+        title={book.title}
+        className="pointer-events-none !h-full !w-96 !relative rounded-lg shadow-md"
         fill
-        className="text input pointer-events-none !h-full !w-96 !relative rounded-lg shadow-md"
       />
-      <div className="h-full w-1/2 flex flex-col justify-center items-start my-4 gap-8">
-        <Title />
-        <Description />
-        {type === ListType.BACKLOG ? SuggestionSource() : <RatingArea />}
-        {type === ListType.BACKLOG ? "" : CommentsArea()}{" "}
-        {/* Avoid rerender when text changes in useState when using <CommentsArea/> */}
-      </div>
-      {type !== ListType.BACKLOG && (
-        <FavoriteButton
-          isFavorite={isFavorite}
-          onClick={() => setIsFavorite(!isFavorite)}
-        />
-      )}
-      {
-        <Button
-          variant={type === ListType.BACKLOG ? "selected" : "accent"}
-          className="rounded-full relative"
-          onClick={() => addBookToList()}
-        >
-          <div className={`${loading ? "opacity-0" : ""}`}>I'm done</div>
-          {loading && (
-            <div className="absolute m-auto">
-              <Loading />
-            </div>
-          )}
-        </Button>
-      }
+      <MainSection />
+      <Buttons />
     </div>
   );
 };

@@ -37,7 +37,7 @@ const Dropdown: React.FC<DropdownProps> = ({
 
   return (
     <div
-      className={`bg-card rounded-lg flex-col justify-center items-start ${className}`}
+      className={`bg-primary-weak rounded-lg flex-col justify-center items-start shadow-xl ${className}`}
       ref={dropdownRef}
     >
       {items.map((item) => (

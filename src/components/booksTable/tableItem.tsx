@@ -4,6 +4,7 @@ import Rating from "../rating";
 import { AddToReadListButton, ShowDetailsButton } from "../buttons/bookButtons";
 import { DEFAULT_READING_STATUS } from "@/src/models/readingStatus";
 import Image from "next/image";
+import BookThumbnail from "../bookThumbnail";
 
 interface TableItemProps {
   userBookData: UserBookData;
@@ -11,13 +12,10 @@ interface TableItemProps {
 
 const TableItem: React.FC<TableItemProps> = ({ userBookData }) => {
   const Thumbnail = (): React.ReactNode => {
-    const thumbnail =
-      userBookData.bookData?.book?.thumbnailUrl ?? "/thumbnailPlaceholder.png";
-    console.log("THUMBNAIL: ", thumbnail);
     return (
-      <Image
-        src={thumbnail}
-        alt={userBookData.bookData.book?.title ?? "Book cover"}
+      <BookThumbnail
+        src={userBookData.bookData?.book?.thumbnailUrl}
+        title={userBookData.bookData.book?.title}
         width={64}
         height={80}
         className="rounded-lg"
