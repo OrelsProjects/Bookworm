@@ -15,7 +15,7 @@ export async function POST(
 
     const axios = GetAxiosInstance(req);
     const response = await axios.post(
-      "/import-list/goodreads",
+      "/import-list/trigger-goodreads",
       {},
       { params: queryParams }
     );
