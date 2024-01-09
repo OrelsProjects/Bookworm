@@ -14,11 +14,7 @@ import BookDetails from "../components/modals/bookDetails";
 import AddBookToBacklog, { ListType } from "../components/modals/addBookToList";
 import ImportBooks from "../components/modals/importBooks";
 
-interface ProviderProps {
-  children?: React.ReactNode;
-}
-
-const ModalProvider: React.FC<ProviderProps> = ({ children }) => {
+const ModalProvider: React.FC = () => {
   const { data, type, isOpen }: ModalState = useSelector(
     (state: RootState) => state.modal
   );

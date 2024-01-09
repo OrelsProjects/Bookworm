@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
 
 interface Props {
@@ -69,13 +70,16 @@ const Modal: React.FC<Props> = ({
           } transition-opacity duration-300 ease-in-out`}
         />
 
-        <div
+        <motion.div
           ref={modalRef}
-          className={`relative z-50 w-modal h-modal flex items-center justify-center rounded-lg shadow-lg font-sans ${className} transition-all duration-500 ease-in-out ${
-            animateOpen
-              ? "opacity-100 translate-y-0"
-              : "opacity-0 translate-y-12"
-          }`}
+          className={`relative z-50 w-modal h-modal flex items-center justify-center rounded-lg shadow-lg font-sans ${className}`}
+          animate={{
+            y: animateOpen ? 0 : 100,
+            opacity: animateOpen ? 1 : 0,
+          }}
+          transition={{
+            duration: 0.3,
+          }}
         >
           <div className="rounded-lg shadow-lg font-sans relative">
             {children}
@@ -88,7 +92,7 @@ const Modal: React.FC<Props> = ({
               onClick={onClose}
             />
           </div>
-        </div>
+        </motion.div>
       </div>
     )
   );
