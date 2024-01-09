@@ -9,9 +9,6 @@ export async function POST(
     const url = req.nextUrl;
     const goodreadsUserId = url.searchParams.get("goodreadsUserId") ?? "";
     const shelfName = url.searchParams.get("shelfName") ?? "";
-    const queryParams = new URLSearchParams();
-    queryParams.append("goodreads_user_id", "117647355-orel");
-    queryParams.append("shelf_name", "all");
 
     const axios = GetAxiosInstance(req);
     const response = await axios.post(
@@ -19,6 +16,7 @@ export async function POST(
       {},
       { params: queryParams }
     );
+
     const result = response.data;
     return NextResponse.json({}, { status: 200 });
   } catch (error: any) {
