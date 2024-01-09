@@ -13,6 +13,7 @@ import { fetchAuthSession } from "aws-amplify/auth";
 import { Hub } from "aws-amplify/utils";
 import { User } from "../models";
 import "../amplifyconfiguration";
+import { Loading } from "../components";
 
 interface AuthProviderProps {
   children?: React.ReactNode;
@@ -81,7 +82,13 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   return (
     <AuthContext.Provider value={{}}>
-      {loading ? <div>Loading...</div> : error ? <div>{error}</div> : children}
+      {loading ? (
+        <div className="w-full h-full flex justify-center items-center">
+          <Loading className="!w-24 !h-24" />
+        </div>
+      ) : (
+        children
+      )}
     </AuthContext.Provider>
   );
 };

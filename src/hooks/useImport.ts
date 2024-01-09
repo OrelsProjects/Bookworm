@@ -13,48 +13,38 @@ const useImport = () => {
     goodreadsUserId: string,
     shelfName: string = ""
   ): Promise<void> => {
-    try {
-      console.log("importViaGoodreadsUrl");
-      console.log(goodreadsUserId);
-      console.log(shelfName);
-      const response = await axios.post<IResponse<void>>(
-        "/api/import/goodreads",
-        null,
-        {
-          params: {
-            goodreadsUserId,
-            shelfName,
-          },
-        }
-      );
-      if (response.status !== 200) {
-        throw new Error("Failed to import books");
+    const response = await axios.post<IResponse<void>>(
+      "/api/import/goodreads",
+      null,
+      {
+        params: {
+          goodreadsUserId,
+          shelfName,
+        },
       }
-    } catch (error) {
-      console.error(error);
-      throw error;
+    );
+    if (response.status !== 200) {
+      throw new Error("Failed to import books");
     }
   };
 
   const importViaCSV = async (file: File): Promise<void> => {
     try {
-      const uploadURL = await createUploadURL();
-      debugger;
-      if (!uploadURL) {
+      const presignedURL = await createUploadURL();
+      if (!presignedURL) {
         throw new Error("Failed to create upload URL");
       }
-      const response = await fetch(uploadURL, {
+      const fileToUpload = new File([file], presignedURL.fileName, {
+        type: file.type,
+      });
+      const response = await fetch(presignedURL.signedUrl, {
         method: "PUT",
-        body: file,
+        body: fileToUpload,
         headers: {
-          "Content-Type": file.type,
+          "Content-Type": fileToUpload.type,
         },
       });
-      await axios.put(uploadURL, file, {
-        headers: {
-          "Content-Type": file.type,
-        },
-      });
+
       if (response.status !== 200) {
         throw new Error("Failed to upload CSV");
       }
@@ -64,12 +54,12 @@ const useImport = () => {
     }
   };
 
-  const createUploadURL = async (): Promise<string | undefined> => {
+  const createUploadURL = async (): Promise<PresignedURL | undefined> => {
     try {
       const response = await axios.get<IResponse<PresignedURL>>(
         "/api/import/presigned-url"
       );
-      return response.data.result?.signedUrl;
+      return response.data.result;
     } catch (error) {
       console.error(error);
     }

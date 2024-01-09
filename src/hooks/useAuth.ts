@@ -6,7 +6,7 @@ import {
 } from "aws-amplify/auth";
 
 import { useDispatch } from "react-redux";
-import { clearUser } from "../lib/features/auth/authSlice";
+import { clearUser, setError } from "../lib/features/auth/authSlice";
 
 const useAuth = () => {
   const dispatch = useDispatch();
@@ -15,20 +15,35 @@ const useAuth = () => {
     const signInWithRedirectInput: SignInWithRedirectInput = {
       provider: "Google",
     };
-    await signInWithRedirect(signInWithRedirectInput);
+    try {
+      await signInWithRedirect(signInWithRedirectInput);
+    } catch (error) {
+      dispatch(setError("Failed to sign up"));
+      console.error(error);
+    }
   }, []);
 
   const signInWithGoogle = useCallback(async () => {
     const signInWithRedirectInput: SignInWithRedirectInput = {
       provider: "Google",
     };
-    await signInWithRedirect(signInWithRedirectInput);
+    try {
+      await signInWithRedirect(signInWithRedirectInput);
+    } catch (error) {
+      dispatch(setError("Failed to sign in"));
+      console.error(error);
+    }
     return null;
   }, []);
 
   const signOut = useCallback(async () => {
-    await signOutAuth();
-    dispatch(clearUser());
+    try {
+      await signOutAuth();
+      dispatch(clearUser());
+    } catch (error) {
+      dispatch(setError("Failed to sign out"));
+      console.error(error);
+    }
   }, []);
 
   return {

@@ -43,8 +43,11 @@ const Dropdown: React.FC<DropdownProps> = ({
       {items.map((item) => (
         <div
           key={`dropdown-item-${item.label}`}
-          className="w-full h-12 flex items-center justify-start px-4 cursor-pointer hover:bg-primary rounded-lg"
-          onClick={item.onClick}
+          className="w-full h-12 flex items-center justify-start px-4 hover:cursor-pointer hover:bg-primary rounded-lg"
+          onClick={() => {
+            item.onClick();
+            onClose?.();
+          }}
         >
           {item.leftIcon && (
             <div className="mr-4 flex items-center justify-center">
