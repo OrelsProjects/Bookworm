@@ -9,16 +9,12 @@ export async function POST(
     const url = req.nextUrl;
     const goodreadsUserId = url.searchParams.get("goodreadsUserId") ?? "";
     const shelfName = url.searchParams.get("shelfName") ?? "";
-    const queryParams = new URLSearchParams();
-    queryParams.append("goodreads_user_id", "117647355-orel");
-    queryParams.append("shelf_name", "all");
 
     const axios = GetAxiosInstance(req);
-    const response = await axios.post(
-      "/import-list/goodreads",
-      {},
-      { params: queryParams }
-    );
+    const response = await axios.post("/import-list/goodreads", {
+      goodreads_user_id: goodreadsUserId,
+      shelf_name: shelfName,
+    });
     const result = response.data;
     return NextResponse.json({}, { status: 200 });
   } catch (error: any) {

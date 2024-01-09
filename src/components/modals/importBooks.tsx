@@ -45,11 +45,12 @@ const ImportBooks = () => {
   const handleImportViaGoodreadsUrl = async () => {
     const loadingToastId = toast.loading("Validating URL");
     try {
-      importViaGoodreadsUrl("117647355-orel");
+      await importViaGoodreadsUrl("117647355-orel");
       toast.success("Done!");
       setBooksBeingImported(true);
     } catch (error) {
       console.error(error);
+      toast.error("Error importing books");
     } finally {
       toast.dismiss(loadingToastId);
     }
