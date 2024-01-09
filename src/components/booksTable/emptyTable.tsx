@@ -33,7 +33,7 @@ export default function EmptyTable({
       <div className="z-20 w-full h-full flex justify-center">
         <Image
           src="/emptyLibraryHeader.png"
-          fill={true}
+          fill
           alt={""}
           className="text input pointer-events-none !h-96 !w-288 !relative"
         />
@@ -41,7 +41,7 @@ export default function EmptyTable({
       <div className="z-10">
         <Image
           src="/background_shadow.png"
-          fill={true}
+          fill
           alt={""}
           className="text input pointer-events-none !h-96 "
         />

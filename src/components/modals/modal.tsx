@@ -11,6 +11,15 @@ interface Props {
   className?: string;
 }
 
+const modalAnimationVariants = {
+  open: { y: 0, opacity: 1 },
+  closed: { y: 100, opacity: 0 },
+};
+const modalBackgroundAnimationVariants = {
+  open: { opacity: 1 },
+  closed: { opacity: 0 },
+};
+
 const Modal: React.FC<Props> = ({
   children,
   isOpen,
@@ -18,19 +27,13 @@ const Modal: React.FC<Props> = ({
   outsideClickClose = false,
   className,
 }) => {
-  const [animateOpen, setAnimateOpen] = useState(false);
   const [shouldRender, setShouldRender] = useState(isOpen);
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isOpen) {
       setShouldRender(true);
-      const timeout = setTimeout(() => {
-        setAnimateOpen(true);
-      }, 10);
-      return () => clearTimeout(timeout);
     } else {
-      setAnimateOpen(false);
       const timeout = setTimeout(() => {
         setShouldRender(false);
       }, 300); // Duration of the closing animation
@@ -64,33 +67,36 @@ const Modal: React.FC<Props> = ({
   return (
     shouldRender && (
       <div className="flex justify-center items-center relative w-full h-full">
-        <div
-          className={`fixed inset-0 bg-black bg-opacity-50 z-40 ${
-            animateOpen ? "opacity-100" : "opacity-0"
-          } transition-opacity duration-300 ease-in-out`}
+        <motion.div
+          className={`fixed inset-0 bg-black bg-opacity-50 z-40`}
+          variants={modalBackgroundAnimationVariants}
+          initial="closed"
+          animate={isOpen ? "open" : "closed"}
+          transition={{ duration: 0.3 }}
         />
 
         <motion.div
           ref={modalRef}
           className={`relative z-50 w-modal h-modal flex items-center justify-center rounded-lg shadow-lg font-sans ${className}`}
-          animate={{
-            y: animateOpen ? 0 : 100,
-            opacity: animateOpen ? 1 : 0,
-          }}
-          transition={{
-            duration: 0.3,
-          }}
+          variants={modalAnimationVariants}
+          initial="closed"
+          animate={isOpen ? "open" : "closed"}
+          transition={{ duration: 0.3 }}
         >
           <div className="rounded-lg shadow-lg font-sans relative">
             {children}
-            <Image
-              src="/x.svg"
-              alt="close"
-              width={24}
-              height={24}
-              className="absolute top-2 right-2 cursor-pointer transition-all hover:bg-primary rounded-full"
-              onClick={onClose}
-            />
+            <motion.div
+              className="h-6 w-6 absolute top-2 right-2"
+              whileHover={{ scale: 1.2 }}
+            >
+              <Image
+                src="/x.svg"
+                alt="close"
+                layout="fill"
+                className="cursor-pointer transition-all hover:bg-primary rounded-full"
+                onClick={onClose}
+              />
+            </motion.div>
           </div>
         </motion.div>
       </div>
