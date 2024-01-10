@@ -28,8 +28,10 @@ const TableItem: React.FC<TableItemProps> = ({ userBookData }) => {
   );
 
   const Authors = (): React.ReactNode => (
-    <div className="text-primary font-semibold truncate">
-      {userBookData.bookData.book?.authors?.join(", ")}
+    <div className="w-full flex items-center justify-center text-primary font-semibold truncate">
+      <div className="truncate">
+        {userBookData.bookData.book?.authors?.join(", ")}
+      </div>
     </div>
   );
 
@@ -56,24 +58,28 @@ const TableItem: React.FC<TableItemProps> = ({ userBookData }) => {
   );
 
   const PagesGenreAndDate = (): React.ReactNode => (
-    <div className="flex flex-col truncate">
-      <div>Pages: {userBookData.bookData.book?.numberOfPages}</div>
-      <div>Genre: {userBookData.bookData.book?.mainGenreId}</div>
-      <div>Date: {userBookData.bookData.book?.datePublished}</div>
+    <div className="flex flex-col truncate items-center text-start">
+      <div>
+        <div>Pages: {userBookData.bookData.book?.numberOfPages}</div>
+        <div>Genre: {userBookData.bookData.book?.mainGenreId}</div>
+        <div>Date: {userBookData.bookData.book?.datePublished}</div>
+      </div>
     </div>
   );
 
   return (
-    <div className="flex justify-center grid-header-table items-center bg-primary-foreground p-2 rounded-lg">
+    <div className="w-full h-full grid-header-table items-center bg-primary-foreground p-2 rounded-lg">
       <Thumbnail />
       <Title />
       <Authors />
       <PagesGenreAndDate />
-      <Rating
-        rating={userBookData.goodreadsData?.goodreadsRating}
-        totalRatings={userBookData.goodreadsData?.goodreadsRatingsCount}
-        userRating={userBookData.userBook.userRating}
-      />
+      <div className="w-full flex justify-center items-center">
+        <Rating
+          rating={userBookData.goodreadsData?.goodreadsRating}
+          totalRatings={userBookData.goodreadsData?.goodreadsRatingsCount}
+          userRating={userBookData.userBook.userRating}
+        />
+      </div>
       <AditionalButtons />
     </div>
   );

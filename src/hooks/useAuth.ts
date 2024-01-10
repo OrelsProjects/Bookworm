@@ -7,6 +7,7 @@ import {
 
 import { useDispatch } from "react-redux";
 import { clearUser, setError } from "../lib/features/auth/authSlice";
+import { setUserBooks } from "../lib/features/userBooks/userBooksSlice";
 
 const useAuth = () => {
   const dispatch = useDispatch();
@@ -40,6 +41,7 @@ const useAuth = () => {
     try {
       await signOutAuth();
       dispatch(clearUser());
+      localStorage.clear();
     } catch (error) {
       dispatch(setError("Failed to sign out"));
       console.error(error);

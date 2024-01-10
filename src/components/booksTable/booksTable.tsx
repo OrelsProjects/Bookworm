@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import EmptyTable from "./emptyTable";
 import useTable from "../../hooks/useTable";
 import TableHeader from "./tableHeader";
-import BookItem from "./tableItem";
+import TableItem from "./tableItem";
 import ToggleButtons from "../toggleButtons";
 import { SearchBarComponent } from "../search/searchBarComponent";
 import Loading from "../loading";
@@ -88,7 +88,7 @@ const BooksTable: React.FC = () => {
       >
         {userBooks && userBooks.length > 0 ? (
           userBooks.map((bookData, index) => (
-            <BookItem key={index} userBookData={bookData} />
+            <TableItem key={index} userBookData={bookData} />
           ))
         ) : (
           <div className="h-full w-full flex flex-col justify-center items-center">

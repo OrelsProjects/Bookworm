@@ -126,41 +126,52 @@ export function BookDetails({
     </div>
   );
 
+  const RecommendationSource = (): React.ReactNode => {
+    return (
+      userBookData?.userBook.suggestionSource && (
+        <div className="flex flex-col gap-6 text-foreground w-1/2 font-thin">
+          <NotesSection
+            title="Who recommended me this book?"
+            body={userBookData?.userBook.suggestionSource ?? ""}
+          />
+        </div>
+      )
+    );
+  };
+
+  const AfterReadingSection = (): React.ReactNode => {
+    return (
+      userBookData?.userBook.readingStatusId !== 1 && (
+        <div className="flex flex-col gap-6 text-foreground text-5xl w-1/2 font-thin">
+          {userBookData?.userBook.userRating && (
+            <NotesSection
+              title="I've rated this book with"
+              body={
+                <Rating
+                  userRating={userBookData?.userBook.userRating}
+                  className="!p-0 !m-0"
+                />
+              }
+            />
+          )}
+          {userBookData?.userBook.userComments && (
+            <NotesSection
+              title="My personal thoughts after reading"
+              body={userBookData?.userBook.userComments}
+            />
+          )}
+        </div>
+      )
+    );
+  };
+
   const Notes = (): React.ReactNode => {
     return (
-      <div className="w-full h-96 bg-primary-foreground rounded-lg flex flex-col gap-6 justify-start items-start p-8">
+      <div className="w-full bg-primary-foreground rounded-lg flex flex-col gap-6 justify-start items-start p-8">
         <div className="text-5xl w-full">My notes</div>
         <div className="flex flex-row w-full">
-          <div className="flex flex-col gap-6 text-foreground w-1/2 font-thin">
-            <NotesSection
-              title="Who recommended me this book?"
-              body={userBookData?.userBook.suggestionSource ?? ""}
-            />
-            <NotesSection
-              title="My personal thoughts before reading"
-              body={userBookData?.userBook.userComments ?? ""}
-            />
-          </div>
-          {userBookData?.userBook.readingStatusId !== 1 && (
-            <div className="flex flex-col gap-6 text-foreground text-5xl w-1/2 font-thin">
-              {" "}
-              <NotesSection
-                title="I've rated this book with"
-                body={
-                  userBookData?.userBook.userRating && (
-                    <Rating
-                      userRating={userBookData?.userBook.userRating}
-                      className="!p-0 !m-0"
-                    />
-                  )
-                }
-              />
-              <NotesSection
-                title="My personal thoughts after reading "
-                body={userBookData?.userBook.userComments ?? ""}
-              />
-            </div>
-          )}
+          <RecommendationSource />
+          <AfterReadingSection />
         </div>
       </div>
     );

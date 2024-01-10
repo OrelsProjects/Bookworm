@@ -61,7 +61,7 @@ const TableHeader: React.FC<TableHeaderProps> = ({ onSort }) => {
     canSort?: boolean;
     direction?: TableHeaderDirection;
   }) => (
-    <div className="flex flex-row gap-0.5">
+    <div className="w-full flex justify-center items-center flex-row gap-0.5">
       {label}
       {canSort && RenderSortComponent(direction)}
     </div>

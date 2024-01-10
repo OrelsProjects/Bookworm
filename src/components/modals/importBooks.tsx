@@ -4,14 +4,15 @@ import BookComponent from "../search/bookComponent";
 import useImport from "@/src/hooks/useImport";
 import { Button } from "../button";
 import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { hideModal } from "@/src/lib/features/modal/modalSlice";
 
 const ImportBooks = () => {
-  const { importViaCSV, importViaGoodreadsUrl, loading } = useImport();
-
+  const dispatch = useDispatch();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const { importViaCSV, importViaGoodreadsUrl, loading } = useImport();
   const [booksBeingImported, setBooksBeingImported] = useState<boolean>(false);
-
   const [fileSelected, setFileSelected] = useState<File | null>(null);
 
   const openFileExplorer = () => {
@@ -59,10 +60,13 @@ const ImportBooks = () => {
   if (booksBeingImported) {
     return (
       <div className="h-144 w-288 modal-background flex flex-col items-center justify-center">
-        <div className="title">Your Books Are Being Imported As We!</div>
+        <div className="title">Your Books Are Being Imported As We Speak!</div>
         <div className="">
           It might take a few minutes until the process is complete
         </div>
+        <Button variant="selected" className="rounded-full text-xl mt-4" onClick={() => dispatch(hideModal())}>
+          Thanks
+        </Button>
       </div>
     );
   }

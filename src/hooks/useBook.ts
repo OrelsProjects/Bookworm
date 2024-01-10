@@ -150,7 +150,6 @@ const useBook = () => {
 
       const { result } = response.data;
       dispatch(setUserBooks(result ?? []));
-      localStorage.setItem("userBooks", JSON.stringify(result));
       dispatch(setError(null));
     } catch (error: any) {
       dispatch(setError(error.message));

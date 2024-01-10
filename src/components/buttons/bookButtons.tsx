@@ -53,7 +53,7 @@ const AddToReadListButton = ({
       }
       className={`rounded-full relative ${className}`}
     >
-      <p className={`${loading ? "opacity-0" : ""}`}>I've read it</p>
+      <div className={`${loading ? "opacity-0" : ""}`}>I've read it</div>
       {loading && (
         <div className="absolute m-auto">
           <Loading />

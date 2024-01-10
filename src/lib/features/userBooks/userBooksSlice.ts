@@ -34,10 +34,12 @@ const userBooksSlice = createSlice({
       if (!bookExists) {
         state.userBooksData.push(...action.payload);
       }
+      localStorage.setItem("userBooks", JSON.stringify(state.userBooksData));
     },
     setUserBooks: (state, action: PayloadAction<UserBookData[]>) => {
       state.loading = false;
       state.userBooksData = action.payload;
+      localStorage.setItem("userBooks", JSON.stringify(action.payload));
     },
     updateUserBook: (state, action: PayloadAction<UserBook>) => {
       state.loading = false;
@@ -50,6 +52,7 @@ const userBooksSlice = createSlice({
         userBooksDataNew[index].userBook = action.payload;
         state.userBooksData = userBooksDataNew;
       }
+      localStorage.setItem("userBooks", JSON.stringify(state.userBooksData));
     },
     updateUserBookGoodreadsData: (
       state,
@@ -62,6 +65,7 @@ const userBooksSlice = createSlice({
       if (index !== -1) {
         state.userBooksData[index].goodreadsData = action.payload.goodreadsData;
       }
+      localStorage.setItem("userBooks", JSON.stringify(state.userBooksData));
     },
     updateUserBookData: (state, action: PayloadAction<UserBookData>) => {
       state.loading = false;
@@ -75,6 +79,7 @@ const userBooksSlice = createSlice({
         userBooksDataNew[index] = action.payload;
         state.userBooksData = userBooksDataNew;
       }
+      localStorage.setItem("userBooks", JSON.stringify(state.userBooksData));
     },
     setError: (state, action: PayloadAction<string | null>) => {
       state.loading = false;
