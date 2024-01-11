@@ -59,7 +59,7 @@ const ImportBooks = () => {
 
   if (booksBeingImported) {
     return (
-      <div className="h-144 w-288 modal-background flex flex-col items-center justify-center">
+      <div className="modal-size modal-background flex flex-col items-center justify-center">
         <div className="title">Your Books Are Being Imported As We Speak!</div>
         <div className="">
           It might take a few minutes until the process is complete
@@ -76,7 +76,7 @@ const ImportBooks = () => {
   );
 
   return (
-    <div className="h-144 w-288 modal-background flex flex-col items-center justify-start">
+    <div className="modal-size modal-background flex flex-col items-center justify-start">
       <div className="title">Import CSV</div>
       <Button
         variant="selected"

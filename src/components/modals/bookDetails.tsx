@@ -206,30 +206,35 @@ export function BookDetails({
   };
 
   return (
-    <div className={`flex flex-col gap-6 ${className}`}>
-      <div className="flex flex-row gap-8 modal-background">
-        <BookThumbnail
-          src={bookToShow?.thumbnailUrl}
-          placeholder="blur"
-          blurDataURL="/thumbnailPlaceholder.png"
-          width={250}
-          height={350}
-          className="rounded-lg"
-        />
-        <div className="flex flex-col gap-4">
-          <BookTitle />
-          <BookDescription />
-          <AuthorsAndPages />
-          <PublishDate />
-          {/* <Rating
-            loading={loadingGoodreadsData}
-            rating={goodreadsData?.goodreadsRating}
-            totalRatings={goodreadsData?.goodreadsRatingsCount}
-            userRating={userBookData?.userBook.userRating}
-            goodreadsUrl={goodreadsData?.goodreadsUrl}
-          /> */}
+    <div
+      className={`flex flex-col gap-6 overflow-auto scrollbar-hide ${className}`}
+    >
+      <div className="flex flex-row modal-background">
+        <div className="flex items-center flex-row gap-8">
+          <BookThumbnail
+            src={bookToShow?.thumbnailUrl}
+            placeholder="blur"
+            blurDataURL="/thumbnailPlaceholder.png"
+            fill
+            className="rounded-lg !relative max-lg:!w-48 max-lg:!h-full lg:!w-64 lg:!h-80"
+          />
+          <div className="flex flex-col gap-4 w-5/12 lg:w-7/12">
+            <BookTitle />
+            <BookDescription />
+            <AuthorsAndPages />
+            <PublishDate />
+            <Rating
+              loading={loadingGoodreadsData}
+              rating={goodreadsData?.goodreadsRating}
+              totalRatings={goodreadsData?.goodreadsRatingsCount}
+              userRating={userBookData?.userBook.userRating}
+              goodreadsUrl={goodreadsData?.goodreadsUrl}
+            />
+          </div>
         </div>
-        <ButtonsSection />
+        <div className="h-full flex w-3/12">
+          <ButtonsSection />
+        </div>
       </div>
       {userBookData && <Notes />}
     </div>

@@ -79,7 +79,11 @@ const Rating: React.FC<RatingProps> = ({
     className?: string;
   }) => {
     return (
-      <div className="flex items-center justify-start w-fit p-1 rounded-full bg-primary-foreground">
+      <div
+        className={`flex items-center justify-start w-fit rounded-full bg-primary-foreground
+      ${user ? "py-2.5" : ""}
+      `}
+      >
         <div className={`flex items-center justify-start px-3  ${className}`}>
           {[...Array(user ? fullStarsUser : fullStars)].map((_, index) => (
             <RatingStar

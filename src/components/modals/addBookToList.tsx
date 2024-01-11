@@ -259,7 +259,7 @@ const AddBookToList: React.FC<AddBookToListProps> = ({ book, type }) => {
   );
 
   return (
-    <div className="flex flex-row justify-between items-end gap-2 h-144 modal-background">
+    <div className="flex flex-row justify-between items-end gap-2 modal-size modal-background">
       <BookThumbnail
         src={book.thumbnailUrl}
         title={book.title}

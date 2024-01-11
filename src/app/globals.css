@@ -120,9 +120,17 @@ input[type="text"]:-moz-ui-autofill {
   .grid-header-table {
     @apply grid grid-cols-header-table;
   }
+
+  .modal-size {
+    @apply h-modal-sm w-modal-sm;
+  }
+
   @screen xl {
     .grid-header-table {
       @apply grid grid-cols-header-table-xl;
+    }
+    .modal-size {
+      @apply h-modal w-modal;
     }
   }
 }
