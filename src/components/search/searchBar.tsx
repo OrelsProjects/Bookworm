@@ -79,20 +79,22 @@ const SearchBar: React.FC<SearchBarProps> = ({ className }: SearchBarProps) => {
           books.length > 0 && (
             <>
               <div>Top {TOP_RESULTS_COUNT} Results</div>
-              {books.map(
-                (book, i) =>
-                  i < TOP_RESULTS_COUNT && (
-                    <BookComponent
-                      key={
-                        book.title +
-                        book.isbn10 +
-                        book.datePublished +
-                        book.isbn
-                      }
-                      book={book}
-                    />
-                  )
-              )}
+              <div className="flex gap-2 flex-col overflow-scroll">
+                {books.map(
+                  (book, i) =>
+                    i < TOP_RESULTS_COUNT && (
+                      <BookComponent
+                        key={
+                          book.title +
+                          book.isbn10 +
+                          book.datePublished +
+                          book.isbn
+                        }
+                        book={book}
+                      />
+                    )
+                )}
+              </div>
             </>
           )
         )}

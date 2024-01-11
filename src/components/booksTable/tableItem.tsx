@@ -45,7 +45,9 @@ const TableItem: React.FC<TableItemProps> = ({ userBookData, className }) => {
   };
 
   const Title = (): React.ReactNode => (
-    <div className="truncate">{userBookData.bookData.book?.title}</div>
+    <div className="truncate w-full flex items-center justify-center">
+      {userBookData.bookData.book?.title}
+    </div>
   );
 
   const Authors = (): React.ReactNode => (
@@ -97,7 +99,7 @@ const TableItem: React.FC<TableItemProps> = ({ userBookData, className }) => {
 
   return (
     <div
-      className={`w-full h-32 grid-header-table items-center bg-primary-foreground p-2 rounded-lg ${className}`}
+      className={`w-full h-28 grid-header-table items-center bg-primary-foreground p-2 rounded-lg ${className}`}
     >
       <Thumbnail />
       <Title />
