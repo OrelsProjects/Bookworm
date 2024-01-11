@@ -6,7 +6,7 @@ module.exports = {
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
-],
+  ],
   theme: {
     container: {
       center: true,
@@ -17,7 +17,8 @@ module.exports = {
     },
     extend: {
       gridTemplateColumns: {
-        "header-table": "minmax(0, 0.5fr) 0.8fr 1.5fr 1fr 1.2fr 1.8fr",
+        "header-table": "minmax(0, 0.5fr) 0.8fr 1fr 0.8fr 1.5fr 0.7fr",
+        "header-table-xl": "minmax(0, 0.5fr) 0.8fr 1fr 1fr 1.2fr 1.8fr",
       },
       colors: {
         border: "rgb(var(--border))",

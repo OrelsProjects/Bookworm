@@ -132,9 +132,9 @@ const Rating: React.FC<RatingProps> = ({
       {loading ? (
         <RatingLoading />
       ) : (
-        <div className="flex flex-col gap-2">
+        <div className={`flex flex-col gap-2 ${className}`}>
           {userRating !== undefined && (fullStarsUser ?? 0) > 0 && (
-            <RatingComponent user className={className} />
+            <RatingComponent user />
           )}
           {rating !== undefined && <RatingComponent />}
         </div>

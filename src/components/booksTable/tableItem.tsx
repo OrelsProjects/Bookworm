@@ -45,25 +45,31 @@ const TableItem: React.FC<TableItemProps> = ({ userBookData, className }) => {
   };
 
   const Title = (): React.ReactNode => (
-    <div className="truncate w-full flex items-center justify-center">
-      {userBookData.bookData.book?.title}
+    <div className="w-full flex items-center justify-start truncate">
+      <div className="truncate">{userBookData.bookData.book?.title}</div>
     </div>
   );
 
   const Authors = (): React.ReactNode => (
-    <div className="w-full flex items-center justify-center text-primary font-semibold truncate">
+    <div className="w-full flex items-center justify-center text-foreground font-semibold truncate">
       <div className="truncate">
         {userBookData.bookData.book?.authors?.join(", ")}
       </div>
     </div>
   );
 
-  const AddToListButton = ({ book }: { book: Book }): React.ReactNode => {
+  const AddToListButton = ({
+    book,
+    className,
+  }: {
+    book: Book;
+    className?: string;
+  }): React.ReactNode => {
     const bookReadingStatusId =
       userBookData.readingStatus?.readingStatusId ?? DEFAULT_READING_STATUS;
     switch (bookReadingStatusId) {
       case 2:
-        return <AddToReadListButton book={book} />;
+        return <AddToReadListButton book={book} className={className} />;
       default:
         return <></>;
     }
@@ -73,11 +79,15 @@ const TableItem: React.FC<TableItemProps> = ({ userBookData, className }) => {
     <div className="flex flex-row justify-center items-center gap-2">
       {userBookData.bookData.book && (
         <>
-          <AddToListButton book={userBookData.bookData.book} />
+          <AddToListButton
+            book={userBookData.bookData.book}
+            className="max-xl:hidden"
+          />
           <FavoriteButton
             loading={loadingFavorite}
             isFavorite={userBookData?.userBook?.isFavorite}
             onClick={() => onFavorite(userBookData.userBook)}
+            className="max-xl:hidden"
           />
           <ShowDetailsButton book={userBookData.bookData.book} />
         </>
@@ -110,6 +120,7 @@ const TableItem: React.FC<TableItemProps> = ({ userBookData, className }) => {
           rating={userBookData.goodreadsData?.goodreadsRating}
           totalRatings={userBookData.goodreadsData?.goodreadsRatingsCount}
           userRating={userBookData.userBook.userRating}
+          className="justify-center items-center"
         />
       </div>
       <AditionalButtons />

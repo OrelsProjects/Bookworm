@@ -39,7 +39,6 @@ const AddToReadListButton = ({
   loading,
   book,
   className,
-  onClick,
 }: { book: Book } & BookButtonProps): React.ReactNode => {
   const dispatch = useDispatch();
   return (
