@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 import Dropdown from "@/src/components/dropdown";
 import useAuth from "@/src/hooks/useAuth";
+import toast from "react-hot-toast";
 
 const Avatar: React.FC = () => {
   const [showDropdown, setShowDropdown] = React.useState<boolean>(false);
@@ -27,6 +28,14 @@ const Avatar: React.FC = () => {
       setShowDropdown(!showDropdown);
     }
     setIsClosing(false); // Reset the closing state
+  };
+
+  const handleSignOut = async () => {
+    toast.promise(signOut(), {
+      loading: "Signing out...",
+      success: "Signed out",
+      error: "Error signing out",
+    });
   };
 
   return (
@@ -53,7 +62,7 @@ const Avatar: React.FC = () => {
                     alt="sign out"
                   />
                 ),
-                onClick: () => signOut(),
+                onClick: () => handleSignOut(),
               },
             ]}
             onClose={() => {

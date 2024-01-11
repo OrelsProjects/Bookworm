@@ -1,24 +1,45 @@
-import React from "react";
-import { Book, UserBookData } from "../../models";
+import React, { useState } from "react";
+import { Book, UserBook, UserBookData } from "../../models";
 import Rating from "../rating";
-import { AddToReadListButton, ShowDetailsButton } from "../buttons/bookButtons";
+import {
+  AddToReadListButton,
+  FavoriteButton,
+  ShowDetailsButton,
+} from "../buttons/bookButtons";
 import { DEFAULT_READING_STATUS } from "@/src/models/readingStatus";
 import Image from "next/image";
 import BookThumbnail from "../bookThumbnail";
+import { FormatDate } from "@/src/utils/dateUtils";
+import toast from "react-hot-toast";
+import useBook from "@/src/hooks/useBook";
 
 interface TableItemProps {
   userBookData: UserBookData;
+  className?: string;
 }
 
-const TableItem: React.FC<TableItemProps> = ({ userBookData }) => {
+const TableItem: React.FC<TableItemProps> = ({ userBookData, className }) => {
+  const { favoriteBook } = useBook();
+  const [loadingFavorite, setLoadingFavorite] = useState(false);
+
+  const onFavorite = async (userBook: UserBook) => {
+    try {
+      setLoadingFavorite(true);
+      await favoriteBook(userBook);
+    } catch (error) {
+      toast.error("Something went wrong.. We're on it!");
+    } finally {
+      setLoadingFavorite(false);
+    }
+  };
+
   const Thumbnail = (): React.ReactNode => {
     return (
       <BookThumbnail
         src={userBookData.bookData?.book?.thumbnailUrl}
         title={userBookData.bookData.book?.title}
-        width={64}
-        height={80}
-        className="rounded-lg"
+        fill
+        className="rounded-lg !w-16 !h-24 !relative"
       />
     );
   };
@@ -51,6 +72,11 @@ const TableItem: React.FC<TableItemProps> = ({ userBookData }) => {
       {userBookData.bookData.book && (
         <>
           <AddToListButton book={userBookData.bookData.book} />
+          <FavoriteButton
+            loading={loadingFavorite}
+            isFavorite={userBookData?.userBook?.isFavorite}
+            onClick={() => onFavorite(userBookData.userBook)}
+          />
           <ShowDetailsButton book={userBookData.bookData.book} />
         </>
       )}
@@ -61,14 +87,18 @@ const TableItem: React.FC<TableItemProps> = ({ userBookData }) => {
     <div className="flex flex-col truncate items-center text-start">
       <div>
         <div>Pages: {userBookData.bookData.book?.numberOfPages}</div>
-        <div>Genre: {userBookData.bookData.book?.mainGenreId}</div>
-        <div>Date: {userBookData.bookData.book?.datePublished}</div>
+        <div className="truncate">
+          Genre: {userBookData.bookData.book?.mainGenreId}
+        </div>
+        <div>Date: {FormatDate(userBookData.bookData.book?.datePublished)}</div>
       </div>
     </div>
   );
 
   return (
-    <div className="w-full h-full grid-header-table items-center bg-primary-foreground p-2 rounded-lg">
+    <div
+      className={`w-full h-32 grid-header-table items-center bg-primary-foreground p-2 rounded-lg ${className}`}
+    >
       <Thumbnail />
       <Title />
       <Authors />

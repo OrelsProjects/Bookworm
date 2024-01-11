@@ -1,12 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 
-import BooksTable, { TableType } from "../../components/booksTable/booksTable";
-import ToggleButtons from "../../components/toggleButtons";
+import BooksTable from "../../components/booksTable/booksTable";
 
 export default function Home(): React.ReactNode {
-  const [selectedTableType, setSelectedTableType] = useState(TableType.TO_READ);
+  useEffect(() => {
+    console.log("home page visited");
+
+    // console.log(captureResult);
+  }, []);
 
   return (
     <div className="w-full h-full flex justify-start item-start flex-col gap-6">

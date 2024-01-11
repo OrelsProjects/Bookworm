@@ -61,7 +61,7 @@ const TableHeader: React.FC<TableHeaderProps> = ({ onSort }) => {
     canSort?: boolean;
     direction?: TableHeaderDirection;
   }) => (
-    <div className="w-full flex justify-center items-center flex-row gap-0.5">
+    <div className="flex justify-center items-center flex-row gap-0.5">
       {label}
       {canSort && RenderSortComponent(direction)}
     </div>
@@ -72,37 +72,16 @@ const TableHeader: React.FC<TableHeaderProps> = ({ onSort }) => {
     <div className="grid-header-table text-foreground rounded-lg tracking-wider bg-primary-foreground p-2 mb-2">
       {/* Empty cell for the image */}
       <div></div>
-      <HeaderItem
-        label="Title"
-        canSort={true}
-        direction={TableHeaderDirection.NONE}
-      />
+      <HeaderItem label="Title" direction={TableHeaderDirection.NONE} />
 
-      <HeaderItem
-        label="Author"
-        canSort={true}
-        direction={TableHeaderDirection.NONE}
-      />
-      <div className="flex flex-row gap-3">
-        <HeaderItem
-          label="Pages"
-          canSort={true}
-          direction={TableHeaderDirection.NONE}
-        />
-        <HeaderItem
-          label="Genre"
-          canSort={true}
-          direction={TableHeaderDirection.NONE}
-        />
-        <HeaderItem
-          label="Publish"
-          canSort={true}
-          direction={TableHeaderDirection.NONE}
-        />
+      <HeaderItem label="Author" direction={TableHeaderDirection.NONE} />
+      <div className="w-full flex flex-row justify-center items-center gap-4">
+        <HeaderItem label="Pages" direction={TableHeaderDirection.NONE} />
+        <HeaderItem label="Genre" direction={TableHeaderDirection.NONE} />
+        <HeaderItem label="Publish" direction={TableHeaderDirection.NONE} />
       </div>
       <HeaderItem
         label="Goodread's rating"
-        canSort={true}
         direction={TableHeaderDirection.NONE}
       />
     </div>

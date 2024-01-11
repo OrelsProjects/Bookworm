@@ -7,6 +7,7 @@ import ToggleButtons from "../toggleButtons";
 import { SearchBarComponent } from "../search/searchBarComponent";
 import Loading from "../loading";
 import useBook from "@/src/hooks/useBook";
+import { OpacityDiv } from "../animationDivs";
 
 export enum TableType {
   READ = 1, // Numbers in backend
@@ -17,8 +18,6 @@ const BooksTable: React.FC = () => {
   const { userBooks, loading, error, updateTableType, searchBooks } = useTable({
     initialType: TableType.TO_READ,
   });
-
-  const { loadUserBooks } = useBook();
 
   const headerRef = useRef(null); // Reference to the header element
   const [tableHeight, setTableHeight] = useState(0); // State to store the calculated height
@@ -43,8 +42,8 @@ const BooksTable: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="w-full h-full justify-center items-center">
-        <Loading className="!w-12 !h-12" />
+      <div className="w-full h-full flex justify-center items-center">
+        <Loading className="!w-24 !h-24 mb-48" />
       </div>
     );
   }
@@ -61,7 +60,7 @@ const BooksTable: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col w-full h-full">
+    <OpacityDiv className="flex flex-col w-full h-full">
       <div className="w-full flex flex-row justify-between items-center mb-8">
         <ToggleButtons
           values={[
@@ -96,7 +95,7 @@ const BooksTable: React.FC = () => {
           </div>
         )}
       </div>
-    </div>
+    </OpacityDiv>
   );
 };
 

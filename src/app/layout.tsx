@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import StoreProvider from "./StoreProvider";
-import AuthProvider from "./AuthProvider";
+import StoreProvider from "./providers/StoreProvider";
+import AuthProvider from "./providers/AuthProvider";
 import React from "react";
 import "./globals.css";
 import Header from "./_components/header";
 import { VideoBackground } from "../components";
-import APIProvider from "./APIProvider";
+import APIProvider from "./providers/APIProvider";
 import { Toaster } from "react-hot-toast";
-import DataProvider from "./DataProvider";
-import ModalProvider from "./ModalProvider";
-import AnimationProvider from "./AnimationProvider";
+import DataProvider from "./providers/DataProvider";
+import ModalProvider from "./providers/ModalProvider";
+import AnimationProvider from "./providers/AnimationProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 

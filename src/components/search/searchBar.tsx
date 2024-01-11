@@ -23,30 +23,12 @@ export interface SearchBarProps {
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({ className }: SearchBarProps) => {
-  const dispatch = useDispatch();
-  const { addUserBook } = useBook();
   const { loading, error, updateSearchValue, books }: UseSearchResult =
     useSearch();
   const { userBooksData } = useSelector((state: RootState) => state.userBooks);
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [bookToShowInModal, setBookToShowInModal] = useState<Book | null>(null);
-  const [loadingToastId, setLoadingToastId] = useState<string | null>(null);
-  const [loadingAddBook, setLoadingAddBook] = useState<Book | null>(null);
   const [searchResultsInLibrary, setSearchResultsInLibrary] = useState<Books>(
     []
   );
-
-  useEffect(() => {
-    if (loadingAddBook) {
-      const toastId = toast.loading(
-        `Adding ${loadingAddBook.title} to library...`
-      );
-      setLoadingToastId(toastId);
-    } else if (loadingToastId) {
-      toast.dismiss(loadingToastId);
-    }
-  }, [loadingAddBook]);
 
   useEffect(() => {
     if (error) {
@@ -108,7 +90,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ className }: SearchBarProps) => {
                         book.isbn
                       }
                       book={book}
-                      isBookInLibrary={isBookInLibrary(book)}
                     />
                   )
               )}

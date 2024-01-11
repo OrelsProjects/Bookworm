@@ -8,12 +8,12 @@ import {
   setUser,
   setLoading,
   setError,
-} from "../lib/features/auth/authSlice";
+} from "../../lib/features/auth/authSlice";
 import { fetchAuthSession } from "aws-amplify/auth";
 import { Hub } from "aws-amplify/utils";
-import { User } from "../models";
-import "../amplifyconfiguration";
-import { Loading } from "../components";
+import { User } from "../../models";
+import "../../amplifyconfiguration";
+import { Loading } from "../../components";
 
 interface AuthProviderProps {
   children?: React.ReactNode;

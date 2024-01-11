@@ -3,7 +3,8 @@
 import React, { useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { selectAuth } from "../lib/features/auth/authSlice";
+import { selectAuth } from "../../lib/features/auth/authSlice";
+import "../../eventTracker";
 import dotenv from "dotenv";
 dotenv.config();
 

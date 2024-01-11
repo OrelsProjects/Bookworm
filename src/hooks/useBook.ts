@@ -142,6 +142,8 @@ const useBook = () => {
       if (user) {
         axios.defaults.headers.common["Authorization"] = user.token;
         axios.defaults.headers.common["user_id"] = user.id;
+      } else {
+        return;
       }
 
       const response = await axios.get<IResponse<UserBookData[]>>(

@@ -1,14 +1,18 @@
 import React from "react";
 
 interface LoadingProps {
+  text?: string;
   className?: string;
 }
 
-const Loading: React.FC<LoadingProps> = ({ className }) => (
-  <div role="status">
+const Loading: React.FC<LoadingProps> = ({ text, className }) => (
+  <div
+    className="flex flex-col justify-center items-center"
+    role="status"
+  >
     <svg
       aria-hidden="true"
-      className={`w-6 h-6 animate-spin fill-primary bg-none ${className}`}
+      className={`w-6 h-6 animate-spin fill-primary-weak bg-none ${className}`}
       viewBox="0 0 100 101"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -23,6 +27,7 @@ const Loading: React.FC<LoadingProps> = ({ className }) => (
       />
     </svg>
     <span className="sr-only">Loading...</span>
+    <div className="text-primary">{text}</div>
   </div>
 );
 

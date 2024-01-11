@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Image from "next/image";
 import { Book, UserBook, UserBookData } from "@/src/models";
 import { RatingStar } from "../rating";
 import { TextArea } from "../textarea";
@@ -15,6 +14,8 @@ import { compareBooks } from "@/src/models/book";
 import { Input } from "../input";
 import { hideModal } from "@/src/lib/features/modal/modalSlice";
 import BookThumbnail from "../bookThumbnail";
+import { z } from "zod";
+import { ErrorMessage, Field, Form, Formik } from "formik";
 
 export enum ListType {
   BACKLOG,
@@ -155,7 +156,7 @@ const AddBookToList: React.FC<AddBookToListProps> = ({ book, type }) => {
   const commentsPlaceholder = (): string => {
     switch (type) {
       case ListType.BACKLOG:
-        return "";
+        return "Harry Potter";
       case ListType.READ:
         return "The book was great!";
       default:
@@ -163,51 +164,59 @@ const AddBookToList: React.FC<AddBookToListProps> = ({ book, type }) => {
     }
   };
 
-  const CommentsArea = (): React.ReactNode => (
-    <form className="w-comments h-36">
-      <label htmlFor="comments after reading" className="">
-        {commentsText()}
-      </label>
-      <TextArea
-        key={`comments-after-read`}
-        id="comments-after-read"
-        className="w-full h-full bg-primary-weak rounded-lg text-white placeholder-gray-300 focus:outline-none border-none"
-        placeholder={commentsPlaceholder()}
-        value={comments}
-        onChange={(e) => {
-          e.preventDefault();
-          setComments(e.target.value);
-        }}
-      />
-    </form>
-  );
-
-  const SuggestionSource = (): React.ReactNode => (
-    <form
-      className="w-comments"
-      onSubmit={(e) => {
-        e.preventDefault();
+  const CommentsArea = () => (
+    <Formik
+      initialValues={{ comments: "" }}
+      onSubmit={(values, actions) => {
+        // Your form submission logic
+        console.log(values);
+        actions.setSubmitting(false);
+        setComments(values.comments);
       }}
     >
-      <label htmlFor="suggestion-source" className="">
-        Who recommeneded this book to you?
-      </label>
+      {() => (
+        <Form className="w-comments h-36">
+          <label htmlFor="comments" className="">
+            Comments after reading (optional)
+          </label>
+          <Field
+            as="textarea"
+            name="comments"
+            id="comments-after-read"
+            className="w-full h-full p-2 bg-primary-weak rounded-lg text-foreground placeholder-gray-500/70 focus:outline-none border-none resize-none"
+            placeholder={commentsPlaceholder()}
+          />
+          <ErrorMessage name="comments" component="div" />
+        </Form>
+      )}
+    </Formik>
+  );
 
-      <Input
-        type="text"
-        key={`suggestion-source`}
-        id="suggestion-source"
-        className="w-full h-full bg-primary-weak rounded-lg text-white placeholder-gray-300 focus:outline-none border-none"
-        placeholder=""
-        value={suggestionSource}
-        onChange={(e) => {
-          setSuggestionSource(e.target.value);
-        }}
-        onSubmit={() => {
-          console.log("submit");
-        }}
-      />
-    </form>
+  const SuggestionSource = () => (
+    <Formik
+      initialValues={{ suggestionSource: "" }}
+      onSubmit={(values, actions) => {
+        console.log(values);
+        actions.setSubmitting(false);
+        setSuggestionSource(values.suggestionSource);
+      }}
+    >
+      {() => (
+        <Form className="w-comments">
+          <label htmlFor="suggestion-source" className="">
+            Who recommended this book to you?
+          </label>
+          <Field
+            type="text"
+            name="suggestionSource"
+            id="suggestion-source"
+            className="w-full p-2 bg-primary-weak rounded-lg text-foreground placeholder-gray-500/70 focus:outline-none border-none"
+            placeholder="Enter name or source"
+          />
+          <ErrorMessage name="suggestionSource" component="div" />
+        </Form>
+      )}
+    </Formik>
   );
 
   const MainSection = (): React.ReactNode => (

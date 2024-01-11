@@ -2,8 +2,8 @@
 
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { AuthStateType, selectAuth } from "../lib/features/auth/authSlice";
-import useBook from "../hooks/useBook";
+import { AuthStateType, selectAuth } from "../../lib/features/auth/authSlice";
+import useBook from "../../hooks/useBook";
 
 interface DataProviderProps {
   children?: React.ReactNode;

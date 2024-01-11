@@ -35,7 +35,7 @@ export function BookDetails({
     (state: RootState) => state.userBooks.userBooksData
   );
 
-  console.log(book);
+  console.log(JSON.stringify(book));
 
   const loadBookGoodreadsData = async () => {
     if (!book) {
@@ -177,6 +177,23 @@ export function BookDetails({
     );
   };
 
+  const ButtonsSection = (): React.ReactNode => (
+    <div className="flex flex-row items-end gap-2">
+      {userBookData ? (
+        <FavoriteButton
+          loading={loadingFavorite}
+          onClick={() => onFavorite(userBookData?.userBook)}
+          isFavorite={userBookData?.userBook.isFavorite ?? false}
+        />
+      ) : (
+        book && <AddToBacklogButton book={book} />
+      )}
+      {userBookData &&
+        userBookData?.readingStatus?.readingStatusId !== 1 &&
+        book && <AddToReadListButton book={book} />}
+    </div>
+  );
+
   const onFavorite = async (userBook: UserBook) => {
     try {
       setLoadingFavorite(true);
@@ -204,29 +221,15 @@ export function BookDetails({
           <BookDescription />
           <AuthorsAndPages />
           <PublishDate />
-          <Rating
+          {/* <Rating
             loading={loadingGoodreadsData}
             rating={goodreadsData?.goodreadsRating}
             totalRatings={goodreadsData?.goodreadsRatingsCount}
             userRating={userBookData?.userBook.userRating}
             goodreadsUrl={goodreadsData?.goodreadsUrl}
-          />
+          /> */}
         </div>
-
-        <div className="flex flex-row items-end gap-2">
-          {userBookData ? (
-            <FavoriteButton
-              loading={loadingFavorite}
-              onClick={() => onFavorite(userBookData?.userBook)}
-              isFavorite={userBookData?.userBook.isFavorite ?? false}
-            />
-          ) : (
-            book && <AddToBacklogButton book={book} />
-          )}
-          {userBookData &&
-            userBookData?.readingStatus?.readingStatusId !== 1 &&
-            book && <AddToReadListButton book={book} />}
-        </div>
+        <ButtonsSection />
       </div>
       {userBookData && <Notes />}
     </div>

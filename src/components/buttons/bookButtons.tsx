@@ -17,20 +17,19 @@ const FavoriteButton = ({
   className,
   onClick,
   isFavorite,
-}: BookButtonProps & { isFavorite: boolean }): React.ReactNode => (
+}: BookButtonProps & { isFavorite: boolean | undefined }): React.ReactNode => (
   <Button
     onClick={onClick}
-    className={`rounded-full border-none h-11 w-11 p-1 ${className}`}
+    className={`rounded-full flex justify-center items-center border-none h-11 w-11 p-2 ${className}`}
   >
     {loading ? (
-      <Loading />
+      <Loading className="!fill-primary" />
     ) : (
       <Image
         src={isFavorite ? "/favoriteFilled.svg" : "/favorite.svg"}
         alt="Favorite"
-        width={16}
-        height={16}
-        className="rounded-full"
+        fill
+        className="rounded-full !relative !w-4 !h-4"
       />
     )}
   </Button>

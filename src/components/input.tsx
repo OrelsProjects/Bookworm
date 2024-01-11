@@ -9,6 +9,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, ...props }, ref) => {
     return (
       <input
+        key={`${props.id}-key`}
+        name={props.name}
+        id={props.id}
         type={type}
         className={cn(
           "flex h-10 w-full bg-background px-3 py-2 text-md placeholder:text-muted focus-visible:none",

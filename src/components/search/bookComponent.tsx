@@ -17,12 +17,10 @@ import BookThumbnail from "../bookThumbnail";
 
 interface BookComponentProps {
   book: Book;
-  isBookInLibrary?: boolean;
 }
 
 const BookComponent: React.FC<BookComponentProps> = ({
   book,
-  isBookInLibrary,
 }) => {
   const { favoriteBook } = useBook();
   const [loadingFavorite, setLoadingFavorite] = useState(false);
@@ -53,7 +51,7 @@ const BookComponent: React.FC<BookComponentProps> = ({
 
   return (
     <div
-      className={`h-22 relative bg-card rounded-lg text-foreground p-2 shadow-md`}
+      className={`h-20 relative bg-card rounded-lg text-foreground p-2 shadow-md`}
     >
       <div className="w-full h-full flex justify-between items-center z-20">
         <div className="flex flex-row justify-start items-center gap-3 w-2/5 z-20">
@@ -72,9 +70,9 @@ const BookComponent: React.FC<BookComponentProps> = ({
 
         <div className="flex flex-row gap-8 justify-center items-center z-20">
           {book.authors && (
-            <p className="text-primary">by {book.authors?.join(", ")}</p>
+          <p className="text-primary">by {book.authors?.join(", ")}</p>
           )}
-          <p className="text-muted">{book.numberOfPages} Pages</p>
+        <p className="text-muted">{book.numberOfPages} Pages</p>
           <div className="flex flex-row gap-2">
             {userBookData ? (
               <>

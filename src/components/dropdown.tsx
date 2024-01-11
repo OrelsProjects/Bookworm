@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import { ExpandType, ExpandingDiv } from "./animationDivs";
 
 export interface DropdownItem {
   label: string;
@@ -20,25 +21,29 @@ const Dropdown: React.FC<DropdownProps> = ({
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+    function handleClickOutside(event: MouseEvent) {
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
         onClose?.();
       }
-    };
+    }
 
+    // Attach the event listener
     document.addEventListener("mousedown", handleClickOutside);
+
+    // Detach the event listener on cleanup
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [onClose]);
 
   return (
-    <div
+    <ExpandingDiv
       className={`bg-primary-weak rounded-lg flex-col justify-center items-start shadow-xl ${className}`}
-      ref={dropdownRef}
+      innerRef={dropdownRef}
+      expandType={ExpandType.TopLeft}
     >
       {items.map((item) => (
         <div
@@ -57,7 +62,7 @@ const Dropdown: React.FC<DropdownProps> = ({
           <div className="text-foreground">{item.label}</div>
         </div>
       ))}
-    </div>
+    </ExpandingDiv>
   );
 };
 

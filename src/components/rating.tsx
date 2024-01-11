@@ -2,6 +2,7 @@
 import * as React from "react";
 import Image from "next/image"; // Next.js Image component for optimized image serving
 import { Button } from "./button"; // Adjust the import path as necessary
+import Loading from "./loading";
 
 type StarProps = {
   filled: boolean;
@@ -62,7 +63,7 @@ const Rating: React.FC<RatingProps> = ({
   const fullStarsUser = userRating ? Math.floor(userRating) : 0;
   const emptyStarsUser = 5 - fullStarsUser;
 
-  const Loading = () => (
+  const RatingLoading = () => (
     <div
       className={`flex items-center justify-start w-content py-4 px-6 rounded-full bg-primary-foreground ${className}`}
     >
@@ -129,7 +130,7 @@ const Rating: React.FC<RatingProps> = ({
   return (
     <>
       {loading ? (
-        <Loading />
+        <RatingLoading />
       ) : (
         <div className="flex flex-col gap-2">
           {userRating !== undefined && (fullStarsUser ?? 0) > 0 && (

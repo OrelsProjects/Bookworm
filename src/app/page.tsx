@@ -35,7 +35,7 @@ function App() {
 
   return (
     <div className="h-full w-full flex flex-col justify-center items-center ">
-      {loading && <Loading className="w-24 h-24" />}
+      {loading && <Loading className="w-24 h-24 !fill-primary" />}
     </div>
   );
 }
