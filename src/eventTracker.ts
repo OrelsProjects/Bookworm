@@ -38,10 +38,8 @@ export class EventTracker {
    * @param timeout how long to wait before sending the same event again
    */
   static track(eventName: string, props?: Dict, timeout?: TimeoutLength) {
-    if (timeout) {
-      if (timeoutEvent(eventName, timeout)) {
-        return;
-      }
+    if (timeout && timeoutEvent(eventName, timeout)) {
+      return;
     }
     if (process.env.NODE_ENV !== "production") {
       console.log("Tracking event", eventName, props ?? "");

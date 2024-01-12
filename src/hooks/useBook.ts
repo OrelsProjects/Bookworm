@@ -20,6 +20,7 @@ import { setError } from "../lib/features/auth/authSlice";
 import { RootState } from "../lib/store";
 import ReadingStatus from "../models/readingStatus";
 import { Logger } from "../logger";
+import { EventTracker } from "../eventTracker";
 
 const useBook = () => {
   const [loading, setLoading] = useState(false);
@@ -79,6 +80,16 @@ const useBook = () => {
       throw new Error("Cannot add book while another book is loading");
     }
     setLoading(true);
+    EventTracker.track("User add book", {
+      book,
+      isFavorite,
+      suggestionSource,
+      userComments,
+      dateAdded,
+      userRating,
+      readingStartDate,
+      readingFinishDate,
+    });
     try {
       const responseAddBooks = await axios.post<IResponse<CreateBooksResponse>>(
         "/api/books",
@@ -209,8 +220,14 @@ const useBook = () => {
   const updateUserBook = async (
     updateBookBody: UpdateUserBookBody
   ): Promise<UserBook> => {
+    if (loading) {
+      throw new Error("Cannot update user book while another book is loading");
+    }
+    setLoading(true);
+    EventTracker.track("User update book", {
+      updateBookBody,
+    });
     try {
-      setLoading(true);
       const response = await axios.patch<IResponse<UserBook>>(
         "/api/user-books",
         updateBookBody
