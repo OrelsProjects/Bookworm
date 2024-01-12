@@ -36,8 +36,6 @@ export function BookDetails({
     (state: RootState) => state.userBooks.userBooksData
   );
 
-  console.log(JSON.stringify(book));
-
   const loadBookGoodreadsData = async () => {
     if (!book) {
       return;
@@ -171,7 +169,7 @@ export function BookDetails({
 
   const Notes = (): React.ReactNode => {
     return (
-      <div className="w-full bg-primary-foreground rounded-lg flex flex-col gap-6 justify-start items-start p-8">
+      <div className="w-full bg-primary-foreground rounded-lg flex flex-col gap-6 justify-start items-start p-8 shadow-lg">
         <div className="text-5xl w-full">My notes</div>
         <div className="flex flex-row w-full">
           <RecommendationSource />
@@ -217,7 +215,7 @@ export function BookDetails({
     <div
       className={`flex flex-col gap-6 overflow-auto scrollbar-hide ${className}`}
     >
-      <div className="flex flex-row modal-background">
+      <div className="flex flex-row modal-background shadow-lg">
         <div className="flex items-center flex-row gap-8">
           <BookThumbnail
             src={bookToShow?.thumbnailUrl}

@@ -84,7 +84,6 @@ const AddBookToList: React.FC<AddBookToListProps> = ({ book, type }) => {
       )?.userBook;
 
       if (!userBook) {
-        console.log("userBook not found");
         return;
       }
 
@@ -176,8 +175,6 @@ const AddBookToList: React.FC<AddBookToListProps> = ({ book, type }) => {
     <Formik
       initialValues={{ comments: "" }}
       onSubmit={(values, actions) => {
-        // Your form submission logic
-        console.log(values);
         actions.setSubmitting(false);
         setComments(values.comments);
       }}
@@ -204,7 +201,6 @@ const AddBookToList: React.FC<AddBookToListProps> = ({ book, type }) => {
     <Formik
       initialValues={{ suggestionSource: "" }}
       onSubmit={(values, actions) => {
-        console.log(values);
         actions.setSubmitting(false);
         setSuggestionSource(values.suggestionSource);
       }}

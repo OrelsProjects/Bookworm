@@ -78,13 +78,13 @@ const Modal: React.FC<Props> = ({
 
         <motion.div
           ref={modalRef}
-          className={`relative z-50 modal-size flex items-center justify-center rounded-lg shadow-lg font-sans ${className}`}
+          className={`relative z-50 modal-size flex items-center justify-center rounded-lg font-sans ${className}`}
           variants={modalAnimationVariants}
           initial="closed"
           animate={isOpen ? "open" : "closed"}
           transition={{ duration: 0.3 }}
         >
-          <div className="w-full h-full rounded-lg shadow-lg font-sans relative">
+          <div className="w-full h-full rounded-lg font-sans relative">
             {children}
             <motion.div
               className="h-6 w-6 absolute top-2 right-2"
