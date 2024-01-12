@@ -12,6 +12,7 @@ import useBook from "@/src/hooks/useBook";
 import { compareBooks } from "@/src/models/book";
 import toast from "react-hot-toast";
 import BookThumbnail from "../bookThumbnail";
+import { Logger } from "@/src/logger";
 
 export interface BookDescriptionProps {
   book: Book | undefined;
@@ -50,8 +51,11 @@ export function BookDetails({
     try {
       const result = await getBookGoodreadsData(book);
       setGoodreadsData(result);
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      Logger.error("Failed to load goodreads data", {
+        data: book,
+        error,
+      });
     } finally {
       setGoodreadsDataLoading(false);
     }
@@ -198,7 +202,11 @@ export function BookDetails({
     try {
       setLoadingFavorite(true);
       await favoriteBook(userBook);
-    } catch (error) {
+    } catch (error: any) {
+      Logger.error("Failed to favorite book", {
+        data: userBook,
+        error,
+      });
       toast.error("Something went wrong.. We're on it!");
     } finally {
       setLoadingFavorite(false);

@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { AuthStateType, selectAuth } from "../../lib/features/auth/authSlice";
 import useBook from "../../hooks/useBook";
+import { Logger } from "@/src/logger";
 
 interface DataProviderProps {
   children?: React.ReactNode;
@@ -17,8 +18,8 @@ const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
     const loadUserBooksAsync = async () => {
       try {
         await loadUserBooks(user ?? undefined);
-      } catch (error) {
-        console.error(error);
+      } catch (error: any) {
+        Logger.errorNoMessage(error);
       }
     };
     if (state === AuthStateType.SIGNED_IN && user) {

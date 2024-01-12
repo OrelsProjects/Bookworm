@@ -16,6 +16,7 @@ import { hideModal } from "@/src/lib/features/modal/modalSlice";
 import BookThumbnail from "../bookThumbnail";
 import { z } from "zod";
 import { ErrorMessage, Field, Form, Formik } from "formik";
+import { Logger } from "@/src/logger";
 
 export enum ListType {
   BACKLOG,
@@ -64,7 +65,11 @@ const AddBookToList: React.FC<AddBookToListProps> = ({ book, type }) => {
       );
       toast.success("Book added to backlog");
       dispatch(hideModal());
-    } catch (error) {
+    } catch (error: any) {
+      Logger.error("Error adding book to backlog:", {
+        data: book,
+        error,
+      });
       toast.error("Something went wrong");
     } finally {
       toast.dismiss(toastId);
@@ -92,8 +97,11 @@ const AddBookToList: React.FC<AddBookToListProps> = ({ book, type }) => {
       });
       toast.success("Book added to read list");
       dispatch(hideModal());
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      Logger.error("Error adding book to read list:", {
+        data: book,
+        error,
+      });
       toast.error("Something went wrong");
     } finally {
       toast.dismiss(toastId);

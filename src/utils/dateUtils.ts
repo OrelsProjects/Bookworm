@@ -1,3 +1,5 @@
+import { Logger } from "../logger";
+
 export const FormatDate = (
   dateString: string | undefined
 ): string | undefined => {
@@ -19,8 +21,13 @@ export const FormatDate = (
     }
 
     return `${year}-${monthString}-${dayString}`;
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    Logger.error("Error formatting date", {
+      data: {
+        dateString,
+      },
+      error,
+    });
     return dateString;
   }
 };

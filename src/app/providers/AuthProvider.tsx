@@ -14,10 +14,9 @@ import { Hub } from "aws-amplify/utils";
 import { User } from "../../models";
 import "../../amplifyconfiguration";
 import { Loading } from "../../components";
-import {
-  init as initEventTracker,
-  setUser as setUserEventTracker,
-} from "../../eventTracker";
+import { initEventTracker, setUserEventTracker } from "../../eventTracker";
+
+import { Logger, initLogger, setUserLogger } from "@/src/logger";
 
 interface AuthProviderProps {
   children?: React.ReactNode;
@@ -43,8 +42,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         session.tokens?.accessToken?.toString() ?? ""
       );
       dispatch(setUser({ ...user }));
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      Logger.errorNoMessage(error);
     } finally {
       dispatch(setLoading(false));
     }
@@ -52,7 +51,13 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     initEventTracker();
+    initLogger();
   }, []);
+
+  useEffect(() => {
+    setUserEventTracker(user);
+    setUserLogger(user);
+  }, [user]);
 
   useEffect(() => {
     dispatch(setLoading(true));
@@ -91,12 +96,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
     }
   }, [loading, router]);
-
-  useEffect(() => {
-    if (user) {
-      setUserEventTracker(user?.id);
-    }
-  }, [user]);
 
   return (
     <>

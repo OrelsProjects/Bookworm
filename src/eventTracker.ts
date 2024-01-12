@@ -1,5 +1,6 @@
 import mixpanel from "mixpanel-browser";
 import dotenv from "dotenv";
+import { User } from "./models";
 dotenv.config();
 
 export enum TimeoutLength {
@@ -11,12 +12,12 @@ export enum TimeoutLength {
 export interface Dict {
   [key: string]: any;
 }
-export const init = () => {
+export const initEventTracker = () => {
   mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_API_KEY ?? "");
 };
 
-export const setUser = (userId: string = "no_user_id") => {
-  mixpanel.identify(userId);
+export const setUserEventTracker = (user?: User | null) => {
+  mixpanel.identify(user?.id);
 };
 
 const timeoutEvent = (eventName: string, timeout: TimeoutLength) => {
@@ -30,10 +31,6 @@ const timeoutEvent = (eventName: string, timeout: TimeoutLength) => {
 };
 
 export class EventTracker {
-  constructor() {
-    init();
-  }
-
   /**
    *  Track event with props
    * @param eventName is the name of the event

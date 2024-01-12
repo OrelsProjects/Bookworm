@@ -1,4 +1,5 @@
 import { PresignedURL } from "@/src/hooks/useImport";
+import { Logger } from "@/src/logger";
 import { IResponse } from "@/src/models/dto/response";
 import { GetAxiosInstance } from "@/src/utils/axiosInstance";
 import { NextRequest, NextResponse } from "next/server";
@@ -26,8 +27,10 @@ export async function GET(
       },
       { status: 200 }
     );
-  } catch (error) {
-    console.error(error);
+  } catch (error: any) {
+    Logger.error("Error getting presigned url", {
+      error,
+    });
     return NextResponse.json({}, { status: 500 });
   }
 }

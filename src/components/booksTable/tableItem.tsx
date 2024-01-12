@@ -12,6 +12,7 @@ import BookThumbnail from "../bookThumbnail";
 import { FormatDate } from "@/src/utils/dateUtils";
 import toast from "react-hot-toast";
 import useBook from "@/src/hooks/useBook";
+import { Logger } from "@/src/logger";
 
 interface TableItemProps {
   userBookData: UserBookData;
@@ -26,7 +27,8 @@ const TableItem: React.FC<TableItemProps> = ({ userBookData, className }) => {
     try {
       setLoadingFavorite(true);
       await favoriteBook(userBook);
-    } catch (error) {
+    } catch (error: any) {
+      Logger.errorNoMessage(error);
       toast.error("Something went wrong.. We're on it!");
     } finally {
       setLoadingFavorite(false);

@@ -14,14 +14,13 @@ import {
 import { compareBooks } from "@/src/models/book";
 import toast from "react-hot-toast";
 import BookThumbnail from "../bookThumbnail";
+import { Logger } from "@/src/logger";
 
 interface BookComponentProps {
   book: Book;
 }
 
-const BookComponent: React.FC<BookComponentProps> = ({
-  book,
-}) => {
+const BookComponent: React.FC<BookComponentProps> = ({ book }) => {
   const { favoriteBook } = useBook();
   const [loadingFavorite, setLoadingFavorite] = useState(false);
   const [userBookData, setUserBookData] = useState<UserBookData | undefined>(
@@ -42,7 +41,11 @@ const BookComponent: React.FC<BookComponentProps> = ({
     try {
       setLoadingFavorite(true);
       await favoriteBook(userBook);
-    } catch (error) {
+    } catch (error: any) {
+      Logger.error("Failed to favorite book", {
+        data: userBook,
+        error,
+      });
       toast.error("Something went wrong.. We're on it!");
     } finally {
       setLoadingFavorite(false);
@@ -70,9 +73,9 @@ const BookComponent: React.FC<BookComponentProps> = ({
 
         <div className="flex flex-row gap-8 justify-center items-center z-20">
           {book.authors && (
-          <p className="text-primary">by {book.authors?.join(", ")}</p>
+            <p className="text-primary">by {book.authors?.join(", ")}</p>
           )}
-        <p className="text-muted">{book.numberOfPages} Pages</p>
+          <p className="text-muted">{book.numberOfPages} Pages</p>
           <div className="flex flex-row gap-2">
             {userBookData ? (
               <>

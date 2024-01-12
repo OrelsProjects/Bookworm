@@ -19,6 +19,7 @@ import { IResponse } from "../models/dto/response";
 import { setError } from "../lib/features/auth/authSlice";
 import { RootState } from "../lib/store";
 import ReadingStatus from "../models/readingStatus";
+import { Logger } from "../logger";
 
 const useBook = () => {
   const [loading, setLoading] = useState(false);
@@ -52,9 +53,13 @@ const useBook = () => {
         },
       };
       dispatch(updateUserBookData(userBookData));
-    } catch (error) {
-      console.error(error);
-      // throw error;
+    } catch (error: any) {
+      Logger.error("Error favoriting book", {
+        data: {
+          userBook,
+        },
+        error,
+      });
     } finally {
       setLoading(false);
     }
@@ -100,9 +105,7 @@ const useBook = () => {
       };
       const responseAddUserBooks = await axios.post<IResponse<UserBook>>(
         "/api/user-books",
-        {
-          createUserBookBody,
-        }
+        createUserBookBody
       );
       const userBook: UserBook | undefined = responseAddUserBooks.data.result;
 
@@ -118,8 +121,20 @@ const useBook = () => {
       };
       dispatch(addUserBooksRedux([userBookData]));
       return userBook;
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      Logger.error("Error adding user book", {
+        data: {
+          book,
+          isFavorite,
+          suggestionSource,
+          userComments,
+          dateAdded,
+          userRating,
+          readingStartDate,
+          readingFinishDate,
+        },
+        error,
+      });
       throw error;
     } finally {
       setLoading(false);
@@ -180,8 +195,13 @@ const useBook = () => {
       }
       dispatch(updateUserBookGoodreadsData({ book, goodreadsData: result }));
       return result;
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      Logger.error("Error getting goodreads data", {
+        data: {
+          book,
+        },
+        error,
+      });
       throw error;
     }
   };
@@ -215,8 +235,13 @@ const useBook = () => {
 
       dispatch(updateUserBookData(userBookData));
       return newUserBook;
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      Logger.error("Error updating user book", {
+        data: {
+          updateBookBody,
+        },
+        error,
+      });
       throw error;
     } finally {
       setLoading(false);

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@aws-amplify/ui-react": "^6.0.5",
+    "@datadog/browser-logs": "^5.7.0",
     "@hookform/resolvers": "^3.3.4",
     "@redux-devtools/extension": "^3.3.0",
     "@reduxjs/toolkit": "^2.0.1",

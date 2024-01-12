@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { hideModal } from "@/src/lib/features/modal/modalSlice";
 import { EventTracker } from "@/src/eventTracker";
+import { Logger } from "@/src/logger";
 
 const ImportBooks = () => {
   const dispatch = useDispatch();
@@ -38,8 +39,8 @@ const ImportBooks = () => {
       setLoadingImport(true);
       await importViaCSV(fileSelected);
       toast.success("Done!");
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      Logger.error("Error importing books via CSV", { error });
       toast.error("Error uploading file");
     } finally {
       toast.dismiss(toastId);
@@ -58,8 +59,8 @@ const ImportBooks = () => {
       await importViaGoodreadsUrl(goodreadsUrl);
       toast.success("Done!");
       setBooksBeingImported(true);
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      Logger.error("Error importing books via Goodreads URL", { error });
       toast.error("Error importing books");
     } finally {
       toast.dismiss(loadingToastId);

@@ -4,6 +4,7 @@ import axios from "axios";
 import { IResponse } from "../models/dto/response";
 import { useState } from "react";
 import { set } from "lodash";
+import { Logger } from "../logger";
 
 export type PresignedURL = {
   fileName: string;
@@ -32,8 +33,15 @@ const useImport = () => {
       if (response.status !== 200) {
         throw new Error("Failed to import books");
       }
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      Logger.error("Error triggering goodreads import", {
+        data: {
+          goodreadsUserId,
+          shelfName,
+        },
+        error,
+      });
+
       throw error;
     } finally {
       setLoading(false);
@@ -61,8 +69,10 @@ const useImport = () => {
       if (response.status !== 200) {
         throw new Error("Failed to upload CSV");
       }
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      Logger.error("Error uploading CSV", {
+        error,
+      });
       throw error;
     } finally {
       setLoading(false);
@@ -75,8 +85,11 @@ const useImport = () => {
         "/api/import/presigned-url"
       );
       return response.data.result;
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      Logger.error("Error getting presigned url", {
+        error,
+      });
+      return undefined;
     }
   };
 

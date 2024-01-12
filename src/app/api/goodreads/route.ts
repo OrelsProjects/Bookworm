@@ -1,3 +1,4 @@
+import { Logger } from "@/src/logger";
 import { GoodreadsData } from "@/src/models";
 import { GoodreadsDataDTO } from "@/src/models/dto";
 import { IResponse } from "@/src/models/dto/response";
@@ -7,9 +8,10 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(
   req: NextRequest
 ): Promise<NextResponse<IResponse<GoodreadsData | undefined>>> {
+  let isbn: string | null = "";
   try {
     const url = req.nextUrl;
-    const isbn = url.searchParams.get("isbn");
+    isbn = url.searchParams.get("isbn");
     if (!isbn) {
       throw new Error("Missing isbn parameter");
     }
@@ -28,8 +30,13 @@ export async function GET(
       },
       { status: 200 }
     );
-  } catch (error) {
-    console.error(error);
+  } catch (error: any) {
+    Logger.error("Error getting goodreads data", {
+      data: {
+        isbn,
+      },
+      error,
+    });
     return NextResponse.json({}, { status: 500 });
   }
 }

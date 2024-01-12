@@ -1,3 +1,4 @@
+import { Logger } from "@/src/logger";
 import { Book } from "@/src/models";
 import { CreateBooksResponse } from "@/src/models/book";
 import { BookDTO } from "@/src/models/dto";
@@ -7,13 +8,15 @@ import {
 } from "@/src/models/dto/bookDTO";
 import { IResponse } from "@/src/models/dto/response";
 import { GetAxiosInstance } from "@/src/utils/axiosInstance";
+
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(
   req: NextRequest
 ): Promise<NextResponse<IResponse<CreateBooksResponse>>> {
+  let book: Book = new Book("", -1, -1);
   try {
-    const book: Book = await req.json();
+    book = await req.json();
     const bookDTO = new BookDTO(book);
     const createBookBody: CreateBookBody = {
       books: [bookDTO],
@@ -24,7 +27,7 @@ export async function POST(
       createBookBody
     );
     const bookDTOsWithIds = response.data ?? {};
-    const createBooksResponse = { 
+    const createBooksResponse = {
       success: bookDTOsWithIds.success?.map((bookDTO) =>
         BookDTO.FromResponse(bookDTO)
       ),
@@ -42,8 +45,13 @@ export async function POST(
       },
       { status: 200 }
     );
-  } catch (error) {
-    console.error(error);
+  } catch (error: any) {
+    Logger.error("Error creating book", {
+      data: {
+        book: book,
+      },
+      error,
+    });
     return NextResponse.json({}, { status: 500 });
   }
 }

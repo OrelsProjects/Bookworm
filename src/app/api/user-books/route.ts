@@ -1,3 +1,4 @@
+import { Logger } from "@/src/logger";
 import { Book, UserBook, UserBookData } from "@/src/models";
 import {
   BookDTO,
@@ -50,16 +51,18 @@ export async function GET(req: NextRequest) {
       result: userBookData,
     };
     return NextResponse.json(result, { status: 200 });
-  } catch (error) {
-    console.error(error);
+  } catch (error: any) {
+    Logger.error("Error getting user books", {
+      error,
+    });
     return NextResponse.json({}, { status: 500 });
   }
 }
 
 export async function POST(req: NextRequest) {
+  let createUserBookBody: CreateUserBookBody | null = null;
   try {
-    const { createUserBookBody }: { createUserBookBody: CreateUserBookBody } =
-      await req.json();
+    createUserBookBody = await req.json();
     const axios = GetAxiosInstance(req);
     const response = await axios.post<UserBookDTO>(
       "/user-book",
@@ -75,8 +78,14 @@ export async function POST(req: NextRequest) {
       },
       { status: 200 }
     );
-  } catch (error) {
-    console.error(error);
+  } catch (error: any) {
+    Logger.error("Error creating user book", {
+      data: {
+        createUserBookBody,
+      },
+      error,
+    });
+
     return NextResponse.json({}, { status: 500 });
   }
 }
@@ -84,8 +93,9 @@ export async function POST(req: NextRequest) {
 export async function PATCH(
   req: NextRequest
 ): Promise<NextResponse<IResponse<UserBook>>> {
+  let updateUserBookBody: UpdateUserBookBody | null = null;
   try {
-    const updateUserBookBody: UpdateUserBookBody = await req.json();
+    updateUserBookBody = await req.json();
     const axios = GetAxiosInstance(req);
     const response = await axios.patch<UserBookDTO>(
       "/user-book",
@@ -93,8 +103,13 @@ export async function PATCH(
     );
     const userBook: UserBook = UserBookDTO.FromResponse(response.data);
     return NextResponse.json({ result: userBook }, { status: 200 });
-  } catch (error) {
-    console.error(error);
+  } catch (error: any) {
+    Logger.error("Error updating user book", {
+      data: {
+        updateUserBookBody,
+      },
+      error,
+    });
     return NextResponse.json({}, { status: 500 });
   }
 }

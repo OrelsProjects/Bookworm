@@ -1,3 +1,4 @@
+import { Logger } from "@/src/logger";
 import { IResponse } from "@/src/models/dto/response";
 import { GetAxiosInstance } from "@/src/utils/axiosInstance";
 import { NextRequest, NextResponse } from "next/server";
@@ -5,10 +6,12 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(
   req: NextRequest
 ): Promise<NextResponse<IResponse<void>>> {
+  let goodreadsUserId: string | null = "";
+  let shelfName: string | null = "";
   try {
     const url = req.nextUrl;
-    const goodreadsUserId = url.searchParams.get("goodreadsUserId") ?? "";
-    const shelfName = url.searchParams.get("shelfName") ?? "";
+    goodreadsUserId = url.searchParams.get("goodreadsUserId") ?? "";
+    shelfName = url.searchParams.get("shelfName") ?? "";
 
     const axios = GetAxiosInstance(req);
     const response = await axios.post("/import-list/trigger-goodreads", null, {
@@ -18,10 +21,15 @@ export async function POST(
       },
     });
 
-    const result = response.data;
     return NextResponse.json({}, { status: 200 });
   } catch (error: any) {
-    console.error("Error: ", error?.response?.data?.message ?? error);
+    Logger.error("Error triggering goodreads import", {
+      data: {
+        goodreadsUserId,
+        shelfName,
+      },
+      error,
+    });
     return NextResponse.json({}, { status: 500 });
   }
 }

@@ -8,6 +8,7 @@ import {
 import { useDispatch } from "react-redux";
 import { clearUser, setError } from "../lib/features/auth/authSlice";
 import { EventTracker } from "../eventTracker";
+import { Logger } from "../logger";
 
 const useAuth = () => {
   const dispatch = useDispatch();
@@ -30,7 +31,8 @@ const useAuth = () => {
     };
     try {
       await signInWithRedirect(signInWithRedirectInput);
-    } catch (error) {
+    } catch (error: any) {
+      Logger.error("Error signing up with Google", { error });
       dispatch(setError("Failed to sign up"));
       console.error(error);
     }
@@ -42,7 +44,8 @@ const useAuth = () => {
     };
     try {
       await signInWithRedirect(signInWithRedirectInput);
-    } catch (error) {
+    } catch (error: any) {
+      Logger.error("Error signing in with Google", { error });
       dispatch(setError("Failed to sign in"));
       console.error(error);
     }
@@ -55,9 +58,9 @@ const useAuth = () => {
       await signOutAuth();
       dispatch(clearUser());
       localStorage.clear();
-    } catch (error) {
+    } catch (error: any) {
+      Logger.error("Error signing out", { error });
       dispatch(setError("Failed to sign out"));
-      console.error(error);
     }
   }, []);
 
