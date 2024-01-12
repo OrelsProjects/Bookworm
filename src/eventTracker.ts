@@ -1,6 +1,7 @@
 import mixpanel from "mixpanel-browser";
 import dotenv from "dotenv";
 import { User } from "./models";
+import { Logger } from "./logger";
 dotenv.config();
 
 export enum TimeoutLength {
@@ -17,7 +18,16 @@ export const initEventTracker = () => {
 };
 
 export const setUserEventTracker = (user?: User | null) => {
-  mixpanel.identify(user?.id);
+  try {
+    mixpanel.identify(user?.id);
+  } catch (error: any) {
+    Logger.error("Error setting user for event tracker", {
+      data: {
+        user,
+      },
+      error,
+    });
+  }
 };
 
 const timeoutEvent = (eventName: string, timeout: TimeoutLength) => {
