@@ -7,7 +7,6 @@ import {
   ShowDetailsButton,
 } from "../buttons/bookButtons";
 import { DEFAULT_READING_STATUS } from "@/src/models/readingStatus";
-import Image from "next/image";
 import BookThumbnail from "../bookThumbnail";
 import { FormatDate } from "@/src/utils/dateUtils";
 import toast from "react-hot-toast";
@@ -28,7 +27,10 @@ const TableItem: React.FC<TableItemProps> = ({ userBookData, className }) => {
       setLoadingFavorite(true);
       await favoriteBook(userBook);
     } catch (error: any) {
-      Logger.errorNoMessage(error);
+      Logger.error("Failed to favorite book", {
+        data: userBook,
+        error,
+      });
       toast.error("Something went wrong.. We're on it!");
     } finally {
       setLoadingFavorite(false);
@@ -47,7 +49,7 @@ const TableItem: React.FC<TableItemProps> = ({ userBookData, className }) => {
   };
 
   const Title = (): React.ReactNode => (
-    <div className="w-full flex items-center justify-start truncate">
+    <div className="w-full flex items-center justify-center truncate px-2">
       <div className="truncate">{userBookData.bookData.book?.title}</div>
     </div>
   );

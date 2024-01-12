@@ -19,7 +19,7 @@ const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
       try {
         await loadUserBooks(user ?? undefined);
       } catch (error: any) {
-        Logger.errorNoMessage(error);
+        Logger.error("Error loading user books", { error });
       }
     };
     if (state === AuthStateType.SIGNED_IN && user) {

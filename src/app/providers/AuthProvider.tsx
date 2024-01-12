@@ -43,7 +43,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       );
       dispatch(setUser({ ...user }));
     } catch (error: any) {
-      Logger.errorNoMessage(error);
+      Logger.error("Error fetching user", { error });
     } finally {
       dispatch(setLoading(false));
     }
