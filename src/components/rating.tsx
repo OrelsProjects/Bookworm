@@ -3,6 +3,7 @@ import * as React from "react";
 import Image from "next/image"; // Next.js Image component for optimized image serving
 import { Button } from "./button"; // Adjust the import path as necessary
 import Loading from "./loading";
+import { EventTracker } from "../eventTracker";
 
 type StarProps = {
   filled: boolean;
@@ -116,6 +117,9 @@ const Rating: React.FC<RatingProps> = ({
                 className="text-sm text-primary hover:underline"
                 href={goodreadsUrl}
                 target="_blank"
+                onClick={() => {
+                  EventTracker.track("User clicked on Goodreads link");
+                }}
               >
                 View Details on Goodreads
               </a>

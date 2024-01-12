@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useEffect, createContext, useContext } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   selectAuth,
   setUser,
@@ -14,21 +14,25 @@ import { Hub } from "aws-amplify/utils";
 import { User } from "../../models";
 import "../../amplifyconfiguration";
 import { Loading } from "../../components";
+import {
+  init as initEventTracker,
+  setUser as setUserEventTracker,
+} from "../../eventTracker";
 
 interface AuthProviderProps {
   children?: React.ReactNode;
 }
 
-const AuthContext = createContext<AuthProviderProps>({});
-
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const { user, loading, error } = useSelector(selectAuth);
+  const { user, loading } = useSelector(selectAuth);
   const dispatch = useDispatch();
   const router = useRouter();
+  const pathname = usePathname();
 
   const fetchUser = async () => {
     try {
       dispatch(setLoading(true));
+      console.log("fetchUser");
       const session = await fetchAuthSession();
       const user = new User(
         session.userSub ?? "",
@@ -47,8 +51,14 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   useEffect(() => {
+    initEventTracker();
+  }, []);
+
+  useEffect(() => {
     dispatch(setLoading(true));
+    console.log("I am loading for Hub");
     const unsubscribe = Hub.listen("auth", ({ payload }) => {
+      console.log("A new auth event has happened: ", JSON.stringify(payload));
       setLoading(false);
       switch (payload.event) {
         case "signInWithRedirect":
@@ -74,15 +84,22 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [dispatch]);
 
   useEffect(() => {
+    console.log("I am loading for pathname");
     if (!loading) {
-      if (!user) {
+      if (pathname === "/") {
         router.push("/home");
       }
     }
-  }, [loading, user, router]);
+  }, [loading, router]);
+
+  useEffect(() => {
+    if (user) {
+      setUserEventTracker(user?.id);
+    }
+  }, [user]);
 
   return (
-    <AuthContext.Provider value={{}}>
+    <>
       {loading ? (
         <div className="w-full h-full flex justify-center items-center">
           <Loading className="!w-24 !h-24" />
@@ -90,7 +107,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       ) : (
         children
       )}
-    </AuthContext.Provider>
+    </>
   );
 };
 

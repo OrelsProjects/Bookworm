@@ -218,7 +218,7 @@ export function BookDetails({
             fill
             className="rounded-lg !relative max-lg:!w-48 max-lg:!h-full lg:!w-64 lg:!h-80"
           />
-          <div className="flex flex-col gap-4 w-5/12 lg:w-7/12">
+          <div className="flex flex-col gap-4 w-5/12 lg:w-8/12">
             <BookTitle />
             <BookDescription />
             <AuthorsAndPages />
@@ -232,7 +232,7 @@ export function BookDetails({
             />
           </div>
         </div>
-        <div className="h-full flex w-3/12">
+        <div className="h-full flex w-3/12 justify-end">
           <ButtonsSection />
         </div>
       </div>

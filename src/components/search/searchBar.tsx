@@ -25,32 +25,12 @@ export interface SearchBarProps {
 const SearchBar: React.FC<SearchBarProps> = ({ className }: SearchBarProps) => {
   const { loading, error, updateSearchValue, books }: UseSearchResult =
     useSearch();
-  const { userBooksData } = useSelector((state: RootState) => state.userBooks);
-  const [searchResultsInLibrary, setSearchResultsInLibrary] = useState<Books>(
-    []
-  );
 
   useEffect(() => {
     if (error) {
       toast.error("Failed to fetch books");
     }
   }, [error]);
-
-  useEffect(() => {
-    if (books) {
-      const booksInLibrary = books.filter((book) =>
-        userBooksData.some((userBookData) =>
-          compareBooks(userBookData.bookData.book, book)
-        )
-      );
-      setSearchResultsInLibrary(booksInLibrary);
-    }
-  }, [books]);
-
-  const isBookInLibrary = (book: Book) =>
-    searchResultsInLibrary.some((searchResult) =>
-      compareBooks(searchResult, book)
-    );
 
   const onSubmit = (value: string) => updateSearchValue(value);
   const onChange = (value: string) => updateSearchValue(value);

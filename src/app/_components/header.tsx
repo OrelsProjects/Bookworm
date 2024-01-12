@@ -8,8 +8,8 @@ import toast from "react-hot-toast";
 import { selectAuth } from "@/src/lib/features/auth/authSlice";
 import useAuth from "@/src/hooks/useAuth";
 import { ModalTypes, showModal } from "@/src/lib/features/modal/modalSlice";
-import Dropdown from "@/src/components/dropdown";
 import Avatar from "./avatar";
+import { EventTracker } from "@/src/eventTracker";
 
 const tabs = [
   {
@@ -36,11 +36,12 @@ const Header = ({ className }: HeaderProps): React.ReactNode => {
   const router = useRouter();
   const pathname = usePathname();
   const { user, loading, error } = useSelector(selectAuth);
-  const { signInWithGoogle, signUpWithGoogle, signOut } = useAuth();
-
-  const [showDropdown, setShowDropdown] = React.useState<boolean>(false);
+  const { signInWithGoogle } = useAuth();
 
   useEffect(() => {
+    EventTracker.track(
+      `User navigated to ${pathname?.toString()?.replace("/", "")}`
+    );
     tabs.map((tab) => {
       if (tab.href === pathname) {
         tab.selected = true;

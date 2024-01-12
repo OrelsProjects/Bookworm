@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
+import { EventTracker } from "@/src/eventTracker";
 
 interface Props {
   children: React.ReactNode;
@@ -53,7 +54,7 @@ const Modal: React.FC<Props> = ({
         if (outsideClickClose) {
           onClose?.();
         } else {
-          console.log("outside click. Use for event tracking");
+          EventTracker.track("User clicked outside modal");
         }
       }
     };

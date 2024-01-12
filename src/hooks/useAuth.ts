@@ -7,7 +7,7 @@ import {
 
 import { useDispatch } from "react-redux";
 import { clearUser, setError } from "../lib/features/auth/authSlice";
-import { setUserBooks } from "../lib/features/userBooks/userBooksSlice";
+import { EventTracker } from "../eventTracker";
 
 const useAuth = () => {
   const dispatch = useDispatch();
@@ -51,6 +51,7 @@ const useAuth = () => {
 
   const signOut = useCallback(async () => {
     try {
+      EventTracker.track("User signed out");
       await signOutAuth();
       dispatch(clearUser());
       localStorage.clear();

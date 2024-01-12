@@ -4,6 +4,7 @@ import { debounce } from "lodash";
 import { Book } from "../models";
 import { IResponse } from "../models/dto/response";
 import { Books } from "../models/book";
+import { EventTracker } from "../eventTracker";
 
 // Define a type for the hook's return value
 export interface UseSearchResult {
@@ -36,6 +37,7 @@ function useSearch(): UseSearchResult {
       if (!value) {
         return [];
       }
+      EventTracker.track("User search new book", { query: value });
       const response = await axios.get<IResponse<Book[]>>(
         `/api/google-books?query=${value}`
       );

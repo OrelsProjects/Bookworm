@@ -1,11 +1,10 @@
-import { Book } from "@/src/models";
 import React, { useRef, useState } from "react";
-import BookComponent from "../search/bookComponent";
 import useImport from "@/src/hooks/useImport";
 import { Button } from "../button";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { hideModal } from "@/src/lib/features/modal/modalSlice";
+import { EventTracker } from "@/src/eventTracker";
 
 const ImportBooks = () => {
   const dispatch = useDispatch();
@@ -14,6 +13,8 @@ const ImportBooks = () => {
   const { importViaCSV, importViaGoodreadsUrl, loading } = useImport();
   const [booksBeingImported, setBooksBeingImported] = useState<boolean>(false);
   const [fileSelected, setFileSelected] = useState<File | null>(null);
+  const [goodreadsUrl, setGoodreadsUrl] = useState<string>("");
+  const [loadingImport, setLoadingImport] = useState<boolean>(false);
 
   const openFileExplorer = () => {
     fileInputRef.current?.click();
@@ -28,11 +29,13 @@ const ImportBooks = () => {
   };
 
   const handleImportViaCSV = async () => {
-    if (!fileSelected) {
+    if (!fileSelected || loadingImport) {
       return;
     }
     const toastId = toast.loading("Uploading file");
     try {
+      EventTracker.track("User imported books via CSV");
+      setLoadingImport(true);
       await importViaCSV(fileSelected);
       toast.success("Done!");
     } catch (error) {
@@ -40,13 +43,19 @@ const ImportBooks = () => {
       toast.error("Error uploading file");
     } finally {
       toast.dismiss(toastId);
+      setLoadingImport(false);
     }
   };
 
   const handleImportViaGoodreadsUrl = async () => {
+    if (loadingImport) {
+      return;
+    }
     const loadingToastId = toast.loading("Validating URL");
     try {
-      await importViaGoodreadsUrl("117647355-orel");
+      EventTracker.track("User imported books via Goodreads URL");
+      setLoadingImport(true);
+      await importViaGoodreadsUrl(goodreadsUrl);
       toast.success("Done!");
       setBooksBeingImported(true);
     } catch (error) {
@@ -54,6 +63,7 @@ const ImportBooks = () => {
       toast.error("Error importing books");
     } finally {
       toast.dismiss(loadingToastId);
+      setLoadingImport(false);
     }
   };
 
@@ -64,16 +74,16 @@ const ImportBooks = () => {
         <div className="">
           It might take a few minutes until the process is complete
         </div>
-        <Button variant="selected" className="rounded-full text-xl mt-4" onClick={() => dispatch(hideModal())}>
+        <Button
+          variant="selected"
+          className="rounded-full text-xl mt-4"
+          onClick={() => dispatch(hideModal())}
+        >
           Thanks
         </Button>
       </div>
     );
   }
-
-  const ImportItem = (book: Book): React.ReactNode => (
-    <BookComponent book={book} />
-  );
 
   return (
     <div className="modal-size modal-background flex flex-col items-center justify-start">

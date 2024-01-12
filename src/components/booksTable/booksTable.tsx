@@ -8,6 +8,8 @@ import { SearchBarComponent } from "../search/searchBarComponent";
 import Loading from "../loading";
 import useBook from "@/src/hooks/useBook";
 import { OpacityDiv } from "../animationDivs";
+import { EventTracker, TimeoutLength } from "@/src/eventTracker";
+import { time } from "console";
 
 export enum TableType {
   READ = 1, // Numbers in backend
@@ -22,6 +24,11 @@ const BooksTable: React.FC = () => {
   const headerRef = useRef(null); // Reference to the header element
   const [tableHeight, setTableHeight] = useState(0); // State to store the calculated height
   const [searchValue, setSearchValue] = useState("");
+
+  // Event tracking
+  const [previousTimeout, setPreviousTimeout] = useState<NodeJS.Timeout | null>(
+    null
+  );
 
   useEffect(() => {
     // Function to calculate the available height for the table
@@ -38,6 +45,24 @@ const BooksTable: React.FC = () => {
 
   useEffect(() => {
     searchBooks(searchValue);
+  }, [searchValue]);
+
+  useEffect(() => {
+    if (searchValue === "") { // First init of page or clear search
+      return;
+    }
+    if (previousTimeout) {
+      clearTimeout(previousTimeout);
+    }
+    setPreviousTimeout(
+      setTimeout(() => {
+        EventTracker.track(
+          "User searched books in table",
+          { searchValue: searchValue },
+          TimeoutLength.LONG
+        );
+      }, 5000)
+    ); // let the user type for 5 seconds before tracking
   }, [searchValue]);
 
   if (loading) {
