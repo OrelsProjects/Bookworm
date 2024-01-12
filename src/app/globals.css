@@ -125,7 +125,7 @@ input[type="text"]:-moz-ui-autofill {
     @apply h-modal-sm w-modal-sm;
   }
 
-  @screen xl {
+  @screen 2xl {
     .grid-header-table {
       @apply grid grid-cols-header-table-xl;
     }
