@@ -40,7 +40,31 @@ export const setUserLogger = (user?: User | null) => {
 };
 
 const log = (type: StatusType, message: string, logItem: LogItem) => {
+  if (process.env.NODE_ENV !== "production") {
+    printLog(type, message, logItem);
+    return;
+  }
   datadogLogs.logger.log(message, logItem.data, type, logItem.error);
+};
+
+const printLog = (type: StatusType, message: string, logItem: LogItem) => {
+  switch (type) {
+    case StatusType.info:
+      console.info(message, logItem);
+      break;
+    case StatusType.warn:
+      console.warn(message, logItem);
+      break;
+    case StatusType.error:
+      console.error(message, logItem);
+      break;
+    case StatusType.debug:
+      console.debug(message, logItem);
+      break;
+    default:
+      console.log(message, logItem);
+      break;
+  }
 };
 
 export class Logger {
