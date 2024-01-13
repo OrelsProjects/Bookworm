@@ -40,6 +40,9 @@ export default function RootLayout({
                   className="absolute top-0 right-0 left-0 bottom-0 z-10"
                 />
                 <Header className="absolute top-0 mb-10" />
+                <div className="absolute top-0 right-0 left-0 bottom-0 z-0">
+                  <VideoBackground />
+                </div>
                 <AnimationProvider>
                   <div className="h-full w-full z-10 relative !font-sans">
                     {children}
@@ -50,9 +53,6 @@ export default function RootLayout({
             </APIProvider>
           </AuthProvider>
         </StoreProvider>
-        <div className="absolute top-0 right-0 left-0 bottom-0 z-0">
-          <VideoBackground />
-        </div>
       </body>
     </html>
   );

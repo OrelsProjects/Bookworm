@@ -51,7 +51,6 @@ const useImport = () => {
   const importViaCSV = async (file: File): Promise<void> => {
     try {
       setLoading(true);
-      debugger;
       const presignedURL = await createUploadURL();
       if (!presignedURL) {
         throw new Error("Failed to create upload URL");

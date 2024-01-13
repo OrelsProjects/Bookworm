@@ -6,6 +6,11 @@ import { compareBooks } from "@/src/models/book";
 
 type UserBookId = number;
 
+interface SetUserBooksLoadingProps {
+  loading: boolean;
+  dontLoadIfBooksExist?: boolean;
+}
+
 interface userBooksState {
   userBooksData: UserBookData[];
   loading: boolean;
@@ -22,11 +27,20 @@ const userBooksSlice = createSlice({
   name: "userBooksSlice",
   initialState,
   reducers: {
-    setUserBooksLoading: (state, action: PayloadAction<boolean>) => {
-      state.loading = action.payload;
+    setUserBooksLoading: (
+      state,
+      action: PayloadAction<SetUserBooksLoadingProps>
+    ) => {
+      if (
+        action.payload.dontLoadIfBooksExist &&
+        state.userBooksData.length > 0
+      ) {
+        state.loading = false;
+        return;
+      }
+      state.loading = action.payload.loading;
     },
     addUserBooks: (state, action: PayloadAction<UserBookData[]>) => {
-      state.loading = false;
       const bookExists = state.userBooksData.some((userBookData) =>
         compareBooks(
           userBookData.bookData.book,
@@ -39,12 +53,10 @@ const userBooksSlice = createSlice({
       localStorage.setItem("userBooks", JSON.stringify(state.userBooksData));
     },
     setUserBooks: (state, action: PayloadAction<UserBookData[]>) => {
-      state.loading = false;
       state.userBooksData = action.payload;
       localStorage.setItem("userBooks", JSON.stringify(action.payload));
     },
     updateUserBook: (state, action: PayloadAction<UserBook>) => {
-      state.loading = false;
       const index = state.userBooksData.findIndex(
         (userBookData) =>
           userBookData.userBook.userBookId === action.payload.userBookId
@@ -57,13 +69,9 @@ const userBooksSlice = createSlice({
       localStorage.setItem("userBooks", JSON.stringify(state.userBooksData));
     },
     deleteUserBook: (state, action: PayloadAction<UserBookId>) => {
-      debugger;
-      state.loading = false;
-      debugger;
       const index = state.userBooksData.findIndex(
         (userBookData) => userBookData.userBook.userBookId === action.payload
       );
-      debugger;
       if (index !== -1) {
         const userBooksDataNew = [...state.userBooksData];
         userBooksDataNew.splice(index, 1);
@@ -75,7 +83,6 @@ const userBooksSlice = createSlice({
       state,
       action: PayloadAction<{ book: Book; goodreadsData: GoodreadsData }>
     ) => {
-      state.loading = false;
       const index = state.userBooksData.findIndex((userBookData) =>
         compareBooks(userBookData.bookData.book, action.payload.book)
       );
@@ -85,7 +92,6 @@ const userBooksSlice = createSlice({
       localStorage.setItem("userBooks", JSON.stringify(state.userBooksData));
     },
     updateUserBookData: (state, action: PayloadAction<UserBookData>) => {
-      state.loading = false;
       const index = state.userBooksData.findIndex(
         (userBookData) =>
           userBookData.userBook.userBookId ===
@@ -99,7 +105,6 @@ const userBooksSlice = createSlice({
       localStorage.setItem("userBooks", JSON.stringify(state.userBooksData));
     },
     setError: (state, action: PayloadAction<string | null>) => {
-      state.loading = false;
       state.error = action.payload;
     },
   },

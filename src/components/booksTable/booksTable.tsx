@@ -6,10 +6,8 @@ import TableItem from "./tableItem";
 import ToggleButtons from "../toggleButtons";
 import { SearchBarComponent } from "../search/searchBarComponent";
 import Loading from "../loading";
-import useBook from "@/src/hooks/useBook";
 import { OpacityDiv } from "../animationDivs";
 import { EventTracker, TimeoutLength } from "@/src/eventTracker";
-import { time } from "console";
 
 export enum TableType {
   READ = 1, // Numbers in backend
@@ -48,7 +46,8 @@ const BooksTable: React.FC = () => {
   }, [searchValue]);
 
   useEffect(() => {
-    if (searchValue === "") { // First init of page or clear search
+    if (searchValue === "") {
+      // First init of page or clear search
       return;
     }
     if (previousTimeout) {
@@ -68,7 +67,7 @@ const BooksTable: React.FC = () => {
   if (loading) {
     return (
       <div className="w-full h-full flex justify-center items-center">
-        <Loading className="!w-24 !h-24 mb-48" />
+        <Loading className="!w-24 !h-24 mb-48 !fill-primary" />
       </div>
     );
   }

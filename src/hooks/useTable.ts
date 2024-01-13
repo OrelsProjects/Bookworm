@@ -9,7 +9,7 @@ import { TableType } from "../components/booksTable/booksTable";
 
 const useTable = ({ initialType }: { initialType: TableType }) => {
   const { userBooksData, loading, error } = useSelector(selectUserBooks);
-
+  
   const [tableType, setTableType] = useState<TableType>(initialType);
   const [userBooks, setUserBooks] = useState<UserBookData[]>([]);
   const [currentPage, setCurrentPage] = useState(1);

@@ -105,29 +105,37 @@ const ImportBooks = () => {
   }
 
   const ImportCSV = (): React.ReactNode => (
-    <div className="flex flex-col justify-center items-center gap-1">
-      <div className="title mb-2">Import CSV</div>
-      <Button
-        variant="selected"
-        className="rounded-full"
-        onClick={() => openFileExplorer()}
-      >
-        Upload CSV
-      </Button>
-      <Button variant="link" className="!p-0 h-fit">
-        Download CSV Example
-      </Button>
+    <div className="flex flex-col justify-center items-center gap-2">
+      <div className="flex w-full flex-col justify-center items-center mb-4">
+        <div className="title">Import CSV</div>
+        <div className="italic">
+          hint: you can also import csv from goodreads export
+        </div>
+      </div>
+      <div className="flex w-full flex-col justify-center items-center">
+        <Button
+          variant="selected"
+          className="rounded-full"
+          onClick={() => openFileExplorer()}
+        >
+          {fileSelected ? "Change CSV" : "Upload CSV"}
+        </Button>
+        <Button variant="link" className="!p-0 h-fit">
+          Download CSV Example
+        </Button>
+      </div>
       {fileSelected && (
         <div className="flex flex-col gap-2 items-center justify-center mt-3">
-          <div className="text-foreground w-10/12 truncate">
-            Selected file: {fileSelected.name}
+          <div className="text-foreground truncate flex flex-row gap-1 w-full">
+            <div className="text-accent">File Selected:</div>
+            <div className="truncate">{fileSelected.name}</div>
           </div>
           <Button
             variant="accent"
             className="w-fit"
             onClick={() => handleImportViaCSV()}
           >
-            Import CSV
+            Start Importing!
           </Button>
         </div>
       )}

@@ -28,7 +28,7 @@ export const DeleteButton = ({
         src="/delete.svg"
         alt="Delete"
         fill
-        className="rounded-full !relative !w-4 !h-4"
+        className="rounded-full !relative !w-6 !h-6 overflow-visible"
       />
     )}
   </Button>

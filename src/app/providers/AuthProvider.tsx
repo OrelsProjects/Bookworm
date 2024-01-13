@@ -101,7 +101,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     <>
       {loading ? (
         <div className="w-full h-full flex justify-center items-center">
-          <Loading className="!w-24 !h-24" />
+          <Loading className="!w-24 !h-24 !fill-primary" />
         </div>
       ) : (
         children

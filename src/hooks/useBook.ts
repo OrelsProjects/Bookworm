@@ -23,6 +23,14 @@ import ReadingStatus from "../models/readingStatus";
 import { Logger } from "../logger";
 import { EventTracker } from "../eventTracker";
 
+// ErrorDeleteUserBook error class
+class ErrorDeleteUserBook extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "ErrorDeleteUserBook";
+  }
+}
+
 const useBook = () => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
@@ -79,17 +87,21 @@ const useBook = () => {
         },
       });
       if (response.status !== 200) {
-        throw new Error("Failed to delete book");
+        // throw ErrorDeleteUserBook
+        throw new ErrorDeleteUserBook("Failed to delete book");
       }
-      debugger;
       dispatch(deleteUserBookRedux(userBook.userBookId));
     } catch (error: any) {
-      Logger.error("Error deleting book", {
-        data: {
-          userBook,
-        },
-        error,
-      });
+      if (error! instanceof ErrorDeleteUserBook) {
+        // ErrorDeleteUserBook is logged in route
+        Logger.error("Error deleting book", {
+          data: {
+            userBook,
+          },
+          error,
+        });
+      }
+      throw error;
     } finally {
       setLoading(false);
     }
@@ -186,14 +198,21 @@ const useBook = () => {
       if (loading) {
         throw new Error("Cannot load user books while another book is loading");
       }
-
-      setLoading((loading) => !loading);
-      dispatch(setUserBooksLoading(true));
-
       const currentUserBooks = localStorage.getItem("userBooks");
       if (currentUserBooks) {
         dispatch(setUserBooks(JSON.parse(currentUserBooks)));
       }
+
+      setLoading((loading) => !loading);
+      dispatch(
+        setUserBooksLoading({ loading: true, dontLoadIfBooksExist: false })
+      ); // Show loading to prevent empty screen from showing while redux is loading
+      setTimeout(() => {
+        dispatch(
+          setUserBooksLoading({ loading: true, dontLoadIfBooksExist: true })
+        );
+      }, 50); // 50ms to prevent loading spinner from flashing
+
       if (user) {
         axios.defaults.headers.common["Authorization"] = user.token;
         axios.defaults.headers.common["user_id"] = user.id;
@@ -212,6 +231,7 @@ const useBook = () => {
       dispatch(setError(error.message));
     } finally {
       setLoading(false);
+      dispatch(setUserBooksLoading({ loading: false }));
     }
   };
 

@@ -114,7 +114,7 @@ export function BookDetails({
 
   const BookTitle = (): React.ReactNode => {
     return (
-      <div className="flex flex-col flex-wrap gap-2 max-w-xl">
+      <div className="flex flex-col flex-wrap gap-2 w-full">
         <p className="text-3xl line-clamp-1">{bookToShow?.title}</p>
         <p className="text-lg font-thin">{bookToShow?.subtitle}</p>
       </div>
@@ -123,7 +123,7 @@ export function BookDetails({
 
   const BookDescription = (): React.ReactNode => {
     return (
-      <div className="flex flex-col flex-wrap gap-2 max-w-xl">
+      <div className="flex flex-col flex-wrap gap-2 w-full">
         <p className="text-md line-clamp-3 font-thin">
           {bookToShow?.description}
         </p>
@@ -242,7 +242,7 @@ export function BookDetails({
       className={`flex flex-col gap-6 overflow-auto scrollbar-hide ${className}`}
     >
       <div className="flex flex-row modal-background shadow-lg">
-        <div className="flex items-center flex-row gap-8">
+        <div className="flex items-center flex-row gap-8 2xl:w-10/12 xl:10/12 lg:w-9/12">
           <BookThumbnail
             src={bookToShow?.thumbnailUrl}
             placeholder="blur"
@@ -250,7 +250,7 @@ export function BookDetails({
             fill
             className="rounded-lg !relative xl:!w-64 xl:!h-80 lg:!w-56 lg:!h-72 md:!w-48 md:!h-64 sm:!w-40 sm:!h-56 xs:!w-32 xs:!h-48"
           />
-          <div className="flex flex-col gap-4 w-5/12 lg:w-8/12">
+          <div className="flex flex-col gap-4 flex-1">
             <BookTitle />
             <BookDescription />
             <AuthorsAndPages />
@@ -264,7 +264,7 @@ export function BookDetails({
             />
           </div>
         </div>
-        <div className="h-full flex w-3/12 justify-end">
+        <div className="h-full flex flex-grow w-fit justify-end">
           <ButtonsSection />
         </div>
       </div>

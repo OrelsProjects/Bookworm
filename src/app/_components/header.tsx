@@ -53,7 +53,7 @@ const Header = ({ className }: HeaderProps): React.ReactNode => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      toast.error("Something went wrong.. we're on it!");
     }
   }, [error]);
 
