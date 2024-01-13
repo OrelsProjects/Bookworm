@@ -42,7 +42,6 @@ export const setUserLogger = (user?: User | null) => {
 const log = (type: StatusType, message: string, logItem: LogItem) => {
   if (process.env.NODE_ENV !== "production") {
     printLog(type, message, logItem);
-    return;
   }
   datadogLogs.logger.log(message, logItem.data, type, logItem.error);
 };

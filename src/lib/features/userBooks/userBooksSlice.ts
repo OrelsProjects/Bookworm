@@ -4,6 +4,8 @@ import type { RootState } from "../../store"; // Adjust the import path as neces
 import { Book, GoodreadsData, UserBook, UserBookData } from "@/src/models";
 import { compareBooks } from "@/src/models/book";
 
+type UserBookId = number;
+
 interface userBooksState {
   userBooksData: UserBookData[];
   loading: boolean;
@@ -54,6 +56,21 @@ const userBooksSlice = createSlice({
       }
       localStorage.setItem("userBooks", JSON.stringify(state.userBooksData));
     },
+    deleteUserBook: (state, action: PayloadAction<UserBookId>) => {
+      debugger;
+      state.loading = false;
+      debugger;
+      const index = state.userBooksData.findIndex(
+        (userBookData) => userBookData.userBook.userBookId === action.payload
+      );
+      debugger;
+      if (index !== -1) {
+        const userBooksDataNew = [...state.userBooksData];
+        userBooksDataNew.splice(index, 1);
+        state.userBooksData = userBooksDataNew;
+      }
+      localStorage.setItem("userBooks", JSON.stringify(state.userBooksData));
+    },
     updateUserBookGoodreadsData: (
       state,
       action: PayloadAction<{ book: Book; goodreadsData: GoodreadsData }>
@@ -95,6 +112,7 @@ export const {
   updateUserBook,
   updateUserBookData,
   updateUserBookGoodreadsData,
+  deleteUserBook,
   setError,
 } = userBooksSlice.actions;
 

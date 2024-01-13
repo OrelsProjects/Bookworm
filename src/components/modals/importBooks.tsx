@@ -6,16 +6,38 @@ import { useDispatch } from "react-redux";
 import { hideModal } from "@/src/lib/features/modal/modalSlice";
 import { EventTracker } from "@/src/eventTracker";
 import { Logger } from "@/src/logger";
+import { z } from "zod";
+import { useFormik } from "formik";
 
 const ImportBooks = () => {
   const dispatch = useDispatch();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const schema = z.object({
+    goodreadsUrl: z
+      .string()
+      .regex(
+        /^\d+-[\w-]+$/,
+        "Is this the right URL? It should look like this: 123456789-wizard"
+      ),
+  });
+  const formik = useFormik({
+    initialValues: { goodreadsUrl: "" },
+    onSubmit: async (values, { setErrors }) => {
+      try {
+        schema.parse(values);
+        await handleImportViaGoodreadsUrl(values.goodreadsUrl);
+      } catch (error) {
+        if (error instanceof z.ZodError) {
+          setErrors({ goodreadsUrl: error.errors[0].message });
+        }
+      }
+    },
+  });
+
   const { importViaCSV, importViaGoodreadsUrl, loading } = useImport();
   const [booksBeingImported, setBooksBeingImported] = useState<boolean>(false);
   const [fileSelected, setFileSelected] = useState<File | null>(null);
-  const [goodreadsUrl, setGoodreadsUrl] = useState<string>("");
-  const [loadingImport, setLoadingImport] = useState<boolean>(false);
 
   const openFileExplorer = () => {
     fileInputRef.current?.click();
@@ -30,13 +52,12 @@ const ImportBooks = () => {
   };
 
   const handleImportViaCSV = async () => {
-    if (!fileSelected || loadingImport) {
+    if (!fileSelected || loading) {
       return;
     }
     const toastId = toast.loading("Uploading file");
     try {
       EventTracker.track("User imported books via CSV");
-      setLoadingImport(true);
       await importViaCSV(fileSelected);
       toast.success("Done!");
     } catch (error: any) {
@@ -44,27 +65,24 @@ const ImportBooks = () => {
       toast.error("Error uploading file");
     } finally {
       toast.dismiss(toastId);
-      setLoadingImport(false);
     }
   };
 
-  const handleImportViaGoodreadsUrl = async () => {
-    if (loadingImport) {
+  const handleImportViaGoodreadsUrl = async (goodreadsUrl: string) => {
+    if (loading) {
       return;
     }
     const loadingToastId = toast.loading("Validating URL");
     try {
       EventTracker.track("User imported books via Goodreads URL");
-      setLoadingImport(true);
       await importViaGoodreadsUrl(goodreadsUrl);
       toast.success("Done!");
       setBooksBeingImported(true);
     } catch (error: any) {
       Logger.error("Error importing books via Goodreads URL", { error });
-      toast.error("Error importing books");
+      toast.error("Something is wrong with your url 🤔");
     } finally {
       toast.dismiss(loadingToastId);
-      setLoadingImport(false);
     }
   };
 
@@ -86,9 +104,9 @@ const ImportBooks = () => {
     );
   }
 
-  return (
-    <div className="modal-size modal-background flex flex-col items-center justify-start">
-      <div className="title">Import CSV</div>
+  const ImportCSV = (): React.ReactNode => (
+    <div className="flex flex-col justify-center items-center gap-1">
+      <div className="title mb-2">Import CSV</div>
       <Button
         variant="selected"
         className="rounded-full"
@@ -96,15 +114,23 @@ const ImportBooks = () => {
       >
         Upload CSV
       </Button>
+      <Button variant="link" className="!p-0 h-fit">
+        Download CSV Example
+      </Button>
       {fileSelected && (
-        <div className="flex flex-col gap-2">
-          <div className="text-primary">Selected file: {fileSelected.name}</div>
-          <Button variant="accent" onClick={() => handleImportViaCSV()}>
+        <div className="flex flex-col gap-2 items-center justify-center mt-3">
+          <div className="text-foreground w-10/12 truncate">
+            Selected file: {fileSelected.name}
+          </div>
+          <Button
+            variant="accent"
+            className="w-fit"
+            onClick={() => handleImportViaCSV()}
+          >
             Import CSV
           </Button>
         </div>
       )}
-      <Button variant="link">Download CSV Example</Button>
       <input
         type="file"
         ref={fileInputRef}
@@ -112,9 +138,41 @@ const ImportBooks = () => {
         accept=".csv,.xls,.xlsx"
         onChange={handleFileChange}
       />
-      <Button variant="accent" onClick={() => handleImportViaGoodreadsUrl()}>
-        Import via Goodreads URL
-      </Button>
+    </div>
+  );
+
+  const ImportGoodreads = (): React.ReactNode => (
+    <div className="flex flex-col gap-4 justify-center items-center">
+      <div className="title mb-2">Import Your Goodreads List</div>
+      <form onSubmit={formik.handleSubmit} className="w-comments flex flex-col">
+        <label htmlFor="suggestion-source" className="">
+          What is your goodreads profile id?
+        </label>
+        <input
+          type="text"
+          name="goodreadsUrl"
+          id="suggestion-source"
+          placeholder="123456789-wizard"
+          onChange={formik.handleChange}
+          value={formik.values.goodreadsUrl}
+          className="w-full p-2 bg-primary-weak rounded-lg text-foreground placeholder-gray-500/70 focus:outline-none border-none"
+        />
+        {formik.errors.goodreadsUrl && formik.touched.goodreadsUrl && (
+          <div className="text-error">{formik.errors.goodreadsUrl}</div>
+        )}
+        <div className="w-full flex justify-center items-center mt-2">
+          <Button type="submit" variant="accent">
+            Import via Goodreads URL
+          </Button>
+        </div>
+      </form>
+    </div>
+  );
+
+  return (
+    <div className="modal-size modal-background flex flex-col items-center justify-start gap-24">
+      <ImportCSV />
+      {ImportGoodreads()}
     </div>
   );
 };

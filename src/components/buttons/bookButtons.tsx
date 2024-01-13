@@ -12,6 +12,28 @@ export interface BookButtonProps {
   onClick?: () => void;
 }
 
+export const DeleteButton = ({
+  loading,
+  className,
+  onClick,
+}: BookButtonProps): React.ReactNode => (
+  <Button
+    onClick={onClick}
+    className={`rounded-full flex justify-center items-center border-none h-11 w-11 p-2 ${className}`}
+  >
+    {loading ? (
+      <Loading className="!fill-primary" />
+    ) : (
+      <Image
+        src="/delete.svg"
+        alt="Delete"
+        fill
+        className="rounded-full !relative !w-4 !h-4"
+      />
+    )}
+  </Button>
+);
+
 const FavoriteButton = ({
   loading,
   className,

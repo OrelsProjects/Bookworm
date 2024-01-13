@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Book, GoodreadsData, User, UserBook, UserBookData } from "../models";
 import axios from "axios";
 import { Books, CreateBooksResponse } from "../models/book";
@@ -10,6 +10,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import {
   addUserBooks as addUserBooksRedux,
+  deleteUserBook as deleteUserBookRedux,
   setUserBooks,
   setUserBooksLoading,
   updateUserBookData,
@@ -56,6 +57,34 @@ const useBook = () => {
       dispatch(updateUserBookData(userBookData));
     } catch (error: any) {
       Logger.error("Error favoriting book", {
+        data: {
+          userBook,
+        },
+        error,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteUserBook = async (userBook: UserBook): Promise<void> => {
+    if (loading) {
+      throw new Error("Cannot delete book while another book is loading");
+    }
+    setLoading(true);
+    try {
+      const response = await axios.delete<IResponse<void>>("/api/user-books", {
+        data: {
+          userBookId: userBook.userBookId,
+        },
+      });
+      if (response.status !== 200) {
+        throw new Error("Failed to delete book");
+      }
+      debugger;
+      dispatch(deleteUserBookRedux(userBook.userBookId));
+    } catch (error: any) {
+      Logger.error("Error deleting book", {
         data: {
           userBook,
         },
@@ -271,6 +300,7 @@ const useBook = () => {
     loadUserBooks,
     addUserBook,
     favoriteBook,
+    deleteUserBook,
     loading,
   };
 };
