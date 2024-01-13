@@ -12,7 +12,7 @@ module.exports = {
       center: true,
       padding: "2rem",
       screens: {
-        "2xl": "1400px",
+        "2xl": "1535px",
       },
     },
     extend: {
@@ -56,6 +56,10 @@ module.exports = {
           DEFAULT: "rgb(var(--card))",
           foreground: "rgb(var(--card-foreground))",
         },
+        error: {
+          DEFAULT: "rgb(var(--error))",
+          // foreground: "rgb(var(--error-foreground))",
+        },
       },
       backgroundColor: {
         "statistic-card-gradient-start":
@@ -96,6 +100,7 @@ module.exports = {
         "288": "72rem",
         comments: "33.5rem",
         modal: "82rem",
+        "modal-md": "70rem",
         "modal-sm": "60rem",
       },
       height: {
@@ -104,6 +109,7 @@ module.exports = {
         "144": "36rem",
         "288": "72rem",
         modal: "40rem" /* this is in pixels: 536px */,
+        "modal-md": "32rem",
         "modal-sm": "28rem",
       },
       fontFamily: {

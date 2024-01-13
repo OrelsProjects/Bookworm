@@ -114,7 +114,7 @@ const Rating: React.FC<RatingProps> = ({
           >
             <div className="flex flex-row gap-2">
               <a
-                className="text-sm text-primary hover:underline"
+                className="text-sm text-primary hover:underline truncate"
                 href={goodreadsUrl}
                 target="_blank"
                 onClick={() => {

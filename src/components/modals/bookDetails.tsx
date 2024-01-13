@@ -1,18 +1,20 @@
 import { Book, UserBook, UserBookData } from "@/src/models";
 import React, { useEffect, useState } from "react";
 import Rating from "../rating";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/src/lib/store";
 import {
   FavoriteButton,
   AddToBacklogButton,
   AddToReadListButton,
+  DeleteButton,
 } from "../buttons/bookButtons";
 import useBook from "@/src/hooks/useBook";
 import { compareBooks } from "@/src/models/book";
 import toast from "react-hot-toast";
 import BookThumbnail from "../bookThumbnail";
 import { Logger } from "@/src/logger";
+import { hideModal } from "@/src/lib/features/modal/modalSlice";
 
 export interface BookDescriptionProps {
   book: Book | undefined;
@@ -26,10 +28,12 @@ export function BookDetails({
   book,
   className,
 }: BookDescriptionProps): React.ReactNode {
-  const { favoriteBook, getBookGoodreadsData } = useBook();
+  const dispatch = useDispatch();
+  const { favoriteBook, deleteUserbook, getBookGoodreadsData } = useBook();
   const [bookToShow, setBookToShow] = useState<Book | null>(null); // To avoid bugs when closing the modal
   const [goodreadsData, setGoodreadsData] = useState<any>(null);
   const [loadingFavorite, setLoadingFavorite] = useState(false);
+  const [loadingDelete, setLoadingDelete] = useState(false);
   const [loadingGoodreadsData, setGoodreadsDataLoading] = useState(false);
   const [userBookData, setUserBookData] = useState<UserBookData | undefined>();
   const userBooksData: UserBookData[] = useSelector(
@@ -77,9 +81,40 @@ export function BookDetails({
     }
   }, [userBooksData]);
 
+  const onFavorite = async (userBook: UserBook) => {
+    try {
+      setLoadingFavorite(true);
+      await favoriteBook(userBook);
+    } catch (error: any) {
+      Logger.error("Failed to favorite book", {
+        data: userBook,
+        error,
+      });
+      toast.error("Something went wrong.. We're on it!");
+    } finally {
+      setLoadingFavorite(false);
+    }
+  };
+
+  const onDeleteBook = async (userBook: UserBook) => {
+    try {
+      setLoadingDelete(true);
+      await deleteUserbook(userBook);
+      dispatch(hideModal());
+    } catch (error: any) {
+      Logger.error("Failed to delete book", {
+        data: userBook,
+        error,
+      });
+      toast.error("Something went wrong.. We're on it!");
+    } finally {
+      setLoadingDelete(false);
+    }
+  };
+
   const BookTitle = (): React.ReactNode => {
     return (
-      <div className="flex flex-col flex-wrap gap-2 max-w-2xl">
+      <div className="flex flex-col flex-wrap gap-2 max-w-xl">
         <p className="text-3xl line-clamp-1">{bookToShow?.title}</p>
         <p className="text-lg font-thin">{bookToShow?.subtitle}</p>
       </div>
@@ -88,7 +123,7 @@ export function BookDetails({
 
   const BookDescription = (): React.ReactNode => {
     return (
-      <div className="flex flex-col flex-wrap gap-2 max-w-2xl">
+      <div className="flex flex-col flex-wrap gap-2 max-w-xl">
         <p className="text-md line-clamp-3 font-thin">
           {bookToShow?.description}
         </p>
@@ -193,23 +228,14 @@ export function BookDetails({
       {userBookData &&
         userBookData?.readingStatus?.readingStatusId !== 1 &&
         book && <AddToReadListButton book={book} />}
+      {userBookData && (
+        <DeleteButton
+          loading={loadingDelete}
+          onClick={() => onDeleteBook(userBookData?.userBook)}
+        />
+      )}
     </div>
   );
-
-  const onFavorite = async (userBook: UserBook) => {
-    try {
-      setLoadingFavorite(true);
-      await favoriteBook(userBook);
-    } catch (error: any) {
-      Logger.error("Failed to favorite book", {
-        data: userBook,
-        error,
-      });
-      toast.error("Something went wrong.. We're on it!");
-    } finally {
-      setLoadingFavorite(false);
-    }
-  };
 
   return (
     <div
@@ -222,7 +248,7 @@ export function BookDetails({
             placeholder="blur"
             blurDataURL="/thumbnailPlaceholder.png"
             fill
-            className="rounded-lg !relative max-lg:!w-48 max-lg:!h-full lg:!w-64 lg:!h-80"
+            className="rounded-lg !relative xl:!w-64 xl:!h-80 lg:!w-56 lg:!h-72 md:!w-48 md:!h-64 sm:!w-40 sm:!h-56 xs:!w-32 xs:!h-48"
           />
           <div className="flex flex-col gap-4 w-5/12 lg:w-8/12">
             <BookTitle />

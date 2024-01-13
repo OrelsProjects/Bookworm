@@ -53,6 +53,9 @@ input[type="text"]:-moz-ui-autofill {
     --input: 193, 202, 209;
     --ring: 0, 157, 255;
 
+    /* Error/Default */
+    --error: 255, 69, 58;
+
     /* Border Radius */
     --radius: 0.5rem;
   }
@@ -95,6 +98,9 @@ input[type="text"]:-moz-ui-autofill {
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
 
+    /* Error/Default */
+    --error: 255, 69, 58;
+
     /* Border Radius */
     --radius: 0.5rem;
   }
@@ -125,14 +131,31 @@ input[type="text"]:-moz-ui-autofill {
     @apply h-modal-sm w-modal-sm;
   }
 
-  @screen 2xl {
+  .title {
+    @apply line-clamp-1 text-3xl;
+  }
+
+  @screen xl {
     .grid-header-table {
       @apply grid grid-cols-header-table-xl;
     }
     .modal-size {
       @apply h-modal w-modal;
     }
+    .title {
+      @apply text-3xl;
+    }
   }
+
+  @screen 2xl {
+    .title {
+      @apply text-5xl;
+    }
+  }
+}
+
+.modal-background {
+  @apply bg-secondary rounded-lg p-4;
 }
 
 @layer utilities {
@@ -202,12 +225,4 @@ input[type="text"]:-moz-ui-autofill {
     transparent 100%
   );
   animation: shimmer 2s infinite;
-}
-
-.modal-background {
-  @apply bg-secondary rounded-lg p-4;
-}
-
-.title {
-  @apply line-clamp-1 text-5xl;
 }

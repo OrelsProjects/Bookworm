@@ -113,3 +113,28 @@ export async function PATCH(
     return NextResponse.json({}, { status: 500 });
   }
 }
+
+export async function DELETE(
+  req: NextRequest
+): Promise<NextResponse<IResponse<void>>> {
+  let userBookId: string | null = null;
+  try {
+    const body = await req.json();
+    userBookId = body.userBookId;
+    const axios = GetAxiosInstance(req);
+    const response = await axios.delete<IResponse<void>>("/user-book", {
+      data: {
+        user_book_id: userBookId,
+      },
+    });
+    return NextResponse.json(response.data, { status: 200 });
+  } catch (error: any) {
+    Logger.error("Error deleting user book", {
+      data: {
+        userBookId,
+      },
+      error,
+    });
+    return NextResponse.json({}, { status: 500 });
+  }
+}
