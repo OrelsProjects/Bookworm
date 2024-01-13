@@ -29,7 +29,7 @@ export function BookDetails({
   className,
 }: BookDescriptionProps): React.ReactNode {
   const dispatch = useDispatch();
-  const { favoriteBook, deleteUserbook, getBookGoodreadsData } = useBook();
+  const { favoriteBook, deleteUserBook, getBookGoodreadsData } = useBook();
   const [bookToShow, setBookToShow] = useState<Book | null>(null); // To avoid bugs when closing the modal
   const [goodreadsData, setGoodreadsData] = useState<any>(null);
   const [loadingFavorite, setLoadingFavorite] = useState(false);
@@ -99,7 +99,7 @@ export function BookDetails({
   const onDeleteBook = async (userBook: UserBook) => {
     try {
       setLoadingDelete(true);
-      await deleteUserbook(userBook);
+      await deleteUserBook(userBook);
       dispatch(hideModal());
     } catch (error: any) {
       Logger.error("Failed to delete book", {
