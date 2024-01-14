@@ -1,4 +1,3 @@
-import { PresignedURL } from "@/src/hooks/useImport";
 import { Logger } from "@/src/logger";
 import { IResponse } from "@/src/models/dto/response";
 import { GetAxiosInstance } from "@/src/utils/axiosInstance";
@@ -9,9 +8,14 @@ type PresignedURLResponse = {
   signed_url: string;
 };
 
-export async function GET(
-  req: NextRequest
-): Promise<NextResponse<IResponse<PresignedURL>>> {
+export async function GET(req: NextRequest): Promise<
+  NextResponse<
+    IResponse<{
+      fileName: string;
+      signedUrl: string;
+    }>
+  >
+> {
   try {
     const axios = GetAxiosInstance(req);
     const response = await axios.get<PresignedURLResponse>(
@@ -33,4 +37,8 @@ export async function GET(
     });
     return NextResponse.json({}, { status: 500 });
   }
+}
+
+export async function POST(req: NextRequest) {
+  return NextResponse.json({}, { status: 200 });
 }

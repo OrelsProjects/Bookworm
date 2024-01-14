@@ -13,7 +13,10 @@ export async function GET(
     const url = req.nextUrl;
     isbn = url.searchParams.get("isbn");
     if (!isbn) {
-      throw new Error("Missing isbn parameter");
+      return NextResponse.json(
+        { error: "Missing isbn parameter" },
+        { status: 400 }
+      );
     }
     const axios = GetAxiosInstance(req);
 
@@ -39,4 +42,8 @@ export async function GET(
     });
     return NextResponse.json({}, { status: 500 });
   }
+}
+
+export async function POST(req: NextRequest) {
+  return NextResponse.json({}, { status: 200 });
 }

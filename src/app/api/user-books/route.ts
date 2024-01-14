@@ -1,5 +1,5 @@
 import { Logger } from "@/src/logger";
-import { Book, UserBook, UserBookData } from "@/src/models";
+import { UserBook, UserBookData } from "@/src/models";
 import {
   BookDTO,
   GenreDTO,
@@ -40,7 +40,9 @@ const userBookDataDTOFromResponse = (
     GoodreadsDataDTO.FromResponse(userBookDataDTO.book_data.goodreads_data)
   );
 
-export async function GET(req: NextRequest) {
+export async function GET(
+  req: NextRequest
+): Promise<NextResponse<IResponse<UserBookData[]>>> {
   try {
     const axios = GetAxiosInstance(req);
     const response = await axios.get<GetUserBooksResponseDTO[]>("/user-book");

@@ -1,4 +1,3 @@
-import { AxiosError } from "axios";
 import { GetAxiosInstance } from "../../../utils/axiosInstance";
 import { Book } from "../../../models";
 import { BookDTO } from "../../../models/dto";
@@ -11,7 +10,10 @@ export async function GET(req: NextRequest) {
     const url = req.nextUrl;
     query = url.searchParams.get("query") ?? "";
     if (!query) {
-      throw new Error("Missing query parameter");
+      return NextResponse.json(
+        { error: "Missing query parameter" },
+        { status: 400 }
+      );
     }
     const axios = GetAxiosInstance(req);
     const response = await axios.get<BookDTO[]>(`/google-books?query=${query}`);
@@ -29,4 +31,8 @@ export async function GET(req: NextRequest) {
     });
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
+}
+
+export async function POST(req: NextRequest) {
+  return NextResponse.json({}, { status: 200 });
 }
