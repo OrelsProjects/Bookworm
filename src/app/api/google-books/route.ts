@@ -4,6 +4,7 @@ import { BookDTO } from "../../../models/dto";
 import { NextRequest, NextResponse } from "next/server";
 import { Logger } from "@/src/logger";
 
+
 export async function GET(req: NextRequest) {
   let query: string | null = "";
   try {
