@@ -108,7 +108,7 @@ const ImportBooks = () => {
     <div className="flex flex-col justify-center items-center gap-2">
       <div className="flex w-full flex-col justify-center items-center mb-4">
         <div className="title">Import CSV</div>
-        <div className="italic">
+        <div className="italic text-sm text-gray">
           hint: you can also import csv from goodreads export
         </div>
       </div>
@@ -120,7 +120,17 @@ const ImportBooks = () => {
         >
           {fileSelected ? "Change CSV" : "Upload CSV"}
         </Button>
-        <Button variant="link" className="!p-0 h-fit">
+        {/* on click download file from public named exampleCSV.csv */}
+        <Button
+          variant="link"
+          className="!p-0 h-fit"
+          onClick={() => {
+            const link = document.createElement("a");
+            link.href = "/exampleCSV.csv";
+            link.download = "exampleCSV.csv";
+            link.click();
+          }}
+        >
           Download CSV Example
         </Button>
       </div>

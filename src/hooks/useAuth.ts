@@ -13,7 +13,7 @@ import { Logger } from "../logger";
 const useAuth = () => {
   const dispatch = useDispatch();
 
-  const signUpWithGoogle = useCallback(async () => {
+  const signInWithGoogle = useCallback(async () => {
     const signInWithRedirectInput: SignInWithRedirectInput = {
       provider: "Google",
       options: {
@@ -28,19 +28,6 @@ const useAuth = () => {
          */
         preferPrivateSession: true,
       },
-    };
-    try {
-      await signInWithRedirect(signInWithRedirectInput);
-    } catch (error: any) {
-      Logger.error("Error signing up with Google", { error });
-      dispatch(setError("Failed to sign up"));
-      console.error(error);
-    }
-  }, []);
-
-  const signInWithGoogle = useCallback(async () => {
-    const signInWithRedirectInput: SignInWithRedirectInput = {
-      provider: "Google",
     };
     try {
       await signInWithRedirect(signInWithRedirectInput);
@@ -66,7 +53,6 @@ const useAuth = () => {
 
   return {
     signInWithGoogle,
-    signUpWithGoogle,
     signOut,
   };
 };
