@@ -23,12 +23,12 @@ const config = {
     ],
     redirectSignIn:
       environment === "production"
-        ? "https://bookworm-beige.vercel.app/home/"
+        ? "https://bookworm-beige.vercel.app/home"
         : "http://localhost:3001/home",
     redirectSignOut:
       environment === "production"
-        ? "https://bookworm-beige.vercel.app/"
-        : "http://localhost:3001/",
+        ? "https://bookworm-beige.vercel.app"
+        : "http://localhost:3001",
     responseType: "code",
   },
   federationTarget: "COGNITO_USER_POOLS",
