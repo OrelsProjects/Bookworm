@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -28,10 +28,13 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const router = useRouter();
   const pathname = usePathname();
 
+  // Workaround for when the website won't load
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   const fetchUser = async () => {
     try {
       dispatch(setLoading(true));
-      console.log("fetchUser");
+      // console.log("fetchUser");
       const session = await fetchAuthSession();
       const user = new User(
         session.userSub ?? "",
@@ -89,24 +92,33 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [dispatch]);
 
   useEffect(() => {
-    console.log("I am loading for pathname");
     if (!loading) {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
       if (pathname === "/") {
         router.push("/home");
       }
+    } else {
+      if (!timeoutRef.current) {
+        timeoutRef.current = setTimeout(() => {
+          fetchUser();
+        }, 6000);
+      }
     }
-  }, [loading, router]);
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [loading, pathname, router]);
 
-  return (
-    <>
-      {loading ? (
-        <div className="w-full h-full flex justify-center items-center">
-          <Loading className="!w-24 !h-24 !fill-primary" />
-        </div>
-      ) : (
-        children
-      )}
-    </>
+  return loading ? (
+    <div className="w-full h-full flex justify-center items-center">
+      <Loading className="!w-24 !h-24 !fill-primary" />
+    </div>
+  ) : (
+    children
   );
 };
 
