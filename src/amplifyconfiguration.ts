@@ -2,6 +2,8 @@ import { Amplify } from "aws-amplify";
 import dotenv from "dotenv";
 dotenv.config();
 
+const environment = process.env.NODE_ENV;
+
 const config = {
   aws_project_region: "us-east-1",
   aws_cognito_identity_pool_id:
@@ -19,8 +21,14 @@ const config = {
       "profile",
       "aws.cognito.signin.user.admin",
     ],
-    redirectSignIn: ["http://localhost:3001/home", "https://bookworm-beige.vercel.app/home/"],
-    redirectSignOut: ["http://localhost:3001/home", "https://bookworm-beige.vercel.app/home/"],
+    redirectSignIn:
+      environment === "production"
+        ? "https://bookworm-beige.vercel.app/home/"
+        : "http://localhost:3001/home",
+    redirectSignOut:
+      environment === "production"
+        ? "https://bookworm-beige.vercel.app/"
+        : "http://localhost:3001/",
     responseType: "code",
   },
   federationTarget: "COGNITO_USER_POOLS",
