@@ -67,7 +67,7 @@ const BooksTable: React.FC = () => {
   if (loading) {
     return (
       <div className="w-full h-full flex justify-center items-center">
-        <Loading className="!w-24 !h-24 mb-48 !fill-primary" />
+        <Loading innerClassName="!w-24 !h-24 mb-48 !fill-primary" />
       </div>
     );
   }

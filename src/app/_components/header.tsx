@@ -10,22 +10,7 @@ import useAuth from "@/src/hooks/useAuth";
 import { ModalTypes, showModal } from "@/src/lib/features/modal/modalSlice";
 import Avatar from "./avatar";
 import { EventTracker } from "@/src/eventTracker";
-
-const tabs = [
-  {
-    label: "Home",
-    href: "/home",
-    selected: true,
-  },
-  {
-    label: "My Library",
-    href: "/my-library",
-  },
-  // {
-  //   label: "Statistics",
-  //   href: "/statistics",
-  // },
-];
+import { TabItems } from "@/src/components/tabs";
 
 export interface HeaderProps {
   className?: string;
@@ -37,18 +22,36 @@ const Header = ({ className }: HeaderProps): React.ReactNode => {
   const pathname = usePathname();
   const { user, loading, error } = useSelector(selectAuth);
   const { signInWithGoogle } = useAuth();
+  const [tabs, setTabs] = React.useState<TabItems>([
+    {
+      label: "Home",
+      href: "/home",
+      selected: true,
+    },
+    {
+      label: "My Library",
+      href: "/my-library",
+    },
+    // {
+    //   label: "Statistics",
+    //   href: "/statistics",
+    // },
+  ]);
 
   useEffect(() => {
     EventTracker.track(
       `User navigated to ${pathname?.toString()?.replace("/", "")}`
     );
-    tabs.map((tab) => {
+    const newTabs = [...tabs];
+    newTabs.map((tab) => {
+      tab.loading = false;
       if (tab.href === pathname) {
         tab.selected = true;
       } else {
         tab.selected = false;
       }
     });
+    setTabs(newTabs);
   }, [pathname]);
 
   useEffect(() => {
@@ -58,7 +61,19 @@ const Header = ({ className }: HeaderProps): React.ReactNode => {
   }, [error]);
 
   const navigateTo = (href: string) => {
+    if (href === pathname) {
+      return;
+    }
     router.push(href);
+    const newTabs = [...tabs];
+    newTabs.map((tab) => {
+      if (tab.href === href) {
+        tab.loading = true;
+      } else {
+        tab.loading = false;
+      }
+    });
+    setTabs(newTabs);
   };
 
   const NavTabs = (): React.ReactNode => {

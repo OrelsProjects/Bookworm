@@ -2,11 +2,15 @@
 
 import { Button } from "./button";
 import { useEffect, useState } from "react";
+import Loading from "./loading";
 
-interface TabItem {
+export type TabItems = TabItem[];
+
+export interface TabItem {
   label: string;
   href: string;
   selected?: boolean;
+  loading?: boolean;
 }
 
 interface TabsProps {
@@ -15,7 +19,12 @@ interface TabsProps {
   onClick?: (href: string) => void; // Change the prop name to onClick
 }
 
-const Tabs = ({ items, manualSelection: manualSelected, onClick }: TabsProps) => {
+const Tabs = ({
+  items,
+  manualSelection: manualSelected,
+  onClick,
+}: TabsProps) => {
+  console.log("items", items);
   const [selectedValue, setSelectedValue] = useState<string>("");
 
   useEffect(() => {
@@ -44,7 +53,19 @@ const Tabs = ({ items, manualSelection: manualSelected, onClick }: TabsProps) =>
           className="rounded-full"
           size={"md"}
         >
-          {item.label}
+          <div className="w-full h-full flex justify-center items-center relative">
+            <div className={`${item.loading ? "invisible" : ""}`}>
+              {item.label}
+            </div>
+            <Loading
+              className={`${
+                item.loading
+                  ? "w-full h-full absolute top-0 left-0 right-0 bottom-0"
+                  : "hidden"
+              }`}
+              innerClassName="!fill-primary"
+            />
+          </div>
         </Button>
       ))}
     </div>

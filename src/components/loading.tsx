@@ -3,16 +3,17 @@ import React from "react";
 interface LoadingProps {
   text?: string;
   className?: string;
+  innerClassName?: string;
 }
 
-const Loading: React.FC<LoadingProps> = ({ text, className }) => (
+const Loading: React.FC<LoadingProps> = ({ text, className, innerClassName }) => (
   <div
-    className="flex flex-col justify-center items-center"
+    className={`flex flex-col justify-center items-center h-full w-full ${className}`}
     role="status"
   >
     <svg
       aria-hidden="true"
-      className={`w-6 h-6 animate-spin fill-primary-weak bg-none ${className}`}
+      className={`w-6 h-6 animate-spin fill-primary-weak bg-none ${innerClassName}`}
       viewBox="0 0 100 101"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
