@@ -29,7 +29,7 @@ const Dropdown: React.FC<DropdownProps> = ({
         onClose?.();
       }
     }
-
+    if (typeof window === "undefined") return;
     // Attach the event listener
     document.addEventListener("mousedown", handleClickOutside);
 

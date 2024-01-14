@@ -58,7 +58,7 @@ const Modal: React.FC<Props> = ({
         }
       }
     };
-
+    if (typeof window === "undefined") return;
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);

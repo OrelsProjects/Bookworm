@@ -123,6 +123,7 @@ const ImportBooks = () => {
           variant="link"
           className="!p-0 h-fit"
           onClick={() => {
+            if (typeof window === "undefined") return;
             const link = document.createElement("a");
             link.href = "/exampleCSV.csv";
             link.download = "exampleCSV.csv";
