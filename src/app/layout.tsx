@@ -4,7 +4,7 @@ import StoreProvider from "./providers/StoreProvider";
 import AuthProvider from "./providers/AuthProvider";
 import React from "react";
 import "./globals.css";
-import Header from "./_components/header";
+import Header from "../components/header";
 import { VideoBackground } from "../components";
 import APIProvider from "./providers/APIProvider";
 import { Toaster } from "react-hot-toast";
