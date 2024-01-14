@@ -61,7 +61,6 @@ const ImportBooks = () => {
       await importViaCSV(fileSelected);
       toast.success("Done!");
     } catch (error: any) {
-      Logger.error("Error importing books via CSV", { error });
       toast.error("Error uploading file");
     } finally {
       toast.dismiss(toastId);
@@ -79,7 +78,6 @@ const ImportBooks = () => {
       toast.success("Done!");
       setBooksBeingImported(true);
     } catch (error: any) {
-      Logger.error("Error importing books via Goodreads URL", { error });
       toast.error("Something is wrong with your url 🤔");
     } finally {
       toast.dismiss(loadingToastId);

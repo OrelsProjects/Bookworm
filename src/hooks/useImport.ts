@@ -49,9 +49,10 @@ const useImport = () => {
   };
 
   const importViaCSV = async (file: File): Promise<void> => {
+    let presignedURL: PresignedURL | undefined = undefined;
     try {
       setLoading(true);
-      const presignedURL = await createUploadURL();
+      presignedURL = await createUploadURL();
       if (!presignedURL) {
         throw new Error("Failed to create upload URL");
       }
@@ -70,7 +71,11 @@ const useImport = () => {
         throw new Error("Failed to upload CSV");
       }
     } catch (error: any) {
+      debugger;
       Logger.error("Error uploading CSV", {
+        data: {
+          presignedURL,
+        },
         error,
       });
       throw error;
