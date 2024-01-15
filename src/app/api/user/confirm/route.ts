@@ -25,7 +25,7 @@ export async function POST(
   }
 }
 
-export async function confirmUser(req: NextRequest): Promise<UserDTO> {
+async function confirmUser(req: NextRequest): Promise<UserDTO> {
   let user: User | undefined = undefined;
   const body = await req.json();
   user = body.data;
@@ -60,7 +60,7 @@ export async function confirmUser(req: NextRequest): Promise<UserDTO> {
   }
 }
 
-export async function getUser(req: NextRequest): Promise<UserDTO> {
+async function getUser(req: NextRequest): Promise<UserDTO> {
   const axios = GetAxiosInstance(req);
   const response = await axios.get<UserDTO>("/user");
   return response.data;
