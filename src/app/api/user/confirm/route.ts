@@ -11,11 +11,16 @@ export async function POST(
 ): Promise<NextResponse<IResponse<User>>> {
   let user: User | undefined = undefined;
   try {
+    Logger.info("Confirming user", {
+      data: {
+        body: req.body,
+      },
+    });
     const userDto: UserDTO = await confirmUser(req);
     user = FromResponseUser(userDto);
     return NextResponse.json({ result: user }, { status: 200 });
   } catch (error: any) {
-    Logger.error("Error creating user", {
+    Logger.error("Error confirming user", {
       data: {
         user,
       },
@@ -52,6 +57,11 @@ async function confirmUser(req: NextRequest): Promise<UserDTO> {
     return createUserResponse.data;
   } catch (error: any) {
     if (error.response.status === 409) {
+      Logger.debug("User already exists, getting user", {
+        data: {
+          user,
+        },
+      });
       const getUserResponse = await getUser(req);
       return getUserResponse;
     } else {
@@ -62,6 +72,11 @@ async function confirmUser(req: NextRequest): Promise<UserDTO> {
 
 async function getUser(req: NextRequest): Promise<UserDTO> {
   const axios = GetAxiosInstance(req);
+  Logger.debug("Getting user", {
+    data: {
+      headers: axios.defaults.headers,
+    },
+  });
   const response = await axios.get<UserDTO>("/user");
   return response.data;
 }
