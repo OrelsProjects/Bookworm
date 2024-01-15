@@ -5,6 +5,7 @@ import BookSubGenre from "./bookSubGenre";
 import GoodreadsData from "./goodreadsData";
 import UserBook from "./userBook";
 import { UserBookData } from "./userBook";
+import { ImportStatus } from "./importStatus";
 
 export {
   User,
@@ -14,4 +15,5 @@ export {
   GoodreadsData,
   UserBook,
   UserBookData,
+  ImportStatus,
 };

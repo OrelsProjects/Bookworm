@@ -22,7 +22,7 @@ export const DeleteButton = ({
     className={`rounded-full flex justify-center items-center border-none h-11 w-11 p-2 ${className}`}
   >
     {loading ? (
-      <Loading innerClassName="!fill-primary" />
+      <Loading spinnerClassName="!fill-primary" />
     ) : (
       <Image
         src="/delete.svg"
@@ -45,7 +45,7 @@ const FavoriteButton = ({
     className={`rounded-full flex justify-center items-center border-none h-11 w-11 p-2 ${className}`}
   >
     {loading ? (
-      <Loading innerClassName="!fill-primary" />
+      <Loading spinnerClassName="!fill-primary" />
     ) : (
       <Image
         src={isFavorite ? "/favoriteFilled.svg" : "/favorite.svg"}

@@ -135,7 +135,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   return loading ? (
     <div className="w-full h-full flex justify-center items-center">
-      <Loading innerClassName="!w-24 !h-24 !fill-primary" />
+      <Loading spinnerClassName="!w-24 !h-24 !fill-primary" />
     </div>
   ) : (
     children

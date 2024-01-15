@@ -35,7 +35,7 @@ function App() {
 
   return (
     <div className="h-full w-full flex flex-col justify-center items-center ">
-      {loading && <Loading innerClassName="w-24 h-24 !fill-primary" />}
+      {loading && <Loading spinnerClassName="w-24 h-24 !fill-primary" />}
     </div>
   );
 }

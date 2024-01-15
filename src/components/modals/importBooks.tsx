@@ -5,9 +5,10 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { hideModal } from "@/src/lib/features/modal/modalSlice";
 import { EventTracker } from "@/src/eventTracker";
-import { Logger } from "@/src/logger";
 import { z } from "zod";
 import { useFormik } from "formik";
+import Loading from "../loading";
+import { ImportStatusType } from "@/src/models/importStatus";
 
 const ImportBooks = () => {
   const dispatch = useDispatch();
@@ -35,9 +36,12 @@ const ImportBooks = () => {
     },
   });
 
-  const { importViaCSV, importViaGoodreadsUrl, loading } = useImport();
+  const { importViaCSV, importViaGoodreadsUrl, loading, importStatus } =
+    useImport();
   const [booksBeingImported, setBooksBeingImported] = useState<boolean>(false);
   const [fileSelected, setFileSelected] = useState<File | null>(null);
+
+  // console.log("loadingImport ", loading);
 
   const openFileExplorer = () => {
     fileInputRef.current?.click();
@@ -189,8 +193,20 @@ const ImportBooks = () => {
 
   return (
     <div className="modal-size modal-background flex flex-col items-center justify-start gap-24">
-      <ImportCSV />
-      {ImportGoodreads()}
+      {loading ? (
+        <div className="w-full h-full flex justify-center items-center">
+          <Loading spinnerClassName="!w-24 !h-24 !fill-primary" />
+        </div>
+      ) : importStatus?.importData.status === ImportStatusType.IN_PROGRESS ? (
+        <div className="w-full h-full flex justify-center items-center text-4xl">
+          We are still working on importing your books. We'll finish soon :)
+        </div>
+      ) : (
+        <>
+          <ImportCSV />
+          {ImportGoodreads()}
+        </>
+      )}
     </div>
   );
 };

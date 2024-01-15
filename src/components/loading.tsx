@@ -3,10 +3,10 @@ import React from "react";
 interface LoadingProps {
   text?: string;
   className?: string;
-  innerClassName?: string;
+  spinnerClassName?: string;
 }
 
-const Loading: React.FC<LoadingProps> = ({ text, className, innerClassName }) => (
+const Loading: React.FC<LoadingProps> = ({ text, className, spinnerClassName: innerClassName }) => (
   <div
     className={`flex flex-col justify-center items-center h-full w-full ${className}`}
     role="status"
