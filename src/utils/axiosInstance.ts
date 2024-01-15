@@ -7,10 +7,12 @@ const getBaseUrl = (): string => {
   switch (process.env.NODE_ENV) {
     case "production":
       baseUrl =
+        // "https://hvuehlxixb.execute-api.us-east-1.amazonaws.com/production/api";
         "https://72kvc34caj.execute-api.us-east-1.amazonaws.com/dev/api";
       break;
     case "development":
-      baseUrl = "http://localhost:3000/dev/api";
+      baseUrl =
+        "https://72kvc34caj.execute-api.us-east-1.amazonaws.com/dev/api";
       break;
     case "test":
       baseUrl = "http://localhost:3000/dev/api";

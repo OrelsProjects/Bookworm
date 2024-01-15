@@ -20,7 +20,7 @@ const Header = ({ className }: HeaderProps): React.ReactNode => {
   const dispatch = useDispatch();
   const router = useRouter();
   const pathname = usePathname();
-  const { user, loading, error } = useSelector(selectAuth);
+  const { user, loadingState, error } = useSelector(selectAuth);
   const { signInWithGoogle } = useAuth();
   const [tabs, setTabs] = React.useState<TabItems>([
     {
@@ -87,7 +87,7 @@ const Header = ({ className }: HeaderProps): React.ReactNode => {
   };
 
   return (
-    !loading && (
+    !loadingState.loading && (
       <div
         className={`flex justify-between items-start w-full h-12 z-30 relative ${className}`}
       >

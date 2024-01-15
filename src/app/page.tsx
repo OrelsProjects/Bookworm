@@ -9,13 +9,13 @@ import { Loading } from "../components";
 function App() {
   const router = useRouter();
   const [shouldShowError, setShouldShowError] = React.useState(false);
-  const { user, loading, error } = useSelector(selectAuth);
+  const { user, loadingState, error } = useSelector(selectAuth);
 
   useEffect(() => {
-    if (!loading) {
+    if (!loadingState.loading) {
       router.push("/home");
     }
-  }, [loading, user]);
+  }, [loadingState, user]);
 
   // Sometimes the redirect of google returns with an error and 300ms later it returns with the user
   // So if error is not null, we wait 1s to present error.
@@ -35,7 +35,9 @@ function App() {
 
   return (
     <div className="h-full w-full flex flex-col justify-center items-center ">
-      {loading && <Loading spinnerClassName="w-24 h-24 !fill-primary" />}
+      {loadingState.loading && (
+        <Loading spinnerClassName="!w-24 !h-24 !fill-primary" />
+      )}
     </div>
   );
 }

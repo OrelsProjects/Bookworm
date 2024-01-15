@@ -26,21 +26,23 @@ interface AuthProviderProps {
 }
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const { user, loading } = useSelector(selectAuth);
+  const { user, loadingState } = useSelector(selectAuth);
   const isLoadingUserFetch = useRef<boolean>(false);
   const dispatch = useDispatch();
   const router = useRouter();
   const pathname = usePathname();
-
-  // Workaround for when the website won't load
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const fetchUser = async () => {
     if (isLoadingUserFetch.current) {
       return;
     }
     try {
-      dispatch(setLoading(true));
+      dispatch(
+        setLoading({
+          loading: true,
+          message: "Loading user",
+        })
+      );
       isLoadingUserFetch.current = true;
       // console.log("fetchUser");
       const session = await fetchAuthSession();
@@ -69,7 +71,12 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       Logger.error("Error fetching user", { error });
       toast.error("Error fetching user");
     } finally {
-      dispatch(setLoading(false));
+      dispatch(
+        setLoading({
+          loading: false,
+          message: "",
+        })
+      );
       isLoadingUserFetch.current = false;
     }
   };
@@ -85,23 +92,27 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [user]);
 
   useEffect(() => {
-    dispatch(setLoading(true));
+    dispatch(
+      setLoading({
+        loading: true,
+        message: "We are looking for your user.. :)",
+      })
+    );
     const unsubscribe = Hub.listen("auth", ({ payload }) => {
-      setLoading(false);
       switch (payload.event) {
         case "signInWithRedirect":
           fetchUser();
           break;
         case "signInWithRedirect_failure":
           dispatch(setError("An error has occurred"));
-          dispatch(setLoading(false));
+          dispatch(setLoading({ loading: false }));
           break;
         case "signedIn":
           fetchUser();
           break;
         case "customOAuthState":
           //   setCustomState(payload.data); // this is the customState provided on signInWithRedirect function
-          dispatch(setLoading(false));
+          dispatch(setLoading({ loading: false }));
           break;
       }
     });
@@ -112,30 +123,19 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (!loading) {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
+    if (!loadingState.loading) {
       if (pathname === "/") {
         router.push("/home");
       }
-    } else {
-      if (!timeoutRef.current) {
-        timeoutRef.current = setTimeout(() => {
-          fetchUser();
-        }, 6000);
-      }
     }
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, [loading, pathname, router]);
+  }, [loadingState, pathname, router]);
 
-  return loading ? (
+  return loadingState.loading ? (
     <div className="w-full h-full flex justify-center items-center">
-      <Loading spinnerClassName="!w-24 !h-24 !fill-primary" />
+      <Loading
+        spinnerClassName="!w-24 !h-24 !fill-primary"
+        text={loadingState.message ?? ""}
+      />
     </div>
   ) : (
     children

@@ -3,6 +3,11 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../../store"; // Adjust the import path as necessary
 import { User } from "../../../models";
 
+export type LoadingState = {
+  loading: boolean;
+  message?: string;
+};
+
 export enum AuthStateType {
   SIGNED_IN = "SIGNED_IN",
   SIGNED_OUT = "SIGNED_OUT",
@@ -11,14 +16,17 @@ export enum AuthStateType {
 interface AuthState {
   user: User | null;
   state: AuthStateType;
-  loading: boolean;
+  loadingState: LoadingState;
   error: string | null;
 }
 
 const initialState: AuthState = {
   user: null,
   state: AuthStateType.SIGNED_OUT,
-  loading: true,
+  loadingState: {
+    loading: true,
+    message: "Hi there!",
+  },
   error: null,
 };
 
@@ -33,11 +41,11 @@ const authSlice = createSlice({
         : AuthStateType.SIGNED_OUT;
       state.error = null;
     },
-    setLoading: (state, action: PayloadAction<boolean>) => {
+    setLoading: (state, action: PayloadAction<LoadingState>) => {
       if (action.payload) {
         state.error = null;
       }
-      state.loading = action.payload;
+      state.loadingState = action.payload;
     },
     setError: (state, action: PayloadAction<string | null>) => {
       state.error = action.payload;
