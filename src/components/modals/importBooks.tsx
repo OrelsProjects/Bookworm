@@ -60,6 +60,7 @@ const ImportBooks = () => {
       EventTracker.track("User imported books via CSV");
       await importViaCSV(fileSelected);
       toast.success("Done!");
+      setBooksBeingImported(true);
     } catch (error: any) {
       toast.error("Error uploading file");
     } finally {

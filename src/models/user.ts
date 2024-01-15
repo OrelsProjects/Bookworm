@@ -1,14 +1,31 @@
 class User {
   id: string;
-  name: string;
   email: string;
+  displayName: string;
+  profilePictureUrl?: string;
+  bio?: string;
+  birthDate?: string;
+  gender?: string;
   token: string;
 
-  constructor(id: string, name: string, email: string, token: string) {
+  constructor(
+    id: string,
+    displayName: string,
+    email: string,
+    token: string,
+    profilePictureUrl?: string,
+    bio?: string,
+    birthDate?: string,
+    gender?: string
+  ) {
     this.id = id;
-    this.name = name;
+    this.displayName = displayName;
     this.email = email;
     this.token = token;
+    this.profilePictureUrl = profilePictureUrl;
+    this.bio = bio;
+    this.birthDate = birthDate;
+    this.gender = gender;
   }
 }
 

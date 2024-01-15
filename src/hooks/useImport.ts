@@ -52,24 +52,19 @@ const useImport = () => {
     let presignedURL: PresignedURL | undefined = undefined;
     try {
       setLoading(true);
-      presignedURL = await createUploadURL();
-      if (!presignedURL) {
-        throw new Error("Failed to create upload URL");
-      }
-      const fileToUpload = new File([file], presignedURL.fileName, {
-        type: file.type,
-      });
-      const response = await fetch(presignedURL.signedUrl, {
-        method: "PUT",
-        body: fileToUpload,
-        headers: {
-          "Content-Type": fileToUpload.type,
-        },
-      });
 
-      if (response.status !== 200) {
-        throw new Error("Failed to upload CSV");
-      }
+      const formData = new FormData();
+      formData.append("file", file);
+
+      await axios.put(
+        "api/import/custom-csv",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
     } catch (error: any) {
       debugger;
       Logger.error("Error uploading CSV", {
@@ -84,10 +79,22 @@ const useImport = () => {
     }
   };
 
-  const createUploadURL = async (): Promise<PresignedURL | undefined> => {
+  const createUploadURL = async (
+    file: File
+  ): Promise<PresignedURL | undefined> => {
     try {
-      const response = await axios.get<IResponse<PresignedURL>>(
-        "/api/import/presigned-url"
+      const data = new FormData();
+      data.append("file", file);
+      const response = await axios.post<IResponse<PresignedURL>>(
+        "/api/import/custom-csv",
+        {
+          file,
+        },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
       return response.data.result;
     } catch (error: any) {

@@ -17,6 +17,9 @@ import { Loading } from "../../components";
 import { initEventTracker, setUserEventTracker } from "../../eventTracker";
 
 import { Logger, initLogger, setUserLogger } from "@/src/logger";
+import axios from "axios";
+import { IResponse } from "@/src/models/dto/response";
+import toast from "react-hot-toast";
 
 interface AuthProviderProps {
   children?: React.ReactNode;
@@ -24,6 +27,7 @@ interface AuthProviderProps {
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const { user, loading } = useSelector(selectAuth);
+  const isLoadingUserFetch = useRef<boolean>(false);
   const dispatch = useDispatch();
   const router = useRouter();
   const pathname = usePathname();
@@ -32,8 +36,12 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const fetchUser = async () => {
+    if (isLoadingUserFetch.current) {
+      return;
+    }
     try {
       dispatch(setLoading(true));
+      isLoadingUserFetch.current = true;
       // console.log("fetchUser");
       const session = await fetchAuthSession();
       const user = new User(
@@ -44,11 +52,25 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           "",
         session.tokens?.accessToken?.toString() ?? ""
       );
+      const userResponse = await axios.post<IResponse<User>>(
+        "/api/user/confirm",
+        {
+          data: user,
+        }
+      );
+      const userWithDetails = userResponse.data.result;
+      if (userWithDetails) {
+        dispatch(setUser({ ...userWithDetails }));
+      } else {
+        throw new Error("Failed to confirm user in db");
+      }
       dispatch(setUser({ ...user }));
     } catch (error: any) {
       Logger.error("Error fetching user", { error });
+      toast.error("Error fetching user");
     } finally {
       dispatch(setLoading(false));
+      isLoadingUserFetch.current = false;
     }
   };
 
@@ -64,9 +86,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     dispatch(setLoading(true));
-    console.log("I am loading for Hub");
     const unsubscribe = Hub.listen("auth", ({ payload }) => {
-      console.log("A new auth event has happened: ", JSON.stringify(payload));
+      debugger;
       setLoading(false);
       switch (payload.event) {
         case "signInWithRedirect":

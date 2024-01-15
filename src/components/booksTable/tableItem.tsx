@@ -104,7 +104,7 @@ const TableItem: React.FC<TableItemProps> = ({ userBookData, className }) => {
       <div>
         <div>Pages: {userBookData.bookData.book?.numberOfPages}</div>
         <div className="truncate">
-          Genre: {userBookData.bookData.book?.mainGenreId}
+          Genre: {userBookData.bookData.mainGenre?.genreName}
         </div>
         <div>Date: {FormatDate(userBookData.bookData.book?.datePublished)}</div>
       </div>
