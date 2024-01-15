@@ -54,11 +54,21 @@ const useImport = () => {
     return false;
   };
 
+  const isLastStatusDone = (): boolean => {
+    const lastStatus = localStorage.getItem(LAST_STATUS);
+    if (!lastStatus) {
+      return true;
+    }
+    const importStatus = JSON.parse(lastStatus) as ImportStatus;
+    return importStatus?.importData.status === ImportStatusType.DONE;
+  };
+
   const runStatusChecks = async (): Promise<void> => {
     if (
       loadingStatusCheck.current ||
       !isLastStatusCheckTimeValid() ||
-      !statusCheckInterval.current
+      !statusCheckInterval.current ||
+      isLastStatusDone()
     ) {
       return;
     }
