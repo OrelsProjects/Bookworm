@@ -63,7 +63,7 @@ export default function EmptyTable({
   );
 
   return (
-    <div className="h-full w-full flex flex-col justify-center mb-52 items-center gap-6">
+    <div className="h-full w-full flex flex-col justify-center xl:mb-52 items-center gap-6">
       {isSearch ? (
         <SearchEmptyTable />
       ) : (
