@@ -33,7 +33,9 @@ const Loading: React.FC<LoadingProps> = ({
   spinnerClassName,
 }) => (
   <div
-    className={`flex flex-col justify-center items-center h-full w-full gap-6 ${className}`}
+    className={`flex flex-col justify-center items-center h-full w-full ${
+      text ? "gap-6" : ""
+    } ${className}`}
     role="status"
   >
     <LoadingSvg className={spinnerClassName} />
