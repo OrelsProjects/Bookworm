@@ -87,7 +87,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     dispatch(setLoading(true));
     const unsubscribe = Hub.listen("auth", ({ payload }) => {
-      debugger;
       setLoading(false);
       switch (payload.event) {
         case "signInWithRedirect":

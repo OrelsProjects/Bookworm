@@ -24,7 +24,6 @@ const Tabs = ({
   manualSelection: manualSelected,
   onClick,
 }: TabsProps) => {
-  console.log("items", items);
   const [selectedValue, setSelectedValue] = useState<string>("");
 
   useEffect(() => {

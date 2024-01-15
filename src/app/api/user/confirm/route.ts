@@ -11,21 +11,16 @@ export async function POST(
 ): Promise<NextResponse<IResponse<User>>> {
   let user: User | undefined = undefined;
   try {
-    Logger.info("Confirming user", {
-      data: {
-        body: req.body,
-      },
-    });
     const userDto: UserDTO = await confirmUser(req);
     user = FromResponseUser(userDto);
     return NextResponse.json({ result: user }, { status: 200 });
   } catch (error: any) {
-    Logger.error("Error confirming user", {
-      data: {
-        user,
-      },
-      error,
-    });
+    // Logger.error("Error confirming user", {
+    //   data: {
+    //     user,
+    //   },
+    //   error,
+    // });
     return NextResponse.json({}, { status: 500 });
   }
 }
@@ -51,19 +46,28 @@ async function confirmUser(req: NextRequest): Promise<UserDTO> {
 
   const userDto = new UserDTO(user);
   try {
+    console.log("Creating user");
     const createUserResponse = await axios.post<UserDTO>("/user", {
       ...userDto,
     });
+    console.log(createUserResponse.data);
     return createUserResponse.data;
   } catch (error: any) {
+    console.log("Error on create user", error.response);
     if (error.response.status === 409) {
-      Logger.debug("User already exists, getting user", {
-        data: {
-          user,
-        },
-      });
-      const getUserResponse = await getUser(req);
-      return getUserResponse;
+      console.log("User already exists, getting user");
+      try {
+        const getUserResponse = await getUser(req);
+        return getUserResponse;
+      } catch (error: any) {
+        Logger.error("Error getting user", {
+          data: {
+            user,
+          },
+          error,
+        });
+        throw error;
+      }
     } else {
       throw error;
     }
@@ -72,11 +76,8 @@ async function confirmUser(req: NextRequest): Promise<UserDTO> {
 
 async function getUser(req: NextRequest): Promise<UserDTO> {
   const axios = GetAxiosInstance(req);
-  Logger.debug("Getting user", {
-    data: {
-      headers: axios.defaults.headers,
-    },
-  });
+  console.log("Getting user");
   const response = await axios.get<UserDTO>("/user");
+  console.log(response.data);
   return response.data;
 }

@@ -3,6 +3,7 @@ import { NextRequest } from "next/server";
 
 const getBaseUrl = (): string => {
   let baseUrl = "";
+  return "https://72kvc34caj.execute-api.us-east-1.amazonaws.com/dev/api";
   switch (process.env.NODE_ENV) {
     case "production":
       baseUrl =

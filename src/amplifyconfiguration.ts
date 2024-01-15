@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const environment = process.env.NODE_ENV;
-console.log("environment", environment);
+
 const config = {
   aws_project_region: "us-east-1",
   aws_cognito_identity_pool_id:

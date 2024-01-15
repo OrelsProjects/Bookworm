@@ -23,7 +23,6 @@ export const initLogger = () => {
       service: process.env.NEXT_PUBLIC_DATADOG_SERVICE ?? "",
       env,
     });
-    log(StatusType.debug, "Logger initialized", {});
   } catch (error: any) {
     Logger.error("Error initializing logger", {
       error,
@@ -39,26 +38,36 @@ export const setUserLogger = (user?: User | null) => {
   });
 };
 
-const log = (type: StatusType, message: string, logItem: LogItem) => {
-  if (process.env.NODE_ENV !== "production") {
-    printLog(type, message, logItem);
+const log = (type: StatusType, message: string, logItem?: LogItem) => {
+  printLog(type, message, logItem);
+  try {
+    datadogLogs.logger.log(message, logItem?.data, type, logItem?.error);
+  } catch (error: any) {
+    // printLog(type, `Failed to log to datadog ${type}`);
+    // printLog(type);
   }
-  datadogLogs.logger.log(message, logItem.data, type, logItem.error);
 };
 
-const printLog = (type: StatusType, message: string, logItem: LogItem) => {
+const printLog = (type: StatusType, message?: string, logItem?: LogItem) => {
+  if (process.env.NODE_ENV === "production") {
+    return;
+  }
+  const logText = `${`${type}: ` ?? ""}${message ?? ""} ${
+    logItem?.data ? JSON.stringify(logItem.data) : ""
+  } ${logItem?.error ? JSON.stringify(logItem.error) : ""}
+  }`;
   switch (type) {
     case StatusType.info:
-      console.info(message, logItem);
+      console.info(logText);
       break;
     case StatusType.warn:
-      console.warn(message, logItem);
+      console.warn(logText);
       break;
     case StatusType.error:
-      console.error(message, logItem);
+      console.error(logText);
       break;
     case StatusType.debug:
-      console.debug(message, logItem);
+      console.log(logText);
       break;
     default:
       console.log(message, logItem);
@@ -67,19 +76,19 @@ const printLog = (type: StatusType, message: string, logItem: LogItem) => {
 };
 
 export class Logger {
-  static info(message: string, logItem: LogItem) {
+  static info(message: string, logItem?: LogItem) {
     log(StatusType.info, message, logItem);
   }
 
-  static warn(message: string, logItem: LogItem) {
+  static warn(message: string, logItem?: LogItem) {
     log(StatusType.warn, message, logItem);
   }
 
-  static error(message: string, logItem: LogItem) {
+  static error(message: string, logItem?: LogItem) {
     log(StatusType.error, message, logItem);
   }
 
-  static debug(message: string, logItem: LogItem) {
+  static debug(message: string, logItem?: LogItem) {
     log(StatusType.debug, message, logItem);
   }
 }

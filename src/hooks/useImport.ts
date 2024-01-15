@@ -56,17 +56,12 @@ const useImport = () => {
       const formData = new FormData();
       formData.append("file", file);
 
-      await axios.put(
-        "api/import/custom-csv",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      await axios.put("api/import/custom-csv", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
     } catch (error: any) {
-      debugger;
       Logger.error("Error uploading CSV", {
         data: {
           presignedURL,
