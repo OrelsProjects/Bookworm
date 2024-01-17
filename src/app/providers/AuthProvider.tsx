@@ -46,14 +46,13 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       isLoadingUserFetch.current = true;
 
       const session = await fetchAuthSession();
-      const user = new User(
-        session.userSub ?? "",
-        "",
+      const userId = session.userSub ?? "";
+      const email =
         session?.tokens?.accessToken?.payload?.email?.toString() ??
-          session?.tokens?.idToken?.payload?.email?.toString() ??
-          "",
-        session.tokens?.accessToken?.toString() ?? ""
-      );
+        session?.tokens?.idToken?.payload?.email?.toString() ??
+        "";
+      const token = session?.tokens?.accessToken?.toString() ?? "";
+      const user = new User(userId, email, token);
       const userResponse = await axios.post<IResponse<User>>(
         "/api/user/confirm",
         {

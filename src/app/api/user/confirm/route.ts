@@ -11,8 +11,13 @@ export async function POST(
 ): Promise<NextResponse<IResponse<User>>> {
   let user: User | undefined = undefined;
   try {
-    const userDto: UserDTO = await confirmUser(req);
-    user = FromResponseUser(userDto);
+    const body = await req.json();
+    user = body.data;
+    if (!user) {
+      throw new Error("Missing user object");
+    }
+    const userDto: UserDTO = await confirmUser(req, user);
+    user = FromResponseUser(userDto, user?.token || "");
     return NextResponse.json({ result: user }, { status: 200 });
   } catch (error: any) {
     Logger.error("Error confirming user", getUserIdFromRequest(req), {
@@ -25,11 +30,8 @@ export async function POST(
   }
 }
 
-async function confirmUser(req: NextRequest): Promise<UserDTO> {
-  let user: User | undefined = undefined;
-  const body = await req.json();
-  user = body.data;
-  Logger.info("Confirming user", getUserIdFromRequest(req), {
+async function confirmUser(req: NextRequest, user: User): Promise<UserDTO> {
+  Logger.info("Confirming user", user.id, {
     data: {
       user_id: user?.id,
       user_email: user?.email,
@@ -58,8 +60,9 @@ async function confirmUser(req: NextRequest): Promise<UserDTO> {
   } catch (error: any) {
     if (error.response.status === 409) {
       try {
-        const getUserResponse = await getUser(req);
-        return getUserResponse;
+        const response = await axios.get<UserDTO>("/user");
+        const userDto = response.data;
+        return userDto;
       } catch (error: any) {
         Logger.error("Error getting user", getUserIdFromRequest(req), {
           data: {
@@ -73,12 +76,4 @@ async function confirmUser(req: NextRequest): Promise<UserDTO> {
       throw error;
     }
   }
-}
-
-async function getUser(req: NextRequest): Promise<UserDTO> {
-  const axios = GetAxiosInstance(req);
-  console.log("Getting user");
-  const response = await axios.get<UserDTO>("/user");
-  console.log(response.data);
-  return response.data;
 }

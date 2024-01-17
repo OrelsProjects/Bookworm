@@ -25,7 +25,7 @@ const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
     if (state === AuthStateType.SIGNED_IN && user) {
       loadUserBooksAsync();
     }
-  }, [state]);
+  }, [state, user]);
 
   return <>{children}</>;
 };

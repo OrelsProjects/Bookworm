@@ -198,6 +198,9 @@ const useBook = () => {
       if (loading) {
         throw new Error("Cannot load user books while another book is loading");
       }
+      if (!user || !user.id) {
+        return;
+      }
       const currentUserBooks = localStorage.getItem("userBooks");
       if (currentUserBooks) {
         dispatch(setUserBooks(JSON.parse(currentUserBooks)));

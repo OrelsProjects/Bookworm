@@ -1,7 +1,9 @@
+import { UserDTO } from "./dto/userDTO";
+
 class User {
   id: string;
   email: string;
-  displayName: string;
+  displayName?: string;
   profilePictureUrl?: string;
   bio?: string;
   birthDate?: string;
@@ -10,9 +12,9 @@ class User {
 
   constructor(
     id: string,
-    displayName: string,
     email: string,
     token: string,
+    displayName?: string,
     profilePictureUrl?: string,
     bio?: string,
     birthDate?: string,
@@ -29,14 +31,16 @@ class User {
   }
 }
 
-export const FromResponseUser = (session: any) =>
+export const FromResponseUser = (userDto: UserDTO, token: string) =>
   new User(
-    session.userSub ?? "",
-    "",
-    session?.tokens?.accessToken?.payload?.email?.toString() ??
-      session?.tokens?.idToken?.payload?.email?.toString() ??
-      "",
-    session.tokens?.accessToken?.toString() ?? ""
+    userDto.user_id,
+    userDto.email,
+    token,
+    userDto.display_name,
+    userDto.profile_picture_url,
+    userDto.bio,
+    userDto.birth_date,
+    userDto.gender
   );
 
 export default User;

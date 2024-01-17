@@ -1,9 +1,13 @@
 import Logger from "@/src/utils/loggerServer";
+import {
+  GetAxiosInstance,
+  getUserIdFromRequest,
+  getTokenFromRequest,
+} from "@/src/utils/apiUtils";
 import { User } from "@/src/models";
 import { IResponse } from "@/src/models/dto/response";
 import { UserDTO } from "@/src/models/dto/userDTO";
 import { FromResponseUser } from "@/src/models/user";
-import { GetAxiosInstance, getUserIdFromRequest } from "@/src/utils/apiUtils";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(
@@ -29,10 +33,10 @@ export async function POST(
     });
     return NextResponse.json({}, { status: 200 });
   } catch (error: any) {
-      Logger.error("Error creating user", getUserIdFromRequest(req), {
-        error,
-        user,
-      });
+    Logger.error("Error creating user", getUserIdFromRequest(req), {
+      error,
+      user,
+    });
     return NextResponse.json({}, { status: 500 });
   }
 }
@@ -46,7 +50,7 @@ export async function GET(
       headers: req.headers,
     });
     const response = await axios.get<UserDTO>("/user");
-    const user = FromResponseUser(response.data);
+    const user = FromResponseUser(response.data, getTokenFromRequest(req));
     return NextResponse.json({ result: user }, { status: 200 });
   } catch (error: any) {
     Logger.error("Error getting user", getUserIdFromRequest(req), {

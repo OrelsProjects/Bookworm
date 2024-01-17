@@ -32,11 +32,18 @@ const logger: () => Logger = () => {
     user_id: string,
     data?: Dict
   ) => {
-    _logger.log(level, message, {
-      user_id,
-      data,
-      env: process.env.NODE_ENV,
-    });
+    try {
+      _logger.log(level, message, {
+        user_id,
+        data,
+        env: process.env.NODE_ENV,
+      });
+    } catch (error: any) {
+      // Skip.
+    }
+    if (process.env.NODE_ENV !== "production") {
+      console.log(message, user_id, data);
+    }
   };
 
   return {
