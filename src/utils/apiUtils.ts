@@ -2,6 +2,7 @@ import axios, { Axios } from "axios";
 import { NextRequest } from "next/server";
 import dotenv from "dotenv";
 import { Logger } from "../logger";
+import loggerServer from "./loggerServer";
 dotenv.config();
 
 const getBaseUrl = (): string => {
@@ -25,16 +26,19 @@ const getBaseUrl = (): string => {
 };
 
 export const GetAxiosInstance = (request: NextRequest): Axios => {
-  const headers = request.headers;
-  const authorization = getTokenFromRequest(request);
-  const userId = getUserIdFromRequest(request);
-  if (authorization && userId) {
-    axios.defaults.headers.common["Authorization"] = authorization;
-    axios.defaults.headers.common["user_id"] = userId;
-    request.headers.set("authorization", authorization);
-    request.headers.set("user_id", userId);
+  const token = getTokenFromRequest(request);
+  const user_id = getUserIdFromRequest(request);
+  if (token && user_id) {
+    axios.defaults.headers.common["Authorization"] = token;
+    axios.defaults.headers.common["user_id"] = user_id;
+    request.headers.set("authorization", token);
+    request.headers.set("user_id", user_id);
   }
   axios.defaults.baseURL = getBaseUrl();
+  loggerServer.info(
+    "About to send API request to: " + axios.defaults.baseURL,
+    user_id
+  );
   return axios;
 };
 
