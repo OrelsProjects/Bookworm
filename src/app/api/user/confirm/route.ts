@@ -70,6 +70,9 @@ async function confirmUser(user: User): Promise<UserDTO> {
     const createUserResponse = await axios.post<UserDTO>("/user", {
       ...userDto,
     });
+    Logger.info("WOW. Got to after response", user.id, {
+      data: { createUserResponse },
+    });
     return createUserResponse.data;
   } catch (error: any) {
     Logger.error("Error creating user", user.id, {
