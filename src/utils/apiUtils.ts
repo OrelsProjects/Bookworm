@@ -27,7 +27,7 @@ const getBaseUrl = (): string => {
 export const GetAxiosInstance = (request: NextRequest): Axios => {
   const headers = request.headers;
   const authorization = headers.get("authorization");
-  const userId = headers.get("user_id");
+  const userId = getUserIdFromRequest(request);
   if (authorization && userId) {
     axios.defaults.headers.common["Authorization"] = authorization;
     axios.defaults.headers.common["user_id"] = userId;
@@ -36,4 +36,13 @@ export const GetAxiosInstance = (request: NextRequest): Axios => {
   }
   axios.defaults.baseURL = getBaseUrl();
   return axios;
+};
+
+export const getUserIdFromRequest = (request: NextRequest): string => {
+  const headers = request.headers;
+  const userId = headers.get("user_id");
+  if (!userId) {
+    return "No user id found in request";
+  }
+  return userId;
 };

@@ -1,8 +1,8 @@
-import { Logger } from "@/src/logger";
+import Logger from "@/src/utils/loggerServer";
+import { GetAxiosInstance, getUserIdFromRequest } from "@/src/utils/apiUtils";
 import { GoodreadsData } from "@/src/models";
 import { GoodreadsDataDTO } from "@/src/models/dto";
 import { IResponse } from "@/src/models/dto/response";
-import { GetAxiosInstance } from "@/src/utils/axiosInstance";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -34,7 +34,7 @@ export async function GET(
       { status: 200 }
     );
   } catch (error: any) {
-    Logger.error("Error getting goodreads data", {
+    Logger.error("Error getting goodreads data", getUserIdFromRequest(req), {
       data: {
         isbn,
       },

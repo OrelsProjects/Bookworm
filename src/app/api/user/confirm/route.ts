@@ -1,9 +1,9 @@
-import { Logger } from "@/src/logger";
+import Logger from "@/src/utils/loggerServer";
 import { User } from "@/src/models";
 import { IResponse } from "@/src/models/dto/response";
 import { UserDTO } from "@/src/models/dto/userDTO";
 import { FromResponseUser } from "@/src/models/user";
-import { GetAxiosInstance } from "@/src/utils/axiosInstance";
+import { GetAxiosInstance, getUserIdFromRequest } from "@/src/utils/apiUtils";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(
@@ -15,12 +15,12 @@ export async function POST(
     user = FromResponseUser(userDto);
     return NextResponse.json({ result: user }, { status: 200 });
   } catch (error: any) {
-    // Logger.error("Error confirming user", {
-    //   data: {
-    //     user,
-    //   },
-    //   error,
-    // });
+    Logger.error("Error confirming user", getUserIdFromRequest(req), {
+      data: {
+        user,
+      },
+      error,
+    });
     return NextResponse.json({}, { status: 500 });
   }
 }
@@ -29,7 +29,12 @@ async function confirmUser(req: NextRequest): Promise<UserDTO> {
   let user: User | undefined = undefined;
   const body = await req.json();
   user = body.data;
-
+  Logger.info("Confirming user", getUserIdFromRequest(req), {
+    data: {
+      user_id: user?.id,
+      user_email: user?.email,
+    },
+  });
   if (!user) {
     throw new Error("Missing user object");
   }
@@ -46,21 +51,17 @@ async function confirmUser(req: NextRequest): Promise<UserDTO> {
 
   const userDto = new UserDTO(user);
   try {
-    console.log("Creating user");
     const createUserResponse = await axios.post<UserDTO>("/user", {
       ...userDto,
     });
-    console.log(createUserResponse.data);
     return createUserResponse.data;
   } catch (error: any) {
-    console.log("Error on create user", error.response);
     if (error.response.status === 409) {
-      console.log("User already exists, getting user");
       try {
         const getUserResponse = await getUser(req);
         return getUserResponse;
       } catch (error: any) {
-        Logger.error("Error getting user", {
+        Logger.error("Error getting user", getUserIdFromRequest(req), {
           data: {
             user,
           },

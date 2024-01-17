@@ -1,9 +1,8 @@
-import { GetAxiosInstance } from "../../../utils/axiosInstance";
+import Logger from "@/src/utils/loggerServer";
+import { GetAxiosInstance, getUserIdFromRequest } from "@/src/utils/apiUtils";
 import { Book } from "../../../models";
 import { BookDTO } from "../../../models/dto";
 import { NextRequest, NextResponse } from "next/server";
-import { Logger } from "@/src/logger";
-
 
 export async function GET(req: NextRequest) {
   let query: string | null = "";
@@ -24,7 +23,7 @@ export async function GET(req: NextRequest) {
     );
     return NextResponse.json({ result: books }, { status: 200 });
   } catch (error: any) {
-    Logger.error("Error getting google books", {
+    Logger.error("Error getting google books", getUserIdFromRequest(req), {
       data: {
         query,
       },

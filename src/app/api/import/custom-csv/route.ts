@@ -1,6 +1,6 @@
-import { Logger } from "@/src/logger";
+import Logger from "@/src/utils/loggerServer";
+import { GetAxiosInstance, getUserIdFromRequest } from "@/src/utils/apiUtils";
 import { IResponse } from "@/src/models/dto/response";
-import { GetAxiosInstance } from "@/src/utils/axiosInstance";
 import { NextRequest, NextResponse } from "next/server";
 
 type PresignedURLResponse = {
@@ -65,7 +65,7 @@ export async function PUT(req: NextRequest): Promise<
       { status: 200 }
     );
   } catch (error: any) {
-    Logger.error("Error getting presigned url", {
+    Logger.error("Error getting presigned url", getUserIdFromRequest(req), {
       error,
     });
     return NextResponse.json({}, { status: 500 });

@@ -12,7 +12,7 @@ import UserBookDTO, {
   GetUserBooksResponseDTO,
   UpdateUserBookBody,
 } from "@/src/models/dto/userBookDTO";
-import { GetAxiosInstance } from "@/src/utils/axiosInstance";
+import { GetAxiosInstance } from "@/src/utils/apiUtils";
 import { NextRequest, NextResponse } from "next/server";
 
 const userBookDataDTOFromResponse = (

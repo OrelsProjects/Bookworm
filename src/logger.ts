@@ -14,7 +14,7 @@ export interface LogItem {
 
 export const initLogger = () => {
   try {
-    const env = process.env.NODE_ENV ?? "dev";
+    const env = process.env.NODE_ENV ?? "development";
     datadogLogs.init({
       clientToken: process.env.NEXT_PUBLIC_DATADOG_CLIENT_TOKEN ?? "",
       site: process.env.NEXT_PUBLIC_DATADOG_SITE ?? "",

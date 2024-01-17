@@ -44,7 +44,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         })
       );
       isLoadingUserFetch.current = true;
-      // console.log("fetchUser");setExpectedRating
+
       const session = await fetchAuthSession();
       const user = new User(
         session.userSub ?? "",
@@ -54,7 +54,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           "",
         session.tokens?.accessToken?.toString() ?? ""
       );
-      debugger;
       const userResponse = await axios.post<IResponse<User>>(
         "/api/user/confirm",
         {

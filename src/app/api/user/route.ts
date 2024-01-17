@@ -1,9 +1,9 @@
-import { Logger } from "@/src/logger";
+import Logger from "@/src/utils/loggerServer";
 import { User } from "@/src/models";
 import { IResponse } from "@/src/models/dto/response";
 import { UserDTO } from "@/src/models/dto/userDTO";
 import { FromResponseUser } from "@/src/models/user";
-import { GetAxiosInstance } from "@/src/utils/axiosInstance";
+import { GetAxiosInstance, getUserIdFromRequest } from "@/src/utils/apiUtils";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(
@@ -29,12 +29,10 @@ export async function POST(
     });
     return NextResponse.json({}, { status: 200 });
   } catch (error: any) {
-    Logger.error("Error creating user", {
-      data: {
+      Logger.error("Error creating user", getUserIdFromRequest(req), {
+        error,
         user,
-      },
-      error,
-    });
+      });
     return NextResponse.json({}, { status: 500 });
   }
 }
@@ -44,17 +42,14 @@ export async function GET(
 ): Promise<NextResponse<IResponse<User>>> {
   try {
     const axios = GetAxiosInstance(req);
-    Logger.warn("About to get user", {
-      data: {
-        headers: req.headers,
-        baseUrl: axios.defaults.baseURL,
-      },
+    Logger.info("About to get user", getUserIdFromRequest(req), {
+      headers: req.headers,
     });
     const response = await axios.get<UserDTO>("/user");
     const user = FromResponseUser(response.data);
     return NextResponse.json({ result: user }, { status: 200 });
   } catch (error: any) {
-    Logger.error("Error getting user", {
+    Logger.error("Error getting user", getUserIdFromRequest(req), {
       error,
     });
     return NextResponse.json({}, { status: 500 });

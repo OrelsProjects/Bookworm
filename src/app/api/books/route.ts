@@ -1,4 +1,5 @@
-import { Logger } from "@/src/logger";
+import Logger from "@/src/utils/loggerServer";
+import { GetAxiosInstance, getUserIdFromRequest } from "@/src/utils/apiUtils";
 import { Book } from "@/src/models";
 import { CreateBooksResponse } from "@/src/models/book";
 import { BookDTO } from "@/src/models/dto";
@@ -7,7 +8,6 @@ import {
   CreateBooksResponseDTO,
 } from "@/src/models/dto/bookDTO";
 import { IResponse } from "@/src/models/dto/response";
-import { GetAxiosInstance } from "@/src/utils/axiosInstance";
 
 import { NextRequest, NextResponse } from "next/server";
 
@@ -46,7 +46,7 @@ export async function POST(
       { status: 200 }
     );
   } catch (error: any) {
-    Logger.error("Error creating book", {
+    Logger.error("Error creating book", getUserIdFromRequest(req), {
       data: {
         book: book,
       },

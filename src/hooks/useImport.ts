@@ -82,7 +82,6 @@ const useImport = () => {
       const importStatus: ImportStatus | undefined = response.data.result;
       setImportStatus(importStatus);
       localStorage.setItem(LAST_STATUS, JSON.stringify(importStatus));
-      debugger;
       if (importStatus?.importData.status !== ImportStatusType.IN_PROGRESS) {
         clearStatusInterval();
       }
