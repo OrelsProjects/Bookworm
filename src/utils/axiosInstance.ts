@@ -1,5 +1,8 @@
 import axios, { Axios } from "axios";
 import { NextRequest } from "next/server";
+import dotenv from "dotenv";
+import { Logger } from "../logger";
+dotenv.config();
 
 const getBaseUrl = (): string => {
   let baseUrl = "";
@@ -18,6 +21,9 @@ const getBaseUrl = (): string => {
       baseUrl = process.env.NEXT_PUBLIC_BASE_URL_LOCAL || "";
       break;
   }
+  Logger.info("got base url ", {
+    data: { baseUrl },
+  });
   return baseUrl;
 };
 
