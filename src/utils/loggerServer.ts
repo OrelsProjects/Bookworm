@@ -19,7 +19,7 @@ const httpTransportOptions = {
 };
 
 const _logger = createLogger({
-  level: "info",
+  level: "debug",
   exitOnError: false,
   format: format.json(),
   transports: [new transports.Http(httpTransportOptions)],
@@ -39,7 +39,7 @@ const logger: () => Logger = () => {
         env: process.env.NODE_ENV,
       });
     } catch (error: any) {
-      // Skip.
+      console.log("Error logging", error);
     }
     if (process.env.NODE_ENV !== "production") {
       console.log(message, user_id, data);
