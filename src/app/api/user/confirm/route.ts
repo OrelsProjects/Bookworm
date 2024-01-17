@@ -11,13 +11,13 @@ export async function POST(
 ): Promise<NextResponse<IResponse<User>>> {
   let user: User | undefined = undefined;
   try {
-    Logger.debug("Confirming user before get user", getUserIdFromRequest(req));
+    Logger.info("Confirming user before get user", getUserIdFromRequest(req));
     const body = await req.json();
     user = body.data;
     if (!user) {
       throw new Error("Missing user object");
     }
-    Logger.debug("Confirming user after get user", getUserIdFromRequest(req), {
+    Logger.info("Confirming user after get user", getUserIdFromRequest(req), {
       data: {
         user_id: user?.id,
         user_email: user?.email,
@@ -33,16 +33,13 @@ export async function POST(
       },
       error,
     });
-    return NextResponse.json({ error }, { status: error.response.status });
+    return NextResponse.json({}, { status: 500 });
   }
 }
 
 async function confirmUser(req: NextRequest, user: User): Promise<UserDTO> {
   Logger.info("Confirming user function", user.id, {
-    data: {
-      user_id: user?.id,
-      user_email: user?.email,
-    },
+    user,
   });
   if (!user) {
     throw new Error("Missing user object");
@@ -55,9 +52,6 @@ async function confirmUser(req: NextRequest, user: User): Promise<UserDTO> {
   }
 
   const axios = GetAxiosInstance(req);
-  axios.defaults.headers.common["Authorization"] = `Bearer ${user?.token}`;
-  axios.defaults.headers.common["user_id"] = user?.id;
-
   const userDto = new UserDTO(user);
   try {
     const createUserResponse = await axios.post<UserDTO>("/user", {

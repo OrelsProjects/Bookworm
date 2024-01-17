@@ -1,7 +1,7 @@
 import axios, { Axios } from "axios";
 import { NextRequest } from "next/server";
 import dotenv from "dotenv";
-import { Logger } from "../logger";
+import Logger from "./loggerServer";
 import loggerServer from "./loggerServer";
 dotenv.config();
 
@@ -44,6 +44,7 @@ export const GetAxiosInstance = (request: NextRequest): Axios => {
 
 export const getUserIdFromRequest = (request: NextRequest): string => {
   const headers = request.headers;
+  Logger.info("Headers for user id", "befoer user id", { headers });
   const userId = headers.get("user_id");
   if (!userId) {
     return "No user id found in request";
