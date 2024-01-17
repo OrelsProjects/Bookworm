@@ -20,13 +20,16 @@ export async function PUT(req: NextRequest): Promise<
     const formData = await req.formData();
     const file = formData.values().next().value as File;
     const axios = GetAxiosInstance(req);
-    
+    Logger.info("Getting presigned url", getUserIdFromRequest(req));
     const response = await axios.get<PresignedURLResponse>(
       "/import-list/signed-url"
     );
+    Logger.info("Got presigned url", getUserIdFromRequest(req), {
+      data: response.data,
+    });
     const presignedUrl = response.data;
     if (!presignedUrl || !presignedUrl.file_name || !presignedUrl.signed_url) {
-      throw new Error("Failed to get presigned url");
+      throw new Error("Failed to get presigned url, it was null");
     }
 
     const fileWithNewName = new FormData();
