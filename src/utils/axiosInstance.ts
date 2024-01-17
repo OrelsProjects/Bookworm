@@ -3,22 +3,19 @@ import { NextRequest } from "next/server";
 
 const getBaseUrl = (): string => {
   let baseUrl = "";
-  // return "https://72kvc34caj.execute-api.us-east-1.amazonaws.com/dev/api";
   switch (process.env.NODE_ENV) {
     case "production":
-      baseUrl =
-        // "https://hvuehlxixb.execute-api.us-east-1.amazonaws.com/production/api";
-        "https://72kvc34caj.execute-api.us-east-1.amazonaws.com/dev/api";
+      baseUrl = process.env.NEXT_PUBLIC_BASE_URL_PRODUCTION || "";
       break;
     case "development":
-      baseUrl =
-        "https://72kvc34caj.execute-api.us-east-1.amazonaws.com/dev/api";
+      baseUrl = process.env.NEXT_PUBLIC_BASE_URL_DEVELOPMENT || "";
+
       break;
     case "test":
-      baseUrl = "http://localhost:3000/dev/api";
+      baseUrl = process.env.NEXT_PUBLIC_BASE_URL_LOCAL || "";
       break;
     default:
-      baseUrl = "http://localhost:3000/dev/api";
+      baseUrl = process.env.NEXT_PUBLIC_BASE_URL_LOCAL || "";
       break;
   }
   return baseUrl;

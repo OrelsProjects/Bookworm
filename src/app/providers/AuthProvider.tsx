@@ -40,11 +40,11 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       dispatch(
         setLoading({
           loading: true,
-          message: "Welcome back! Just a moment, we grab your user :)",
+          message: "Welcome back! Just a moment, we're grabbbing your user :)",
         })
       );
       isLoadingUserFetch.current = true;
-      // console.log("fetchUser");
+      // console.log("fetchUser");setExpectedRating
       const session = await fetchAuthSession();
       const user = new User(
         session.userSub ?? "",
@@ -54,6 +54,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           "",
         session.tokens?.accessToken?.toString() ?? ""
       );
+      debugger;
       const userResponse = await axios.post<IResponse<User>>(
         "/api/user/confirm",
         {
@@ -64,9 +65,9 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       if (userWithDetails) {
         dispatch(setUser({ ...userWithDetails }));
       } else {
+        dispatch(setUser({ ...user }));
         throw new Error("Failed to confirm user in db");
       }
-      dispatch(setUser({ ...user }));
     } catch (error: any) {
       Logger.error("Error fetching user", { error });
       toast.error("Error fetching user");

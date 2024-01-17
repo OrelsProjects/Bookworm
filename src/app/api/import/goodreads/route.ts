@@ -27,6 +27,7 @@ export async function POST(
       data: {
         goodreadsUserId,
         shelfName,
+        headers: req.headers,
       },
       error,
     });
