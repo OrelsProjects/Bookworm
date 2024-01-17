@@ -19,7 +19,7 @@ const httpTransportOptions = {
 };
 
 const _logger = createLogger({
-  level: "debug",
+  level: "info",
   exitOnError: false,
   format: format.json(),
   transports: [new transports.Http(httpTransportOptions)],
