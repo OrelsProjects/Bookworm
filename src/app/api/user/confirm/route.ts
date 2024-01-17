@@ -25,7 +25,7 @@ export async function POST(
         user_email: user?.email,
       },
     });
-    const userDto: UserDTO = await confirmUser(req, user);
+    const userDto: UserDTO = await confirmUser(user);
     user = FromResponseUser(userDto, user?.token || "");
     return NextResponse.json({ result: user }, { status: 200 });
   } catch (error: any) {
@@ -39,7 +39,7 @@ export async function POST(
   }
 }
 
-async function confirmUser(req: NextRequest, user: User): Promise<UserDTO> {
+async function confirmUser(user: User): Promise<UserDTO> {
   Logger.info("Confirming user function", user.id, {
     user,
   });
@@ -67,7 +67,7 @@ async function confirmUser(req: NextRequest, user: User): Promise<UserDTO> {
         const userDto = response.data;
         return userDto;
       } catch (error: any) {
-        Logger.error("Error getting user", getUserIdFromRequest(req), {
+        Logger.error("Error getting user", user.id, {
           data: {
             user,
           },
