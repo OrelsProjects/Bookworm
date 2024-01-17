@@ -20,9 +20,6 @@ export async function PUT(req: NextRequest): Promise<
     const formData = await req.formData();
     const file = formData.values().next().value as File;
     const axios = GetAxiosInstance(req);
-    const axiosPreviousBaseUrl = axios.defaults.baseURL; // Workaround until local presigned url fixed with autorized url
-    axios.defaults.baseURL =
-      "https://72kvc34caj.execute-api.us-east-1.amazonaws.com/dev/api";
 
     const response = await axios.get<PresignedURLResponse>(
       "/import-list/signed-url"
@@ -31,8 +28,6 @@ export async function PUT(req: NextRequest): Promise<
     if (!presignedUrl || !presignedUrl.file_name || !presignedUrl.signed_url) {
       throw new Error("Failed to get presigned url");
     }
-
-    axios.defaults.baseURL = axiosPreviousBaseUrl;
 
     const fileWithNewName = new FormData();
     fileWithNewName.append("file", file, presignedUrl.file_name);

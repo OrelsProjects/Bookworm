@@ -176,33 +176,7 @@ const useImport = () => {
       setLoading(false);
     }
   };
-
-  const createUploadURL = async (
-    file: File
-  ): Promise<PresignedURL | undefined> => {
-    try {
-      const data = new FormData();
-      data.append("file", file);
-      const response = await axios.post<IResponse<PresignedURL>>(
-        "/api/import/custom-csv",
-        {
-          file,
-        },
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      return response.data.result;
-    } catch (error: any) {
-      Logger.error("Error getting presigned url", {
-        error,
-      });
-      return undefined;
-    }
-  };
-
+  
   return {
     importViaGoodreadsUrl,
     importViaCSV,
