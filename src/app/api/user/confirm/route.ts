@@ -3,7 +3,7 @@ import { User } from "@/src/models";
 import { IResponse } from "@/src/models/dto/response";
 import { UserDTO } from "@/src/models/dto/userDTO";
 import { FromResponseUser } from "@/src/models/user";
-import { GetAxiosInstance, getUserIdFromRequest } from "@/src/utils/apiUtils";
+import { GetAxiosInstance } from "@/src/utils/apiUtils";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(
@@ -19,7 +19,7 @@ export async function POST(
     if (!user) {
       throw new Error("Missing user object");
     }
-    Logger.info("Confirming user after get user", getUserIdFromRequest(req), {
+    Logger.info("Confirming user after get user", user.id, {
       data: {
         user_id: user?.id,
         user_email: user?.email,
@@ -29,7 +29,7 @@ export async function POST(
     user = FromResponseUser(userDto, user?.token || "");
     return NextResponse.json({ result: user }, { status: 200 });
   } catch (error: any) {
-    Logger.error("Error confirming user", getUserIdFromRequest(req), {
+    Logger.error("Error confirming user", user?.id ?? "No user id", {
       data: {
         user,
       },
@@ -40,9 +40,6 @@ export async function POST(
 }
 
 async function confirmUser(user: User): Promise<UserDTO> {
-  Logger.info("Confirming user function", user.id, {
-    user,
-  });
   if (!user) {
     throw new Error("Missing user object");
   }
