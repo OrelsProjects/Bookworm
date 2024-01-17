@@ -23,6 +23,7 @@ export async function POST(
     const userDto: UserDTO = await confirmUser(user);
     Logger.info("Confirming user after confirm user", user.id);
     user = FromResponseUser(userDto, user?.token || "");
+    Logger.info("Confirming user after from response user", user.id);
     return NextResponse.json({ result: user }, { status: 200 });
   } catch (error: any) {
     Logger.error("Error confirming user", user?.id ?? "No user id", {
@@ -71,9 +72,22 @@ async function confirmUser(user: User): Promise<UserDTO> {
     });
     return createUserResponse.data;
   } catch (error: any) {
+    Logger.error("Error creating user", user.id, {
+      data: {
+        user,
+        userDto,
+      },
+      error,
+    });
     if (error.response.status === 409) {
       try {
         const response = await axios.get<UserDTO>("/user");
+        Logger.info("Confirming user function after get user", user.id, {
+          data: {
+            user,
+            response,
+          },
+        });
         const userDto = response.data;
         return userDto;
       } catch (error: any) {
