@@ -56,6 +56,7 @@ async function confirmUser(user: User): Promise<UserDTO> {
     data: {
       user,
       axiosHeaders: axios.defaults.headers,
+      newUserDto: new UserDTO(user),
     },
   });
   const userDto = new UserDTO(user);
