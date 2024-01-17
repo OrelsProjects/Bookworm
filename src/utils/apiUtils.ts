@@ -56,7 +56,11 @@ export function GetAxiosInstance(arg1: any, arg2?: any): Axios {
 }
 export const getUserIdFromRequest = (request: NextRequest): string => {
   const headers = request.headers;
-  Logger.info("Headers for user id", `befoer user id ${headers}`, { headers });
+  Logger.info(
+    "Headers for user id",
+    `before user id ${JSON.stringify(headers)}`,
+    { headers }
+  );
   const userId = headers.get("user_id");
   if (!userId) {
     return "No user id found in request";

@@ -11,9 +11,11 @@ export async function POST(
 ): Promise<NextResponse<IResponse<User>>> {
   let user: User | undefined = undefined;
   try {
-    Logger.info("Confirming user before get user", getUserIdFromRequest(req));
     const body = await req.json();
     user = body.data;
+    Logger.info("Confirming user before get user", user?.id ?? "What??", {
+      user,
+    });
     if (!user) {
       throw new Error("Missing user object");
     }
