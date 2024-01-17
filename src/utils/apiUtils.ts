@@ -34,7 +34,7 @@ export function GetAxiosInstance(arg1: any, arg2?: any): Axios {
   let token: string;
   let userId: string;
 
-  if (arg1 instanceof NextRequest) {
+  if (!arg2) {
     token = getTokenFromRequest(arg1);
     userId = getUserIdFromRequest(arg1);
   } else {
