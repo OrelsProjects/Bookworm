@@ -75,6 +75,7 @@ async function confirmUser(user: User): Promise<UserDTO> {
     });
     return createUserResponse.data;
   } catch (error: any) {
+    throw error;
     Logger.error("Error creating user", user.id, {
       data: {
         user,
