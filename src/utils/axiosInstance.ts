@@ -21,9 +21,6 @@ const getBaseUrl = (): string => {
       baseUrl = process.env.NEXT_PUBLIC_BASE_URL_LOCAL || "";
       break;
   }
-  Logger.info("got base url ", {
-    data: { baseUrl },
-  });
   return baseUrl;
 };
 

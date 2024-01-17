@@ -44,6 +44,12 @@ export async function GET(
 ): Promise<NextResponse<IResponse<User>>> {
   try {
     const axios = GetAxiosInstance(req);
+    Logger.warn("About to get user", {
+      data: {
+        headers: req.headers,
+        baseUrl: axios.defaults.baseURL,
+      },
+    });
     const response = await axios.get<UserDTO>("/user");
     const user = FromResponseUser(response.data);
     return NextResponse.json({ result: user }, { status: 200 });
