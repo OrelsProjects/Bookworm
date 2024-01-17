@@ -51,7 +51,7 @@ async function confirmUser(req: NextRequest, user: User): Promise<UserDTO> {
     throw new Error("Missing user email");
   }
 
-  const axios = GetAxiosInstance(req);
+  const axios = GetAxiosInstance(user.id, user.token);
   const userDto = new UserDTO(user);
   try {
     const createUserResponse = await axios.post<UserDTO>("/user", {

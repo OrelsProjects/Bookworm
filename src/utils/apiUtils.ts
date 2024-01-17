@@ -25,23 +25,35 @@ const getBaseUrl = (): string => {
   return baseUrl;
 };
 
-export const GetAxiosInstance = (request: NextRequest): Axios => {
-  const token = getTokenFromRequest(request);
-  const user_id = getUserIdFromRequest(request);
-  if (token && user_id) {
-    axios.defaults.headers.common["Authorization"] = token;
-    axios.defaults.headers.common["user_id"] = user_id;
-    request.headers.set("authorization", token);
-    request.headers.set("user_id", user_id);
+export function GetAxiosInstance(request: NextRequest): Axios;
+export function GetAxiosInstance(userId: string, token: string): Axios;
+
+// Unified function implementation
+export function GetAxiosInstance(arg1: any, arg2?: any): Axios {
+  let token: string;
+  let userId: string;
+
+  if (arg1 instanceof NextRequest) {
+    token = getTokenFromRequest(arg1);
+    userId = getUserIdFromRequest(arg1);
+  } else {
+    userId = arg1;
+    token = arg2;
   }
+
+  if (token && userId) {
+    axios.defaults.headers.common["Authorization"] = token;
+    axios.defaults.headers.common["user_id"] = userId;
+  }
+
   axios.defaults.baseURL = getBaseUrl();
   loggerServer.info(
     "About to send API request to: " + axios.defaults.baseURL,
-    user_id
+    userId
   );
-  return axios;
-};
 
+  return axios;
+}
 export const getUserIdFromRequest = (request: NextRequest): string => {
   const headers = request.headers;
   Logger.info("Headers for user id", `befoer user id ${headers}`, { headers });
