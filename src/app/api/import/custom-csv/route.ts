@@ -16,10 +16,13 @@ export async function PUT(req: NextRequest): Promise<
     }>
   >
 > {
+  const axios = GetAxiosInstance(req);
+  let file: File | undefined = undefined;
+  let formData: FormData | undefined = undefined;
+  let presignedUrl: PresignedURLResponse | undefined = undefined;
   try {
-    const formData = await req.formData();
-    const file = formData.values().next().value as File;
-    const axios = GetAxiosInstance(req);
+    formData = await req.formData();
+    file = formData.values().next().value as File;
     Logger.info("Getting presigned url", getUserIdFromRequest(req));
     const response = await axios.get<PresignedURLResponse>(
       "/import-list/signed-url"
@@ -27,15 +30,23 @@ export async function PUT(req: NextRequest): Promise<
     Logger.info("Got presigned url", getUserIdFromRequest(req), {
       data: response.data,
     });
-    const presignedUrl = response.data;
+    presignedUrl = response.data;
     if (!presignedUrl || !presignedUrl.file_name || !presignedUrl.signed_url) {
       throw new Error("Failed to get presigned url, it was null");
     }
+  } catch (error: any) {
+    Logger.error("Error getting presigned url", getUserIdFromRequest(req), {
+      error,
+      headers: axios.defaults.headers,
+    });
+    return NextResponse.json({}, { status: 500 });
+  }
 
+  try {
     const fileWithNewName = new FormData();
-    fileWithNewName.append("file", file, presignedUrl.file_name);
+    fileWithNewName.append("file", file, presignedUrl?.file_name);
 
-    const uploadFileResponse = await fetch(presignedUrl.signed_url, {
+    const uploadFileResponse = await fetch(presignedUrl?.signed_url, {
       method: "PUT",
       body: fileWithNewName,
       headers: {
@@ -63,9 +74,12 @@ export async function PUT(req: NextRequest): Promise<
       { status: 200 }
     );
   } catch (error: any) {
-    Logger.error("Error getting presigned url", getUserIdFromRequest(req), {
+    Logger.error("Error uploading file", getUserIdFromRequest(req), {
       error,
+      presignedUrl,
+      headers: axios.defaults.headers,
     });
+
     return NextResponse.json({}, { status: 500 });
   }
 }
