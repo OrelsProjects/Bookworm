@@ -216,7 +216,7 @@ export function BookDetails({
 
   const ButtonsSection = (): React.ReactNode => (
     <div className="flex flex-row items-end gap-2">
-      {userBookData ? (
+      {userBookData && userBookData.readingStatus?.readingStatusId === 1 ? (
         <FavoriteButton
           loading={loadingFavorite}
           onClick={() => onFavorite(userBookData?.userBook)}
