@@ -64,6 +64,13 @@ const useImport = () => {
   };
 
   const runStatusChecks = async (): Promise<void> => {
+    Logger.info("Running status check", {
+      data: {
+        loadingStatusCheck: loadingStatusCheck.current,
+        isLastStatusCheckTimeValid: isLastStatusCheckTimeValid(),
+        isLastStatusDone: isLastStatusDone(),
+      },
+    });
     if (
       loadingStatusCheck.current ||
       !isLastStatusCheckTimeValid() ||

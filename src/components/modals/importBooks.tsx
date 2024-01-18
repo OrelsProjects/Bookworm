@@ -44,7 +44,7 @@ const ImportBooks = () => {
 
   useEffect(() => {
     Logger.info("importbooks modal open", {
-      data: { loading, importStatus },
+      data: { loading, importStatus: importStatus?.importData?.status },
     });
   }, [loading, importStatus]);
 
