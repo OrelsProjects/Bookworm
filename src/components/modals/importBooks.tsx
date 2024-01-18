@@ -66,7 +66,7 @@ const ImportBooks = () => {
       toast.success("Done!");
       setBooksBeingImported(true);
     } catch (error: any) {
-      toast.error("Error uploading file");
+      toast.error(error.message || "Something went wrong");
     } finally {
       toast.dismiss(toastId);
     }
