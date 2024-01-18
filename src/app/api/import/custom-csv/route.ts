@@ -75,7 +75,7 @@ export async function PUT(req: NextRequest): Promise<
     );
   } catch (error: any) {
     Logger.error("Error triggering lambda", getUserIdFromRequest(req), {
-      error,
+      error: error?.message ?? "Unknown error",
       presignedUrl,
       headers: axios.defaults.headers,
     });
