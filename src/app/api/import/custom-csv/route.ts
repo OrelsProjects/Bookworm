@@ -56,7 +56,10 @@ export async function PUT(req: NextRequest): Promise<
 
     if (uploadFileResponse.status !== 200) {
       throw new Error("Failed to upload file", {
-        cause: uploadFileResponse.statusText,
+        cause: {
+          status: uploadFileResponse.status,
+          statusText: uploadFileResponse.statusText,
+        },
       });
     }
     try {
@@ -85,7 +88,7 @@ export async function PUT(req: NextRequest): Promise<
     );
   } catch (error: any) {
     Logger.error("Error uploading file", getUserIdFromRequest(req), {
-      error: error?.message ?? "Unknown error",
+      error: error ?? "Unknown error",
       presignedUrl,
       headers: axios.defaults.headers,
     });
