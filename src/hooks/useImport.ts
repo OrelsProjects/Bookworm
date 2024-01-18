@@ -9,7 +9,7 @@ import { ImportStatusType } from "../models/importStatus";
 
 const LAST_STATUS_CHECK_TIME = "lastStatusCheckTime";
 const LAST_STATUS = "lastStatus";
-const TIME_BETWEEN_CHECKS = 1000 * 3 * 1; // 10 seconds
+const TIME_BETWEEN_CHECKS = 1000 * 10 * 1; // 10 seconds
 
 export type PresignedURL = {
   fileName: string;
@@ -72,9 +72,11 @@ const useImport = () => {
     ) {
       return;
     }
+    Logger.info("Running status check");
     loadingStatusCheck.current = true;
     setLoading(true);
     localStorage.setItem(LAST_STATUS_CHECK_TIME, new Date().toISOString());
+    Logger.info("Last status check time set");
     try {
       const response = await axios.get<IResponse<ImportStatus>>(
         "/api/import/status"
@@ -95,16 +97,33 @@ const useImport = () => {
     }
   };
 
-  const startCheckingStatus = async (): Promise<void> => {
+  const startCheckingStatus = async (
+    defaultStatus?: ImportStatusType
+  ): Promise<void> => {
     if (statusCheckInterval.current) {
       clearStatusInterval();
     }
-    const lastStatus = localStorage.getItem(LAST_STATUS);
-    if (lastStatus) {
-      const importStatus = JSON.parse(lastStatus) as ImportStatus;
-      setImportStatus(importStatus);
-      if (importStatus?.importData.status !== ImportStatusType.IN_PROGRESS) {
-        setLoading(true);
+    if (defaultStatus) {
+      setImportStatus({
+        importData: {
+          id: "",
+          userId: "",
+          startTime: "",
+          status: defaultStatus,
+          isDeleted: false,
+        },
+      });
+      setLoading(
+        importStatus?.importData.status === ImportStatusType.IN_PROGRESS
+      );
+    } else {
+      const lastStatus = localStorage.getItem(LAST_STATUS);
+      if (lastStatus) {
+        const importStatus = JSON.parse(lastStatus) as ImportStatus;
+        setImportStatus(importStatus);
+        if (importStatus?.importData.status !== ImportStatusType.IN_PROGRESS) {
+          setLoading(true);
+        }
       }
     }
 
@@ -134,7 +153,7 @@ const useImport = () => {
       if (response.status !== 200) {
         throw new Error("Failed to import books");
       }
-      await startCheckingStatus();
+      await startCheckingStatus(ImportStatusType.IN_PROGRESS);
     } catch (error: any) {
       Logger.error("Error triggering goodreads import", {
         data: {
@@ -163,7 +182,7 @@ const useImport = () => {
           "Content-Type": "multipart/form-data",
         },
       });
-      await startCheckingStatus();
+      await startCheckingStatus(ImportStatusType.IN_PROGRESS);
     } catch (error: any) {
       Logger.error("Error uploading CSV", {
         data: {
@@ -176,7 +195,7 @@ const useImport = () => {
       setLoading(false);
     }
   };
-  
+
   return {
     importViaGoodreadsUrl,
     importViaCSV,

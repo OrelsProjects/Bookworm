@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import useImport from "@/src/hooks/useImport";
 import { Button } from "../button";
 import toast from "react-hot-toast";
@@ -9,6 +9,7 @@ import { z } from "zod";
 import { useFormik } from "formik";
 import Loading from "../loading";
 import { ImportStatusType } from "@/src/models/importStatus";
+import { Logger } from "@/src/logger";
 
 const ImportBooks = () => {
   const dispatch = useDispatch();
@@ -41,7 +42,11 @@ const ImportBooks = () => {
   const [booksBeingImported, setBooksBeingImported] = useState<boolean>(false);
   const [fileSelected, setFileSelected] = useState<File | null>(null);
 
-  // console.log("loadingImport ", loading);
+  useEffect(() => {
+    Logger.info("importbooks modal open", {
+      data: { loading, importStatus },
+    });
+  }, [loading, importStatus]);
 
   const openFileExplorer = () => {
     fileInputRef.current?.click();
