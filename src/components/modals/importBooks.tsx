@@ -231,10 +231,9 @@ const ImportBooks = () => {
           </div>
         </div>
       ) : (
-        <>
+        <div className="w-full h-full flex flex-col justify-center items-center">
           <ImportCSV />
-          {ImportGoodreads()}
-        </>
+        </div>
       )}
     </div>
   );
