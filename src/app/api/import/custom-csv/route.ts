@@ -59,10 +59,20 @@ export async function PUT(req: NextRequest): Promise<
         cause: uploadFileResponse.statusText,
       });
     }
-
-    await axios.post("/import-list/trigger-custom", {
-      file_name: presignedUrl.file_name,
-    });
+    try {
+      await axios.post("/import-list/trigger-custom", {
+        file_name: presignedUrl.file_name,
+      });
+    } catch (error: any) {
+      Logger.error(
+        "Error triggering custom import",
+        getUserIdFromRequest(req),
+        {
+          error,
+          headers: axios.defaults.headers,
+        }
+      );
+    }
 
     return NextResponse.json(
       {
@@ -74,7 +84,7 @@ export async function PUT(req: NextRequest): Promise<
       { status: 200 }
     );
   } catch (error: any) {
-    Logger.error("Error triggering lambda", getUserIdFromRequest(req), {
+    Logger.error("Error uploading file", getUserIdFromRequest(req), {
       error: error?.message ?? "Unknown error",
       presignedUrl,
       headers: axios.defaults.headers,
