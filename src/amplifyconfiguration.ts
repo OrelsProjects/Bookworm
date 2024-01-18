@@ -23,11 +23,11 @@ const config = {
     ],
     redirectSignIn:
       environment === "production"
-        ? "https://bookworm-beige.vercel.app/home"
+        ? "https://bookwizard.app/"
         : "http://localhost:3001/home",
     redirectSignOut:
       environment === "production"
-        ? "https://bookworm-beige.vercel.app"
+        ? "https://bookwizard.app/"
         : "http://localhost:3001",
     responseType: "code",
   },
