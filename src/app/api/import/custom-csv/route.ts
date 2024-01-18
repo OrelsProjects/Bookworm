@@ -74,7 +74,7 @@ export async function PUT(req: NextRequest): Promise<
       { status: 200 }
     );
   } catch (error: any) {
-    Logger.error("Error uploading file", getUserIdFromRequest(req), {
+    Logger.error("Error triggering lambda", getUserIdFromRequest(req), {
       error,
       presignedUrl,
       headers: axios.defaults.headers,
