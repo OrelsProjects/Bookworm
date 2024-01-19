@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import useImport from "@/src/hooks/useImport";
 import { Button } from "../button";
 import toast from "react-hot-toast";
@@ -9,6 +9,8 @@ import { z } from "zod";
 import { useFormik } from "formik";
 import Loading from "../loading";
 import { ImportStatusType } from "@/src/models/importStatus";
+import { Logger } from "@/src/logger";
+import { FormatDate } from "@/src/utils/dateUtils";
 
 const ImportBooks = () => {
   const dispatch = useDispatch();
@@ -36,12 +38,21 @@ const ImportBooks = () => {
     },
   });
 
-  const { importViaCSV, importViaGoodreadsUrl, loading, importStatus } =
-    useImport();
+  const {
+    importViaCSV,
+    importViaGoodreadsUrl,
+    loading,
+    importStatus,
+    retryUpload,
+  } = useImport();
   const [booksBeingImported, setBooksBeingImported] = useState<boolean>(false);
   const [fileSelected, setFileSelected] = useState<File | null>(null);
 
-  // console.log("loadingImport ", loading);
+  useEffect(() => {
+    Logger.info("importbooks modal open", {
+      data: { loading, importStatus: importStatus?.importData?.status },
+    });
+  }, [loading, importStatus]);
 
   const openFileExplorer = () => {
     fileInputRef.current?.click();
@@ -198,14 +209,31 @@ const ImportBooks = () => {
           <Loading spinnerClassName="!w-24 !h-24 !fill-primary" />
         </div>
       ) : importStatus?.importData.status === ImportStatusType.IN_PROGRESS ? (
-        <div className="w-full h-full flex justify-center items-center text-4xl">
-          We are still working on importing your books. We'll finish soon :)
+        <div className="w-full h-full flex flex-col justify-center items-center text-4xl gap-12">
+          <div>
+            We are still working on importing your books. We'll finish soon :)
+          </div>
+          <div className="flex flex-col justify-center items-center gap-0">
+            <div className="text-lg mb-3 font-bold">
+              started at:{" "}
+              {FormatDate(importStatus?.importData.startTime, true, true, true)}
+            </div>
+            <div className="italic text-lg">
+              If the import takes more than 5 minutes, please retry.
+            </div>
+            <Button
+              variant="link"
+              className="rounded-full text-lg"
+              onClick={() => retryUpload()}
+            >
+              retryUpload
+            </Button>
+          </div>
         </div>
       ) : (
-        <>
+        <div className="w-full h-full flex flex-col justify-center items-center">
           <ImportCSV />
-          {ImportGoodreads()}
-        </>
+        </div>
       )}
     </div>
   );

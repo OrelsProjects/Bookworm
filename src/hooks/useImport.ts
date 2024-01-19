@@ -7,9 +7,10 @@ import { Logger } from "../logger";
 import { ImportStatus } from "../models";
 import { ImportStatusType } from "../models/importStatus";
 
-const LAST_STATUS_CHECK_TIME = "lastStatusCheckTime";
+const LAST_STATUS_CHECK_TIME_LOCAL_STORAGE_NAME = "lastStatusCheckTime";
+const RETRY_CLICKED_LOCAL_STORAGE_NAME = "retryClicked";
 const LAST_STATUS = "lastStatus";
-const TIME_BETWEEN_CHECKS = 1000 * 3 * 1; // 10 seconds
+const TIME_BETWEEN_CHECKS = 1000 * 10 * 1; // 10 seconds
 
 export type PresignedURL = {
   fileName: string;
@@ -21,98 +22,47 @@ const useImport = () => {
   const [importStatus, setImportStatus] = useState<ImportStatus | undefined>(
     undefined
   );
-  const loadingStatusCheck = useRef<boolean>(false);
-  const statusCheckInterval = useRef<NodeJS.Timeout | undefined>(undefined);
 
   useEffect(() => {
-    startCheckingStatus();
-    return () => {
-      if (statusCheckInterval.current) {
-        clearStatusInterval();
-      }
-    };
-  }, []);
-
-  const clearStatusInterval = () => {
-    if (statusCheckInterval.current) {
-      clearInterval(statusCheckInterval.current);
-      statusCheckInterval.current = undefined;
-    }
-  };
-
-  const isLastStatusCheckTimeValid = (): boolean => {
-    const lastTimeCheck = localStorage.getItem(LAST_STATUS_CHECK_TIME);
-    if (!lastTimeCheck) {
-      return true;
-    }
-    if (
-      new Date().getTime() - new Date(lastTimeCheck).getTime() >=
-      TIME_BETWEEN_CHECKS
-    ) {
-      return true;
-    }
-    return false;
-  };
-
-  const isLastStatusDone = (): boolean => {
-    const lastStatus = localStorage.getItem(LAST_STATUS);
-    if (!lastStatus) {
-      return true;
-    }
-    const importStatus = JSON.parse(lastStatus) as ImportStatus;
-    return importStatus?.importData.status === ImportStatusType.DONE;
-  };
-
-  const runStatusChecks = async (): Promise<void> => {
-    if (
-      loadingStatusCheck.current ||
-      !isLastStatusCheckTimeValid() ||
-      !statusCheckInterval.current ||
-      isLastStatusDone()
-    ) {
+    if (getRetryClicked()) {
       return;
     }
-    loadingStatusCheck.current = true;
-    setLoading(true);
-    localStorage.setItem(LAST_STATUS_CHECK_TIME, new Date().toISOString());
+    updateStatus();
+  }, []);
+
+  const getRetryClicked = (): boolean =>
+    localStorage.getItem(RETRY_CLICKED_LOCAL_STORAGE_NAME) === "true";
+
+  const retryUpload = async (): Promise<void> => {
+    Logger.warn("User retry upload");
+    localStorage.removeItem(LAST_STATUS_CHECK_TIME_LOCAL_STORAGE_NAME);
+    localStorage.setItem(RETRY_CLICKED_LOCAL_STORAGE_NAME, "true");
+    setImportStatus(undefined);
+  };
+
+  const updateStatus = async () => {
     try {
+      setLoading(true);
       const response = await axios.get<IResponse<ImportStatus>>(
         "/api/import/status"
       );
       const importStatus: ImportStatus | undefined = response.data.result;
+
       setImportStatus(importStatus);
       localStorage.setItem(LAST_STATUS, JSON.stringify(importStatus));
-      if (importStatus?.importData.status !== ImportStatusType.IN_PROGRESS) {
-        clearStatusInterval();
-      }
     } catch (error: any) {
       Logger.error("Error getting import status", {
         error,
       });
     } finally {
-      loadingStatusCheck.current = false;
       setLoading(false);
     }
   };
 
-  const startCheckingStatus = async (): Promise<void> => {
-    if (statusCheckInterval.current) {
-      clearStatusInterval();
-    }
-    const lastStatus = localStorage.getItem(LAST_STATUS);
-    if (lastStatus) {
-      const importStatus = JSON.parse(lastStatus) as ImportStatus;
-      setImportStatus(importStatus);
-      if (importStatus?.importData.status !== ImportStatusType.IN_PROGRESS) {
-        setLoading(true);
-      }
-    }
-
-    await runStatusChecks();
-    const interval = setInterval(async () => {
-      await runStatusChecks();
-    }, TIME_BETWEEN_CHECKS);
-    statusCheckInterval.current = interval;
+  const handleFinishImport = async () => {
+    localStorage.removeItem(LAST_STATUS_CHECK_TIME_LOCAL_STORAGE_NAME);
+    localStorage.removeItem(RETRY_CLICKED_LOCAL_STORAGE_NAME);
+    await updateStatus();
   };
 
   const importViaGoodreadsUrl = async (
@@ -134,7 +84,7 @@ const useImport = () => {
       if (response.status !== 200) {
         throw new Error("Failed to import books");
       }
-      await startCheckingStatus();
+      handleFinishImport();
     } catch (error: any) {
       Logger.error("Error triggering goodreads import", {
         data: {
@@ -163,7 +113,7 @@ const useImport = () => {
           "Content-Type": "multipart/form-data",
         },
       });
-      await startCheckingStatus();
+      handleFinishImport();
     } catch (error: any) {
       Logger.error("Error uploading CSV", {
         data: {
@@ -176,12 +126,13 @@ const useImport = () => {
       setLoading(false);
     }
   };
-  
+
   return {
     importViaGoodreadsUrl,
     importViaCSV,
     loading,
     importStatus,
+    retryUpload,
   };
 };
 

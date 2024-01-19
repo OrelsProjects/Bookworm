@@ -83,12 +83,14 @@ const TableItem: React.FC<TableItemProps> = ({ userBookData, className }) => {
     <div className="flex flex-row justify-center items-center gap-2">
       {userBookData.bookData.book && (
         <>
-          <FavoriteButton
-            loading={loadingFavorite}
-            isFavorite={userBookData?.userBook?.isFavorite}
-            onClick={() => onFavorite(userBookData.userBook)}
-            className="max-xl:hidden"
-          />
+          {userBookData.readingStatus?.readingStatusId === 1 && (
+            <FavoriteButton
+              loading={loadingFavorite}
+              isFavorite={userBookData?.userBook?.isFavorite}
+              onClick={() => onFavorite(userBookData.userBook)}
+              className="max-xl:hidden"
+            />
+          )}
           <AddToListButton
             book={userBookData.bookData.book}
             className="max-xl:hidden"

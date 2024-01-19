@@ -206,7 +206,12 @@ const AddBookToList: React.FC<AddBookToListProps> = ({ book, type }) => {
       }}
     >
       {() => (
-        <Form className="w-comments">
+        <Form
+          className="w-comments"
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
+        >
           <label htmlFor="suggestion-source" className="">
             Who recommended this book to you?
           </label>

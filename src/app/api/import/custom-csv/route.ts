@@ -53,13 +53,27 @@ export async function PUT(req: NextRequest): Promise<
 
     if (uploadFileResponse.status !== 200) {
       throw new Error("Failed to upload file", {
-        cause: uploadFileResponse.statusText,
+        cause: {
+          status: uploadFileResponse.status,
+          statusText: uploadFileResponse.statusText,
+        },
       });
     }
-
-    await axios.post("/import-list/trigger-custom", {
-      file_name: presignedUrl.file_name,
-    });
+    try {
+      await axios.post("/import-list/trigger-custom", {
+        file_name: presignedUrl.file_name,
+      });
+    } catch (error: any) {
+      Logger.error(
+        "Error triggering custom import",
+        getUserIdFromRequest(req),
+        {
+          error,
+          headers: axios.defaults.headers,
+        }
+      );
+      return NextResponse.json({}, { status: 500 });
+    }
 
     return NextResponse.json(
       {
@@ -72,11 +86,13 @@ export async function PUT(req: NextRequest): Promise<
     );
   } catch (error: any) {
     Logger.error("Error uploading file", getUserIdFromRequest(req), {
-      error,
+      error: error ?? "Unknown error",
       presignedUrl,
       headers: axios.defaults.headers,
     });
 
-    return NextResponse.json({}, { status: 500 });
+    return NextResponse.json({
+      error: error ?? "Unknown error",
+    }, { status: 500 });
   }
 }
