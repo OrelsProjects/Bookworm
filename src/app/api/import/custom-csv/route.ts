@@ -43,12 +43,9 @@ export async function PUT(req: NextRequest): Promise<
   }
 
   try {
-    const fileWithNewName = new FormData();
-    fileWithNewName.append("file", file, presignedUrl?.file_name);
-
     const uploadFileResponse = await fetch(presignedUrl?.signed_url, {
       method: "PUT",
-      body: fileWithNewName,
+      body: file,
       headers: {
         "Content-Type": file.type,
       },
