@@ -91,8 +91,6 @@ export async function PUT(req: NextRequest): Promise<
       headers: axios.defaults.headers,
     });
 
-    return NextResponse.json({
-      error: error ?? "Unknown error",
-    }, { status: 500 });
+    return NextResponse.json({}, { status: 500 });
   }
 }

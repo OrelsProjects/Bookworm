@@ -28,7 +28,7 @@ export async function POST(
     });
     return NextResponse.json(
       { error },
-      { status: error?.response?.status ?? 501 }
+      { status: error?.response?.status ?? 500 }
     );
   }
 }

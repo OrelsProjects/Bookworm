@@ -226,7 +226,7 @@ const ImportBooks = () => {
               className="rounded-full text-lg"
               onClick={() => retryUpload()}
             >
-              retryUpload
+              retry
             </Button>
           </div>
         </div>
