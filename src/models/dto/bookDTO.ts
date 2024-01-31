@@ -1,4 +1,6 @@
 import Book from "../book";
+import Genre from "../genre";
+import GoodreadsData from "../goodreadsData";
 import GenreDTO from "./genreDTO";
 import GoodreadsDataDTO from "./goodreadsDataDTO";
 
@@ -73,18 +75,18 @@ export default class BookDTO {
 }
 
 export type CreateBookBody = {
-  books: BookDTO[];
+  books: Omit<Book, "bookId">[];
 };
 
 export type CreateBooksResponseDTO = {
-  success?: BookDTO[];
-  duplicates?: BookDTO[];
-  failure?: BookDTO[];
+  success?: Book[];
+  duplicates?: Book[];
+  failure?: Book[];
 };
 
 export type GetBooksResponseDTO = {
-  book: BookDTO;
-  main_genre?: GenreDTO;
-  subgenres?: GenreDTO[];
-  goodreads_data?: GoodreadsDataDTO;
+  book: Book;
+  main_genre?: Genre;
+  subgenres?: Genre[];
+  goodreads_data?: GoodreadsData;
 };

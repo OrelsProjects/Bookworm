@@ -8,19 +8,19 @@ class UserBook {
   userBookId: number;
   userId?: string;
   readingStatusId?: number;
-  dateAdded?: string;
+  dateAdded?: Date;
   isDeleted?: boolean;
   isFavorite?: boolean;
   userRating?: number;
   userComments?: string;
   suggestionSource?: string;
-  readingStartDate?: string;
-  readingFinishDate?: string;
+  readingStartDate?: Date;
+  readingFinishDate?: Date;
 
   constructor(
     bookId: number,
     userBookId: number,
-    dateAdded?: string,
+    dateAdded?: Date,
     readingStatusId?: number,
     isDeleted?: boolean,
     userId?: string,
@@ -28,8 +28,8 @@ class UserBook {
     userRating?: number,
     userComments?: string,
     suggestionSource?: string,
-    readingStartDate?: string,
-    readingFinishDate?: string
+    readingStartDate?: Date,
+    readingFinishDate?: Date
   ) {
     this.userBookId = userBookId;
     this.userId = userId;
@@ -71,8 +71,8 @@ export class UserBookData {
     userComments?: string,
     dateAdded?: string,
     userRating?: number,
-    readingStartDate?: string,
-    readingFinishDate?: string,
+    readingStartDate?: Date,
+    readingFinishDate?: Date,
     isDeleted?: boolean,
     isFavorite?: boolean,
     goodreadsData?: GoodreadsData

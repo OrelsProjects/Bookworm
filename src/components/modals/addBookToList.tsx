@@ -54,6 +54,7 @@ const AddBookToList: React.FC<AddBookToListProps> = ({ book, type }) => {
   };
 
   const addBookToBacklog = async () => {
+    debugger;
     const toastId = toast.loading(`Adding ${book.title} to backlog`);
     try {
       await addUserBook(
@@ -61,7 +62,7 @@ const AddBookToList: React.FC<AddBookToListProps> = ({ book, type }) => {
         isFavorite,
         suggestionSource,
         comments,
-        new Date().toISOString()
+        new Date()
       );
       toast.success("Book added to backlog");
       dispatch(hideModal());
@@ -77,6 +78,7 @@ const AddBookToList: React.FC<AddBookToListProps> = ({ book, type }) => {
   };
 
   const addBookToReadList = async () => {
+    debugger;
     let toastId = toast.loading(`Adding ${book.title} to read list`);
     try {
       const userBook: UserBook | undefined = userBooksData.find(
@@ -88,11 +90,11 @@ const AddBookToList: React.FC<AddBookToListProps> = ({ book, type }) => {
       }
 
       await updateUserBook({
-        user_book_id: userBook.userBookId,
-        reading_status_id: ReadingStatusEnum.READ,
-        user_rating: ratingSelected,
-        user_comments: comments,
-        is_favorite: isFavorite,
+        userBookId: userBook.userBookId,
+        readingStatusId: ReadingStatusEnum.READ,
+        userRating: ratingSelected,
+        userComments: comments,
+        isFavorite: isFavorite,
       });
       toast.success("Book added to read list");
       dispatch(hideModal());

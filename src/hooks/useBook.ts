@@ -44,8 +44,8 @@ const useBook = () => {
     try {
       const isFavorite = !userBook.isFavorite;
       const updateUserBookBody: UpdateUserBookBody = {
-        user_book_id: userBook.userBookId,
-        is_favorite: isFavorite,
+        userBookId: userBook.userBookId,
+        isFavorite: isFavorite,
       };
       await axios.patch<UserBook>(`/api/user-books`, updateUserBookBody);
       let userBookData: UserBookData | undefined = userBooksData.find(
@@ -112,11 +112,12 @@ const useBook = () => {
     isFavorite?: boolean,
     suggestionSource?: string,
     userComments?: string,
-    dateAdded?: string,
+    dateAdded?: Date,
     userRating?: number,
     readingStartDate?: Date,
     readingFinishDate?: Date
   ): Promise<UserBook> => {
+    debugger;
     if (loading) {
       throw new Error("Cannot add book while another book is loading");
     }
@@ -146,14 +147,14 @@ const useBook = () => {
       }
       const bookToAdd = books[0];
       const createUserBookBody: CreateUserBookBody = {
-        book_id: books[0].bookId,
-        is_favorite: isFavorite ?? false,
-        suggestion_source: suggestionSource ?? "",
-        user_comments: userComments ?? "",
-        date_added: dateAdded ?? new Date().toISOString(),
-        user_rating: userRating,
-        reading_start_date: readingStartDate ?? new Date().toISOString(),
-        reading_finish_date: readingFinishDate ?? new Date().toISOString(),
+        bookId: books[0].bookId,
+        isFavorite: isFavorite ?? false,
+        suggestionSource: suggestionSource ?? "",
+        userComments: userComments ?? "",
+        dateAdded: dateAdded ?? new Date(),
+        userRating: userRating,
+        readingStartDate: readingStartDate ?? new Date(),
+        readingFinishDate: readingFinishDate ?? new Date(),
       };
       const responseAddUserBooks = await axios.post<IResponse<UserBook>>(
         "/api/user-books",
@@ -299,7 +300,7 @@ const useBook = () => {
       userBookData = {
         ...userBookData,
         userBook: newUserBook,
-        readingStatus: new ReadingStatus(updateBookBody.reading_status_id),
+        readingStatus: new ReadingStatus(updateBookBody.readingStatusId),
       };
 
       dispatch(updateUserBookData(userBookData));

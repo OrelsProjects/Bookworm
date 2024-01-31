@@ -2,7 +2,6 @@ import Logger from "@/src/utils/loggerServer";
 import { GetAxiosInstance, getUserIdFromRequest } from "@/src/utils/apiUtils";
 import { Book } from "@/src/models";
 import { CreateBooksResponse } from "@/src/models/book";
-import { BookDTO } from "@/src/models/dto";
 import {
   CreateBookBody,
   CreateBooksResponseDTO,
@@ -14,35 +13,26 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(
   req: NextRequest
 ): Promise<NextResponse<IResponse<CreateBooksResponse>>> {
-  let book: Book = new Book("", -1, -1);
+  let book: Book | null = null;
   try {
     book = await req.json();
-    const bookDTO = new BookDTO(book);
+    if (book === null) {
+      throw new Error("Missing book object");
+    }
+    const { bookId, ...bookNoId } = book;
     const createBookBody: CreateBookBody = {
-      books: [bookDTO],
+      books: [bookNoId],
     };
     const axios = GetAxiosInstance(req);
     const response = await axios.post<CreateBooksResponseDTO>(
-      "/book",
+      "/books",
       createBookBody
     );
-    const bookDTOsWithIds = response.data ?? {};
-    const createBooksResponse = {
-      success: bookDTOsWithIds.success?.map((bookDTO) =>
-        BookDTO.FromResponse(bookDTO)
-      ),
-      duplicates: bookDTOsWithIds.duplicates?.map((bookDTO) =>
-        BookDTO.FromResponse(bookDTO)
-      ),
-      failure: bookDTOsWithIds.failure?.map((bookDTO) =>
-        BookDTO.FromResponse(bookDTO)
-      ),
-    };
+    const booksWithIds: CreateBooksResponse = response.data ?? {};
 
-    
     return NextResponse.json(
       {
-        result: createBooksResponse,
+        result: booksWithIds,
       },
       { status: 200 }
     );
