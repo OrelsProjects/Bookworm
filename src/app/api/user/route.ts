@@ -20,7 +20,7 @@ export async function POST(
     if (!user) {
       throw new Error("Missing user object");
     }
-    if (!user.id) {
+    if (!user.userId) {
       throw new Error("Missing user user id");
     }
     if (!user.email) {

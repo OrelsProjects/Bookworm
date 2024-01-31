@@ -18,7 +18,7 @@ const APIProvider: React.FC<APIProviderProps> = ({ children }) => {
   useEffect(() => {
     if (user) {
       axios.defaults.headers.common["Authorization"] = user.token;
-      axios.defaults.headers.common["user_id"] = user.id;
+      axios.defaults.headers.common["user_id"] = user.userId;
     }
   }, [user]);
 

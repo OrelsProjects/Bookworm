@@ -16,11 +16,8 @@ export async function GET(req: NextRequest) {
       );
     }
     const axios = GetAxiosInstance(req);
-    const response = await axios.get<BookDTO[]>(`/google-books?query=${query}`);
-    const bookDTOs: BookDTO[] = response.data ?? [];
-    const books: Book[] = bookDTOs.map((bookDTO) =>
-      BookDTO.FromResponse(bookDTO)
-    );
+    const response = await axios.get<Book[]>(`/google-books?query=${query}`);
+    const books = response.data ?? [];
     return NextResponse.json({ result: books }, { status: 200 });
   } catch (error: any) {
     Logger.error("Error getting google books", getUserIdFromRequest(req), {

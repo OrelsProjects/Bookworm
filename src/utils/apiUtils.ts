@@ -3,6 +3,7 @@ import { NextRequest } from "next/server";
 import dotenv from "dotenv";
 import Logger from "./loggerServer";
 import loggerServer from "./loggerServer";
+
 dotenv.config();
 
 const getBaseUrl = (): string => {
@@ -13,8 +14,8 @@ const getBaseUrl = (): string => {
       break;
     case "development":
       // baseUrl = process.env.NEXT_PUBLIC_BASE_URL_DEVELOPMENT || "";
-      // baseUrl = process.env.NEXT_PUBLIC_BASE_URL_LOCAL || "";
-      baseUrl = process.env.NEXT_PUBLIC_BASE_URL_PRODUCTION || "";
+      baseUrl = process.env.NEXT_PUBLIC_BASE_URL_LOCAL || "";
+      // baseUrl = process.env.NEXT_PUBLIC_BASE_URL_PRODUCTION || "";
       break;
     case "test":
       baseUrl = process.env.NEXT_PUBLIC_BASE_URL_LOCAL || "";

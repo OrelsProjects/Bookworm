@@ -198,7 +198,7 @@ const useBook = () => {
       if (loading) {
         throw new Error("Cannot load user books while another book is loading");
       }
-      if (!user || !user.id) {
+      if (!user || !user.userId) {
         return;
       }
       const currentUserBooks = localStorage.getItem("userBooks");
@@ -218,7 +218,7 @@ const useBook = () => {
 
       if (user) {
         axios.defaults.headers.common["Authorization"] = user.token;
-        axios.defaults.headers.common["user_id"] = user.id;
+        axios.defaults.headers.common["user_id"] = user.userId;
       } else {
         return;
       }

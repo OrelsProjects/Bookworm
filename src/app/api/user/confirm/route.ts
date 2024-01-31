@@ -20,7 +20,7 @@ export async function POST(
     user = FromResponseUser(userDto, user?.token || "");
     return NextResponse.json({ result: user }, { status: 200 });
   } catch (error: any) {
-    Logger.error("Error confirming user", user?.id ?? "No user id", {
+    Logger.error("Error confirming user", user?.userId ?? "No user id", {
       data: {
         user,
       },
@@ -37,22 +37,23 @@ async function confirmUser(user: User): Promise<UserDTO> {
   if (!user) {
     throw new Error("Missing user object");
   }
-  if (!user.id) {
+  if (!user.userId) {
     throw new Error("Missing user user id");
   }
   if (!user.email) {
     throw new Error("Missing user email");
   }
 
-  const axios = GetAxiosInstance(user.id, user.token);
-  const userDto = new UserDTO(user);
+  const axios = GetAxiosInstance(user.userId, user.token);
+  const { token, ...userDto } = user;
+
   try {
     const createUserResponse = await axios.post<UserDTO>("/user", {
       ...userDto,
     });
     return createUserResponse.data;
   } catch (error: any) {
-    Logger.error("Error creating user", user.id, {
+    Logger.error("Error creating user", user.userId, {
       data: {
         user,
         userDto,
@@ -65,13 +66,13 @@ async function confirmUser(user: User): Promise<UserDTO> {
         const userDto = response.data;
         return userDto;
       } catch (error: any) {
-        Logger.error("Error getting user", user.id, {
+        Logger.error("Error getting user", user.userId, {
           data: {
             user,
           },
           error,
         });
-        Logger.error("Error getting user", user.id, {
+        Logger.error("Error getting user", user.userId, {
           data: {
             user,
           },
@@ -80,7 +81,7 @@ async function confirmUser(user: User): Promise<UserDTO> {
         throw error;
       }
     } else {
-      Logger.error("Error getting user", user.id, {
+      Logger.error("Error getting user", user.userId, {
         data: {
           user,
         },

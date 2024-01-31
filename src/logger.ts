@@ -32,7 +32,7 @@ export const initLogger = (userId?: string) => {
 
 export const setUserLogger = (user?: User | null) => {
   datadogLogs.setUser({
-    id: user?.id,
+    id: user?.userId,
     name: user?.displayName,
     email: user?.email,
   });

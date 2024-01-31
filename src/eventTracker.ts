@@ -19,7 +19,7 @@ export const initEventTracker = () => {
 
 export const setUserEventTracker = (user?: User | null) => {
   try {
-    mixpanel.identify(user?.id);
+    mixpanel.identify(user?.userId);
   } catch (error: any) {
     Logger.error("Error setting user for event tracker", {
       data: {

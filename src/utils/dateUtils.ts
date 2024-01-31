@@ -1,44 +1,41 @@
+import moment from 'moment-timezone';
 import { Logger } from "../logger";
 
 export const FormatDate = (
   dateString: string | undefined,
-  withHours: boolean = false,
-  withMinutes: boolean = false,
-  withSeconds: boolean = false
+  withHours: boolean = true,
+  withMinutes: boolean = true,
+  withSeconds: boolean = true
 ): string | undefined => {
   try {
     if (!dateString) return "";
-    const date = new Date(dateString);
-    if (isNaN(date.getTime())) return "";
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-    const seconds = date.getSeconds();
-    let monthString = month.toString();
-    let dayString = day.toString();
+    
+    // Detect the user's timezone
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-    if (month < 10) {
-      monthString = `0${month}`;
-    }
-    if (day < 10) {
-      dayString = `0${day}`;
-    }
-    if (withSeconds) {
-      return `${year}-${monthString}-${dayString}, ${hours}:${minutes}:${seconds}`;
-    }
-    if (withMinutes) {
-      return `${year}-${monthString}-${dayString}, ${hours}:${minutes}`;
-    }
+    let date = moment.tz(dateString, timezone); // Convert to the user's timezone
+    if (!date.isValid()) return "";
+
+    // Add 2 hours to the date TODO: Remove it when the server is fixed
+    date = date.add(2, 'hours');
+
+    let formatString = "YYYY-MM-DD";
     if (withHours) {
-      return `${year}-${monthString}-${dayString}, ${hours}`;
+      formatString += ", HH";
+      if (withMinutes) {
+        formatString += ":mm";
+        if (withSeconds) {
+          formatString += ":ss";
+        }
+      }
     }
-    return `${year}-${monthString}-${dayString}`;
+
+    return date.format(formatString);
   } catch (error: any) {
     Logger.error("Error formatting date", {
       data: {
         dateString,
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
       },
       error,
     });

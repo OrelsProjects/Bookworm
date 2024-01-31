@@ -1,7 +1,7 @@
 import { UserDTO } from "./dto/userDTO";
 
 class User {
-  id: string;
+  userId: string;
   email: string;
   displayName?: string;
   profilePictureUrl?: string;
@@ -11,7 +11,7 @@ class User {
   token: string;
 
   constructor(
-    id: string,
+    userId: string,
     email: string,
     token: string,
     displayName?: string,
@@ -20,7 +20,7 @@ class User {
     birthDate?: string,
     gender?: string
   ) {
-    this.id = id;
+    this.userId = userId;
     this.displayName = displayName;
     this.email = email;
     this.token = token;
@@ -33,13 +33,13 @@ class User {
 
 export const FromResponseUser = (userDto: UserDTO, token: string) =>
   new User(
-    userDto.user_id,
+    userDto.userId,
     userDto.email,
     token,
-    userDto.display_name,
-    userDto.profile_picture_url,
+    userDto.displayName,
+    userDto.profilePictureUrl,
     userDto.bio,
-    userDto.birth_date,
+    userDto.birthDate,
     userDto.gender
   );
 
