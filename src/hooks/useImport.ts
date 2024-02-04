@@ -107,7 +107,6 @@ const useImport = () => {
 
       const formData = new FormData();
       formData.append("file", file);
-
       await axios.put("api/import/custom-csv", formData, {
         headers: {
           "Content-Type": "multipart/form-data",

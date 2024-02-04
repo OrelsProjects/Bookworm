@@ -1,9 +1,6 @@
 import axios, { Axios } from "axios";
 import { NextRequest } from "next/server";
 import dotenv from "dotenv";
-import Logger from "./loggerServer";
-import loggerServer from "./loggerServer";
-
 dotenv.config();
 
 const getBaseUrl = (): string => {
@@ -49,20 +46,11 @@ export function GetAxiosInstance(arg1: any, arg2?: any): Axios {
   }
 
   axios.defaults.baseURL = getBaseUrl();
-  loggerServer.info(
-    "About to send API request to: " + axios.defaults.baseURL,
-    userId
-  );
 
   return axios;
 }
 export const getUserIdFromRequest = (request: NextRequest): string => {
   const headers = request.headers;
-  Logger.info(
-    "Headers for user id",
-    `before user id ${JSON.stringify(headers)}`,
-    { headers }
-  );
   const userId = headers.get("user_id");
   if (!userId) {
     return "No user id found in request";

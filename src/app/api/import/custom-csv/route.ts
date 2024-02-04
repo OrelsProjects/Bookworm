@@ -4,25 +4,15 @@ import { IResponse } from "@/src/models/dto/response";
 import { NextRequest, NextResponse } from "next/server";
 
 type PresignedURLResponse = {
-  file_name: string;
-  signed_url: string;
+  fileName: string;
+  signedUrl: string;
 };
 
-export async function PUT(req: NextRequest): Promise<
-  NextResponse<
-    IResponse<{
-      fileName: string;
-      signedUrl: string;
-    }>
-  >
-> {
+const getPresignedUrl = async (
+  req: NextRequest
+): Promise<PresignedURLResponse> => {
   const axios = GetAxiosInstance(req);
-  let file: File | undefined = undefined;
-  let formData: FormData | undefined = undefined;
-  let presignedUrl: PresignedURLResponse | undefined = undefined;
   try {
-    formData = await req.formData();
-    file = formData.values().next().value as File;
     Logger.info("Getting presigned url", getUserIdFromRequest(req));
     const response = await axios.get<PresignedURLResponse>(
       "/import-list/signed-url"
@@ -30,20 +20,29 @@ export async function PUT(req: NextRequest): Promise<
     Logger.info("Got presigned url", getUserIdFromRequest(req), {
       data: response.data,
     });
-    presignedUrl = response.data;
-    if (!presignedUrl || !presignedUrl.file_name || !presignedUrl.signed_url) {
+    const presignedUrl = response.data;
+    if (!presignedUrl || !presignedUrl.fileName || !presignedUrl.signedUrl) {
       throw new Error("Failed to get presigned url, it was null");
     }
+    return presignedUrl;
   } catch (error: any) {
     Logger.error("Error getting presigned url", getUserIdFromRequest(req), {
       error,
       headers: axios.defaults.headers,
     });
-    return NextResponse.json({}, { status: 500 });
+    throw error;
   }
+};
+
+export async function PUT(req: NextRequest): Promise<NextResponse> {
+  const axios = GetAxiosInstance(req);
+  let formData: FormData = await req.formData();
+  let file: File = formData.values().next().value as File;
+  let presignedUrl: PresignedURLResponse | undefined = undefined;
 
   try {
-    const uploadFileResponse = await fetch(presignedUrl?.signed_url, {
+    const presignedUrl = await getPresignedUrl(req);
+    const uploadFileResponse = await fetch(presignedUrl.signedUrl, {
       method: "PUT",
       body: file,
       headers: {
@@ -61,7 +60,7 @@ export async function PUT(req: NextRequest): Promise<
     }
     try {
       await axios.post("/import-list/trigger-custom", {
-        file_name: presignedUrl.file_name,
+        fileName: presignedUrl.fileName,
       });
     } catch (error: any) {
       Logger.error(
@@ -78,8 +77,8 @@ export async function PUT(req: NextRequest): Promise<
     return NextResponse.json(
       {
         result: {
-          fileName: presignedUrl.file_name,
-          signedUrl: presignedUrl.signed_url,
+          fileName: presignedUrl.fileName,
+          signedUrl: presignedUrl.signedUrl,
         },
       },
       { status: 200 }
