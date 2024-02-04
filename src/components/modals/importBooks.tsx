@@ -50,7 +50,7 @@ const ImportBooks = () => {
 
   useEffect(() => {
     Logger.info("importbooks modal open", {
-      data: { loading, importStatus: importStatus?.importData?.status },
+      data: { loading, importStatus: importStatus?.status },
     });
   }, [loading, importStatus]);
 
@@ -208,7 +208,7 @@ const ImportBooks = () => {
         <div className="w-full h-full flex justify-center items-center">
           <Loading spinnerClassName="!w-24 !h-24 !fill-primary" />
         </div>
-      ) : importStatus?.importData.status === ImportStatusType.IN_PROGRESS ? (
+      ) : importStatus?.status === ImportStatusType.IN_PROGRESS ? (
         <div className="w-full h-full flex flex-col justify-center items-center text-4xl gap-12">
           <div>
             We are still working on importing your books. We'll finish soon :)
@@ -216,7 +216,7 @@ const ImportBooks = () => {
           <div className="flex flex-col justify-center items-center gap-0">
             <div className="text-lg mb-3 font-bold">
               started at:{" "}
-              {FormatDate(importStatus?.importData.startTime, true, true, true)}
+              {FormatDate(importStatus?.startTime, true, true, true)}
             </div>
             <div className="italic text-lg">
               If the import takes more than 5 minutes, please retry.

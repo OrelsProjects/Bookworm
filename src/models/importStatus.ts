@@ -1,4 +1,3 @@
-import { ImportStatusDTO } from "./dto/importStatusDTO";
 
 export enum ImportStatusType {
   IN_PROGRESS = "In Progress",
@@ -6,7 +5,7 @@ export enum ImportStatusType {
   FAILED = "Failed",
 }
 
-export class ImportData {
+export class ImportStatus {
   id: string;
   userId: string;
   startTime: string;
@@ -28,26 +27,5 @@ export class ImportData {
     this.endTime = endTime;
     this.status = status;
     this.isDeleted = isDeleted;
-  }
-}
-
-export function FromResponseImportStatus(importStatusDTO: ImportStatusDTO) {
-  const importData = new ImportData(
-    importStatusDTO.import_data.id,
-    importStatusDTO.import_data.user_id,
-    importStatusDTO.import_data.start_time,
-    importStatusDTO.import_data.status,
-    importStatusDTO.import_data.is_deleted,
-    importStatusDTO.import_data.end_time
-  );
-
-  return new ImportStatus(importData);
-}
-
-export class ImportStatus {
-  importData: ImportData;
-
-  constructor(importData: ImportData) {
-    this.importData = importData;
   }
 }
