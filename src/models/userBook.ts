@@ -69,7 +69,7 @@ export class UserBookData {
     userId: string,
     suggestionSource?: string,
     userComments?: string,
-    dateAdded?: string,
+    dateAdded?: Date,
     userRating?: number,
     readingStartDate?: Date,
     readingFinishDate?: Date,

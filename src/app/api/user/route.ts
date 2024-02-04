@@ -27,9 +27,8 @@ export async function POST(
       throw new Error("Missing user email");
     }
     const axios = GetAxiosInstance(req);
-    const userDto = new UserDTO(user);
     await axios.post<IResponse<void>>("/user", {
-      userDto,
+      user,
     });
     return NextResponse.json({}, { status: 200 });
   } catch (error: any) {

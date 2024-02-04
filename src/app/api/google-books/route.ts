@@ -1,7 +1,6 @@
 import Logger from "@/src/utils/loggerServer";
 import { GetAxiosInstance, getUserIdFromRequest } from "@/src/utils/apiUtils";
 import { Book } from "../../../models";
-import { BookDTO } from "../../../models/dto";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
