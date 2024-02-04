@@ -33,61 +33,58 @@ export async function POST(
   }
 }
 
-async function confirmUser(user: User): Promise<UserDTO> {
-  if (!user) {
-    throw new Error("Missing user object");
-  }
-  if (!user.userId) {
-    throw new Error("Missing user user id");
-  }
-  if (!user.email) {
-    throw new Error("Missing user email");
-  }
-
-  const axios = GetAxiosInstance(user.userId, user.token);
-  const { token, ...userDto } = user;
-
+const createUser = async (user: User): Promise<User> => {
   try {
-    const createUserResponse = await axios.post<UserDTO>("/user", {
-      ...userDto,
+    if (!user) {
+      throw new Error("Missing user object");
+    }
+    if (!user.userId) {
+      throw new Error("Missing user user id");
+    }
+    if (!user.email) {
+      throw new Error("Missing user email");
+    }
+
+    const axios = GetAxiosInstance(user.userId, user.token);
+    const createUserResponse = await axios.post<User>("/user", {
+      ...user,
     });
     return createUserResponse.data;
   } catch (error: any) {
     Logger.error("Error creating user", user.userId, {
       data: {
         user,
-        userDto,
       },
       error,
     });
-    if (error.response.status === 409) {
-      try {
-        const response = await axios.get<UserDTO>("/user");
-        const userDto = response.data;
-        return userDto;
-      } catch (error: any) {
-        Logger.error("Error getting user", user.userId, {
-          data: {
-            user,
-          },
-          error,
-        });
-        Logger.error("Error getting user", user.userId, {
-          data: {
-            user,
-          },
-          error,
-        });
-        throw error;
-      }
-    } else {
-      Logger.error("Error getting user", user.userId, {
-        data: {
-          user,
-        },
-        error,
-      });
-      throw error;
+    throw error;
+  }
+};
+
+async function confirmUser(user: User): Promise<User> {
+  const axios = GetAxiosInstance(user.userId, user.token);
+  const { token, ...userDto } = user;
+  try {
+    const response = await axios.get<User>("/user");
+    let userResponse = response.data;
+    if (!userResponse) {
+      userResponse = await createUser(user);
     }
+
+    return userResponse;
+  } catch (error: any) {
+    Logger.error("Error getting user", user.userId, {
+      data: {
+        user,
+      },
+      error,
+    });
+    Logger.error("Error getting user", user.userId, {
+      data: {
+        user,
+      },
+      error,
+    });
+    throw error;
   }
 }
