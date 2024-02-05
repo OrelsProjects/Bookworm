@@ -40,7 +40,14 @@ export const SearchBarComponent: React.FC<SearchBarComponentProps> = ({
           htmlFor="search-bar"
           className="relative flex flex-row w-full bg-secondary rounded-full px-6 py-4"
         >
-          <Image src="search.svg" alt="Search" height={32} width={32} />
+          <Image
+            src="search.svg"
+            alt="Search"
+            height={32}
+            width={32}
+            className="cursor-pointer"
+            onClick={() => onSubmit(searchTerm)}
+          />
           <Input
             type="text"
             id="search-bar"

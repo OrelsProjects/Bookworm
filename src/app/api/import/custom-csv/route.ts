@@ -44,7 +44,7 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
     const presignedUrl = await getPresignedUrl(req);
     const uploadFileResponse = await fetch(presignedUrl.signedUrl, {
       method: "PUT",
-      body: file,
+      body: formData,
       headers: {
         "Content-Type": file.type,
       },

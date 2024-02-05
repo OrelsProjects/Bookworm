@@ -13,6 +13,7 @@ const getBaseUrl = (): string => {
       // baseUrl = process.env.NEXT_PUBLIC_BASE_URL_DEVELOPMENT || "";
       baseUrl = process.env.NEXT_PUBLIC_BASE_URL_LOCAL || "";
       // baseUrl = process.env.NEXT_PUBLIC_BASE_URL_PRODUCTION || "";
+      // baseUrl = process.env.NEXT_PUBLIC_BASE_URL_PRODUCTION || "";
       break;
     case "test":
       baseUrl = process.env.NEXT_PUBLIC_BASE_URL_LOCAL || "";

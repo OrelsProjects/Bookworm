@@ -13,6 +13,10 @@ type StarProps = {
   onClick?: () => void;
 };
 
+function clamp(num: number, min: number, max: number): number {
+  return Math.min(Math.max(num, min), max);
+}
+
 export const RatingStar: React.FC<StarProps> = ({
   imageFill,
   filled,
@@ -43,10 +47,10 @@ export const RatingStar: React.FC<StarProps> = ({
 };
 
 type RatingProps = {
-  rating?: number;
-  totalRatings?: number;
-  userRating?: number;
-  goodreadsUrl?: string;
+  rating?: number | null;
+  totalRatings?: number | null;
+  userRating?: number | null;
+  goodreadsUrl?: string | null;
   loading?: boolean;
   className?: string;
 };
@@ -59,10 +63,11 @@ const Rating: React.FC<RatingProps> = ({
   loading,
   className,
 }) => {
-  const fullStars = rating ? Math.floor(rating) : 0;
-  const emptyStars = 5 - fullStars;
-  const fullStarsUser = userRating ? Math.floor(userRating) : 0;
-  const emptyStarsUser = 5 - fullStarsUser;
+  const fullStars = clamp(rating ? Math.floor(rating) : 0, 0, 5);
+  const emptyStars = clamp(5 - fullStars, 0, 5);
+  const fullStarsUser = clamp(userRating ? Math.floor(userRating) : 0, 0, 5);
+  const emptyStarsUser = clamp(5 - fullStarsUser, 0, 5);
+  debugger;
 
   const RatingLoading = () => (
     <div
@@ -72,6 +77,7 @@ const Rating: React.FC<RatingProps> = ({
     </div>
   );
 
+  debugger;
   const RatingComponent = ({
     user,
     className,
@@ -141,10 +147,10 @@ const Rating: React.FC<RatingProps> = ({
         <RatingLoading />
       ) : (
         <div className={`flex flex-col gap-2 ${className}`}>
-          {userRating !== undefined && (fullStarsUser ?? 0) > 0 && (
-            <RatingComponent user />
-          )}
-          {rating !== undefined && <RatingComponent />}
+          {userRating !== undefined &&
+            userRating != null &&
+            (fullStarsUser ?? 0) > 0 && <RatingComponent user />}
+          {rating != null && rating !== undefined && <RatingComponent />}
         </div>
       )}
     </>

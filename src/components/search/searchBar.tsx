@@ -1,15 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import useSearch, { UseSearchResult } from "../../hooks/useSearch";
 import BookComponent, { SearchItemSkeleton } from "./bookComponent";
-import { Book } from "../../models";
 import toast from "react-hot-toast";
-import useBook from "@/src/hooks/useBook";
-import { useDispatch, useSelector } from "react-redux";
 import { SearchBarComponent } from "./searchBarComponent";
-import { RootState } from "@/src/lib/store";
-import { Books, compareBooks } from "@/src/models/book";
 
 const TOP_RESULTS_COUNT = 3;
 
