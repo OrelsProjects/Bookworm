@@ -80,10 +80,7 @@ const TableHeader: React.FC<TableHeaderProps> = ({ onSort }) => {
         <HeaderItem label="Genre" direction={TableHeaderDirection.NONE} />
         <HeaderItem label="Publish" direction={TableHeaderDirection.NONE} />
       </div>
-      <HeaderItem
-        label="Goodread's rating"
-        direction={TableHeaderDirection.NONE}
-      />
+      <HeaderItem label="Rating" direction={TableHeaderDirection.NONE} />
     </div>
   );
 };

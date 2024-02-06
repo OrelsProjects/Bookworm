@@ -10,7 +10,7 @@ import { useFormik } from "formik";
 import Loading from "../loading";
 import { ImportStatusType } from "@/src/models/importStatus";
 import { Logger } from "@/src/logger";
-import { FormatDate } from "@/src/utils/dateUtils";
+import { formatDate } from "@/src/utils/dateUtils";
 
 const ImportBooks = () => {
   const dispatch = useDispatch();
@@ -217,7 +217,7 @@ const ImportBooks = () => {
           <div className="flex flex-col justify-center items-center gap-0">
             <div className="text-lg mb-1 font-bold">
               started at:{" "}
-              {FormatDate(importStatus?.startTime, true, true, true)}
+              {formatDate(importStatus?.startTime, true, true, true)}
             </div>
             <div className="italic text-lg">
               If the import takes more than 5 minutes, please retry.

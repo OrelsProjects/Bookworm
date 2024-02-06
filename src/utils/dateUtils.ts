@@ -1,7 +1,7 @@
 import moment from "moment-timezone";
 import { Logger } from "../logger";
 
-export const FormatDate = (
+export const formatDate = (
   dateString: string | undefined,
   withHours: boolean = true,
   withMinutes: boolean = true,
@@ -15,7 +15,7 @@ export const FormatDate = (
 
     let date = moment.tz(dateString, timezone); // Convert to the user's timezone
     if (!date.isValid()) return "";
-    debugger;
+    
     let formatString = "YYYY-MM-DD";
     if (withHours) {
       formatString += ", HH";

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import EmptyTable from "./emptyTable";
 import useTable from "../../hooks/useTable";
 import TableHeader from "./tableHeader";
@@ -20,13 +20,15 @@ const BooksTable: React.FC = () => {
     loading,
     error,
     updateTableType,
+    nextPage,
     searchBooks,
     readBooksCount,
     toReadBooksCount,
-  } = useTable({
-    initialType: TableType.TO_READ,
-  });
-  console.log("I am rendering");
+  } = useTable();
+
+  let pagingTimeout: NodeJS.Timeout | null = null;
+
+  const scrollableDivRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef(null); // Reference to the header element
   const [tableHeight, setTableHeight] = useState(0); // State to store the calculated height
   const [searchValue, setSearchValue] = useState("");
@@ -35,6 +37,35 @@ const BooksTable: React.FC = () => {
   const [previousTimeout, setPreviousTimeout] = useState<NodeJS.Timeout | null>(
     null
   );
+
+  const handleScroll = () => {
+    if (!scrollableDivRef.current) return;
+
+    const scrollbar: HTMLDivElement = scrollableDivRef.current;
+    const scrollPosition = scrollbar.scrollTop + scrollbar.clientHeight;
+    const totalHeight = scrollbar.scrollHeight;
+
+    // Calculate the scroll percentage
+    const scrollPercentage = (scrollPosition / totalHeight) * 100;
+
+    // Trigger nextPage when scroll position is around 80%
+    if (scrollPercentage >= 95) {
+      if (pagingTimeout) {
+        clearTimeout(pagingTimeout);
+      }
+      pagingTimeout = setTimeout(() => {
+        nextPage();
+      }, 100);
+    }
+  };
+
+  useEffect(() => {
+    const scrollbar = scrollableDivRef.current;
+    if (!scrollbar) return;
+
+    scrollbar.addEventListener("scroll", handleScroll);
+    return () => scrollbar.removeEventListener("scroll", handleScroll);
+}, [scrollableDivRef.current]);
 
   useEffect(() => {
     // Function to calculate the available height for the table
@@ -87,8 +118,20 @@ const BooksTable: React.FC = () => {
     return <EmptyTable />;
   }
 
+  const resetScroll = () => {
+    if (scrollableDivRef.current) {
+      scrollableDivRef.current.scrollTop = 0;
+    }
+  };
+
   const onSearch = (value: string) => {
     setSearchValue(value);
+    resetScroll();
+  };
+
+  const handleTableTypeChange = (type: TableType) => {
+    updateTableType(type);
+    resetScroll();
   };
 
   return (
@@ -107,7 +150,7 @@ const BooksTable: React.FC = () => {
               count: readBooksCount,
             },
           ]}
-          onToggle={(type: TableType) => updateTableType(type)}
+          onToggle={(type: TableType) => handleTableTypeChange(type)}
           className="h-12"
         />
         <div>
@@ -122,6 +165,7 @@ const BooksTable: React.FC = () => {
         <TableHeader />
       </div>
       <div
+        ref={scrollableDivRef}
         className="flex flex-col overflow-y-auto gap-2 scrollbar-hide"
         style={{ height: tableHeight }}
       >

@@ -8,7 +8,7 @@ type UserBookId = number;
 
 interface SetUserBooksLoadingProps {
   loading: boolean;
-  dontLoadIfBooksExist?: boolean;
+  dontLoadIfBooksExist?: boolean; // If true, don't set loading to true if books already exist
 }
 
 interface userBooksState {

@@ -1,16 +1,13 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  setError,
-  selectUserBooks,
-} from "../lib/features/userBooks/userBooksSlice";
+import { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
+import { selectUserBooks } from "../lib/features/userBooks/userBooksSlice";
 import { UserBookData } from "../models";
 import { TableType } from "../components/booksTable/booksTable";
 
-const useTable = ({ initialType }: { initialType: TableType }) => {
+const useTable = () => {
   const { userBooksData, loading, error } = useSelector(selectUserBooks);
 
-  const [tableType, setTableType] = useState<TableType>(initialType);
+  const currentTableType = useRef<TableType>(TableType.TO_READ);
   const [userBooks, setUserBooks] = useState<UserBookData[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -19,11 +16,20 @@ const useTable = ({ initialType }: { initialType: TableType }) => {
   const [toReadBooksCount, setToReadBooksCount] = useState(0);
 
   useEffect(() => {
-    updateUserBooks();
-  }, [tableType]);
+    updateUserBooks(currentPage, currentTableType.current);
+  }, [userBooksData]);
 
-  useEffect(() => {
-    updateUserBooks();
+  const getFilteredBooks = (tableType: TableType) => {
+    return [...userBooksData].filter(
+      (userBook) => userBook.readingStatus?.readingStatusId === tableType
+    );
+  };
+
+  const updateUserBooks = (page: number, tableType: TableType) => {
+    let newUserBooks = getFilteredBooks(tableType).slice(0, page * pageSize);
+
+    setUserBooks(newUserBooks);
+    setTotalRecords(userBooksData.length);
     const readBooks = userBooksData.filter(
       (userBook) => userBook.readingStatus?.readingStatusId === TableType.READ
     );
@@ -33,27 +39,25 @@ const useTable = ({ initialType }: { initialType: TableType }) => {
     );
     setReadBooksCount(readBooks.length);
     setToReadBooksCount(toReadBooks.length);
-  }, [userBooksData]);
-
-  const updateUserBooks = () => {
-    let newUserBooks = [...userBooksData];
-    newUserBooks = newUserBooks.filter((userBook) => {
-      return userBook.readingStatus?.readingStatusId === tableType;
-    });
-    setUserBooks(newUserBooks);
-    setTotalRecords(userBooksData.length);
   };
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
+  const nextPage = () => {
+    setCurrentPage((prevPage) => {
+      const newPage = prevPage + 1;
+      console.log("Current table type", currentTableType);
+      updateUserBooks(newPage, currentTableType.current);
+      return newPage;
+    });
   };
 
   const handlePageSizeChange = (size: number) => {
     setPageSize(size);
   };
 
-  const updateTableType = (tableType: TableType) => {
-    setTableType(tableType);
+  const updateTableType = (newTableType: TableType) => {
+    currentTableType.current = newTableType;
+    setCurrentPage(1);
+    updateUserBooks(1, newTableType);
   };
 
   /**
@@ -62,20 +66,21 @@ const useTable = ({ initialType }: { initialType: TableType }) => {
    */
   const searchBooks = (value: string) => {
     if (value === "") {
-      updateUserBooks();
+      updateUserBooks(currentPage, currentTableType.current);
       return;
     }
-    let newUserBooks = [...userBooks];
-    newUserBooks = newUserBooks.filter((userBook) => {
-      return (
-        userBook.bookData?.book?.title
-          .toLowerCase()
-          .includes(value.toLowerCase()) ||
-        userBook.bookData?.book?.authors?.some((author) =>
-          author.toLowerCase().includes(value.toLowerCase())
-        )
-      );
-    });
+    let newUserBooks = getFilteredBooks(currentTableType.current).filter(
+      (userBook) => {
+        return (
+          userBook.bookData?.book?.title
+            .toLowerCase()
+            .includes(value.toLowerCase()) ||
+          userBook.bookData?.book?.authors?.some((author) =>
+            author.toLowerCase().includes(value.toLowerCase())
+          )
+        );
+      }
+    );
 
     setUserBooks(newUserBooks);
   };
@@ -87,7 +92,7 @@ const useTable = ({ initialType }: { initialType: TableType }) => {
     currentPage,
     pageSize,
     totalRecords,
-    handlePageChange,
+    nextPage,
     handlePageSizeChange,
     updateTableType,
     searchBooks,
