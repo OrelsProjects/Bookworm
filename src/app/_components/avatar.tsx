@@ -5,14 +5,17 @@ import Image from "next/image";
 import Dropdown from "@/src/components/dropdown";
 import useAuth from "@/src/hooks/useAuth";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { selectUserBooks } from "@/src/lib/features/userBooks/userBooksSlice";
+import Papa from "papaparse";
 
 const Avatar: React.FC = () => {
+  const { userBooksData } = useSelector(selectUserBooks);
   const [showDropdown, setShowDropdown] = React.useState<boolean>(false);
   const [isClosing, setIsClosing] = React.useState<boolean>(false);
   const { signOut } = useAuth();
   let closingTimeout: NodeJS.Timeout | null = null;
 
-  // 50 ms timeout to allow the dropdown to close before setting the state
   const toggleIsClosing = () => {
     setIsClosing(true);
     if (closingTimeout) {
@@ -36,6 +39,18 @@ const Avatar: React.FC = () => {
       success: "Signed out",
       error: "Error signing out",
     });
+  };
+
+  const handleExportData = async () => {
+    
+    const csv = Papa.unparse(userBooksData);
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "my-books.csv";
+    a.click();
+    toggleDropdown();
   };
 
   return (
@@ -64,6 +79,20 @@ const Avatar: React.FC = () => {
                 ),
                 onClick: () => handleSignOut(),
               },
+              // {
+              //   label: "Export Data",
+              //   leftIcon: (
+              //     <Image
+              //       src="/export.svg"
+              //       height={24}
+              //       width={24}
+              //       alt="export"
+              //     />
+              //   ),
+              //   onClick: () => {
+              //     handleExportData();
+              //   },
+              // },
             ]}
             onClose={() => {
               setShowDropdown(false);

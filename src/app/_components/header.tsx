@@ -11,6 +11,7 @@ import { ModalTypes, showModal } from "@/src/lib/features/modal/modalSlice";
 import Avatar from "./avatar";
 import { EventTracker } from "@/src/eventTracker";
 import { TabItems } from "@/src/components/tabs";
+import { Logger } from "@/src/logger";
 
 export interface HeaderProps {
   className?: string;
@@ -57,6 +58,7 @@ const Header = ({ className }: HeaderProps): React.ReactNode => {
   useEffect(() => {
     if (error) {
       toast.error("Something went wrong.. we're on it!");
+      Logger.error("Error in header", { data: { error } });
     }
   }, [error]);
 

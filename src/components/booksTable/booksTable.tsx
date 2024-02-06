@@ -15,10 +15,18 @@ export enum TableType {
 }
 
 const BooksTable: React.FC = () => {
-  const { userBooks, loading, error, updateTableType, searchBooks } = useTable({
+  const {
+    userBooks,
+    loading,
+    error,
+    updateTableType,
+    searchBooks,
+    readBooksCount,
+    toReadBooksCount,
+  } = useTable({
     initialType: TableType.TO_READ,
   });
-
+  console.log("I am rendering");
   const headerRef = useRef(null); // Reference to the header element
   const [tableHeight, setTableHeight] = useState(0); // State to store the calculated height
   const [searchValue, setSearchValue] = useState("");
@@ -88,8 +96,16 @@ const BooksTable: React.FC = () => {
       <div className="w-full flex flex-row justify-between items-center mb-8">
         <ToggleButtons
           values={[
-            { type: TableType.TO_READ, label: "To Read" },
-            { type: TableType.READ, label: "Books I've Read" },
+            {
+              type: TableType.TO_READ,
+              label: "To Read",
+              count: toReadBooksCount,
+            },
+            {
+              type: TableType.READ,
+              label: "Books I've Read",
+              count: readBooksCount,
+            },
           ]}
           onToggle={(type: TableType) => updateTableType(type)}
           className="h-12"

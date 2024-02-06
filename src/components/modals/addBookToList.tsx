@@ -54,7 +54,7 @@ const AddBookToList: React.FC<AddBookToListProps> = ({ book, type }) => {
   };
 
   const addBookToBacklog = async () => {
-    debugger;
+    
     const toastId = toast.loading(`Adding ${book.title} to backlog`);
     try {
       await addUserBook(
@@ -78,7 +78,7 @@ const AddBookToList: React.FC<AddBookToListProps> = ({ book, type }) => {
   };
 
   const addBookToReadList = async () => {
-    debugger;
+    
     let toastId = toast.loading(`Adding ${book.title} to read list`);
     try {
       const userBook: UserBook | undefined = userBooksData.find(

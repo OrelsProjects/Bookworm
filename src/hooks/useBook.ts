@@ -117,7 +117,6 @@ const useBook = () => {
     readingStartDate?: Date,
     readingFinishDate?: Date
   ): Promise<UserBook> => {
-    debugger;
     if (loading) {
       throw new Error("Cannot add book while another book is loading");
     }
@@ -194,6 +193,18 @@ const useBook = () => {
     }
   };
 
+  const sortBooks = (books: UserBookData[]): UserBookData[] => {
+    return books.sort((a: UserBookData, b: UserBookData) => {
+      if ((a.bookData?.book?.title ?? "") < (b.bookData?.book?.title ?? "")) {
+        return -1;
+      }
+      if (a.bookData?.book?.title ?? "" > (b.bookData?.book?.title ?? "")) {
+        return 1;
+      }
+      return 0;
+    });
+  };
+
   const loadUserBooks = async (user?: User): Promise<void> => {
     try {
       if (loading) {
@@ -202,9 +213,13 @@ const useBook = () => {
       if (!user || !user.userId) {
         return;
       }
-      const currentUserBooks = localStorage.getItem("userBooks");
+      let currentUserBooks = JSON.parse(
+        localStorage.getItem("userBooks") ?? "[]"
+      );
       if (currentUserBooks) {
-        dispatch(setUserBooks(JSON.parse(currentUserBooks)));
+        if (Array.isArray(currentUserBooks)) {
+          dispatch(setUserBooks(sortBooks(currentUserBooks)));
+        }
       }
 
       setLoading((loading) => !loading);
@@ -228,7 +243,8 @@ const useBook = () => {
         `api/user-books`
       );
 
-      const { result } = response.data;
+      let { result } = response.data;
+      result = sortBooks(result ?? []);
       dispatch(setUserBooks(result ?? []));
       dispatch(setError(null));
     } catch (error: any) {

@@ -56,14 +56,14 @@ const Tabs = ({
             <div className={`${item.loading ? "invisible" : ""}`}>
               {item.label}
             </div>
-            {/* <Loading
+            <Loading
               className={`${
                 item.loading
                   ? "w-full h-full absolute top-0 left-0 right-0 bottom-0"
                   : "hidden"
               }`}
               spinnerClassName="!fill-primary"
-            /> */}
+            />
           </div>
         </Button>
       ))}

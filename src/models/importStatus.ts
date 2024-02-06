@@ -1,6 +1,6 @@
-
 export enum ImportStatusType {
   IN_PROGRESS = "In Progress",
+  PENDING = "Pending",
   DONE = "Done",
   FAILED = "Failed",
 }

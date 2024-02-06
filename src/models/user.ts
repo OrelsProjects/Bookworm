@@ -43,4 +43,6 @@ export const FromResponseUser = (userDto: UserDTO, token: string) =>
     userDto.gender
   );
 
+export type CreateUser = Omit<User, "token">;
+
 export default User;

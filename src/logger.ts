@@ -42,10 +42,7 @@ const log = (type: StatusType, message: string, logItem?: LogItem) => {
   printLog(type, message, logItem);
   try {
     datadogLogs.logger.log(message, logItem?.data, type, logItem?.error);
-  } catch (error: any) {
-    // printLog(type, `Failed to log to datadog ${type}`);
-    // printLog(type);
-  }
+  } catch (error: any) {}
 };
 
 const printLog = (type: StatusType, message?: string, logItem?: LogItem) => {

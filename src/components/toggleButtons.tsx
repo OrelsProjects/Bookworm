@@ -8,6 +8,7 @@ interface ToggleButtonProps {
   values: {
     type: TableType;
     label: string;
+    count?: number;
   }[];
   onToggle: (type: TableType) => void;
   className?: string;
@@ -56,7 +57,7 @@ const ToggleButtons: React.FC<ToggleButtonProps> = ({
               onToggle(value.type);
             }}
           >
-            {value.label}
+            {value.label} ({value.count})
           </Button>
         );
       })}

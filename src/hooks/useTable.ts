@@ -9,12 +9,14 @@ import { TableType } from "../components/booksTable/booksTable";
 
 const useTable = ({ initialType }: { initialType: TableType }) => {
   const { userBooksData, loading, error } = useSelector(selectUserBooks);
-  
+
   const [tableType, setTableType] = useState<TableType>(initialType);
   const [userBooks, setUserBooks] = useState<UserBookData[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [totalRecords, setTotalRecords] = useState(0);
+  const [readBooksCount, setReadBooksCount] = useState(0);
+  const [toReadBooksCount, setToReadBooksCount] = useState(0);
 
   useEffect(() => {
     updateUserBooks();
@@ -22,6 +24,15 @@ const useTable = ({ initialType }: { initialType: TableType }) => {
 
   useEffect(() => {
     updateUserBooks();
+    const readBooks = userBooksData.filter(
+      (userBook) => userBook.readingStatus?.readingStatusId === TableType.READ
+    );
+    const toReadBooks = userBooksData.filter(
+      (userBook) =>
+        userBook.readingStatus?.readingStatusId === TableType.TO_READ
+    );
+    setReadBooksCount(readBooks.length);
+    setToReadBooksCount(toReadBooks.length);
   }, [userBooksData]);
 
   const updateUserBooks = () => {
@@ -80,6 +91,8 @@ const useTable = ({ initialType }: { initialType: TableType }) => {
     handlePageSizeChange,
     updateTableType,
     searchBooks,
+    readBooksCount,
+    toReadBooksCount,
   };
 };
 

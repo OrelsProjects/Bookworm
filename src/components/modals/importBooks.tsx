@@ -208,13 +208,14 @@ const ImportBooks = () => {
         <div className="w-full h-full flex justify-center items-center">
           <Loading spinnerClassName="!w-24 !h-24 !fill-primary" />
         </div>
-      ) : importStatus?.status === ImportStatusType.IN_PROGRESS ? (
+      ) : importStatus?.status === ImportStatusType.PENDING ||
+        importStatus?.status === ImportStatusType.IN_PROGRESS ? (
         <div className="w-full h-full flex flex-col justify-center items-center text-4xl gap-12">
           <div>
             We are still working on importing your books. We'll finish soon :)
           </div>
           <div className="flex flex-col justify-center items-center gap-0">
-            <div className="text-lg mb-3 font-bold">
+            <div className="text-lg mb-1 font-bold">
               started at:{" "}
               {FormatDate(importStatus?.startTime, true, true, true)}
             </div>

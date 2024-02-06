@@ -20,6 +20,7 @@ import { Logger, initLogger, setUserLogger } from "@/src/logger";
 import axios from "axios";
 import { IResponse } from "@/src/models/dto/response";
 import toast from "react-hot-toast";
+import { CreateUser } from "@/src/models/user";
 
 interface AuthProviderProps {
   children?: React.ReactNode;
@@ -52,18 +53,28 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         session?.tokens?.idToken?.payload?.email?.toString() ??
         "";
       const token = session?.tokens?.accessToken?.toString() ?? "";
-      const user = new User(userId, email, token);
-      const userResponse = await axios.post<IResponse<User>>(
+
+      const user: CreateUser = {
+        userId,
+        email,
+      };
+      const userResponse = await axios.post<IResponse<CreateUser>>(
         "/api/user/confirm",
         {
           data: user,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
+      debugger;
       const userWithDetails = userResponse.data.result;
       if (userWithDetails) {
-        dispatch(setUser({ ...userWithDetails }));
+        dispatch(setUser({ ...userWithDetails, token }));
       } else {
-        dispatch(setUser({ ...user }));
+        dispatch(setUser({ ...user, token }));
         throw new Error("Failed to confirm user in db");
       }
     } catch (error: any) {
