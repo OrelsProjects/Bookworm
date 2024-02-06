@@ -39,7 +39,6 @@ const useAuth = () => {
         return;
       }
       Logger.error("Error signing in with Google", { error });
-      debugger;
       dispatch(setError("Failed to sign in"));
       console.error(error);
     }
@@ -54,7 +53,6 @@ const useAuth = () => {
       localStorage.clear();
     } catch (error: any) {
       Logger.error("Error signing out", { error });
-      debugger;
       dispatch(setError("Failed to sign out"));
     }
   }, []);

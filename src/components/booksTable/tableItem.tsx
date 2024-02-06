@@ -8,7 +8,7 @@ import {
 } from "../buttons/bookButtons";
 import { DEFAULT_READING_STATUS } from "@/src/models/readingStatus";
 import BookThumbnail from "../bookThumbnail";
-import { FormatDate } from "@/src/utils/dateUtils";
+import { formatDate } from "@/src/utils/dateUtils";
 import toast from "react-hot-toast";
 import useBook from "@/src/hooks/useBook";
 import { Logger } from "@/src/logger";
@@ -108,7 +108,15 @@ const TableItem: React.FC<TableItemProps> = ({ userBookData, className }) => {
         <div className="truncate">
           Genre: {userBookData.bookData.mainGenre?.genreName}
         </div>
-        <div>Date: {FormatDate(userBookData.bookData.book?.datePublished)}</div>
+        <div>
+          Date Published:{" "}
+          {formatDate(
+            userBookData.bookData.book?.datePublished,
+            false,
+            false,
+            false
+          )}
+        </div>
       </div>
     </div>
   );

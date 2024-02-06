@@ -9,6 +9,7 @@ import {
   AddToReadListButton,
   DeleteButton,
 } from "../buttons/bookButtons";
+import { formatDate } from "@/src/utils/dateUtils";
 import useBook from "@/src/hooks/useBook";
 import { compareBooks } from "@/src/models/book";
 import toast from "react-hot-toast";
@@ -145,7 +146,10 @@ export function BookDetails({
   const PublishDate = (): React.ReactNode => {
     return (
       <div className="flex flex-col">
-        <p className="text-md">Published: {bookToShow?.datePublished}</p>
+        <p className="text-md">
+          Published:{" "}
+          {formatDate(bookToShow?.datePublished, false, false, false)}
+        </p>
       </div>
     );
   };

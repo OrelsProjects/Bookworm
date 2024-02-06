@@ -67,7 +67,6 @@ const Rating: React.FC<RatingProps> = ({
   const emptyStars = clamp(5 - fullStars, 0, 5);
   const fullStarsUser = clamp(userRating ? Math.floor(userRating) : 0, 0, 5);
   const emptyStarsUser = clamp(5 - fullStarsUser, 0, 5);
-  
 
   const RatingLoading = () => (
     <div
@@ -77,7 +76,6 @@ const Rating: React.FC<RatingProps> = ({
     </div>
   );
 
-  
   const RatingComponent = ({
     user,
     className,
@@ -109,7 +107,7 @@ const Rating: React.FC<RatingProps> = ({
           ))}
           <p className="ms-1 text-sm font-thin text-foreground">
             {(user ? userRating : rating)?.toFixed(2)}
-            {!user && ` (${totalRatings})`}
+            {!user && totalRatings && ` (${totalRatings})`}
           </p>
         </div>
         {goodreadsUrl && !user && (

@@ -69,7 +69,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           },
         }
       );
-      debugger;
       const userWithDetails = userResponse.data.result;
       if (userWithDetails) {
         dispatch(setUser({ ...userWithDetails, token }));
