@@ -56,6 +56,16 @@ export const SearchBarComponent: React.FC<SearchBarComponentProps> = ({
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
+          <Image
+            src="x.svg"
+            alt="clear"
+            height={32}
+            width={32}
+            className={`cursor-pointer ${
+              searchTerm ? "" : "invisible placeholder-gray-300"
+            }`}
+            onClick={() => setSearchTerm("")}
+          />
         </label>
       </form>
     </div>

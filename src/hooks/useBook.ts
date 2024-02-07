@@ -193,13 +193,34 @@ const useBook = () => {
     }
   };
 
+  // const sortBooks = (books: UserBookData[]): UserBookData[] => {
+  //   return books.sort((a: UserBookData, b: UserBookData) => {
+  //     if ((a.bookData?.book?.title ?? "") < (b.bookData?.book?.title ?? "")) {
+  //       return -1;
+  //     }
+  //     if (a.bookData?.book?.title ?? "" > (b.bookData?.book?.title ?? "")) {
+  //       return 1;
+  //     }
+  //     return 0;
+  //   });
+  // };
+
+  // Sort first by userBook.dateAdded, then by book.title
   const sortBooks = (books: UserBookData[]): UserBookData[] => {
     return books.sort((a: UserBookData, b: UserBookData) => {
-      if ((a.bookData?.book?.title ?? "") < (b.bookData?.book?.title ?? "")) {
+      const dateAddedA = a.userBook.dateAdded ?? new Date();
+      const dateAddedB = b.userBook.dateAdded ?? new Date();
+      if (dateAddedA < dateAddedB) {
+        return 1;
+      }
+      if (dateAddedA > dateAddedB) {
         return -1;
       }
-      if (a.bookData?.book?.title ?? "" > (b.bookData?.book?.title ?? "")) {
+      if ((a.bookData?.book?.title ?? "") < (b.bookData?.book?.title ?? "")) {
         return 1;
+      }
+      if (a.bookData?.book?.title ?? "" > (b.bookData?.book?.title ?? "")) {
+        return -1;
       }
       return 0;
     });

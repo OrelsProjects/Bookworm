@@ -66,6 +66,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ className }: SearchBarProps) => {
                           book.isbn
                         }
                         book={book}
+                        isFirstInList={i === 0}
                       />
                     )
                 )}

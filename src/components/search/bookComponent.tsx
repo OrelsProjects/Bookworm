@@ -11,16 +11,20 @@ import {
   FavoriteButton,
   ShowDetailsButton,
 } from "../buttons/bookButtons";
-import { compareBooks } from "@/src/models/book";
 import toast from "react-hot-toast";
 import BookThumbnail from "../bookThumbnail";
 import { Logger } from "@/src/logger";
+import { isBooksEqualExactly } from "@/src/utils/bookUtils";
 
 interface BookComponentProps {
   book: Book;
+  isFirstInList?: boolean;
 }
 
-const BookComponent: React.FC<BookComponentProps> = ({ book }) => {
+const BookComponent: React.FC<BookComponentProps> = ({
+  book,
+  isFirstInList,
+}) => {
   const { favoriteBook } = useBook();
   const [loadingFavorite, setLoadingFavorite] = useState(false);
   const [userBookData, setUserBookData] = useState<UserBookData | undefined>(
@@ -31,8 +35,9 @@ const BookComponent: React.FC<BookComponentProps> = ({ book }) => {
   );
 
   useEffect(() => {
-    const userBookData = userBooksData.find((userBookData) =>
-      compareBooks(userBookData.bookData.book, book)
+    const userBookData = userBooksData.find(
+      (userBookData) =>
+        isFirstInList && isBooksEqualExactly(userBookData.bookData.book, book)
     );
     setUserBookData(userBookData);
   }, [userBooksData]);
