@@ -9,8 +9,8 @@ import { z } from "zod";
 import { useFormik } from "formik";
 import Loading from "../loading";
 import { ImportStatusType } from "@/src/models/importStatus";
-import { Logger } from "@/src/logger";
 import { formatDate } from "@/src/utils/dateUtils";
+import useBook from "@/src/hooks/useBook";
 
 const ImportBooks = () => {
   const dispatch = useDispatch();
@@ -45,13 +45,18 @@ const ImportBooks = () => {
     importStatus,
     retryUpload,
   } = useImport();
+  const { loadUserBooks } = useBook();
   const [booksBeingImported, setBooksBeingImported] = useState<boolean>(false);
   const [fileSelected, setFileSelected] = useState<File | null>(null);
 
   useEffect(() => {
-    Logger.info("importbooks modal open", {
-      data: { loading, importStatus: importStatus?.status },
-    });
+    const loadBooks = async () => {
+      debugger;
+      await loadUserBooks();
+    };
+    if (importStatus?.status === "Done") {
+      loadBooks();
+    }
   }, [loading, importStatus]);
 
   const openFileExplorer = () => {

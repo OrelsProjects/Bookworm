@@ -1,4 +1,4 @@
-import { Book, UserBook, UserBookData } from "@/src/models";
+import { Tooltip } from "react-tooltip";
 import React, { useEffect, useState } from "react";
 import Rating from "../rating";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,6 +9,7 @@ import {
   AddToReadListButton,
   DeleteButton,
 } from "../buttons/bookButtons";
+import { Book, UserBook, UserBookData } from "@/src/models";
 import { formatDate } from "@/src/utils/dateUtils";
 import useBook from "@/src/hooks/useBook";
 import { compareBooks } from "@/src/models/book";
@@ -16,6 +17,8 @@ import toast from "react-hot-toast";
 import BookThumbnail from "../bookThumbnail";
 import { Logger } from "@/src/logger";
 import { hideModal } from "@/src/lib/features/modal/modalSlice";
+import BookDescription from "./_components/bookDescription";
+import BookTitle from "./_components/bookTitle";
 
 export interface BookDescriptionProps {
   book: Book | undefined;
@@ -111,25 +114,6 @@ export function BookDetails({
     } finally {
       setLoadingDelete(false);
     }
-  };
-
-  const BookTitle = (): React.ReactNode => {
-    return (
-      <div className="flex flex-col flex-wrap gap-2 w-full">
-        <p className="text-3xl line-clamp-1">{bookToShow?.title}</p>
-        <p className="text-lg font-thin">{bookToShow?.subtitle}</p>
-      </div>
-    );
-  };
-
-  const BookDescription = (): React.ReactNode => {
-    return (
-      <div className="flex flex-col flex-wrap gap-2 w-full">
-        <p className="text-md line-clamp-3 font-thin">
-          {bookToShow?.description}
-        </p>
-      </div>
-    );
   };
 
   const AuthorsAndPages = (): React.ReactNode => {
@@ -255,8 +239,8 @@ export function BookDetails({
             className="rounded-lg !relative xl:!w-64 xl:!h-80 lg:!w-56 lg:!h-72 md:!w-48 md:!h-64 sm:!w-40 sm:!h-56 xs:!w-32 xs:!h-48"
           />
           <div className="flex flex-col gap-4 flex-1">
-            <BookTitle />
-            <BookDescription />
+            <BookTitle book={bookToShow} />
+            <BookDescription book={bookToShow} />
             <AuthorsAndPages />
             <PublishDate />
             <Rating

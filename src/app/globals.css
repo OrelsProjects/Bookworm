@@ -168,6 +168,15 @@ input[type="text"]:-moz-ui-autofill {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
+  .tooltipContent {
+    display: -webkit-box;
+    -webkit-line-clamp: 20;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 850px; /* Adjust based on your line height and font size to fit exactly 10 lines */
+    max-width: 750px; /* Adjust as necessary */
+  }
 }
 
 /* width */

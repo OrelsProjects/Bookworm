@@ -208,9 +208,6 @@ const useBook = () => {
   const loadUserBooks = async (user?: User): Promise<void> => {
     try {
       if (loading) {
-        throw new Error("Cannot load user books while another book is loading");
-      }
-      if (!user || !user.userId) {
         return;
       }
       let currentUserBooks = JSON.parse(
@@ -235,8 +232,6 @@ const useBook = () => {
       if (user) {
         axios.defaults.headers.common["Authorization"] = user.token;
         axios.defaults.headers.common["user_id"] = user.userId;
-      } else {
-        return;
       }
 
       const response = await axios.get<IResponse<UserBookData[]>>(

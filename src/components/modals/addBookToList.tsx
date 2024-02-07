@@ -17,6 +17,8 @@ import BookThumbnail from "../bookThumbnail";
 import { z } from "zod";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { Logger } from "@/src/logger";
+import BookDescription from "./_components/bookDescription";
+import BookTitle from "./_components/bookTitle";
 
 export enum ListType {
   BACKLOG,
@@ -54,7 +56,6 @@ const AddBookToList: React.FC<AddBookToListProps> = ({ book, type }) => {
   };
 
   const addBookToBacklog = async () => {
-    
     const toastId = toast.loading(`Adding ${book.title} to backlog`);
     try {
       await addUserBook(
@@ -78,7 +79,6 @@ const AddBookToList: React.FC<AddBookToListProps> = ({ book, type }) => {
   };
 
   const addBookToReadList = async () => {
-    
     let toastId = toast.loading(`Adding ${book.title} to read list`);
     try {
       const userBook: UserBook | undefined = userBooksData.find(
@@ -108,14 +108,6 @@ const AddBookToList: React.FC<AddBookToListProps> = ({ book, type }) => {
       toast.dismiss(toastId);
     }
   };
-
-  const Title = (): React.ReactNode => (
-    <div className="title">{book.title}</div>
-  );
-
-  const Description = (): React.ReactNode => (
-    <div className="line-clamp-4">{book.description}</div>
-  );
 
   const RatingArea = (): React.ReactNode => {
     const Star = ({
@@ -232,8 +224,8 @@ const AddBookToList: React.FC<AddBookToListProps> = ({ book, type }) => {
 
   const MainSection = (): React.ReactNode => (
     <div className="h-full w-1/2 flex flex-col justify-center items-start my-4 gap-4">
-      <Title />
-      <Description />
+      <BookTitle book={book} />
+      <BookDescription book={book} />
       {type === ListType.BACKLOG ? SuggestionSource() : <RatingArea />}
       {type === ListType.BACKLOG ? "" : CommentsArea()}{" "}
     </div>

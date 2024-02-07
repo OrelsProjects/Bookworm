@@ -35,6 +35,7 @@
     "react-hook-form": "^7.49.0",
     "react-hot-toast": "^2.4.1",
     "react-redux": "^9.0.4",
+    "react-tooltip": "^5.26.0",
     "tailwind-merge": "^2.0.0",
     "tailwindcss-animate": "^1.0.7",
     "winston": "^3.11.0",
