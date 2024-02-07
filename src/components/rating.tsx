@@ -76,6 +76,33 @@ const Rating: React.FC<RatingProps> = ({
     </div>
   );
 
+  const Stars = ({ user }: { user?: boolean }) => (
+    <div className={`flex items-center justify-start px-3  ${className}`}>
+      {[...Array(user ? fullStarsUser : fullStars)].map((_, index) => (
+        <RatingStar
+          key={index}
+          filled={true}
+          user={user}
+          className="inline-block w-4 h-4"
+        />
+      ))}
+      {[...Array(user ? emptyStarsUser : emptyStars)].map((_, index) => (
+        <RatingStar
+          key={index}
+          filled={false}
+          className="inline-block w-4 h-4"
+        />
+      ))}
+      <p className="ms-1 text-sm font-thin text-foreground">
+        {(user ? userRating : rating)?.toFixed(2)}
+        {!user && totalRatings && ` (${totalRatings})`}
+      </p>
+      <p className="ms-1 text-sm font-thin text-foreground">
+        ({user ? "Yours" : "Goodreads"})
+      </p>
+    </div>
+  );
+
   const RatingComponent = ({
     user,
     className,
@@ -89,27 +116,7 @@ const Rating: React.FC<RatingProps> = ({
       ${user ? "py-2.5" : ""}
       `}
       >
-        <div className={`flex items-center justify-start px-3  ${className}`}>
-          {[...Array(user ? fullStarsUser : fullStars)].map((_, index) => (
-            <RatingStar
-              key={index}
-              filled={true}
-              user={user}
-              className="inline-block w-4 h-4"
-            />
-          ))}
-          {[...Array(user ? emptyStarsUser : emptyStars)].map((_, index) => (
-            <RatingStar
-              key={index}
-              filled={false}
-              className="inline-block w-4 h-4"
-            />
-          ))}
-          <p className="ms-1 text-sm font-thin text-foreground">
-            {(user ? userRating : rating)?.toFixed(2)}
-            {!user && totalRatings && ` (${totalRatings})`}
-          </p>
-        </div>
+        <Stars user={user} />
         {goodreadsUrl && !user && (
           <Button
             variant="outline"
