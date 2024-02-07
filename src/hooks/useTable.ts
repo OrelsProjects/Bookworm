@@ -10,7 +10,7 @@ const useTable = () => {
   const currentTableType = useRef<TableType>(TableType.TO_READ);
   const [userBooks, setUserBooks] = useState<UserBookData[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(20);
   const [totalRecords, setTotalRecords] = useState(0);
   const [readBooksCount, setReadBooksCount] = useState(0);
   const [toReadBooksCount, setToReadBooksCount] = useState(0);

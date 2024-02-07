@@ -48,8 +48,7 @@ const BooksTable: React.FC = () => {
     // Calculate the scroll percentage
     const scrollPercentage = (scrollPosition / totalHeight) * 100;
 
-    // Trigger nextPage when scroll position is around 80%
-    if (scrollPercentage >= 95) {
+    if (scrollPercentage >= 50 && scrollPercentage <= 65) {
       if (pagingTimeout) {
         clearTimeout(pagingTimeout);
       }
