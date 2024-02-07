@@ -19,6 +19,7 @@ const BooksTable: React.FC = () => {
     userBooks,
     loading,
     error,
+    searchValue,
     updateTableType,
     nextPage,
     searchBooks,
@@ -31,7 +32,6 @@ const BooksTable: React.FC = () => {
   const scrollableDivRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef(null); // Reference to the header element
   const [tableHeight, setTableHeight] = useState(0); // State to store the calculated height
-  const [searchValue, setSearchValue] = useState("");
 
   // Event tracking
   const [previousTimeout, setPreviousTimeout] = useState<NodeJS.Timeout | null>(
@@ -64,7 +64,7 @@ const BooksTable: React.FC = () => {
 
     scrollbar.addEventListener("scroll", handleScroll);
     return () => scrollbar.removeEventListener("scroll", handleScroll);
-}, [scrollableDivRef.current]);
+  }, [scrollableDivRef.current]);
 
   useEffect(() => {
     // Function to calculate the available height for the table
@@ -78,10 +78,6 @@ const BooksTable: React.FC = () => {
 
     return () => window.removeEventListener("resize", calculateTableHeight);
   }, []);
-
-  useEffect(() => {
-    searchBooks(searchValue);
-  }, [searchValue]);
 
   useEffect(() => {
     if (searchValue === "") {
@@ -124,7 +120,7 @@ const BooksTable: React.FC = () => {
   };
 
   const onSearch = (value: string) => {
-    setSearchValue(value);
+    searchBooks(value);
     resetScroll();
   };
 

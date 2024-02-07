@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { selectUserBooks } from "../lib/features/userBooks/userBooksSlice";
 import { UserBookData } from "../models";
 import { TableType } from "../components/booksTable/booksTable";
+import { set } from "lodash";
 
 const useTable = () => {
   const { userBooksData, loading, error } = useSelector(selectUserBooks);
@@ -14,19 +15,39 @@ const useTable = () => {
   const [totalRecords, setTotalRecords] = useState(0);
   const [readBooksCount, setReadBooksCount] = useState(0);
   const [toReadBooksCount, setToReadBooksCount] = useState(0);
+  const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
-    updateUserBooks(currentPage, currentTableType.current);
+    updateUserBooks(currentPage, currentTableType.current, searchValue);
   }, [userBooksData]);
 
-  const getFilteredBooks = (tableType: TableType) => {
+  const getSearchBooks = (value: string = "") => {
     return [...userBooksData].filter(
+      (userBook) =>
+        userBook.bookData?.book?.title
+          .toLowerCase()
+          .includes(value.toLowerCase()) ||
+        userBook.bookData?.book?.authors?.some((author) =>
+          author.toLowerCase().includes(value.toLowerCase())
+        )
+    );
+  };
+
+  const getFilteredBooks = (tableType: TableType, search: string) => {
+    return getSearchBooks(search).filter(
       (userBook) => userBook.readingStatus?.readingStatusId === tableType
     );
   };
 
-  const updateUserBooks = (page: number, tableType: TableType) => {
-    let newUserBooks = getFilteredBooks(tableType).slice(0, page * pageSize);
+  const updateUserBooks = (
+    page: number,
+    tableType: TableType,
+    search: string = ""
+  ) => {
+    let newUserBooks = getFilteredBooks(tableType, search).slice(
+      0,
+      page * pageSize
+    );
 
     setUserBooks(newUserBooks);
     setTotalRecords(userBooksData.length);
@@ -58,6 +79,7 @@ const useTable = () => {
     currentTableType.current = newTableType;
     setCurrentPage(1);
     updateUserBooks(1, newTableType);
+    setSearchValue("");
   };
 
   /**
@@ -65,24 +87,8 @@ const useTable = () => {
    * @param value - search value
    */
   const searchBooks = (value: string) => {
-    if (value === "") {
-      updateUserBooks(currentPage, currentTableType.current);
-      return;
-    }
-    let newUserBooks = getFilteredBooks(currentTableType.current).filter(
-      (userBook) => {
-        return (
-          userBook.bookData?.book?.title
-            .toLowerCase()
-            .includes(value.toLowerCase()) ||
-          userBook.bookData?.book?.authors?.some((author) =>
-            author.toLowerCase().includes(value.toLowerCase())
-          )
-        );
-      }
-    );
-
-    setUserBooks(newUserBooks);
+    setSearchValue(value);
+    updateUserBooks(3, currentTableType.current, value);
   };
 
   return {
@@ -96,6 +102,7 @@ const useTable = () => {
     handlePageSizeChange,
     updateTableType,
     searchBooks,
+    searchValue,
     readBooksCount,
     toReadBooksCount,
   };
