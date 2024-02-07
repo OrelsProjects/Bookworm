@@ -124,11 +124,19 @@ const ImportBooks = () => {
   }
 
   const ImportCSV = (): React.ReactNode => (
-    <div className="flex flex-col justify-center items-center gap-2">
+    <div className="flex flex-col justify-center items-center gap-6">
       <div className="flex w-full flex-col justify-center items-center mb-4">
         <div className="title">Import CSV</div>
         <div className="italic text-sm text-gray">
-          hint: you can also import csv from goodreads export
+          hint: you can also import csv from goodreads export{" "}
+          <a
+            href="https://www.goodreads.com/review/import"
+            target="_blank"
+            rel="noreferrer"
+            className="text-primary underline"
+          >
+            here
+          </a>
         </div>
       </div>
       <div className="flex w-full flex-col justify-center items-center">
