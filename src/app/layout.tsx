@@ -39,13 +39,22 @@ export default function RootLayout({
                   id="portal"
                   className="absolute top-0 right-0 left-0 bottom-0 z-10"
                 />
-                <Header className="absolute top-0 mb-10" />
+                <Header className="absolute top-0 mb-10 hidden sm:flex" />
                 <div className="absolute top-0 right-0 left-0 bottom-0 z-0">
                   <VideoBackground />
                 </div>
                 <AnimationProvider>
-                  <div className="h-full w-full z-10 relative !font-sans">
+                  <div className="h-full w-full z-10 relative !font-sans hidden sm:flex">
                     {children}
+                  </div>
+                  <div className="h-full w-full z-10 relative !font-sans flex justifty-center flex-col gap-4 sm:hidden">
+                    <span className="text-xl">Responsive design is in the works!</span>
+                    <span>
+                      We'd love to see you here from the phone again soon :)
+                    </span>
+                    <span>
+                      Come visit us from your computer or tablet though!
+                    </span>
                   </div>
                 </AnimationProvider>
                 <Toaster />
