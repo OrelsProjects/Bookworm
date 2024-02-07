@@ -42,7 +42,7 @@ export function GetAxiosInstance(arg1: any, arg2?: any): Axios {
   }
 
   if (token && userId) {
-    axios.defaults.headers.common["Authorization"] = token;
+    axios.defaults.headers.common["Authorization"] = null;
     axios.defaults.headers.common["user_id"] = userId;
   }
 
