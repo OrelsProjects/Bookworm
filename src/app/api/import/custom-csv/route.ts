@@ -7,7 +7,11 @@ type PresignedURLResponse = {
   signedUrl: string;
 };
 
-const importCSV = async (req: NextRequest, file: File): Promise<void> => {
+const importCSV = async (
+  req: NextRequest,
+  formData: FormData
+): Promise<void> => {
+  const file: File = formData.values().next().value as File;
   const axios = GetAxiosInstance(req);
   try {
     const fileContent: string = await file.text();
@@ -25,17 +29,13 @@ const importCSV = async (req: NextRequest, file: File): Promise<void> => {
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const axios = GetAxiosInstance(req);
-  let formData: FormData = await req.formData();
-  let file: File = formData.values().next().value as File;
-  let presignedUrl: PresignedURLResponse | undefined = undefined;
-
   try {
-    await importCSV(req, file);
+    let formData: FormData = await req.formData();
+    await importCSV(req, formData);
     return NextResponse.json({}, { status: 200 });
   } catch (error: any) {
     Logger.error("Error uploading file", getUserIdFromRequest(req), {
       error: error ?? "Unknown error",
-      presignedUrl,
       headers: axios.defaults.headers,
     });
 

@@ -10,12 +10,6 @@ import { ImportStatusType } from "../models/importStatus";
 const LAST_STATUS_CHECK_TIME_LOCAL_STORAGE_NAME = "lastStatusCheckTime";
 const RETRY_CLICKED_LOCAL_STORAGE_NAME = "retryClicked";
 const LAST_STATUS = "lastStatus";
-const TIME_BETWEEN_CHECKS = 1000 * 10 * 1; // 10 seconds
-
-export type PresignedURL = {
-  fileName: string;
-  signedUrl: string;
-};
 
 const useImport = () => {
   const [loading, setLoading] = useState(false);
@@ -101,7 +95,6 @@ const useImport = () => {
   };
 
   const importViaCSV = async (file: File): Promise<void> => {
-    let presignedURL: PresignedURL | undefined = undefined;
     try {
       setLoading(true);
 
@@ -115,9 +108,6 @@ const useImport = () => {
       handleFinishImport();
     } catch (error: any) {
       Logger.error("Error uploading CSV", {
-        data: {
-          presignedURL,
-        },
         error,
       });
       throw error;
