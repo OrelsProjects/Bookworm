@@ -99,13 +99,11 @@ const Header = ({ className }: HeaderProps): React.ReactNode => {
             className="bg-primary-foreground h-12 w-52 rounded-full flex justify-center items-center cursor-pointer"
             onClick={() => router.push("/home")}
           >
-            <div
-              className="text-3xl font-sans font-bold text-primary-background flex items-center justify-center gap-2"
-            >
+            <div className="text-3xl font-sans font-bold text-primary-background flex items-center justify-center gap-2">
               BookWizard
             </div>
           </div>
-          <Feedback />
+          {/* <Feedback /> */}
         </div>
         <NavTabs />
         <div className="flex flex-row items-center gap-4">

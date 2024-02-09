@@ -8,6 +8,9 @@ import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { selectUserBooks } from "@/src/lib/features/userBooks/userBooksSlice";
 import Papa from "papaparse";
+import { EventTracker } from "@/src/eventTracker";
+
+const FEEDBACK_GIVEN = "feedback_given";
 
 const Avatar: React.FC = () => {
   const { userBooksData } = useSelector(selectUserBooks);
@@ -39,6 +42,13 @@ const Avatar: React.FC = () => {
       success: "Signed out",
       error: "Error signing out",
     });
+  };
+
+  const handleFeedbackClick = () => {
+    localStorage.setItem(FEEDBACK_GIVEN, "true");
+    EventTracker.track("User clicked on feedback button");
+    // open url: "https://forms.gle/q3XqsasS6pwC5Ezb6"
+    window.open("https://forms.gle/q3XqsasS6pwC5Ezb6", "_blank");
   };
 
   const handleExportData = async () => {
@@ -77,6 +87,20 @@ const Avatar: React.FC = () => {
                   />
                 ),
                 onClick: () => handleSignOut(),
+              },
+              {
+                label: "Give Feedback",
+                leftIcon: (
+                  <Image
+                    src="/feedbackIcon.png"
+                    fill
+                    alt="feedback"
+                    className="!relative !w-8 !h-7"
+                  />
+                ),
+                onClick: () => {
+                  handleFeedbackClick();
+                },
               },
               // {
               //   label: "Export Data",
