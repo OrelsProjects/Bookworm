@@ -77,19 +77,7 @@ const Avatar: React.FC = () => {
           <Dropdown
             items={[
               {
-                label: "Sign Out",
-                leftIcon: (
-                  <Image
-                    src="/signOut.svg"
-                    height={24}
-                    width={24}
-                    alt="sign out"
-                  />
-                ),
-                onClick: () => handleSignOut(),
-              },
-              {
-                label: "Give Feedback",
+                label: "Feedback",
                 leftIcon: (
                   <Image
                     src="/feedbackIcon.png"
@@ -101,6 +89,18 @@ const Avatar: React.FC = () => {
                 onClick: () => {
                   handleFeedbackClick();
                 },
+              },
+              {
+                label: "Sign Out",
+                leftIcon: (
+                  <Image
+                    src="/signOut.svg"
+                    height={24}
+                    width={24}
+                    alt="sign out"
+                  />
+                ),
+                onClick: () => handleSignOut(),
               },
               // {
               //   label: "Export Data",
