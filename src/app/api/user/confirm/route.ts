@@ -21,8 +21,18 @@ export async function POST(
       throw new Error("Missing user object");
     }
     const axios = GetAxiosInstance(req);
+    Logger.info("Confirming user", user?.userId ?? "", {
+      data: {
+        headers: req.headers,
+      },
+    });
     const response = await axios.post<CreateUser>("/user/confirm", {
       ...user,
+    });
+    Logger.info("Confirmed user", user?.userId ?? "", {
+      data: {
+        response: response.data,
+      },
     });
     const userResponse = response.data;
     return NextResponse.json({ result: userResponse }, { status: 200 });
