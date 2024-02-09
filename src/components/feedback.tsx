@@ -52,7 +52,7 @@ const Feedback = (): React.ReactElement => {
       <motion.div
         onClick={handleFeedbackClick}
         animate={controls}
-        className="cursor-pointer"
+        className="cursor-pointer hover:scale-110 transition-transform"
       >
         <Image src="/feedback.png" alt="feedback" width={64} height={64} />
       </motion.div>
