@@ -2,8 +2,6 @@ import { Amplify } from "aws-amplify";
 import dotenv from "dotenv";
 dotenv.config();
 
-const environment = process.env.NODE_ENV;
-
 const config = {
   aws_project_region: "us-east-1",
   aws_cognito_identity_pool_id:
@@ -13,7 +11,7 @@ const config = {
     process.env.NEXT_PUBLIC_AWS_USER_POOLS_WEB_CLIENT_ID,
   aws_cognito_region: "us-east-1",
   oauth: {
-    domain: "bookwormapp7ee6ffe0-7ee6ffe0-dev.auth.us-east-1.amazoncognito.com",
+    domain: process.env.NEXT_PUBLIC_OAUTH_DOMAIN ?? "",
     scope: [
       "phone",
       "email",
@@ -21,14 +19,8 @@ const config = {
       "profile",
       "aws.cognito.signin.user.admin",
     ],
-    redirectSignIn:
-      environment === "production"
-        ? "https://bookwizard.app/"
-        : "http://localhost:3001/home",
-    redirectSignOut:
-      environment === "production"
-        ? "https://bookwizard.app/"
-        : "http://localhost:3001",
+    redirectSignIn: process.env.NEXT_PUBLIC_REDIRECT_SIGN_IN,
+    redirectSignOut: process.env.NEXT_PUBLIC_REDIRECT_SIGN_OUT,
     responseType: "code",
   },
   federationTarget: "COGNITO_USER_POOLS",
