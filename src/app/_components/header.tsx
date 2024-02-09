@@ -12,6 +12,7 @@ import Avatar from "./avatar";
 import { EventTracker } from "@/src/eventTracker";
 import { TabItems } from "@/src/components/tabs";
 import { Logger } from "@/src/logger";
+import Feedback from "@/src/components/feedback";
 
 export interface HeaderProps {
   className?: string;
@@ -93,17 +94,18 @@ const Header = ({ className }: HeaderProps): React.ReactNode => {
       <div
         className={`flex justify-between items-start w-full h-12 z-30 relative ${className}`}
       >
-        <div
-          className="bg-primary-foreground h-12 w-48 rounded-full flex justify-center items-center cursor-pointer"
-          onClick={() => router.push("/home")}
-        >
-          <Image
-            src="/BookWormText.png"
-            height={24}
-            width={140}
-            alt={""}
-            className="text input  pointer-events-none"
-          />
+        <div className="flex justify-center items-center flex-row gap-2">
+          <div
+            className="bg-primary-foreground h-12 w-52 rounded-full flex justify-center items-center cursor-pointer"
+            onClick={() => router.push("/home")}
+          >
+            <div
+              className="text-3xl font-sans font-bold text-primary-background flex items-center justify-center gap-2"
+            >
+              BookWizard
+            </div>
+          </div>
+          <Feedback />
         </div>
         <NavTabs />
         <div className="flex flex-row items-center gap-4">

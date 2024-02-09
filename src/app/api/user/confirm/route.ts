@@ -12,22 +12,10 @@ export async function POST(
   try {
     const body = await req.json();
     user = body.data as User;
-    Logger.info("Confirming user", user?.userId ?? "", {
-      data: {
-        user,
-        environment: process.env.NODE_ENV,
-      },
-    });
     if (!user) {
       throw new Error("Missing user object");
     }
     const axios = GetAxiosInstance(req);
-    Logger.info("Confirming user", user?.userId ?? "", {
-      data: {
-        headers: req.headers,
-        environment: process.env.NODE_ENV,
-      },
-    });
     const response = await axios.post<CreateUser>("/user/confirm", {
       ...user,
     });
