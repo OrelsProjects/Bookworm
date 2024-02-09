@@ -2,8 +2,6 @@ import { Amplify } from "aws-amplify";
 import dotenv from "dotenv";
 dotenv.config();
 
-const environment = process.env.NODE_ENV;
-
 const config = {
   aws_project_region: "us-east-1",
   aws_cognito_identity_pool_id:
@@ -13,7 +11,7 @@ const config = {
     process.env.NEXT_PUBLIC_AWS_USER_POOLS_WEB_CLIENT_ID,
   aws_cognito_region: "us-east-1",
   oauth: {
-    domain: process.env.NEXT_PUBLIC_OAUTH_DOMAIN,
+    domain: process.env.NEXT_PUBLIC_OAUTH_DOMAIN ?? "",
     scope: [
       "phone",
       "email",
@@ -21,8 +19,8 @@ const config = {
       "profile",
       "aws.cognito.signin.user.admin",
     ],
-    redirectSignIn: environment === process.env.NEXT_PUBLIC_REDIRECT_SIGN_IN,
-    redirectSignOut: environment === process.env.NEXT_PUBLIC_REDIRECT_SIGN_OUT,
+    redirectSignIn: process.env.NEXT_PUBLIC_REDIRECT_SIGN_IN,
+    redirectSignOut: process.env.NEXT_PUBLIC_REDIRECT_SIGN_OUT,
     responseType: "code",
   },
   federationTarget: "COGNITO_USER_POOLS",
