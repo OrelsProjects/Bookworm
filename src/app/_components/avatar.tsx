@@ -42,7 +42,6 @@ const Avatar: React.FC = () => {
   };
 
   const handleExportData = async () => {
-    
     const csv = Papa.unparse(userBooksData);
     const blob = new Blob([csv], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
@@ -54,13 +53,13 @@ const Avatar: React.FC = () => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative rounded-full">
       <Image
         src="/avatar.png"
-        height={48}
-        width={48}
+        height={52}
+        width={52}
         alt={"avatar"}
-        className="cursor-pointer"
+        className="cursor-pointer rounded-full"
         onClick={toggleDropdown}
       />
       {showDropdown && (

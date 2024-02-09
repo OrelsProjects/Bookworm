@@ -54,7 +54,7 @@ const Feedback = (): React.ReactElement => {
         animate={controls}
         className="cursor-pointer hover:scale-110 transition-transform"
       >
-        <Image src="/feedback.png" alt="feedback" width={64} height={64} />
+        <Image src="/feedback.png" alt="feedback" width={48} height={48} />
       </motion.div>
 
       <a
