@@ -86,6 +86,7 @@ const Avatar: React.FC = () => {
                     className="!relative !w-8 !h-7"
                   />
                 ),
+                position: 1,
                 onClick: () => {
                   handleFeedbackClick();
                 },
@@ -100,6 +101,7 @@ const Avatar: React.FC = () => {
                     alt="sign out"
                   />
                 ),
+                position: 2,
                 onClick: () => handleSignOut(),
               },
               // {

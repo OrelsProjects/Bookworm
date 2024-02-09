@@ -4,6 +4,7 @@ import { ExpandType, ExpandingDiv } from "./animationDivs";
 export interface DropdownItem {
   label: string;
   leftIcon?: React.ReactNode;
+  position?: number;
   onClick: () => void;
 }
 
@@ -45,23 +46,25 @@ const Dropdown: React.FC<DropdownProps> = ({
       innerRef={dropdownRef}
       expandType={ExpandType.TopLeft}
     >
-      {items.map((item) => (
-        <div
-          key={`dropdown-item-${item.label}`}
-          className="w-full h-12 flex items-center justify-start px-4 hover:cursor-pointer hover:bg-primary rounded-lg"
-          onClick={() => {
-            item.onClick();
-            onClose?.();
-          }}
-        >
-          {item.leftIcon && (
-            <div className="mr-4 flex items-center justify-center">
-              {item.leftIcon}
-            </div>
-          )}
-          <div className="text-foreground">{item.label}</div>
-        </div>
-      ))}
+      {items
+        .sort((a, b) => (a.position || 0) - (b.position || 0))
+        .map((item) => (
+          <div
+            key={`dropdown-item-${item.label}`}
+            className="w-full h-12 flex items-center justify-start px-4 hover:cursor-pointer hover:bg-primary rounded-lg"
+            onClick={() => {
+              item.onClick();
+              onClose?.();
+            }}
+          >
+            {item.leftIcon && (
+              <div className="mr-4 flex items-center justify-center">
+                {item.leftIcon}
+              </div>
+            )}
+            <div className="text-foreground">{item.label}</div>
+          </div>
+        ))}
     </ExpandingDiv>
   );
 };
