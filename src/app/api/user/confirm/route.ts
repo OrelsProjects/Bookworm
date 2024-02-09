@@ -15,6 +15,7 @@ export async function POST(
     Logger.info("Confirming user", user?.userId ?? "", {
       data: {
         user,
+        environment: process.env.NODE_ENV,
       },
     });
     if (!user) {
@@ -24,6 +25,7 @@ export async function POST(
     Logger.info("Confirming user", user?.userId ?? "", {
       data: {
         headers: req.headers,
+        environment: process.env.NODE_ENV,
       },
     });
     const response = await axios.post<CreateUser>("/user/confirm", {
