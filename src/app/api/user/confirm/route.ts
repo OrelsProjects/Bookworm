@@ -12,6 +12,11 @@ export async function POST(
   try {
     const body = await req.json();
     user = body.data as User;
+    Logger.info("Confirming user", user?.userId ?? "", {
+      data: {
+        user,
+      },
+    });
     if (!user) {
       throw new Error("Missing user object");
     }
