@@ -39,7 +39,7 @@ export default function RootLayout({
                   id="portal"
                   className="absolute top-0 right-0 left-0 bottom-0 z-10"
                 />
-                <Header className="absolute top-0 mb-10 hidden sm:flex" />
+                <Header className="absolute top-0 mb-16 hidden sm:flex" />
                 <div className="absolute top-0 right-0 left-0 bottom-0 z-0">
                   <VideoBackground />
                 </div>
