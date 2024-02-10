@@ -11,6 +11,7 @@ import { Toaster } from "react-hot-toast";
 import DataProvider from "./providers/DataProvider";
 import ModalProvider from "./providers/ModalProvider";
 import AnimationProvider from "./providers/AnimationProvider";
+import { EventTracker } from "../eventTracker";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,6 +25,12 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // If screen size is small (mobile, <640px), show a message to the user
+  if (typeof window !== "undefined") {
+    if (window.innerWidth < 640) {
+      EventTracker.track("User visited from mobile");
+    }
+  }
   return (
     <html lang="en">
       <body
@@ -49,7 +56,9 @@ export default function RootLayout({
                     {children}
                   </div>
                   <div className="h-full w-full z-10 relative !font-sans flex justifty-center flex-col gap-4 sm:hidden">
-                    <span className="text-xl">Responsive design is in the works!</span>
+                    <span className="text-xl">
+                      Responsive design is in the works!
+                    </span>
                     <span>
                       We'd love to see you here from the phone again soon :)
                     </span>
