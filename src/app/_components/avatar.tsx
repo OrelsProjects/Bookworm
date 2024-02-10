@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import Dropdown from "@/src/components/dropdown";
 import useAuth from "@/src/hooks/useAuth";
 import toast from "react-hot-toast";
@@ -13,6 +14,7 @@ import { EventTracker } from "@/src/eventTracker";
 const FEEDBACK_GIVEN = "feedback_given";
 
 const Avatar: React.FC = () => {
+  const router = useRouter();
   const { userBooksData } = useSelector(selectUserBooks);
   const [showDropdown, setShowDropdown] = React.useState<boolean>(false);
   const [isClosing, setIsClosing] = React.useState<boolean>(false);
@@ -62,6 +64,11 @@ const Avatar: React.FC = () => {
     toggleDropdown();
   };
 
+  const handleNavigateToPolicy = () => {
+    router.push("/privacy-policy");
+    toggleDropdown();
+  };
+
   return (
     <div className="relative rounded-full">
       <Image
@@ -92,6 +99,19 @@ const Avatar: React.FC = () => {
                 },
               },
               {
+                label: "Privacy",
+                leftIcon: (
+                  <Image
+                    src="/privacy.png"
+                    height={24}
+                    width={24}
+                    alt="privacy"
+                  />
+                ),
+                position: 2,
+                onClick: () => handleNavigateToPolicy(),
+              },
+              {
                 label: "Sign Out",
                 leftIcon: (
                   <Image
@@ -101,7 +121,7 @@ const Avatar: React.FC = () => {
                     alt="sign out"
                   />
                 ),
-                position: 2,
+                position: 3,
                 onClick: () => handleSignOut(),
               },
               // {
