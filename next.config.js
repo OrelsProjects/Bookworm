@@ -9,6 +9,10 @@ module.exports = withPWA({
         protocol: "http",
         hostname: "books.google.com",
       },
+      {
+        protocol: "https",
+        hostname: "images-na.ssl-images-amazon.com",
+      },
     ],
   },
   webpack: (config, { isServer }) => {
