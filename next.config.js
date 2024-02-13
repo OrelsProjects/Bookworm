@@ -1,3 +1,4 @@
+const cdnUrl = process.env.NEXT_PUBLIC_CDN_URL;
 const withPWA = require("next-pwa")({
   dest: "public",
 });
@@ -12,6 +13,10 @@ module.exports = withPWA({
       {
         protocol: "https",
         hostname: "images-na.ssl-images-amazon.com",
+      },
+      {
+        protocol: "https",
+        hostname: cdnUrl,
       },
     ],
   },
