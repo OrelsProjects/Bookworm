@@ -3,10 +3,9 @@ import * as React from "react";
 import Image from "next/image"; // Next.js Image component for optimized image serving
 import { Button } from "./button"; // Adjust the import path as necessary
 import Loading from "./loading";
-import { EventTracker } from "../eventTracker";
 
 type StarProps = {
-  filled: boolean;
+  filled?: boolean;
   user?: boolean;
   className?: string;
   imageFill?: boolean;
@@ -37,8 +36,8 @@ export const RatingStar: React.FC<StarProps> = ({
         <img
           src={starSrc}
           alt="Star"
-          width={13}
-          height={13}
+          width={22}
+          height={22}
           onClick={onClick}
         />
       )}
@@ -70,18 +69,18 @@ const Rating: React.FC<RatingProps> = ({
 
   const RatingLoading = () => (
     <div
-      className={`flex items-center justify-start w-content py-4 px-6 rounded-full bg-primary-foreground ${className}`}
+      className={`flex items-center justify-start w-content py-4 rounded-full bg-primary-foreground ${className}`}
     >
       <Loading />
     </div>
   );
 
   const Stars = ({ user }: { user?: boolean }) => (
-    <div className={`flex items-center justify-start px-3  ${className}`}>
+    <div className={`flex items-center justify-start gap-1 ${className}`}>
       {[...Array(user ? fullStarsUser : fullStars)].map((_, index) => (
         <RatingStar
           key={index}
-          filled={true}
+          filled
           user={user}
           className="inline-block w-4 h-4"
         />
@@ -89,16 +88,15 @@ const Rating: React.FC<RatingProps> = ({
       {[...Array(user ? emptyStarsUser : emptyStars)].map((_, index) => (
         <RatingStar
           key={index}
-          filled={false}
           className="inline-block w-4 h-4"
         />
       ))}
-      <p className="ms-1 text-sm font-thin text-foreground">
+      <p className="ms-1 text-lg font-thin text-foreground">
         {(user ? userRating : rating)?.toFixed(2)}
         {!user && totalRatings && ` (${totalRatings})`}
       </p>
       <p className="ms-1 text-sm font-thin text-foreground">
-        ({user ? "Yours" : "Goodreads"})
+        {/* ({user ? "Yours" : "Goodreads"}) */}
       </p>
     </div>
   );
@@ -112,7 +110,7 @@ const Rating: React.FC<RatingProps> = ({
   }) => {
     return (
       <div
-        className={`flex items-center justify-start w-fit rounded-full bg-primary-foreground
+        className={`flex items-center justify-start w-fit rounded-full
       ${user ? "py-2.5" : ""}
       `}
       >
@@ -124,7 +122,7 @@ const Rating: React.FC<RatingProps> = ({
             className="rounded-full border-none"
           >
             <div className="flex flex-row gap-2">
-              <a
+              {/* <a
                 className="text-sm text-primary hover:underline truncate"
                 href={goodreadsUrl}
                 target="_blank"
@@ -133,7 +131,7 @@ const Rating: React.FC<RatingProps> = ({
                 }}
               >
                 View Details on Goodreads
-              </a>
+              </a> */}
               <Image
                 src="/externalLink.png"
                 alt="External Link"

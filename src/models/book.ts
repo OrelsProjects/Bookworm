@@ -8,6 +8,7 @@ class Book {
   mainGenreId?: number;
   bookId: number;
   thumbnailUrl?: string;
+  thumbnailColor?: string;
   subtitle?: string;
   originalDatePublished?: string;
   numberOfPages?: number;

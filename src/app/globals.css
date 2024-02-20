@@ -32,7 +32,7 @@ input[type="text"]:-moz-ui-autofill {
     --primary-weak: 0, 42, 77;
     /* Not selected button (Surface/Secondary) */
     --secondary: 21, 63, 102;
-    --background: 0, 17, 42;
+    --background: 20, 20, 20;
     /* Text main color (Neutral/Default) */
     --foreground: 255, 255, 255;
     /* Text secondary color (Neutral/Strong) */
@@ -61,7 +61,7 @@ input[type="text"]:-moz-ui-autofill {
   }
 
   .dark {
-    --background: 219, 100%, 8%;
+    --background: 20, 20, 20;
 
     --primary: 0 100% 61.6%;
     --primary-foreground: 210 40% 98%;
@@ -71,7 +71,7 @@ input[type="text"]:-moz-ui-autofill {
     --secondary-foreground: 210 40% 96.1%;
 
     /* Neutral/Default */
-    --background: 0 0% 100%;
+    --background: 20, 20, 20;
     --foreground: 0 0% 100%;
 
     /* Neutral/Strong */

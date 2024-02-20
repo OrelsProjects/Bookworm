@@ -11,8 +11,11 @@ import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "../../components";
 import BookDetails from "../../components/modals/bookDetails";
-import AddBookToBacklog, { ListType } from "../../components/modals/addBookToList";
+import AddBookToBacklog, {
+  ListType,
+} from "../../components/modals/addBookToList";
 import ImportBooks from "../../components/modals/importBooks";
+import BookListComponent from "../../components/mobile/bookList";
 
 const ModalProvider: React.FC = () => {
   const { data, type, isOpen }: ModalState = useSelector(
@@ -41,7 +44,7 @@ const ModalProvider: React.FC = () => {
   );
 
   const RenderBookDetails = (book: Book) => (
-    <BookDetails book={book} className="w-full h-full" />
+    <BookListComponent books={[book]}/>
   );
 
   const RenderImportBooks = () => <ImportBooks />;

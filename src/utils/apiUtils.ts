@@ -3,29 +3,6 @@ import { NextRequest } from "next/server";
 import dotenv from "dotenv";
 dotenv.config();
 
-// const getBaseUrl = (): string => {
-//   console.log("process.env.NODE_ENV", process.env.NODE_ENV);
-//   let baseUrl = "";
-//   switch (process.env.NODE_ENV) {
-//     case "production":
-//       baseUrl = process.env.NEXT_PUBLIC_BASE_URL_PRODUCTION || "";
-//       break;
-//     case "development":
-//       baseUrl = process.env.NEXT_PUBLIC_BASE_URL_DEVELOPMENT || "";
-//       // baseUrl = process.env.NEXT_PUBLIC_BASE_URL_LOCAL || "";
-//       // baseUrl = process.env.NEXT_PUBLIC_BASE_URL_PRODUCTION || "";
-//       // baseUrl = process.env.NEXT_PUBLIC_BASE_URL_PRODUCTION || "";
-//       break;
-//     case "test":
-//       baseUrl = process.env.NEXT_PUBLIC_BASE_URL_LOCAL || "";
-//       break;
-//     default:
-//       baseUrl = process.env.NEXT_PUBLIC_BASE_URL_LOCAL || "";
-//       break;
-//   }
-//   return baseUrl;
-// };
-
 export function GetAxiosInstance(request: NextRequest): Axios;
 export function GetAxiosInstance(userId: string, token: string): Axios;
 

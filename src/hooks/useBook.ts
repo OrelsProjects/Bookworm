@@ -193,18 +193,6 @@ const useBook = () => {
     }
   };
 
-  // const sortBooks = (books: UserBookData[]): UserBookData[] => {
-  //   return books.sort((a: UserBookData, b: UserBookData) => {
-  //     if ((a.bookData?.book?.title ?? "") < (b.bookData?.book?.title ?? "")) {
-  //       return -1;
-  //     }
-  //     if (a.bookData?.book?.title ?? "" > (b.bookData?.book?.title ?? "")) {
-  //       return 1;
-  //     }
-  //     return 0;
-  //   });
-  // };
-
   // Sort first by userBook.dateAdded, then by book.title
   const sortBooks = (books: UserBookData[]): UserBookData[] => {
     return books.sort((a: UserBookData, b: UserBookData) => {

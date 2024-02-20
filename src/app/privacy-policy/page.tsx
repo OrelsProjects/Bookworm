@@ -4,7 +4,7 @@ import React from "react";
 
 function PrivacyPolicy() {
     return (
-      <div className="container mx-auto pb-8 px-4 text-foreground rounded-lg">
+      <div className="container mx-auto pb-8 px-4 text-foreground rounded-lg overflow-auto">
         {/* Heading */}
         <h1 className="text-3xl font-bold mb-6 text-foreground dark:text-foreground">Privacy Policy</h1>
   

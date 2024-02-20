@@ -13,7 +13,7 @@ const AnimationProvider: React.FC<ProviderProps> = ({ children }) => {
   const pathname = usePathname();
 
   return (
-    <OpacityDiv className="w-full h-full" key={pathname}>
+    <OpacityDiv key={pathname}>
       {children}
     </OpacityDiv>
   );
