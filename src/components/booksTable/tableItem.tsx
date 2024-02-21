@@ -7,7 +7,7 @@ import {
   ShowDetailsButton,
 } from "../buttons/bookButtons";
 import { DEFAULT_READING_STATUS } from "@/src/models/readingStatus";
-import BookThumbnail from "../bookThumbnail";
+// import BookThumbnail from "../bookThumbnail";
 import { formatDate } from "@/src/utils/dateUtils";
 import toast from "react-hot-toast";
 import useBook from "@/src/hooks/useBook";
@@ -37,16 +37,16 @@ const TableItem: React.FC<TableItemProps> = ({ userBookData, className }) => {
     }
   };
 
-  const Thumbnail = (): React.ReactNode => {
-    return (
-      <BookThumbnail
-        src={userBookData.bookData?.book?.thumbnailUrl}
-        title={userBookData.bookData.book?.title}
-        fill
-        className="rounded-lg !w-16 !h-24 !relative"
-      />
-    );
-  };
+  // const Thumbnail = (): React.ReactNode => {
+  //   return (
+  //     <BookThumbnail
+  //       src={userBookData.bookData?.book?.thumbnailUrl}
+  //       title={userBookData.bookData.book?.title}
+  //       fill
+  //       className="rounded-lg !w-16 !h-24 !relative"
+  //     />
+  //   );
+  // };
 
   const Title = (): React.ReactNode => (
     <div className="w-full flex items-center justify-center truncate px-2">
@@ -125,7 +125,7 @@ const TableItem: React.FC<TableItemProps> = ({ userBookData, className }) => {
     <div
       className={`w-full h-28 grid-header-table items-center bg-primary-foreground p-2 rounded-lg ${className}`}
     >
-      <Thumbnail />
+      {/* <Thumbnail /> */}
       <Title />
       <Authors />
       <PagesGenreAndDate />

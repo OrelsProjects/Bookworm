@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import useSearch, { UseSearchResult } from "../../../hooks/useSearch";
 import BookComponent, { SearchItemSkeleton } from "../../search/bookComponent";
 import toast from "react-hot-toast";
-import { SearchBarComponent } from "./searchBarComponent";
+// import { SearchBarComponent } from "./searchBarComponent";
 
 const TOP_RESULTS_COUNT = 3;
 
@@ -35,13 +35,13 @@ const SearchBar: React.FC<SearchBarProps> = ({ className }: SearchBarProps) => {
 
   return (
     <div className={`w-full h-full flex flex-col gap-4 ${className}`}>
-      <SearchBarComponent
+      {/* <SearchBarComponent
         onSubmit={onSubmit}
         onChange={onChange}
         className={`transition-all duration-300 ease-in-out ${
           books && books.length > 0 ? classItems : classNoItems
         }`}
-      />
+      /> */}
       <div className="flex flex-col gap-1 overflow-auto">
         {loading ? (
           <>

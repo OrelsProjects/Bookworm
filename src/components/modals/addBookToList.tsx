@@ -13,7 +13,7 @@ import Loading from "../loading";
 import { compareBooks } from "@/src/models/book";
 import { Input } from "../input";
 import { hideModal } from "@/src/lib/features/modal/modalSlice";
-import BookThumbnail from "../bookThumbnail";
+// import BookThumbnail from "../bookThumbnail";
 import { z } from "zod";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { Logger } from "@/src/logger";
@@ -263,12 +263,12 @@ const AddBookToList: React.FC<AddBookToListProps> = ({ book, type }) => {
 
   return (
     <div className="flex flex-row justify-between items-end gap-2 modal-size modal-background">
-      <BookThumbnail
+      {/* <BookThumbnail
         src={book.thumbnailUrl}
         title={book.title}
         className="pointer-events-none !h-full !w-96 !relative rounded-lg shadow-md"
         fill
-      />
+      /> */}
       <MainSection />
       <Buttons />
     </div>

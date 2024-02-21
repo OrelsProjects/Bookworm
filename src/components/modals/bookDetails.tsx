@@ -14,7 +14,7 @@ import { formatDate } from "@/src/utils/dateUtils";
 import useBook from "@/src/hooks/useBook";
 import { compareBooks } from "@/src/models/book";
 import toast from "react-hot-toast";
-import BookThumbnail from "../bookThumbnail";
+// import BookThumbnail from "../bookThumbnail";
 import { Logger } from "@/src/logger";
 import { hideModal } from "@/src/lib/features/modal/modalSlice";
 import BookDescription from "./_components/bookDescription";
@@ -231,13 +231,13 @@ export function BookDetails({
     >
       <div className="flex flex-row modal-background shadow-lg">
         <div className="flex items-center flex-row gap-8 2xl:w-9/12 xl:9/12 lg:w-9/12">
-          <BookThumbnail
+          {/* <BookThumbnail
             src={bookToShow?.thumbnailUrl}
             placeholder="blur"
             blurDataURL="/thumbnailPlaceholder.png"
             fill
             className="rounded-lg !relative xl:!w-64 xl:!h-80 lg:!w-56 lg:!h-72 md:!w-48 md:!h-64 sm:!w-40 sm:!h-56 xs:!w-32 xs:!h-48"
-          />
+          /> */}
           <div className="flex flex-col gap- flex-1">
             <BookTitle book={bookToShow} />
             <BookDescription book={bookToShow} />
