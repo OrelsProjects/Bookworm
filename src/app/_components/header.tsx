@@ -13,6 +13,7 @@ import { EventTracker } from "@/src/eventTracker";
 import { TabItems } from "@/src/components/tabs";
 import { Logger } from "@/src/logger";
 import Feedback from "@/src/components/feedback";
+import Sidebar from "../../components/mobile/sidebar";
 
 export interface HeaderProps {
   className?: string;
@@ -92,44 +93,21 @@ const Header = ({ className }: HeaderProps): React.ReactNode => {
   return (
     !loadingState.loading && (
       <div
-        className={`flex justify-between items-start w-full h-12 z-30 relative ${className}`}
+        className={`flex justify-between items-center w-full z-30 relative ${className}`}
       >
-        <div className="flex justify-center items-center flex-row gap-2">
-          <div
-            className="bg-primary-foreground h-12 w-52 rounded-full flex justify-center items-center cursor-pointer"
-            onClick={() => router.push("/home")}
-          >
-            <div className="text-3xl font-sans font-bold text-primary-background flex items-center justify-center gap-2">
-              BookWizard
-            </div>
-          </div>
-          {/* <Feedback /> */}
-        </div>
-        <NavTabs />
-        <div className="flex flex-row items-center gap-4">
+        <Sidebar />
+        {user ? (
+          <Avatar />
+        ) : (
           <Button
             size={"md"}
             variant="selected"
             className="w-32"
-            onClick={() => {
-              dispatch(showModal({ type: ModalTypes.IMPORT_BOOKS }));
-            }}
+            onClick={() => signInWithGoogle()}
           >
-            Import Books +
+            Login
           </Button>
-          {user ? (
-            <Avatar />
-          ) : (
-            <Button
-              size={"md"}
-              variant="selected"
-              className="w-32"
-              onClick={() => signInWithGoogle()}
-            >
-              Login
-            </Button>
-          )}
-        </div>
+        )}
       </div>
     )
   );

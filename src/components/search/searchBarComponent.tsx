@@ -38,7 +38,7 @@ export const SearchBarComponent: React.FC<SearchBarComponentProps> = ({
       >
         <label
           htmlFor="search-bar"
-          className="relative flex flex-row w-full bg-secondary rounded-full px-6 py-4"
+          className="relative flex flex-row w-full bg-background rounded-full border-2 px-4 py-1"
         >
           <Image
             src="search.svg"
@@ -51,8 +51,8 @@ export const SearchBarComponent: React.FC<SearchBarComponentProps> = ({
           <Input
             type="text"
             id="search-bar"
-            className="py-2 w-full h-full rounded-full bg-secondary text-white placeholder-gray-300 focus:outline-none border-none"
-            placeholder="Search for the book"
+            className="py-2 w-full h-full rounded-full bg-background  text-white placeholder-gray-300 focus:outline-none border-none"
+            placeholder="Search all books, authors..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />

@@ -7,7 +7,7 @@ const fuzzySearchOptions = {
   ignoreCase: true,
 };
 
-const removeSubtitle = (title: string) => {
+export const removeSubtitle = (title: string) => {
   const mainTitle = title.split(/[:\(\)]/)[0].trim();
   return mainTitle;
 };

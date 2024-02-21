@@ -6,15 +6,17 @@ import { useRouter } from "next/navigation";
 import Dropdown from "@/src/components/dropdown";
 import useAuth from "@/src/hooks/useAuth";
 import toast from "react-hot-toast";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectUserBooks } from "@/src/lib/features/userBooks/userBooksSlice";
 import Papa from "papaparse";
 import { EventTracker } from "@/src/eventTracker";
+import { ModalTypes, showModal } from "../../lib/features/modal/modalSlice";
 
 const FEEDBACK_GIVEN = "feedback_given";
 
 const Avatar: React.FC = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const { userBooksData } = useSelector(selectUserBooks);
   const [showDropdown, setShowDropdown] = React.useState<boolean>(false);
   const [isClosing, setIsClosing] = React.useState<boolean>(false);
@@ -73,8 +75,8 @@ const Avatar: React.FC = () => {
     <div className="relative rounded-full">
       <Image
         src="/avatar.png"
-        height={52}
-        width={52}
+        height={36}
+        width={36}
         alt={"avatar"}
         className="cursor-pointer rounded-full"
         onClick={toggleDropdown}
@@ -83,6 +85,21 @@ const Avatar: React.FC = () => {
         <div className="absolute top-full right-0 w-36 mt-2">
           <Dropdown
             items={[
+              {
+                label: "Import Books",
+                leftIcon: (
+                  <Image
+                    src="/import.svg"
+                    alt="import"
+                    fill
+                    className="!relative !w-8 !h-7"
+                  />
+                ),
+                position: 0,
+                onClick: () => {
+                  dispatch(showModal({ type: ModalTypes.IMPORT_BOOKS }));
+                },
+              },
               {
                 label: "Feedback",
                 leftIcon: (

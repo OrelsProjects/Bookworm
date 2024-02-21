@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useEffect } from "react";
-import useSearch, { UseSearchResult } from "../../hooks/useSearch";
-import BookComponent, { SearchItemSkeleton } from "./bookComponent";
+import useSearch, { UseSearchResult } from "../../../hooks/useSearch";
+import BookComponent, { SearchItemSkeleton } from "../../search/bookComponent";
 import toast from "react-hot-toast";
 import { SearchBarComponent } from "./searchBarComponent";
 
@@ -34,7 +34,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ className }: SearchBarProps) => {
   const classNoItems = "rounded-full";
 
   return (
-    <div className={`w-full flex flex-col gap-4 ${className}`}>
+    <div className={`w-full h-full flex flex-col gap-4 ${className}`}>
       <SearchBarComponent
         onSubmit={onSubmit}
         onChange={onChange}

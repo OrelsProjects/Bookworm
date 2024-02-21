@@ -181,7 +181,7 @@ input[type="text"]:-moz-ui-autofill {
 
 /* width */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 4px;
 }
 
 /* Track */

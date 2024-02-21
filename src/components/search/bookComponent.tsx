@@ -12,7 +12,7 @@ import {
   ShowDetailsButton,
 } from "../buttons/bookButtons";
 import toast from "react-hot-toast";
-import BookThumbnail from "../bookThumbnail";
+// import BookThumbnail from "../bookThumbnail";
 import { Logger } from "@/src/logger";
 import { isBooksEqualExactly } from "@/src/utils/bookUtils";
 
@@ -64,12 +64,12 @@ const BookComponent: React.FC<BookComponentProps> = ({
       <div className="w-full h-full flex justify-between items-center z-20">
         <div className="flex flex-row justify-start items-center gap-3 w-2/5 z-20">
           <div className="flex-shrink-0">
-            <BookThumbnail
+            {/* <BookThumbnail
               src={book.thumbnailUrl}
               height={72}
               width={48}
               className="rounded-md"
-            />
+            /> */}
           </div>
           <h2 className="text-xl text-foreground line-clamp-2 flex-grow">
             {book.title}

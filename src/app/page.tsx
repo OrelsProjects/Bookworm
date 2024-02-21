@@ -13,7 +13,7 @@ function App() {
 
   useEffect(() => {
     if (!loadingState.loading) {
-      router.push("/mobile");
+      router.push("/home");
     }
   }, [loadingState, user]);
 

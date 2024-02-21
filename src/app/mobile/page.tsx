@@ -16,8 +16,8 @@ const Mobile: React.FC = () => {
       /> */}
       {userBooksData.length > 0 && (
         <Modal
-          book={userBooksData[2].bookData.book!!}
-          goodreadsData={userBooksData[2].goodreadsData!!}
+          book={userBooksData[0].bookData.book!!}
+          goodreadsData={userBooksData[0].goodreadsData!!}
         />
       )}
     </div>

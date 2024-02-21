@@ -24,14 +24,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.className}`}
+        className={`${inter.className} flex flex-col overflow-hidden overscroll-auto`}
       >
         <StoreProvider>
           <AuthProvider>
             <APIProvider>
               <DataProvider>
                 <AnimationProvider>
-                  <div className="h-screen w-screen !font-sans">{children}</div>
+                  <div className="!font-sans">{children}</div>
                 </AnimationProvider>
                 <Toaster />
               </DataProvider>
