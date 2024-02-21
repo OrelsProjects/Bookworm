@@ -36,10 +36,10 @@ const BookComponent = ({ book }: { book: Book }) => {
 // BookList component that renders a list of books
 const BookListComponent = ({ books }: { books: Books }) => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      {books.map((book) => (
+    <div className="">
+      {/* {books.map((book) => (
         <BookComponent key={book.bookId} book={book} />
-      ))}
+      ))} */}
     </div>
   );
 };

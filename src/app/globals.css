@@ -25,7 +25,7 @@ input[type="text"]:-moz-ui-autofill {
 @layer base {
   :root {
     /* Selected button (Primary/Default) */
-    --primary: 0, 157, 255;
+    --primary: 193, 89, 89;
     /* Primary/Medium */
     --primary-foreground: 9, 72, 123;
     /* Primary/weak */
@@ -34,7 +34,7 @@ input[type="text"]:-moz-ui-autofill {
     --secondary: 21, 63, 102;
     --background: 20, 20, 20;
     /* Text main color (Neutral/Default) */
-    --foreground: 255, 255, 255;
+    --foreground: 245, 245, 245;
     /* Text secondary color (Neutral/Strong) */
     --muted: 193, 202, 209;
     /* Surface/Primary */
@@ -111,14 +111,14 @@ input[type="text"]:-moz-ui-autofill {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply bg-background text-foreground font-roboto;
   }
   body,
   input,
   textarea,
   select,
   button {
-    @apply font-sans;
+    @apply font-roboto;
   }
 }
 
@@ -179,9 +179,10 @@ input[type="text"]:-moz-ui-autofill {
   }
 }
 
-/* width */
+/* Size */
 ::-webkit-scrollbar {
   width: 4px;
+  height: 0px; /* Decrease the height to make the thumb slimmer */
 }
 
 /* Track */

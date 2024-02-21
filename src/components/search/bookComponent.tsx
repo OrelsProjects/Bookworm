@@ -1,20 +1,14 @@
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
 import { SquareSkeleton, LineSkeleton } from "../skeleton";
 import { Book, UserBook, UserBookData } from "../../models";
 import { RootState } from "@/src/lib/store";
 import { useSelector } from "react-redux";
 import useBook from "@/src/hooks/useBook";
-import {
-  AddToBacklogButton,
-  AddToReadListButton,
-  FavoriteButton,
-  ShowDetailsButton,
-} from "../buttons/bookButtons";
 import toast from "react-hot-toast";
-// import BookThumbnail from "../bookThumbnail";
 import { Logger } from "@/src/logger";
-import { isBooksEqualExactly } from "@/src/utils/bookUtils";
+import { isBooksEqualExactly, removeSubtitle } from "@/src/utils/bookUtils";
+import BookThumbnail from "../bookThumnail";
+import { Add, Bookmark, Checkmark } from "../icons";
 
 interface BookComponentProps {
   book: Book;
@@ -57,48 +51,71 @@ const BookComponent: React.FC<BookComponentProps> = ({
     }
   };
 
-  return (
-    <div
-      className={`h-20 relative bg-card rounded-lg text-foreground p-2 shadow-md`}
-    >
-      <div className="w-full h-full flex justify-between items-center z-20">
-        <div className="flex flex-row justify-start items-center gap-3 w-2/5 z-20">
-          <div className="flex-shrink-0">
-            {/* <BookThumbnail
-              src={book.thumbnailUrl}
-              height={72}
-              width={48}
-              className="rounded-md"
-            /> */}
-          </div>
-          <h2 className="text-xl text-foreground line-clamp-2 flex-grow">
-            {book.title}
-          </h2>
-        </div>
+  const Title = () => (
+    <div className="flex flex-grow">
+      <div className="text-base text-foreground line-clamp-1 font-bold flex-1">
+        {removeSubtitle(book.title)}
+      </div>
+    </div>
+  );
 
-        <div className="flex flex-row gap-8 justify-center items-center z-20">
-          {book.authors && (
-            <p className="text-primary">by {book.authors?.join(", ")}</p>
-          )}
-          <p className="text-muted">{book.numberOfPages} Pages</p>
-          <div className="flex flex-row gap-2">
-            {userBookData ? (
-              <>
-                <FavoriteButton
-                  loading={loadingFavorite}
-                  onClick={() => onFavorite(userBookData.userBook)}
-                  isFavorite={userBookData.userBook.isFavorite ?? false}
-                />
-                {userBookData.readingStatus?.readingStatusId !== 1 && (
-                  <AddToReadListButton book={book} />
-                )}
-              </>
-            ) : (
-              <AddToBacklogButton book={book} />
-            )}
-            <ShowDetailsButton book={book} />
-          </div>
+  const Authors = () => (
+    <div className="flex flex-grow">
+      <div className="text-primary text-sm font-normal flex-1 line-clamp-1">
+        by {book.authors?.join(", ")}
+      </div>
+    </div>
+  );
+
+  const Button = ({
+    onClick,
+    className,
+    children,
+    title,
+  }: {
+    onClick?: () => void;
+    className?: string;
+    children: React.ReactNode;
+    title: string;
+  }) => (
+    <div
+      className={`flex flex-col items-center ${className}`}
+      onClick={() => onClick?.()}
+    >
+      {children}
+      <div className="text-sm font-light">{title}</div>
+    </div>
+  );
+
+  const Buttons = () => (
+    <div className="flex flex-row gap-4">
+      <Button title="Read?" onClick={() => {}}>
+        <Add.Fill className="w-4 h-4" />
+      </Button>
+      <Button title="To Read">
+        <Bookmark.Outline className="w-3 h-4" />
+      </Button>
+      <Button title="Readlist" onClick={() => {}}>
+        <Checkmark.Outline className="w-4 h-4" />
+      </Button>
+    </div>
+  );
+
+  return (
+    <div className="flex flex-row justify-start items-start gap-3 h-full">
+      <div className="flex-shrink-0">
+        <BookThumbnail
+          src={book.thumbnailUrl}
+          fill
+          className="rounded-xl !relative !w-16 !h-24"
+        />
+      </div>
+      <div className="h-24 flex flex-col justify-between">
+        <div className="flex flex-col">
+          <Title />
+          <Authors />
         </div>
+        <Buttons />
       </div>
     </div>
   );
@@ -112,24 +129,19 @@ export const SearchItemSkeleton: React.FC<SearchItemSkeletonProps> = ({
   className,
 }) => {
   return (
-    <div
-      className={`bg-gray-600 flex items-center p-4 rounded-lg shadow space-x-4 ${className}`}
-    >
+    <div className={`flex rounded-lg shadow space-x-4 ${className}`}>
       {/* Thumbnail Skeleton */}
-      <SquareSkeleton className="h-14 w-10 rounded" />
+      <SquareSkeleton className="w-16 h-24 rounded-xl" />
 
-      {/* Text Skeletons */}
-      <div className="flex flex-col flex-grow justify-center">
-        <LineSkeleton className="h-4 rounded w-1/2 mb-2" />
-      </div>
-
-      {/* Button Skeletons */}
-      <div className="flex flex-row gap-2 items-center">
-        <LineSkeleton className="h-4 w-14 rounded-full" />
-        <LineSkeleton className="h-4 w-14 rounded-full" />
-
-        <SquareSkeleton className="h-10 w-24 rounded-full" />
-        <SquareSkeleton className="h-10 w-24 rounded-full" />
+      {/* Text and Buttons Skeletons */}
+      <div className="flex flex-col flex-grow justify-start items-start gap-2 mt-2">
+        <LineSkeleton className="h-2 rounded w-1/2" />
+        <LineSkeleton className="h-2 rounded w-1/3" />
+        <div className="flex flex-row gap-4 mt-6">
+          <SquareSkeleton className="w-4 h-4 rounded-full" />
+          <SquareSkeleton className="w-4 h-4 rounded-full" />
+          <SquareSkeleton className="w-4 h-4 rounded-full" />
+        </div>
       </div>
     </div>
   );

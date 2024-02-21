@@ -5,7 +5,7 @@ import { Book, GoodreadsData } from "../../models";
 import Image from "next/image";
 import { darkenColor } from "../../utils/thumbnailUtils";
 import Rating from "../rating";
-import { bookmark, checkmark, addCircle } from "../icons";
+import { Bookmark, Checkmark, Add } from "../icons";
 import { IconBaseProps } from "react-icons";
 import { removeSubtitle } from "../../utils/bookUtils";
 
@@ -73,9 +73,9 @@ export default function Modal({
 
   const Buttons = () => (
     <div className="h-24 flex flex-row justify-evenly items-center gap-4">
-      {ButtonImage("Read", addCircle.fill, 35, 35)}
-      {ButtonImage("Wishlist", bookmark.fill, 35, 35)}
-      {ButtonImage("Add to list", checkmark.outline, 35, 35, "white")}
+      {ButtonImage("Read", Add.Fill, 35, 35)}
+      {ButtonImage("Wishlist", Bookmark.Fill, 35, 35)}
+      {ButtonImage("Add to list", Checkmark.Outline, 35, 35, "white")}
     </div>
   );
 
