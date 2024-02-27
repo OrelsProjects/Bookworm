@@ -21,26 +21,28 @@ const BottomBar = () => {
   const isItemSelected = (item: BottomBarItem) => selected === item.path;
 
   return (
-    <div className="flex items-center justify-between gap-4 w-max bg-foreground rounded-3xl absolute bottom-8 py-3 px-7">
-      {bottomBarItems.map((item) => {
-        return (
-          <div
-            key={item.name}
-            className="flex items-center justify-center w-full h-full"
-            onClick={() => {
-              if (item.path === pathname) return;
-              router.push(item.path);
-              setSelected(item.name);
-            }}
-          >
-            {isItemSelected(item) ? (
-              <item.icon.Fill className="w-8 h-8" />
-            ) : (
-              <item.icon.Outline className="w-8 h-8 text-background" />
-            )}
-          </div>
-        );
-      })}
+    <div className="w-full flex flex-row justify-center">
+      <div className="flex items-center justify-between gap-4 w-max bg-foreground rounded-3xl absolute bottom-8 py-3 px-7">
+        {bottomBarItems.map((item) => {
+          return (
+            <div
+              key={item.name}
+              className="flex items-center justify-center w-full h-full"
+              onClick={() => {
+                if (item.path === pathname) return;
+                router.push(item.path);
+                setSelected(item.name);
+              }}
+            >
+              {isItemSelected(item) ? (
+                <item.icon.Fill className="w-8 h-8" />
+              ) : (
+                <item.icon.Outline className="w-8 h-8 !text-background" />
+              )}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };
