@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import useSearch, { UseSearchResult } from "../../hooks/useSearch";
-import BookComponent, { SearchItemSkeleton } from "./bookComponent";
+import BookSearchResult, { SearchItemSkeleton } from "./BookSearchResult";
 import toast from "react-hot-toast";
 import { SearchBarComponent } from "./searchBarComponent";
 
@@ -30,19 +30,19 @@ const SearchBar: React.FC<SearchBarProps> = ({ className }: SearchBarProps) => {
   const onSubmit = (value: string) => updateSearchValue(value);
   const onChange = (value: string) => updateSearchValue(value);
 
-  const classItems = "px-6 py-4 rounded-t-3xl rounded-b-lg";
+  // const classItems = "px-6 py-4 rounded-t-3xl rounded-b-lg";
   const classNoItems = "rounded-full";
 
   return (
-    <div className={`w-full h-full flex flex-col gap-4 ${className}`}>
+    <div className={`w-full flex flex-col gap-4 ${className}`}>
       <SearchBarComponent
         onSubmit={onSubmit}
         onChange={onChange}
         className={`transition-all duration-300 ease-in-out ${
-          books && books.length > 0 ? classItems : classNoItems
+          books && books.length > 0 ? classNoItems : classNoItems
         }`}
       />
-      <div className="flex flex-col gap-1 overflow-auto">
+      <div className="flex flex-col gap-3 overflow-auto">
         {loading ? (
           <>
             <SearchItemSkeleton />
@@ -52,13 +52,13 @@ const SearchBar: React.FC<SearchBarProps> = ({ className }: SearchBarProps) => {
         ) : (
           books &&
           books.length > 0 && (
-            <>
-              <div>Top {TOP_RESULTS_COUNT} Results</div>
-              <div className="flex gap-2 flex-col overflow-scroll">
+            <div className="flex flex-col gap-2 mt-2">
+              <div className="font-bold text-2xl">Books</div>
+              <div className="flex gap-4 flex-col overflow-scroll">
                 {books.map(
                   (book, i) =>
                     i < TOP_RESULTS_COUNT && (
-                      <BookComponent
+                      <BookSearchResult
                         key={
                           book.title +
                           book.isbn10 +
@@ -71,7 +71,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ className }: SearchBarProps) => {
                     )
                 )}
               </div>
-            </>
+            </div>
           )
         )}
       </div>

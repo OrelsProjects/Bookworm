@@ -18,6 +18,10 @@ module.exports = withPWA({
         protocol: "https",
         hostname: cdnUrl,
       },
+      {
+        protocol: "https",
+        hostname: "i.gr-assets.com",
+      },
     ],
   },
   webpack: (config, { isServer }) => {
