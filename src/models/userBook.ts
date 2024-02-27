@@ -1,26 +1,26 @@
 import Book from "./book";
 import Genre from "./genre";
 import GoodreadsData from "./goodreadsData";
-import ReadingStatus from "./readingStatus";
+import ReadingStatus, { ReadingStatusEnum } from "./readingStatus";
 
 class UserBook {
   bookId: number;
   userBookId: number;
   userId?: string;
   readingStatusId?: number;
-  dateAdded?: Date;
+  dateAdded?: string;
   isDeleted?: boolean;
   isFavorite?: boolean;
   userRating?: number;
   userComments?: string;
   suggestionSource?: string;
-  readingStartDate?: Date;
-  readingFinishDate?: Date;
+  readingStartDate?: string;
+  readingFinishDate?: string;
 
   constructor(
     bookId: number,
     userBookId: number,
-    dateAdded?: Date,
+    dateAdded?: string,
     readingStatusId?: number,
     isDeleted?: boolean,
     userId?: string,
@@ -28,8 +28,8 @@ class UserBook {
     userRating?: number,
     userComments?: string,
     suggestionSource?: string,
-    readingStartDate?: Date,
-    readingFinishDate?: Date
+    readingStartDate?: string,
+    readingFinishDate?: string
   ) {
     this.userBookId = userBookId;
     this.userId = userId;
@@ -45,6 +45,9 @@ class UserBook {
     this.readingFinishDate = readingFinishDate;
   }
 }
+
+export const isBookRead = (userBook?: UserBook): boolean =>
+  userBook?.readingStatusId === ReadingStatusEnum.READ;
 
 export type BookData = {
   book?: Book;
@@ -69,10 +72,10 @@ export class UserBookData {
     userId: string,
     suggestionSource?: string,
     userComments?: string,
-    dateAdded?: Date,
+    dateAdded?: string,
     userRating?: number,
-    readingStartDate?: Date,
-    readingFinishDate?: Date,
+    readingStartDate?: string,
+    readingFinishDate?: string,
     isDeleted?: boolean,
     isFavorite?: boolean,
     goodreadsData?: GoodreadsData

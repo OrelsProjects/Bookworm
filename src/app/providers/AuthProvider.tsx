@@ -2,7 +2,6 @@
 
 import React, { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { usePathname, useRouter } from "next/navigation";
 import {
   selectAuth,
   setUser,
@@ -11,7 +10,6 @@ import {
 } from "../../lib/features/auth/authSlice";
 import { fetchAuthSession } from "aws-amplify/auth";
 import { Hub } from "aws-amplify/utils";
-import { User } from "../../models";
 import "../../amplifyconfiguration";
 import { Loading } from "../../components";
 import { initEventTracker, setUserEventTracker } from "../../eventTracker";
@@ -30,8 +28,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const { user, loadingState } = useSelector(selectAuth);
   const isLoadingUserFetch = useRef<boolean>(false);
   const dispatch = useDispatch();
-  const router = useRouter();
-  const pathname = usePathname();
 
   const fetchUser = async () => {
     if (isLoadingUserFetch.current) {
@@ -53,10 +49,12 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         session?.tokens?.idToken?.payload?.email?.toString() ??
         "";
       const token = session?.tokens?.accessToken?.toString() ?? "";
-
+      const profilePictureUrl =
+        session?.tokens?.idToken?.payload?.picture?.toString() ?? "";
       const user: CreateUser = {
         userId,
         email,
+        profilePictureUrl,
       };
       const userResponse = await axios.post<IResponse<CreateUser>>(
         "/api/user/confirm",
@@ -104,7 +102,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     dispatch(
       setLoading({
         loading: true,
-        message: "We are looking for your user.. :)",
       })
     );
     const unsubscribe = Hub.listen("auth", ({ payload }) => {
@@ -120,8 +117,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           fetchUser();
           break;
         case "customOAuthState":
-          //   setCustomState(payload.data); // this is the customState provided on signInWithRedirect function
-          dispatch(setLoading({ loading: false }));
           break;
       }
     });
@@ -130,14 +125,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     return unsubscribe;
   }, [dispatch]);
-
-  useEffect(() => {
-    if (!loadingState.loading) {
-      if (pathname === "/") {
-        router.push("/home");
-      }
-    }
-  }, [loadingState, pathname, router]);
 
   return loadingState.loading ? (
     <div className="w-full h-full flex justify-center items-center">

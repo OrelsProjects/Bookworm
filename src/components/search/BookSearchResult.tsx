@@ -9,13 +9,15 @@ import { Logger } from "@/src/logger";
 import { isBooksEqualExactly, removeSubtitle } from "@/src/utils/bookUtils";
 import BookThumbnail from "../bookThumnail";
 import { Add, Bookmark, Checkmark } from "../icons";
+import Title from "../book/title";
+import Authors from "../book/authors";
 
 interface BookComponentProps {
   book: Book;
   isFirstInList?: boolean;
 }
 
-const BookComponent: React.FC<BookComponentProps> = ({
+const BookSearchResult: React.FC<BookComponentProps> = ({
   book,
   isFirstInList,
 }) => {
@@ -50,22 +52,6 @@ const BookComponent: React.FC<BookComponentProps> = ({
       setLoadingFavorite(false);
     }
   };
-
-  const Title = () => (
-    <div className="flex flex-grow">
-      <div className="text-base text-foreground line-clamp-1 font-bold flex-1">
-        {removeSubtitle(book.title)}
-      </div>
-    </div>
-  );
-
-  const Authors = () => (
-    <div className="flex flex-grow">
-      <div className="text-primary text-sm font-normal flex-1 line-clamp-1">
-        by {book.authors?.join(", ")}
-      </div>
-    </div>
-  );
 
   const Button = ({
     onClick,
@@ -111,9 +97,9 @@ const BookComponent: React.FC<BookComponentProps> = ({
         />
       </div>
       <div className="h-24 flex flex-col justify-between">
-        <div className="flex flex-col">
-          <Title />
-          <Authors />
+        <div className="flex flex-col w-8">
+          <Title title={book.title} />
+          <Authors authors={book.authors} prefix="by" />
         </div>
         <Buttons />
       </div>
@@ -147,4 +133,4 @@ export const SearchItemSkeleton: React.FC<SearchItemSkeletonProps> = ({
   );
 };
 
-export default BookComponent;
+export default BookSearchResult;

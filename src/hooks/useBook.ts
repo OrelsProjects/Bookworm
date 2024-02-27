@@ -22,6 +22,8 @@ import { RootState } from "../lib/store";
 import ReadingStatus from "../models/readingStatus";
 import { Logger } from "../logger";
 import { EventTracker } from "../eventTracker";
+import { BookData } from "../models/userBook";
+import { sortByAuthor, sortByDateAdded, sortByTitle } from "../utils/bookUtils";
 
 // ErrorDeleteUserBook error class
 class ErrorDeleteUserBook extends Error {
@@ -29,6 +31,12 @@ class ErrorDeleteUserBook extends Error {
     super(message);
     this.name = "ErrorDeleteUserBook";
   }
+}
+
+export enum BookSort {
+  Title = "Title",
+  Author = "Author",
+  DateAdded = "DateAdded",
 }
 
 const useBook = () => {
@@ -112,10 +120,10 @@ const useBook = () => {
     isFavorite?: boolean,
     suggestionSource?: string,
     userComments?: string,
-    dateAdded?: Date,
+    dateAdded?: string,
     userRating?: number,
-    readingStartDate?: Date,
-    readingFinishDate?: Date
+    readingStartDate?: string,
+    readingFinishDate?: string
   ): Promise<UserBook> => {
     if (loading) {
       throw new Error("Cannot add book while another book is loading");
@@ -150,10 +158,10 @@ const useBook = () => {
         isFavorite: isFavorite ?? false,
         suggestionSource: suggestionSource ?? "",
         userComments: userComments ?? "",
-        dateAdded: dateAdded ?? new Date(),
+        dateAdded: dateAdded ?? new Date().toISOString(),
         userRating: userRating,
-        readingStartDate: readingStartDate ?? new Date(),
-        readingFinishDate: readingFinishDate ?? new Date(),
+        readingStartDate: readingStartDate ?? new Date().toISOString(),
+        readingFinishDate: readingFinishDate ?? new Date().toISOString(),
       };
       const responseAddUserBooks = await axios.post<IResponse<UserBook>>(
         "/api/user-books",
@@ -193,27 +201,6 @@ const useBook = () => {
     }
   };
 
-  // Sort first by userBook.dateAdded, then by book.title
-  const sortBooks = (books: UserBookData[]): UserBookData[] => {
-    return books.sort((a: UserBookData, b: UserBookData) => {
-      const dateAddedA = a.userBook.dateAdded ?? new Date();
-      const dateAddedB = b.userBook.dateAdded ?? new Date();
-      if (dateAddedA < dateAddedB) {
-        return 1;
-      }
-      if (dateAddedA > dateAddedB) {
-        return -1;
-      }
-      if ((a.bookData?.book?.title ?? "") < (b.bookData?.book?.title ?? "")) {
-        return 1;
-      }
-      if (a.bookData?.book?.title ?? "" > (b.bookData?.book?.title ?? "")) {
-        return -1;
-      }
-      return 0;
-    });
-  };
-
   const loadUserBooks = async (user?: User): Promise<void> => {
     try {
       if (loading) {
@@ -224,7 +211,9 @@ const useBook = () => {
       );
       if (currentUserBooks) {
         if (Array.isArray(currentUserBooks)) {
-          dispatch(setUserBooks(sortBooks(currentUserBooks)));
+          dispatch(
+            setUserBooks(sortBooks(BookSort.DateAdded, currentUserBooks))
+          );
         }
       }
 
@@ -248,7 +237,7 @@ const useBook = () => {
       );
 
       let { result } = response.data;
-      result = sortBooks(result ?? []);
+      result = sortBooks(BookSort.DateAdded, result ?? []);
       dispatch(setUserBooks(result ?? []));
       dispatch(setError(null));
     } catch (error: any) {
@@ -338,6 +327,43 @@ const useBook = () => {
     }
   };
 
+  const getBookFullData = (book?: Book): UserBookData | null | undefined => {
+    const userBookData = userBooksData.find(
+      (userBookData) => userBookData.bookData?.book?.bookId === book?.bookId
+    );
+    return userBookData;
+  };
+
+  const sortBooks = (
+    sort: BookSort,
+    userBookDataToSort: UserBookData[]
+  ): UserBookData[] => {
+    try {
+      let sortedUserBooks: UserBookData[] = userBookDataToSort;
+      switch (sort) {
+        case BookSort.Title:
+          sortedUserBooks = sortByTitle([...userBookDataToSort]);
+          break;
+        case BookSort.Author:
+          sortedUserBooks = sortByAuthor([...userBookDataToSort]);
+          break;
+        case BookSort.DateAdded:
+          sortedUserBooks = sortByDateAdded([...userBookDataToSort]);
+          break;
+      }
+      return sortedUserBooks;
+    } catch (error: any) {
+      Logger.error("Error sorting books", {
+        data: {
+          sort,
+          userBookDataToSort,
+        },
+        error,
+      });
+      return userBookDataToSort;
+    }
+  };
+
   return {
     getBookGoodreadsData,
     updateUserBook,
@@ -345,6 +371,9 @@ const useBook = () => {
     addUserBook,
     favoriteBook,
     deleteUserBook,
+    getBookFullData,
+    userBooksData,
+    sortBooks,
     loading,
   };
 };

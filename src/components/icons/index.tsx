@@ -3,6 +3,8 @@ import { IconBaseProps } from "react-icons";
 import { FaBookmark } from "react-icons/fa";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { IoAddCircle } from "react-icons/io5";
+import { TiHome, TiHomeOutline } from "react-icons/ti";
+import { LuBookPlus } from "react-icons/lu";
 
 export type Icon = {
   Fill: React.ElementType;
@@ -15,23 +17,36 @@ const IconFill =
     <Icon {...props} className={`text-primary ${props.className}`} />;
 
 const IconOutline =
-  (Icon: React.FC<IconBaseProps>): React.ElementType =>
+  (Icon: React.FC<IconBaseProps>, className?: string): React.ElementType =>
   (props: IconBaseProps) =>
-    <Icon {...props} className={`text-foreground ${props.className}`} />;
+    (
+      <Icon
+        {...props}
+        className={`text-foreground ${className} ${props.className}`}
+      />
+    );
 
-const Add: Icon = {
+export const Add: Icon = {
   Fill: IconFill(IoAddCircle),
   Outline: IconOutline(IoAddCircle),
 };
 
-const Bookmark: Icon = {
+export const Bookmark: Icon = {
   Fill: IconFill(FaBookmark),
   Outline: IconOutline(FaBookmark),
 };
 
-const Checkmark: Icon = {
+export const Checkmark: Icon = {
   Fill: IconFill(IoIosCheckmarkCircle),
   Outline: IconOutline(IoIosCheckmarkCircle),
 };
 
-export { Add, Bookmark, Checkmark };
+export const NavigationHome: Icon = {
+  Fill: IconFill(TiHome),
+  Outline: IconOutline(TiHomeOutline),
+};
+
+export const NavigationLists: Icon = {
+  Fill: IconFill(LuBookPlus),
+  Outline: IconOutline(LuBookPlus, "text-background"),
+};

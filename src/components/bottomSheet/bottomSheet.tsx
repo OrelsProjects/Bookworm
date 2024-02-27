@@ -3,27 +3,35 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
 import { EventTracker } from "@/src/eventTracker";
+import { IoArrowBack } from "react-icons/io5";
 
-interface Props {
+interface BottomSheetProps {
   children: React.ReactNode;
   isOpen: boolean;
+  backgroundColor?: string;
   onClose?: () => void;
   outsideClickClose?: boolean;
   className?: string;
 }
 
 const modalAnimationVariants = {
-  open: { y: 0, opacity: 1 },
-  closed: { y: 100, opacity: 0 },
+  open: { opacity: 1 },
+  closed: { opacity: 0 },
 };
 const modalBackgroundAnimationVariants = {
   open: { opacity: 1 },
   closed: { opacity: 0 },
 };
 
-const Modal: React.FC<Props> = ({
+const bottomSheetVariants = {
+  open: { y: 0 },
+  closed: { y: 1 },
+};
+
+const BottomSheet: React.FC<BottomSheetProps> = ({
   children,
   isOpen,
+  backgroundColor,
   onClose,
   outsideClickClose = false,
   className,
@@ -69,40 +77,37 @@ const Modal: React.FC<Props> = ({
     shouldRender && (
       <div className="flex justify-center items-center relative w-full h-full">
         <motion.div
-          className={`fixed inset-0 bg-black bg-opacity-50 z-40`}
-          variants={modalBackgroundAnimationVariants}
-          initial="closed"
-          animate={isOpen ? "open" : "closed"}
-          transition={{ duration: 0.3 }}
-        />
-
-        <motion.div
           ref={modalRef}
-          className={`relative z-50 modal-size flex items-center justify-center rounded-lg font-sans ${className}`}
+          className={`relative z-50 w-full h-full flex items-center justify-center rounded-lg font-sans ${className}`}
+          style={{ backgroundColor: backgroundColor ?? "rgb(12, 12, 12)" }}
           variants={modalAnimationVariants}
           initial="closed"
           animate={isOpen ? "open" : "closed"}
           transition={{ duration: 0.3 }}
         >
-          <div className="w-full h-full rounded-lg font-sans relative">
-            {children}
-            <motion.div
-              className="h-6 w-6 absolute top-2 right-2"
-              whileHover={{ scale: 1.2 }}
+          <motion.div
+            className="h-6 w-6 absolute top-8 left-8"
+            whileHover={{ scale: 1.2 }}
+          >
+            <div
+              className="bg-background h-10 w-10 rounded-full flex justify-center items-center shadow-2xl"
+              onClick={onClose}
             >
-              <Image
-                src="/x.svg"
-                alt="close"
-                layout="fill"
-                className="cursor-pointer transition-all hover:bg-primary rounded-full"
-                onClick={onClose}
-              />
-            </motion.div>
-          </div>
+              <IoArrowBack className="!text-foreground !w-6 !h-6" />
+            </div>
+          </motion.div>
+          <motion.div
+            className="h-4/5 w-full bg-background absolute bottom-0 rounded-t-5xl flex justify-center items-center"
+            variants={bottomSheetVariants}
+            initial="closed"
+            transition={{ duration: 0.3 }}
+          >
+            {children}
+          </motion.div>
         </motion.div>
       </div>
     )
   );
 };
 
-export default Modal;
+export default BottomSheet;
