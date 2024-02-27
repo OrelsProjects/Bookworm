@@ -12,6 +12,7 @@ import Header from "./_components/header";
 import BottomSheetProvider from "./providers/BottomSheetProvider";
 import BottomBar from "../components/bottomBar/bottomBar";
 import BottomBarProvider from "./providers/BottomBarProvider";
+import NavigationProvider from "./providers/NavigationProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,19 +33,21 @@ export default function RootLayout({
       >
         <StoreProvider>
           <AuthProvider>
-            <APIProvider>
-              <DataProvider>
-                <AnimationProvider>
-                  <div className="!font-sans w-full h-full flex flex-col justify-center items-center p-4">
-                    <Header className="pb-3" />
-                    {children}
-                  </div>
-                </AnimationProvider>
-                <BottomSheetProvider />
-                <BottomBarProvider />
-                <Toaster />
-              </DataProvider>
-            </APIProvider>
+            <NavigationProvider>
+              <APIProvider>
+                <DataProvider>
+                  <AnimationProvider>
+                    <div className="!font-sans w-full h-full flex flex-col justify-center items-center p-4">
+                      <Header className="pb-3" />
+                      {children}
+                    </div>
+                  </AnimationProvider>
+                  <BottomSheetProvider />
+                  <BottomBarProvider />
+                  <Toaster />
+                </DataProvider>
+              </APIProvider>
+            </NavigationProvider>
           </AuthProvider>
         </StoreProvider>
       </body>
