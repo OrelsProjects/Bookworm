@@ -1,72 +1,75 @@
 "use client";
 
 import { Button } from "./button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Loading from "./loading";
 
 export type TabItems = TabItem[];
 
 export interface TabItem {
   label: string;
-  href: string;
-  selected?: boolean;
+  value: string;
   loading?: boolean;
+  icon?: React.ReactNode;
+  className?: string;
 }
 
 interface TabsProps {
   items: TabItem[];
-  manualSelection?: boolean; // Should the selected be set by the parent
-  onClick?: (href: string) => void; // Change the prop name to onClick
+  Title?: React.FC<any>;
+  onClick?: (item: TabItem) => void; // Change the prop name to onClick
 }
 
-const Tabs = ({
-  items,
-  manualSelection: manualSelected,
-  onClick,
-}: TabsProps) => {
-  const [selectedValue, setSelectedValue] = useState<string>("");
+const Tabs = ({ items, Title, onClick }: TabsProps) => {
+  const [selectedItem, setSelectedItem] = useState<TabItem | null>(
+    items[0] ?? null
+  );
 
-  useEffect(() => {
-    const selected = items.find((item) => item.selected);
-    if (selected) {
-      setSelectedValue(selected.href);
-    }
-  }, [items]);
+  console.log("rendering tabs");
 
-  const handleClick = (href: string) => {
-    if (!manualSelected) {
-      setSelectedValue(items.find((item) => item.href === href)?.href ?? ""); // Find the index of the clicked item
-    }
+  const handleClick = (item: TabItem) => {
+    setSelectedItem(item);
     if (onClick) {
-      onClick(href);
+      onClick(item);
     }
   };
 
   return (
-    <div className="bg-primary-foreground p-2 rounded-full flex justify-center items-center gap-2">
-      {items.map((item) => (
-        <Button
-          key={item.href}
-          onClick={() => handleClick(item.href)}
-          variant={`${selectedValue === item.href ? "selected" : "default"}`}
-          className="rounded-full"
-          size={"md"}
-        >
-          <div className="w-full h-full flex justify-center items-center relative">
-            <div className={`${item.loading ? "invisible" : ""}`}>
-              {item.label}
+    <div className="flex flex-col gap-2 p-2 w-full">
+      {Title && <Title />}
+      <div className="rounded-full overflow-x-auto w-full flex items-center gap-2">
+        {items.map((item) => (
+          <Button
+            key={`tab-${item.value}`}
+            onClick={() => handleClick(item)}
+            variant="outline"
+            className={`rounded-full flex-shrink-0 !min-w-20 h-8 px-4 w-max ${
+              selectedItem?.value === item?.value
+                ? "bg-primary border-primary"
+                : ""
+            } ${item.className}`}
+          >
+            <div className="w-full h-full flex justify-center items-center relative">
+              <div
+                className={`flex flex-row gap-2 items-center ${
+                  item.loading ? "invisible" : ""
+                }`}
+              >
+                {item.icon}
+                {item.label}
+              </div>
+              <Loading
+                className={`${
+                  item.loading
+                    ? "w-full h-full absolute top-0 left-0 right-0 bottom-0"
+                    : "hidden"
+                }`}
+                spinnerClassName="!fill-primary"
+              />
             </div>
-            <Loading
-              className={`${
-                item.loading
-                  ? "w-full h-full absolute top-0 left-0 right-0 bottom-0"
-                  : "hidden"
-              }`}
-              spinnerClassName="!fill-primary"
-            />
-          </div>
-        </Button>
-      ))}
+          </Button>
+        ))}
+      </div>
     </div>
   );
 };

@@ -10,11 +10,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectUserBooks } from "@/src/lib/features/userBooks/userBooksSlice";
 import Papa from "papaparse";
 import { EventTracker } from "@/src/eventTracker";
-import { ModalTypes, showModal } from "../../lib/features/modal/modalSlice";
+import {
+  BottomSheetTypes,
+  showBottomSheet,
+} from "../../lib/features/modal/modalSlice";
 
 const FEEDBACK_GIVEN = "feedback_given";
 
-const Avatar: React.FC = () => {
+type AvatarProps = {
+  avatarUrl?: string;
+};
+
+const Avatar: React.FC<AvatarProps> = ({ avatarUrl }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { userBooksData } = useSelector(selectUserBooks);
@@ -70,7 +77,7 @@ const Avatar: React.FC = () => {
     router.push("/privacy-policy");
     toggleDropdown();
   };
-
+  console.log("render avatar");
   return (
     <div className="relative rounded-full">
       <Image
@@ -85,21 +92,21 @@ const Avatar: React.FC = () => {
         <div className="absolute top-full right-0 w-36 mt-2">
           <Dropdown
             items={[
-              {
-                label: "Import Books",
-                leftIcon: (
-                  <Image
-                    src="/import.svg"
-                    alt="import"
-                    fill
-                    className="!relative !w-8 !h-7"
-                  />
-                ),
-                position: 0,
-                onClick: () => {
-                  dispatch(showModal({ type: ModalTypes.IMPORT_BOOKS }));
-                },
-              },
+              // {
+              //   label: "Import Books",
+              //   leftIcon: (
+              //     <Image
+              //       src="/import.svg"
+              //       alt="import"
+              //       fill
+              //       className="!relative !w-8 !h-7"
+              //     />
+              //   ),
+              //   position: 0,
+              //   onClick: () => {
+              //     dispatch(showBottomSheet({ type: BottomSheetTypes.IMPORT_BOOKS }));
+              //   },
+              // },
               {
                 label: "Feedback",
                 leftIcon: (

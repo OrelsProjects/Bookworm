@@ -4,7 +4,7 @@ import Image from "next/image";
 import Loading from "../loading";
 import { Book } from "@/src/models";
 import { useDispatch } from "react-redux";
-import { ModalTypes, showModal } from "@/src/lib/features/modal/modalSlice";
+import { BottomSheetTypes, showBottomSheet } from "@/src/lib/features/modal/modalSlice";
 
 export interface BookButtonProps {
   loading?: boolean;
@@ -68,7 +68,7 @@ const AddToReadListButton = ({
       variant="accent"
       onClick={() =>
         dispatch(
-          showModal({ book: book, type: ModalTypes.ADD_BOOK_TO_READ_LIST })
+          showBottomSheet({ book: book, type: BottomSheetTypes.ADD_BOOK_TO_READ_LIST })
         )
       }
       className={`rounded-full relative ${className}`}
@@ -96,7 +96,7 @@ const AddToBacklogButton = ({
     <Button
       variant="selected"
       onClick={() => {
-        dispatch(showModal({ book, type: ModalTypes.ADD_BOOK_TO_BACKLOG }));
+        dispatch(showBottomSheet({ book, type: BottomSheetTypes.ADD_BOOK_TO_BACKLOG }));
       }}
       className={`rounded-full ${className}`}
     >
@@ -117,7 +117,7 @@ const ShowDetailsButton = ({
     <Button
       variant="outline"
       onClick={() =>
-        dispatch(showModal({ book, type: ModalTypes.BOOK_DETAILS }))
+        dispatch(showBottomSheet({ book, type: BottomSheetTypes.BOOK_DETAILS }))
       }
       className={`rounded-full border-none w-28 h-10 ${className}`}
     >

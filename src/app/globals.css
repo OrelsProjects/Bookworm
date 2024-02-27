@@ -25,7 +25,7 @@ input[type="text"]:-moz-ui-autofill {
 @layer base {
   :root {
     /* Selected button (Primary/Default) */
-    --primary: 0, 157, 255;
+    --primary: 193, 89, 89;
     /* Primary/Medium */
     --primary-foreground: 9, 72, 123;
     /* Primary/weak */
@@ -34,7 +34,7 @@ input[type="text"]:-moz-ui-autofill {
     --secondary: 21, 63, 102;
     --background: 20, 20, 20;
     /* Text main color (Neutral/Default) */
-    --foreground: 255, 255, 255;
+    --foreground: 245, 245, 245;
     /* Text secondary color (Neutral/Strong) */
     --muted: 193, 202, 209;
     /* Surface/Primary */
@@ -58,6 +58,8 @@ input[type="text"]:-moz-ui-autofill {
 
     /* Border Radius */
     --radius: 0.5rem;
+
+    --tw-shadow-color: var(--background);
   }
 
   .dark {
@@ -103,6 +105,7 @@ input[type="text"]:-moz-ui-autofill {
 
     /* Border Radius */
     --radius: 0.5rem;
+    --tw-shadow-color: var(--background);
   }
 }
 
@@ -111,14 +114,14 @@ input[type="text"]:-moz-ui-autofill {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply bg-background text-foreground font-roboto;
   }
   body,
   input,
   textarea,
   select,
   button {
-    @apply font-sans;
+    @apply font-roboto;
   }
 }
 
@@ -177,11 +180,16 @@ input[type="text"]:-moz-ui-autofill {
     max-height: 850px; /* Adjust based on your line height and font size to fit exactly 10 lines */
     max-width: 750px; /* Adjust as necessary */
   }
+
+  .extra-text-shadow {
+    box-shadow: 1px 2px 10px 12px rgba(var(--background), 1);
+  }
 }
 
-/* width */
+/* Size */
 ::-webkit-scrollbar {
   width: 4px;
+  height: 0px; /* Decrease the height to make the thumb slimmer */
 }
 
 /* Track */

@@ -115,6 +115,7 @@ module.exports = {
       },
       fontFamily: {
         sans: ["DM Sans", "sans-serif"],
+        roboto: ["Roboto", "sans-serif"],
       },
     },
   },
