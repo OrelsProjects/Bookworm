@@ -10,7 +10,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectUserBooks } from "@/src/lib/features/userBooks/userBooksSlice";
 import Papa from "papaparse";
 import { EventTracker } from "@/src/eventTracker";
-import { BottomSheetTypes, showBottomSheet } from "../../lib/features/modal/modalSlice";
+import {
+  BottomSheetTypes,
+  showBottomSheet,
+} from "../../lib/features/modal/modalSlice";
 
 const FEEDBACK_GIVEN = "feedback_given";
 
@@ -89,21 +92,21 @@ const Avatar: React.FC<AvatarProps> = ({ avatarUrl }) => {
         <div className="absolute top-full right-0 w-36 mt-2">
           <Dropdown
             items={[
-              {
-                label: "Import Books",
-                leftIcon: (
-                  <Image
-                    src="/import.svg"
-                    alt="import"
-                    fill
-                    className="!relative !w-8 !h-7"
-                  />
-                ),
-                position: 0,
-                onClick: () => {
-                  dispatch(showBottomSheet({ type: BottomSheetTypes.IMPORT_BOOKS }));
-                },
-              },
+              // {
+              //   label: "Import Books",
+              //   leftIcon: (
+              //     <Image
+              //       src="/import.svg"
+              //       alt="import"
+              //       fill
+              //       className="!relative !w-8 !h-7"
+              //     />
+              //   ),
+              //   position: 0,
+              //   onClick: () => {
+              //     dispatch(showBottomSheet({ type: BottomSheetTypes.IMPORT_BOOKS }));
+              //   },
+              // },
               {
                 label: "Feedback",
                 leftIcon: (

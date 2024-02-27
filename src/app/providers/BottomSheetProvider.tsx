@@ -10,9 +10,6 @@ import { Book } from "@/src/models";
 import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BottomSheet } from "../../components";
-import AddBookToBacklog, {
-  ListType,
-} from "../../components/bottomSheet/addBookToList";
 import ModalBookDetails from "../../components/bottomSheet/modalBookDetails";
 
 type RenderComponentProps = {
