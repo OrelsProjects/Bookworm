@@ -40,9 +40,10 @@ const useTable = () => {
   };
 
   const getFilteredBooks = (tableType: TableType, search: string) => {
-    return getSearchBooks(search).filter(
-      (userBook) => userBook.readingStatus?.readingStatusId === tableType
-    );
+    return getSearchBooks(search)
+    // .filter(
+    //   (userBook) => userBook.readingStatus?.readingStatusId === tableType
+    // );
   };
 
   const updateUserBooks = (
