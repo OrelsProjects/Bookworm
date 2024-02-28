@@ -18,13 +18,14 @@ import { TabItem } from "../../components/tabs";
 import useBook, { BookSort } from "../../hooks/useBook";
 import useTable from "../../hooks/useTable";
 import useScrollPosition from "../../hooks/useScrollPosition";
+import { SearchBarComponent } from "../../components/search/searchBarComponent";
 
 export default function MyLibrary(): React.ReactNode {
   const { scrollableDivRef } = useScrollPosition({
     onThreshold: () => nextPage(),
   });
-  const { userBooks, sortBooks, nextPage } = useTable();
-  
+  const { userBooks, sortBooks, nextPage, searchBooks } = useTable();
+
   const dispatch = useDispatch();
   const [userBookDataSorted, setUserBookDataSorted] = React.useState<
     UserBookData[]
@@ -72,7 +73,10 @@ export default function MyLibrary(): React.ReactNode {
 
   return (
     <div className="w-full h-full flex flex-col gap-4 pb-4">
-      <SearchBar />
+      <SearchBarComponent
+        onChange={(value: string) => searchBooks(value)}
+        onSubmit={(value: string) => searchBooks(value)}
+      />
       <Tabs
         Title={() => <div className="font-bold text-2xl">Sort by</div>}
         items={sorterTabItems}
