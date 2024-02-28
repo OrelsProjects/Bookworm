@@ -24,7 +24,7 @@ export const DeleteButton = ({
     {loading ? (
       <Loading spinnerClassName="!fill-primary" />
     ) : (
-      <Image
+      <img
         src="/delete.svg"
         alt="Delete"
         fill
@@ -47,7 +47,7 @@ const FavoriteButton = ({
     {loading ? (
       <Loading spinnerClassName="!fill-primary" />
     ) : (
-      <Image
+      <img
         src={isFavorite ? "/favoriteFilled.svg" : "/favorite.svg"}
         alt="Favorite"
         fill

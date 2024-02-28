@@ -35,7 +35,7 @@ export default function Modal({
 
   const ThumbnailAndDetails = () => (
     <div className="flex flex-row items-center justify-center gap-4 absolute !left-8">
-      <Image
+      <img
         src={book.thumbnailUrl ?? "/thumbnailPlaceholder.png"}
         alt={book.title}
         layout="fill"

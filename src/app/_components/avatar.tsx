@@ -80,7 +80,7 @@ const Avatar: React.FC<AvatarProps> = ({ avatarUrl }) => {
   console.log("render avatar");
   return (
     <div className="relative rounded-full">
-      <Image
+      <img
         src="/avatar.png"
         height={36}
         width={36}
@@ -95,7 +95,7 @@ const Avatar: React.FC<AvatarProps> = ({ avatarUrl }) => {
               // {
               //   label: "Import Books",
               //   leftIcon: (
-              //     <Image
+              //     <img
               //       src="/import.svg"
               //       alt="import"
               //       fill
@@ -110,7 +110,7 @@ const Avatar: React.FC<AvatarProps> = ({ avatarUrl }) => {
               {
                 label: "Feedback",
                 leftIcon: (
-                  <Image
+                  <img
                     src="/feedbackIcon.png"
                     fill
                     alt="feedback"
@@ -125,7 +125,7 @@ const Avatar: React.FC<AvatarProps> = ({ avatarUrl }) => {
               {
                 label: "Privacy",
                 leftIcon: (
-                  <Image
+                  <img
                     src="/privacy.png"
                     height={24}
                     width={24}
@@ -138,7 +138,7 @@ const Avatar: React.FC<AvatarProps> = ({ avatarUrl }) => {
               {
                 label: "Sign Out",
                 leftIcon: (
-                  <Image
+                  <img
                     src="/signOut.svg"
                     height={24}
                     width={24}
@@ -151,7 +151,7 @@ const Avatar: React.FC<AvatarProps> = ({ avatarUrl }) => {
               // {
               //   label: "Export Data",
               //   leftIcon: (
-              //     <Image
+              //     <img
               //       src="/export.svg"
               //       height={24}
               //       width={24}

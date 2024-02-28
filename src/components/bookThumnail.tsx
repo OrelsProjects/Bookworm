@@ -37,7 +37,7 @@ const BookThumbnail: React.FC<BookThumbnailProps> = ({
   const bookTitle = book?.title ?? title;
 
   return (
-    <Image
+    <img
       src={thumbnailUrl ?? "/thumbnailPlaceholder.png"}
       alt={`${bookTitle} thumbnail`}
       fill={fill}
