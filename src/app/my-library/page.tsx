@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { SearchBar, Tabs } from "../../components";
 import { filterTabItems, sorterTabItems } from "./_consts";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,18 +16,24 @@ import Authors from "../../components/book/authors";
 import { Add } from "../../components/icons";
 import { TabItem } from "../../components/tabs";
 import useBook, { BookSort } from "../../hooks/useBook";
+import useTable from "../../hooks/useTable";
+import useScrollPosition from "../../hooks/useScrollPosition";
 
 export default function MyLibrary(): React.ReactNode {
+  const { scrollableDivRef } = useScrollPosition({
+    onThreshold: () => nextPage(),
+  });
+  const { userBooks, sortBooks, nextPage } = useTable();
+  
   const dispatch = useDispatch();
-  const { userBooksData, sortBooks } = useBook();
   const [userBookDataSorted, setUserBookDataSorted] = React.useState<
     UserBookData[]
   >([]);
   const [sortBy, setSortBy] = React.useState<BookSort>(BookSort.DateAdded);
 
   useEffect(() => {
-    setUserBookDataSorted(sortBooks(sortBy, userBooksData));
-  }, [sortBy, userBooksData]);
+    setUserBookDataSorted(sortBooks(sortBy, userBooks));
+  }, [sortBy, userBooks]);
 
   const onBookClick = (book?: Book) =>
     dispatch(showBottomSheet({ book, type: BottomSheetTypes.BOOK_DETAILS }));
@@ -76,7 +82,10 @@ export default function MyLibrary(): React.ReactNode {
         Title={() => <div className="font-bold text-2xl">Filter by</div>}
         items={filterTabItems}
       />
-      <div className="flex flex-col gap-3 overflow-y-auto h-96 scrollbar-hide">
+      <div
+        className="flex flex-col gap-3 overflow-y-auto h-96 scrollbar-hide"
+        ref={scrollableDivRef}
+      >
         {userBookDataSorted
           .map((userBookdata) => userBookdata.bookData.book)
           ?.map((book) => (
