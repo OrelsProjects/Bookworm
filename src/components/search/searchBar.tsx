@@ -15,9 +15,10 @@ export interface CustomSearchBarProps {
 
 export interface SearchBarProps {
   className?: string;
+  onSearch?: (text: string) => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ className }: SearchBarProps) => {
+const SearchBar: React.FC<SearchBarProps> = ({ className, onSearch }: SearchBarProps) => {
   const { loading, error, updateSearchValue, books }: UseSearchResult =
     useSearch();
 
@@ -27,7 +28,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ className }: SearchBarProps) => {
     }
   }, [error]);
 
-  const onSubmit = (value: string) => updateSearchValue(value);
+  const onSubmit = (value: string) => onSearch ? onSearch(value) : updateSearchValue(value);
   const onChange = (value: string) => updateSearchValue(value);
 
   // const classItems = "px-6 py-4 rounded-t-3xl rounded-b-lg";

@@ -25,7 +25,7 @@ export const SearchBarComponent: React.FC<SearchBarComponentProps> = ({
 
   return (
     <div
-      className={`w-full flex justify-between items-center bg-secondary ${className}`}
+      className={`w-full flex justify-between items-center ${className}`}
     >
       <form
         onSubmit={(event: any) => {
