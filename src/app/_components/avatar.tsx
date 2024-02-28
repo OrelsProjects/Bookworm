@@ -112,7 +112,6 @@ const Avatar: React.FC<AvatarProps> = ({ avatarUrl }) => {
                 leftIcon: (
                   <img
                     src="/feedbackIcon.png"
-                    fill
                     alt="feedback"
                     className="!relative !w-8 !h-7"
                   />

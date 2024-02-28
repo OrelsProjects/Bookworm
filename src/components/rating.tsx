@@ -31,7 +31,7 @@ export const RatingStar: React.FC<StarProps> = ({
   return (
     <div className={className}>
       {imageFill ? (
-        <img src={starSrc} alt="Star" fill onClick={onClick} />
+        <img src={starSrc} alt="Star" onClick={onClick} />
       ) : (
         <img
           src={starSrc}

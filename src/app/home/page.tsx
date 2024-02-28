@@ -59,7 +59,6 @@ const BookComponent: React.FC<BookProps> = React.memo(({ book }) => {
             alt={book.title}
             width={150}
             height={200}
-            layout="responsive"
             onClick={onBookClick}
             className="!w-full !h-full rounded-lg"
           />

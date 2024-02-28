@@ -40,12 +40,9 @@ const BookThumbnail: React.FC<BookThumbnailProps> = ({
     <img
       src={thumbnailUrl ?? "/thumbnailPlaceholder.png"}
       alt={`${bookTitle} thumbnail`}
-      fill={fill}
       height={fill ? undefined : height ?? 64}
       width={fill ? undefined : width ?? 80}
       onClick={onClick && book ? () => onClick(book) : undefined}
-      placeholder={placeholder ?? "blur"}
-      blurDataURL={blurDataURL ?? "/thumbnailPlaceholder.png"}
       className={`rounded-lg ${className}`}
     />
   );
