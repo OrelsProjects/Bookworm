@@ -40,7 +40,7 @@ export const SearchBarComponent: React.FC<SearchBarComponentProps> = ({
           htmlFor="search-bar"
           className="relative flex flex-row w-full bg-background rounded-full border-2 px-4 py-1"
         >
-          <Image
+          <img
             src="search.svg"
             alt="Search"
             height={32}
@@ -56,7 +56,7 @@ export const SearchBarComponent: React.FC<SearchBarComponentProps> = ({
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <Image
+          <img
             src="x.svg"
             alt="clear"
             height={32}

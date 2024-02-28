@@ -60,7 +60,7 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({ book }) => {
   const ThumbnailAndDetails = () => (
     <div className="w-full flex flex-col items-center justify-center gap-4 absolute">
       <div className="w-full flex flex-row justify-evenly">
-        <Image
+        <img
           src={book.thumbnailUrl ?? "/thumbnailPlaceholder.png"}
           alt={book.title}
           layout="fill"

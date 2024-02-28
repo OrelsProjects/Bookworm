@@ -54,7 +54,7 @@ const BookComponent: React.FC<BookProps> = React.memo(({ book }) => {
     book && (
       <div className="text-foreground text-center flex flex-col justify-center items-center gap-2">
         <div className="rounded-lg overflow-visible w-24 h-36 relative">
-          <Image
+          <img
             src={book.thumbnailUrl ?? ""}
             alt={book.title}
             width={150}
