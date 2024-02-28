@@ -28,7 +28,6 @@ const Login: React.FC = () => {
       <img
         src="/logo.png"
         alt="Bookshelf Logo"
-        fill
         className="!relative !w-96 !h-72"
       />
       <div className="flex flex-col gap-2 text-base">
@@ -46,7 +45,6 @@ const Login: React.FC = () => {
             alt="Google Logo"
             width={24}
             height={24}
-            layout="fixed"
           />
           <div className="font-normal text-base">Continue with Google</div>
         </div>

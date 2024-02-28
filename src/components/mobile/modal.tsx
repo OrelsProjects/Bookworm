@@ -38,8 +38,6 @@ export default function Modal({
       <img
         src={book.thumbnailUrl ?? "/thumbnailPlaceholder.png"}
         alt={book.title}
-        layout="fill"
-        objectFit="cover"
         className="rounded-lg !w-28 !h-44 !relative"
       />
       <div className="flex flex-col justify-center items-start gap-4 mt-14">

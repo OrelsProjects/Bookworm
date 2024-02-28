@@ -63,8 +63,6 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({ book }) => {
         <img
           src={book.thumbnailUrl ?? "/thumbnailPlaceholder.png"}
           alt={book.title}
-          layout="fill"
-          objectFit="cover"
           className="rounded-lg !w-28 !h-44 !relative flex-shrink-0"
         />
         <div className="flex flex-col justify-center items-start gap-4 mt-14 w-2/4">

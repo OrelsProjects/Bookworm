@@ -27,7 +27,6 @@ export const DeleteButton = ({
       <img
         src="/delete.svg"
         alt="Delete"
-        fill
         className="rounded-full !relative !w-6 !h-6 overflow-visible"
       />
     )}
@@ -50,7 +49,6 @@ const FavoriteButton = ({
       <img
         src={isFavorite ? "/favoriteFilled.svg" : "/favorite.svg"}
         alt="Favorite"
-        fill
         className="rounded-full !relative !w-4 !h-4"
       />
     )}
