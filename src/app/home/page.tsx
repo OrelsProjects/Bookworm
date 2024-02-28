@@ -1,29 +1,41 @@
 "use client";
 
-import React from "react";
+import React, { useCallback } from "react";
 import { useRouter } from "next/navigation";
 import SearchBar from "../../components/search/searchBar";
 import { Book } from "../../models";
 import Image from "next/image";
-import { useDispatch, useSelector } from "react-redux";
-import { selectUserBooks } from "../../lib/features/userBooks/userBooksSlice";
+import { useDispatch } from "react-redux";
 import { removeSubtitle } from "../../utils/bookUtils";
 import { Add } from "../../components/icons";
 import {
   BottomSheetTypes,
   showBottomSheet,
 } from "../../lib/features/modal/modalSlice";
+import useScrollPosition, {
+  ScrollDirection,
+} from "../../hooks/useScrollPosition";
+import useTable from "../../hooks/useTable";
 
 export default function Home(): React.ReactNode {
   const router = useRouter();
-  const { userBooksData } = useSelector(selectUserBooks);
+  const { userBooks, sortBooks, nextPage } = useTable();
+  const { scrollableDivRef } = useScrollPosition({
+    onThreshold: () => nextPage(),
+    scrollDirection: ScrollDirection.Width,
+  });
+
+  const onSeeAllClick = useCallback(() => {
+    router.push("/my-library");
+  }, [router]);
 
   return (
     <div className="h-full w-full flex flex-col relative justify-top items-start gap-6 p-3">
       <SearchBar />
       <BookList
-        books={userBooksData.map((ubd) => ubd.bookData.book)}
-        onSeeAllClick={() => router.push("/my-library")}
+        books={userBooks.map((ubd) => ubd.bookData.book)}
+        onSeeAllClick={onSeeAllClick}
+        scrollableDivRef={scrollableDivRef}
       />
     </div>
   );
@@ -33,7 +45,7 @@ interface BookProps {
   book?: Book;
 }
 
-const BookComponent: React.FC<BookProps> = ({ book }) => {
+const BookComponent: React.FC<BookProps> = React.memo(({ book }) => {
   const dispatch = useDispatch();
   const onBookClick = () =>
     dispatch(showBottomSheet({ book, type: BottomSheetTypes.BOOK_DETAILS }));
@@ -64,13 +76,19 @@ const BookComponent: React.FC<BookProps> = ({ book }) => {
       </div>
     )
   );
-};
+});
 
 type BookListProps = {
   books?: (Book | undefined)[];
   onSeeAllClick?: () => void;
+  scrollableDivRef?: React.RefObject<HTMLDivElement>;
 };
-const BookList: React.FC<BookListProps> = ({ books, onSeeAllClick }) => {
+
+const BookList: React.FC<BookListProps> = ({
+  books,
+  onSeeAllClick,
+  scrollableDivRef,
+}) => {
   return (
     <div className="w-full overflow-auto flex flex-col gap-2">
       <div className="w-full flex justify-between">
@@ -79,7 +97,10 @@ const BookList: React.FC<BookListProps> = ({ books, onSeeAllClick }) => {
           See all
         </div>
       </div>
-      <div className="flex flex-row gap-2 w-full overflow-auto">
+      <div
+        className="flex flex-row gap-2 w-full overflow-auto"
+        ref={scrollableDivRef}
+      >
         {books?.map((book, index) => (
           <BookComponent key={index} book={book} />
         ))}

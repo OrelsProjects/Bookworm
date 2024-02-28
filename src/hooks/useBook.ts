@@ -211,9 +211,7 @@ const useBook = () => {
       );
       if (currentUserBooks) {
         if (Array.isArray(currentUserBooks)) {
-          dispatch(
-            setUserBooks(sortBooks(BookSort.DateAdded, currentUserBooks))
-          );
+          dispatch(setUserBooks(sortByDateAdded([...currentUserBooks])));
         }
       }
 
@@ -237,7 +235,7 @@ const useBook = () => {
       );
 
       let { result } = response.data;
-      result = sortBooks(BookSort.DateAdded, result ?? []);
+      result = sortByDateAdded([...(result ?? [])]);
       dispatch(setUserBooks(result ?? []));
       dispatch(setError(null));
     } catch (error: any) {
@@ -334,36 +332,6 @@ const useBook = () => {
     return userBookData;
   };
 
-  const sortBooks = (
-    sort: BookSort,
-    userBookDataToSort: UserBookData[]
-  ): UserBookData[] => {
-    try {
-      let sortedUserBooks: UserBookData[] = userBookDataToSort;
-      switch (sort) {
-        case BookSort.Title:
-          sortedUserBooks = sortByTitle([...userBookDataToSort]);
-          break;
-        case BookSort.Author:
-          sortedUserBooks = sortByAuthor([...userBookDataToSort]);
-          break;
-        case BookSort.DateAdded:
-          sortedUserBooks = sortByDateAdded([...userBookDataToSort]);
-          break;
-      }
-      return sortedUserBooks;
-    } catch (error: any) {
-      Logger.error("Error sorting books", {
-        data: {
-          sort,
-          userBookDataToSort,
-        },
-        error,
-      });
-      return userBookDataToSort;
-    }
-  };
-
   return {
     getBookGoodreadsData,
     updateUserBook,
@@ -373,7 +341,6 @@ const useBook = () => {
     deleteUserBook,
     getBookFullData,
     userBooksData,
-    sortBooks,
     loading,
   };
 };
