@@ -7,7 +7,7 @@ import useBook from "@/src/hooks/useBook";
 import toast from "react-hot-toast";
 import { Logger } from "@/src/logger";
 import { isBooksEqualExactly, removeSubtitle } from "@/src/utils/bookUtils";
-import BookThumbnail from "../bookThumnail";
+import BookThumbnail from "../book/bookThumbnail";
 import { Add, Bookmark, Checkmark } from "../icons";
 import Title from "../book/title";
 import Authors from "../book/authors";

@@ -36,16 +36,11 @@ const Login: React.FC = () => {
       </div>
       <Button
         onClick={handleGoogleLogin}
-        variant="accent"
+        variant="outline"
         className="rounded-full w-full"
       >
         <div className="h-full w-full flex flex-row gap-2">
-          <img
-            src="/google-logo.png"
-            alt="Google Logo"
-            width={24}
-            height={24}
-          />
+          <img src="/google.png" alt="Google Logo" width={24} height={24} />
           <div className="font-normal text-base">Continue with Google</div>
         </div>
       </Button>

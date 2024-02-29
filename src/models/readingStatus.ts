@@ -6,10 +6,10 @@ export enum ReadingStatusEnum {
 export const DEFAULT_READING_STATUS = 2;
 
 class ReadingStatus {
-  readingStatusId: number;
+  readingStatusId: ReadingStatusEnum;
   statusName: string;
 
-  constructor(readingStatusId?: number, statusName?: string) {
+  constructor(readingStatusId?: ReadingStatusEnum, statusName?: string) {
     this.readingStatusId = readingStatusId ?? DEFAULT_READING_STATUS;
     this.statusName = statusName ?? "";
   }

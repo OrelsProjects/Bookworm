@@ -1,12 +1,12 @@
 import { PlaceholderValue } from "next/dist/shared/lib/get-img-props";
 
 import React from "react";
-import { Book } from "../models";
+import { Book } from "../../models";
 import { useDispatch } from "react-redux";
 import {
   BottomSheetTypes,
   showBottomSheet,
-} from "../lib/features/modal/modalSlice";
+} from "../../lib/features/modal/modalSlice";
 
 export interface BookThumbnailProps {
   title?: string;
@@ -14,11 +14,11 @@ export interface BookThumbnailProps {
   book?: Book;
   height?: number;
   width?: number;
-  fill?: boolean;
   placeholder?: PlaceholderValue;
   blurDataURL?: string;
   className?: string;
   onClick?: (book: Book) => void;
+  Icon?: React.ReactNode;
 }
 
 const BookThumbnail: React.FC<BookThumbnailProps> = ({
@@ -27,24 +27,27 @@ const BookThumbnail: React.FC<BookThumbnailProps> = ({
   book,
   height,
   width,
-  fill,
   placeholder,
   blurDataURL,
   className,
   onClick,
+  Icon,
 }) => {
   const thumbnailUrl = book?.thumbnailUrl ?? src;
   const bookTitle = book?.title ?? title;
 
   return (
-    <img
-      src={thumbnailUrl ?? "/thumbnailPlaceholder.png"}
-      alt={`${bookTitle} thumbnail`}
-      height={fill ? undefined : height ?? 64}
-      width={fill ? undefined : width ?? 80}
-      onClick={onClick && book ? () => onClick(book) : undefined}
-      className={`rounded-lg ${className}`}
-    />
+    <div className="w-fit h-fit relative flex-shrink-0">
+      <img
+        src={thumbnailUrl ?? "/thumbnailPlaceholder.png"}
+        alt={`${bookTitle} thumbnail`}
+        height={height}
+        width={width}
+        onClick={onClick && book ? () => onClick(book) : undefined}
+        className={`rounded-lg ${className}`}
+      />
+      {Icon}
+    </div>
   );
 };
 

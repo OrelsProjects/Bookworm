@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Book, GoodreadsData, User, UserBook, UserBookData } from "../models";
 import axios from "axios";
 import { Books, CreateBooksResponse } from "../models/book";
@@ -19,7 +19,7 @@ import {
 import { IResponse } from "../models/dto/response";
 import { setError } from "../lib/features/auth/authSlice";
 import { RootState } from "../lib/store";
-import ReadingStatus from "../models/readingStatus";
+import ReadingStatus, { ReadingStatusEnum } from "../models/readingStatus";
 import { Logger } from "../logger";
 import { EventTracker } from "../eventTracker";
 import { BookData } from "../models/userBook";
@@ -40,15 +40,15 @@ export enum BookSort {
 }
 
 const useBook = () => {
-  const [loading, setLoading] = useState(false);
+  const loading = useRef(false);
   const dispatch = useDispatch();
   const { userBooksData } = useSelector((state: RootState) => state.userBooks);
 
   const favoriteBook = async (userBook: UserBook): Promise<void> => {
-    if (loading) {
+    if (loading.current) {
       throw new Error("Cannot favorite book while another book is loading");
     }
-    setLoading(true);
+    loading.current = true;
     try {
       const isFavorite = !userBook.isFavorite;
       const updateUserBookBody: UpdateUserBookBody = {
@@ -79,15 +79,15 @@ const useBook = () => {
         error,
       });
     } finally {
-      setLoading(false);
+      loading.current = false;
     }
   };
 
   const deleteUserBook = async (userBook: UserBook): Promise<void> => {
-    if (loading) {
+    if (loading.current) {
       throw new Error("Cannot delete book while another book is loading");
     }
-    setLoading(true);
+    loading.current = true;
     try {
       const response = await axios.delete<IResponse<void>>("/api/user-books", {
         data: {
@@ -111,7 +111,7 @@ const useBook = () => {
       }
       throw error;
     } finally {
-      setLoading(false);
+      loading.current = false;
     }
   };
 
@@ -125,10 +125,10 @@ const useBook = () => {
     readingStartDate?: string,
     readingFinishDate?: string
   ): Promise<UserBook> => {
-    if (loading) {
+    if (loading.current) {
       throw new Error("Cannot add book while another book is loading");
     }
-    setLoading(true);
+    loading.current = true;
     EventTracker.track("User add book", {
       book,
       isFavorite,
@@ -141,7 +141,7 @@ const useBook = () => {
     });
     try {
       const responseAddBooks = await axios.post<IResponse<CreateBooksResponse>>(
-        "/api/books",
+        "/api/book",
         book
       );
       const createBookResponse = responseAddBooks.data.result ?? {};
@@ -197,15 +197,17 @@ const useBook = () => {
       });
       throw error;
     } finally {
-      setLoading(false);
+      loading.current = false;
     }
   };
 
   const loadUserBooks = async (user?: User): Promise<void> => {
     try {
-      if (loading) {
+      if (loading.current) {
         return;
       }
+      loading.current = true;
+
       let currentUserBooks = JSON.parse(
         localStorage.getItem("userBooks") ?? "[]"
       );
@@ -215,7 +217,6 @@ const useBook = () => {
         }
       }
 
-      setLoading((loading) => !loading);
       dispatch(
         setUserBooksLoading({ loading: true, dontLoadIfBooksExist: false })
       ); // Show loading to prevent empty screen from showing while redux is loading
@@ -241,7 +242,7 @@ const useBook = () => {
     } catch (error: any) {
       dispatch(setError(error.message));
     } finally {
-      setLoading(false);
+      loading.current = false;
       dispatch(setUserBooksLoading({ loading: false }));
     }
   };
@@ -280,10 +281,11 @@ const useBook = () => {
   const updateUserBook = async (
     updateBookBody: UpdateUserBookBody
   ): Promise<UserBook> => {
-    if (loading) {
-      throw new Error("Cannot update user book while another book is loading");
+    console.log(loading);
+    if (loading.current) {
+      throw new Error("Cannot update book while another book is loading");
     }
-    setLoading(true);
+    loading.current = true;
     EventTracker.track("User update book", {
       updateBookBody,
     });
@@ -321,8 +323,21 @@ const useBook = () => {
       });
       throw error;
     } finally {
-      setLoading(false);
+      loading.current = false;
     }
+  };
+
+  const updateBookReadingStatus = async (
+    userBook: UserBook,
+    readingStatus: ReadingStatusEnum
+  ) => {
+    const updateBookBody: UpdateUserBookBody = {
+      userBookId: userBook.userBookId,
+      readingStatusId: readingStatus,
+    };
+    try {
+      await updateUserBook(updateBookBody);
+    } catch (error) {}
   };
 
   const getBookFullData = (book?: Book): UserBookData | null | undefined => {
@@ -335,6 +350,7 @@ const useBook = () => {
   return {
     getBookGoodreadsData,
     updateUserBook,
+    updateBookReadingStatus,
     loadUserBooks,
     addUserBook,
     favoriteBook,

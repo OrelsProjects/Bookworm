@@ -5,6 +5,7 @@ import { UserBookData } from "../models";
 import { Logger } from "../logger";
 import { BookSort } from "./useBook";
 import { sortByTitle, sortByAuthor, sortByDateAdded } from "../utils/bookUtils";
+import { ReadingStatusEnum } from "../models/readingStatus";
 
 export enum TableType {
   READ = 1,
@@ -59,11 +60,11 @@ const useTable = () => {
     setUserBooks(newUserBooks);
     setTotalRecords(userBooksData.length);
     const readBooks = userBooksData.filter(
-      (userBook) => userBook.readingStatus?.readingStatusId === TableType.READ
+      (userBook) => userBook.readingStatus?.readingStatusId === ReadingStatusEnum.READ
     );
     const toReadBooks = userBooksData.filter(
       (userBook) =>
-        userBook.readingStatus?.readingStatusId === TableType.TO_READ
+        userBook.readingStatus?.readingStatusId === ReadingStatusEnum.TO_READ
     );
     setReadBooksCount(readBooks.length);
     setToReadBooksCount(toReadBooks.length);
