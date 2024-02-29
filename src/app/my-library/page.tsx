@@ -72,22 +72,25 @@ export default function MyLibrary(): React.ReactNode {
   };
 
   return (
-    <div className="w-full h-full flex flex-col gap-4 pb-4">
+    <div className="w-full h-full flex flex-col gap-2 pb-4">
       <SearchBarComponent
         onChange={(value: string) => searchBooks(value)}
         onSubmit={(value: string) => searchBooks(value)}
+        placeholder="Search in Your Books..."
       />
-      <Tabs
-        Title={() => <div className="font-bold text-2xl">Sort by</div>}
-        items={sorterTabItems}
-        onClick={onSortClick}
-      />
-      <Tabs
-        Title={() => <div className="font-bold text-2xl">Filter by</div>}
-        items={filterTabItems}
-      />
+      <div className="flex flex-col gap-0">
+        <Tabs
+          Title={() => <div className="font-bold text-xl">Sort by</div>}
+          items={sorterTabItems}
+          onClick={onSortClick}
+        />
+        <Tabs
+          Title={() => <div className="font-bold text-xl">Filter by</div>}
+          items={filterTabItems}
+        />
+      </div>
       <div
-        className="flex flex-col gap-3 overflow-y-auto h-96 scrollbar-hide"
+        className="flex flex-col gap-3 overflow-y-auto h-96 scrollbar-hide mt-4"
         ref={scrollableDivRef}
       >
         {userBookDataSorted

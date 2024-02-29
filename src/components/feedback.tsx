@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import Image from "next/image";
+
 import { motion, useAnimation } from "framer-motion";
 import { EventTracker } from "../eventTracker";
 

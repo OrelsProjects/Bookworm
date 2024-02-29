@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "../button";
-import Image from "next/image";
+
 import Loading from "../loading";
 import { Book } from "@/src/models";
 import { useDispatch } from "react-redux";

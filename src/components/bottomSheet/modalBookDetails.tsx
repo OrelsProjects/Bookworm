@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
+
 import { Add, Bookmark, Checkmark } from "../icons";
 import Book from "../../models/book";
 import { darkenColor } from "../../utils/thumbnailUtils";

@@ -2,7 +2,7 @@
 import { Button, Tabs } from "@/src/components";
 import React, { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import Image from "next/image";
+
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { selectAuth } from "@/src/lib/features/auth/authSlice";

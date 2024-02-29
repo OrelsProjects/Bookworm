@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Input } from "../input";
-import Image from "next/image";
 
 interface SearchBarComponentProps {
   onSubmit: (value: string) => any;
   onChange: (value: string) => any;
+  placeholder?: string;
   className?: string;
 }
 
@@ -12,6 +12,7 @@ export const SearchBarComponent: React.FC<SearchBarComponentProps> = ({
   onSubmit,
   onChange,
   className,
+  placeholder,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [previousSearchTerm, setPreviousSearchTerm] = useState("");
@@ -24,9 +25,7 @@ export const SearchBarComponent: React.FC<SearchBarComponentProps> = ({
   }, [searchTerm]);
 
   return (
-    <div
-      className={`w-full flex justify-between items-center ${className}`}
-    >
+    <div className={`w-full flex justify-between items-center ${className}`}>
       <form
         onSubmit={(event: any) => {
           event.preventDefault();
@@ -43,24 +42,24 @@ export const SearchBarComponent: React.FC<SearchBarComponentProps> = ({
           <img
             src="search.svg"
             alt="Search"
-            height={32}
-            width={32}
+            height={20}
+            width={20}
             className="cursor-pointer"
             onClick={() => onSubmit(searchTerm)}
           />
           <Input
             type="text"
             id="search-bar"
-            className="py-2 w-full h-full rounded-full bg-background  text-white placeholder-gray-300 focus:outline-none border-none"
-            placeholder="Search all books, authors..."
+            className="py-2 w-full h-full rounded-full bg-background  text-foreground text-base placeholder:text-sm placeholder-gray-300 focus:outline-none border-none"
+            placeholder={placeholder ?? "Search..."}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <img
             src="x.svg"
             alt="clear"
-            height={32}
-            width={32}
+            height={20}
+            width={20}
             className={`cursor-pointer ${
               searchTerm ? "" : "invisible placeholder-gray-300"
             }`}

@@ -1,5 +1,5 @@
 "use client";
-import Image from "next/image";
+
 import { motion } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
 import { EventTracker } from "@/src/eventTracker";

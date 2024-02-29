@@ -1,6 +1,6 @@
 // use client
 import * as React from "react";
-import Image from "next/image"; // Next.js Image component for optimized image serving
+ // Next.js Image component for optimized image serving
 import { Button } from "./button"; // Adjust the import path as necessary
 import Loading from "./loading";
 

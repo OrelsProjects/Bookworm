@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Book, GoodreadsData } from "../../models";
-import Image from "next/image";
+
 import { darkenColor } from "../../utils/thumbnailUtils";
 import Rating from "../rating";
 import { Bookmark, Checkmark, Add } from "../icons";

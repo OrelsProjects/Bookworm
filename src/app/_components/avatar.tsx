@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Dropdown from "@/src/components/dropdown";
 import useAuth from "@/src/hooks/useAuth";
@@ -10,10 +9,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectUserBooks } from "@/src/lib/features/userBooks/userBooksSlice";
 import Papa from "papaparse";
 import { EventTracker } from "@/src/eventTracker";
-import {
-  BottomSheetTypes,
-  showBottomSheet,
-} from "../../lib/features/modal/modalSlice";
 
 const FEEDBACK_GIVEN = "feedback_given";
 

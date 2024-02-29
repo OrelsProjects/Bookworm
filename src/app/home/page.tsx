@@ -4,7 +4,7 @@ import React, { useCallback } from "react";
 import { useRouter } from "next/navigation";
 import SearchBar from "../../components/search/searchBar";
 import { Book } from "../../models";
-import Image from "next/image";
+
 import { useDispatch } from "react-redux";
 import { removeSubtitle } from "../../utils/bookUtils";
 import { Add } from "../../components/icons";

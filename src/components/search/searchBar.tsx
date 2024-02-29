@@ -18,7 +18,10 @@ export interface SearchBarProps {
   onSearch?: (text: string) => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ className, onSearch }: SearchBarProps) => {
+const SearchBar: React.FC<SearchBarProps> = ({
+  className,
+  onSearch,
+}: SearchBarProps) => {
   const { loading, error, updateSearchValue, books }: UseSearchResult =
     useSearch();
 
@@ -28,7 +31,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ className, onSearch }: SearchBarP
     }
   }, [error]);
 
-  const onSubmit = (value: string) => onSearch ? onSearch(value) : updateSearchValue(value);
+  const onSubmit = (value: string) =>
+    onSearch ? onSearch(value) : updateSearchValue(value);
   const onChange = (value: string) => updateSearchValue(value);
 
   // const classItems = "px-6 py-4 rounded-t-3xl rounded-b-lg";
@@ -42,6 +46,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ className, onSearch }: SearchBarP
         className={`transition-all duration-300 ease-in-out ${
           books && books.length > 0 ? classNoItems : classNoItems
         }`}
+        placeholder="Search all books, authors..."
       />
       <div className="flex flex-col gap-3 overflow-auto">
         {loading ? (
