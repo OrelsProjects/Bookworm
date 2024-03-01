@@ -3,7 +3,7 @@ import GoodreadsData from "./goodreadsData";
 
 export type Books = Book[];
 
-class Book {
+export interface Book {
   title: string;
   mainGenreId?: number;
   bookId: number;
@@ -19,38 +19,6 @@ class Book {
   datePublished?: string;
   authors?: string[];
   description?: string;
-
-  constructor(
-    title: string,
-    mainGenreId: number,
-    bookId: number,
-    thumbnailUrl?: string,
-    subtitle?: string,
-    originalDatePublished?: string,
-    numberOfPages?: number,
-    mediumImageUrl?: string,
-    language?: string,
-    isbn10?: string,
-    isbn?: string,
-    datePublished?: string,
-    authors?: string[],
-    description?: string
-  ) {
-    this.title = title;
-    this.mainGenreId = mainGenreId;
-    this.bookId = bookId;
-    this.thumbnailUrl = thumbnailUrl === "" ? undefined : thumbnailUrl;
-    this.subtitle = subtitle;
-    this.originalDatePublished = originalDatePublished;
-    this.numberOfPages = numberOfPages;
-    this.mediumImageUrl = mediumImageUrl === "" ? undefined : mediumImageUrl;
-    this.language = language;
-    this.isbn10 = isbn10;
-    this.isbn = isbn;
-    this.datePublished = datePublished;
-    this.authors = authors;
-    this.description = description;
-  }
 }
 
 export const compareBooks = (book1?: Book, book2?: Book): boolean =>
@@ -70,3 +38,7 @@ export type GetBooksResponse = {
 };
 
 export default Book;
+
+export type CreateBookBody = {
+  books: Omit<Book, "bookId">[];
+};

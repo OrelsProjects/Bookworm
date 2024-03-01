@@ -1,11 +1,7 @@
 import Logger from "@/src/utils/loggerServer";
 import { GetAxiosInstance, getUserIdFromRequest } from "@/src/utils/apiUtils";
 import { Book } from "@/src/models";
-import { CreateBooksResponse } from "@/src/models/book";
-import {
-  CreateBookBody,
-  CreateBooksResponseDTO,
-} from "@/src/models/dto/bookDTO";
+import { CreateBookBody, CreateBooksResponse } from "@/src/models/book";
 import { IResponse } from "@/src/models/dto/response";
 
 import { NextRequest, NextResponse } from "next/server";
@@ -24,7 +20,7 @@ export async function POST(
       books: [bookNoId],
     };
     const axios = GetAxiosInstance(req);
-    const response = await axios.post<CreateBooksResponseDTO>(
+    const response = await axios.post<CreateBooksResponse>(
       "/books",
       createBookBody
     );

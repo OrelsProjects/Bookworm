@@ -3,24 +3,12 @@
 import React, { useCallback } from "react";
 import { useRouter } from "next/navigation";
 import SearchBar from "../../components/search/searchBar";
-import { Book } from "../../models";
-import Image from "next/image";
-import { useDispatch } from "react-redux";
-import { removeSubtitle } from "../../utils/bookUtils";
-import { Add } from "../../components/icons";
-import useScrollPosition, {
-  ScrollDirection,
-} from "../../hooks/useScrollPosition";
 import useTable from "../../hooks/useTable";
 import BookList from "../../components/book/bookList";
 
 export default function Home(): React.ReactNode {
   const router = useRouter();
-  const { userBooks, sortBooks, nextPage } = useTable();
-  const { scrollableDivRef } = useScrollPosition({
-    onThreshold: () => nextPage(),
-    scrollDirection: ScrollDirection.Width,
-  });
+  const { userBooks, nextPage } = useTable();
 
   const onSeeAllClick = useCallback(() => {
     router.push("/my-library");

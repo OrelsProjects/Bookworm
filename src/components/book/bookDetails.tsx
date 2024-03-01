@@ -15,6 +15,10 @@ type BookDetailsProps = {
 };
 
 const thumbnailSizes = {
+  extraSmall: {
+    width: "w-10",
+    height: "h-16",
+  },
   small: {
     width: "w-20",
     height: "h-32",
