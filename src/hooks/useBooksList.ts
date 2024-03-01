@@ -17,27 +17,41 @@ import {
   BooksListData,
   CreateBooksListPayload,
 } from "../models/booksList";
-import { Book } from "../models";
+import { Book, User } from "../models";
+import { IResponse } from "../models/dto/response";
 
 const useBooksList = () => {
   const loading = useRef(false);
   const dispatch = useDispatch();
   const booksLists = useSelector(
-    (state: RootState) => state.booksLists.booksLists
+    (state: RootState) => state.booksLists.booksListsData
   );
 
-  const fetchUsersBooksLists = async () => {
+  const loadUserBooksLists = async (user?: User | null) => {
     if (loading.current) {
       throw new Error(
         "Operation in progress. Please wait until the current operation completes."
       );
     }
+    const booksList = JSON.parse(localStorage.getItem("booksList") ?? "[]");
+    if (booksList) {
+      if (Array.isArray(booksList)) {
+        dispatch(setBooksLists([...booksList]));
+      }
+    }
+
     loading.current = true;
     dispatch(setBooksListsLoading(true));
     try {
+      if (user) {
+        axios.defaults.headers.common["Authorization"] = user.token;
+        axios.defaults.headers.common["user_id"] = user.userId;
+      }
+
       const response = await axios.get("/api/list");
       const booksListsData = response.data;
-      dispatch(setBooksLists(booksListsData));
+      dispatch(setBooksLists(booksListsData.result));
+      localStorage.setItem("booksList", JSON.stringify(booksListsData.result));
     } catch (error: any) {
       Logger.error("Failed to fetch users books lists", error);
     } finally {
@@ -48,9 +62,18 @@ const useBooksList = () => {
 
   const createBooksList = async (booksListPayload: CreateBooksListPayload) => {
     try {
-      const response = await axios.post("/api/list", booksListPayload);
-      const booksListData: BooksListData = response.data;
-      dispatch(addBooksList(booksListData));
+      const response = await axios.post<IResponse<BooksListData>>(
+        "/api/list",
+        booksListPayload
+      );
+      const booksListData: BooksListData | undefined = response.data.result;
+      if (booksListData) {
+        dispatch(addBooksList(booksListData));
+        localStorage.setItem(
+          "booksList",
+          JSON.stringify([...booksLists, booksListData])
+        );
+      }
     } catch (error: any) {
       Logger.error("Failed to create books list", error);
     }
@@ -60,6 +83,14 @@ const useBooksList = () => {
     try {
       await axios.patch(`/api/list/`, booksList);
       dispatch(updateBooksListAction(booksList));
+      localStorage.setItem(
+        "booksList",
+        JSON.stringify(
+          booksLists.map((list) =>
+            list.listId === booksList.listId ? booksList : list
+          )
+        )
+      );
     } catch (error: any) {
       Logger.error("Failed to update books list", error);
     }
@@ -69,6 +100,10 @@ const useBooksList = () => {
     try {
       await axios.delete(`/api/list/${listId}`);
       dispatch(deleteBooksListAction(listId));
+      localStorage.setItem(
+        "booksList",
+        JSON.stringify(booksLists.filter((list) => list.listId !== listId))
+      );
     } catch (error: any) {
       Logger.error("Failed to delete books list", error);
     }
@@ -76,12 +111,27 @@ const useBooksList = () => {
 
   const addBookToList = async (listId: string, book: Book) => {
     try {
-      const urlParams = new URLSearchParams();
       await axios.post(`/api/list/book`, {
         listId,
         bookId: book.bookId,
       });
       dispatch(addBookToListAction({ listId, book }));
+      localStorage.setItem(
+        "booksList",
+        JSON.stringify(
+          booksLists.map((list) => {
+            if (list.listId === listId) {
+              return {
+                ...list,
+                booksInList: list.booksInList
+                  ? [...list.booksInList, book]
+                  : [book],
+              };
+            }
+            return list;
+          })
+        )
+      );
     } catch (error: any) {
       Logger.error("Failed to add book to list", error);
     }
@@ -92,11 +142,27 @@ const useBooksList = () => {
       const urlParams = new URLSearchParams();
       urlParams.append("listId", listId);
       urlParams.append("bookId", bookId.toString());
-      
+
       await axios.delete(`/api/list/book`, {
         params: urlParams,
       });
       dispatch(removeBookFromListAction({ listId, bookId }));
+      localStorage.setItem(
+        "booksList",
+        JSON.stringify(
+          booksLists.map((list) => {
+            if (list.listId === listId) {
+              return {
+                ...list,
+                booksInList: list.booksInList?.filter(
+                  (book) => book.bookId !== bookId
+                ),
+              };
+            }
+            return list;
+          })
+        )
+      );
     } catch (error: any) {
       Logger.error("Failed to remove book from list", error);
     }
@@ -105,7 +171,7 @@ const useBooksList = () => {
   return {
     booksLists,
     loading: loading.current,
-    fetchUsersBooksLists,
+    loadUserBooksLists,
     createBooksList,
     updateBooksList,
     deleteBooksList,

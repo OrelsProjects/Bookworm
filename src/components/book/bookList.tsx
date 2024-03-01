@@ -38,13 +38,13 @@ const BookList: React.FC<BookListProps> = ({
 
   return (
     <div
-      className={`flex gap-3 overflow-auto h-96 flex-grow scrollbar-hide ${className}
-      ${direction === "row" ? "flex-row" : "flex-col"}
+      className={`flex gap-3 overflow-auto flex-grow scrollbar-hide ${className}
+      ${direction === "row" ? "flex-row h-fit " : "flex-col h-96 w-full"}
       `}
       ref={scrollableDivRef}
     >
       {books.map((book) => (
-        <div onClick={() => onBookClick(book)} className="w-full h-full">
+        <div onClick={() => onBookClick(book)} className="h-full w-full">
           <BookDetails
             book={book}
             bookThumbnailSize={bookThumbnailSize}
@@ -53,7 +53,11 @@ const BookList: React.FC<BookListProps> = ({
                 <Add.Outline className="w-8 h-8 absolute bottom-2 left-2 bg-background rounded-full border-none overflow-hidden" />
               )
             }
-            Icon={direction === "column" && <Add.Outline className="w-8 h-8 flex-shrink-0" />}
+            Icon={
+              direction === "column" && (
+                <Add.Outline className="w-8 h-8 flex-shrink-0" />
+              )
+            }
             direction={direction}
           />
         </div>

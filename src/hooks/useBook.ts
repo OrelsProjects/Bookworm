@@ -201,7 +201,7 @@ const useBook = () => {
     }
   };
 
-  const loadUserBooks = async (user?: User): Promise<void> => {
+  const loadUserBooks = async (user?: User | null) => {
     try {
       if (loading.current) {
         return;

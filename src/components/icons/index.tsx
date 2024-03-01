@@ -5,6 +5,8 @@ import { IoIosCheckmarkCircle } from "react-icons/io";
 import { IoAddCircle } from "react-icons/io5";
 import { TiHome, TiHomeOutline } from "react-icons/ti";
 import { LuBookPlus } from "react-icons/lu";
+import { FaPlus } from "react-icons/fa6";
+
 
 export type Icon = {
   Fill: React.ElementType;
@@ -49,4 +51,9 @@ export const NavigationHome: Icon = {
 export const NavigationLists: Icon = {
   Fill: IconFill(LuBookPlus),
   Outline: IconOutline(LuBookPlus, "text-background"),
+};
+
+export const Plus: Icon = {
+  Fill: IconFill(FaPlus),
+  Outline: IconOutline(FaPlus),
 };

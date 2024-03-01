@@ -5,13 +5,13 @@ import { BooksListData } from "../../../models/booksList";
 import { Book } from "../../../models";
 
 export interface UserListsState {
-  booksLists: BooksListData[];
+  booksListsData: BooksListData[];
   loading: boolean;
   error: string | null;
 }
 
 const initialState: UserListsState = {
-  booksLists: [],
+  booksListsData: [],
   loading: false,
   error: null,
 };
@@ -21,53 +21,53 @@ const booksListsSlice = createSlice({
   initialState,
   reducers: {
     setBooksLists: (state, action: PayloadAction<BooksListData[]>) => {
-      state.booksLists = action.payload;
+      state.booksListsData = action.payload;
     },
     setBooksListsLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
     addBooksList: (state, action: PayloadAction<BooksListData>) => {
-      state.booksLists.push(action.payload);
+      state.booksListsData.push(action.payload);
     },
     updateBooksList: (state, action: PayloadAction<BooksListData>) => {
-      const index = state.booksLists.findIndex(
+      const index = state.booksListsData.findIndex(
         (list) => list.listId === action.payload.listId
       );
       if (index !== -1) {
-        state.booksLists[index] = action.payload;
+        state.booksListsData[index] = action.payload;
       }
     },
     deleteBooksList: (state, action: PayloadAction<string>) => {
-      const index = state.booksLists.findIndex(
+      const index = state.booksListsData.findIndex(
         (list) => list.listId === action.payload
       );
       if (index !== -1) {
-        state.booksLists.splice(index, 1);
+        state.booksListsData.splice(index, 1);
       }
     },
     addBookToList: (
       state,
       action: PayloadAction<{ listId: string; book: Book }>
     ) => {
-      const listIndex = state.booksLists.findIndex(
+      const listIndex = state.booksListsData.findIndex(
         (list) => list.listId === action.payload.listId
       );
       if (listIndex !== -1) {
-        state.booksLists[listIndex].booksInList?.push(action.payload.book);
+        state.booksListsData[listIndex].booksInList?.push(action.payload.book);
       }
     },
     removeBookFromList: (
       state,
       action: PayloadAction<{ listId: string; bookId: number }>
     ) => {
-      const listIndex = state.booksLists.findIndex(
+      const listIndex = state.booksListsData.findIndex(
         (list) => list.listId === action.payload.listId
       );
       if (listIndex !== -1) {
-        const newBooksList = state.booksLists[listIndex].booksInList?.filter(
-          (book) => book.bookId !== action.payload.bookId
-        );
-        state.booksLists[listIndex].booksInList = newBooksList;
+        const newBooksList = state.booksListsData[
+          listIndex
+        ].booksInList?.filter((book) => book.bookId !== action.payload.bookId);
+        state.booksListsData[listIndex].booksInList = newBooksList;
       }
     },
   },

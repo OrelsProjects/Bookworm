@@ -47,7 +47,7 @@ const BookDetails: React.FC<BookDetailsProps> = ({
   const sizeClass = direction === "row" ? thumbnailWidth : "w-full";
   return (
     <div
-      className={`h-full flex ${flexDirection} flex-shrink-0 justify-start items-start gap-3 ${sizeClass} ${className}`}
+      className={`h-fit flex ${flexDirection} flex-shrink-0 justify-start items-start gap-3 ${sizeClass} ${className}`}
     >
       <BookThumbnail
         book={book}

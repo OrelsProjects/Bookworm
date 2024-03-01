@@ -21,7 +21,7 @@ const BottomBar = () => {
   const isItemSelected = (item: BottomBarItem) => selected === item.path;
 
   return (
-    <div className="w-full flex flex-row justify-center">
+    <div className="w-full flex flex-row justify-center z-50">
       <div className="flex items-center justify-between gap-4 w-max bg-foreground rounded-3xl absolute bottom-8 py-3 px-7">
         {bottomBarItems.map((item) => {
           return (

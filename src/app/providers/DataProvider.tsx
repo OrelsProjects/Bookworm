@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { AuthStateType, selectAuth } from "../../lib/features/auth/authSlice";
 import useBook from "../../hooks/useBook";
 import { Logger } from "@/src/logger";
+import useBooksList from "../../hooks/useBooksList";
 
 interface DataProviderProps {
   children?: React.ReactNode;
@@ -12,15 +13,21 @@ interface DataProviderProps {
 
 const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
   const { loadUserBooks } = useBook();
+  const { loadUserBooksLists } = useBooksList();
   const { user, state } = useSelector(selectAuth);
   const loadingUserBooks = useRef<boolean>(false);
 
   useEffect(() => {
-    const loadUserBooksAsync = async () => {
+    const loadUserDataAsync = async () => {
       try {
         if (loadingUserBooks.current) return;
         loadingUserBooks.current = true;
-        await loadUserBooks(user ?? undefined);
+        Promise.allSettled([
+          loadUserBooksLists(user),
+          loadUserBooks(user),
+        ]).finally(() => {
+          loadingUserBooks.current = false;
+        });
       } catch (error: any) {
         Logger.error("Error loading user books", { error });
       } finally {
@@ -28,7 +35,7 @@ const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
       }
     };
     if (state === AuthStateType.SIGNED_IN && user) {
-      loadUserBooksAsync();
+      loadUserDataAsync();
     }
   }, [state, user]);
 
