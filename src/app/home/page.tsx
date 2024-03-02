@@ -41,7 +41,7 @@ export default function Home(): React.ReactNode {
 // const BookComponent: React.FC<BookProps> = React.memo(({ book }) => {
 //   const dispatch = useDispatch();
 //   const onBookClick = () =>
-//     dispatch(showBottomSheet({ book, type: BottomSheetTypes.BOOK_DETAILS }));
+//     dispatch(showModal({ book, type: BottomSheetTypes.BOOK_DETAILS }));
 
 //   return (
 //     book && (

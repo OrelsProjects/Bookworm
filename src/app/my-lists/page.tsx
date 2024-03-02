@@ -5,16 +5,28 @@ import { useRouter } from "next/navigation";
 import { SearchBarComponent } from "../../components/search/searchBarComponent";
 import useTable from "../../hooks/useTable";
 import BookList from "../../components/book/bookList";
-import ReadList from "../../components/readList/readList";
+import BooksListList from "../../components/BooksListList/booksListList";
 import { Plus } from "../../components/icons";
+import { useDispatch } from "react-redux";
+import {
+  showModal,
+  BottomSheetTypes,
+} from "../../lib/features/modal/modalSlice";
 
 const MyLists = () => {
+  const dispatch = useDispatch();
   const router = useRouter();
   const { userBooks, nextPage, searchBooks } = useTable();
 
   const onSeeAllClick = useCallback(() => {
     router.push("/my-library");
   }, [router]);
+
+  dispatch(
+    showModal({
+      type: BottomSheetTypes.BOOKS_LIST_DETAILS,
+    })
+  );
 
   const UserBooks = () => (
     <div className="w-full h-full flex flex-col gap-2">
@@ -39,7 +51,7 @@ const MyLists = () => {
         <Plus.Fill className="w-6 h-6 !text-foreground" />
       </div>
       <div className="w-full">
-        <ReadList direction="column" />
+        <BooksListList direction="column" />
       </div>
     </div>
   );

@@ -281,7 +281,7 @@ const useBook = () => {
   const updateUserBook = async (
     updateBookBody: UpdateUserBookBody
   ): Promise<UserBook> => {
-    console.log(loading);
+    
     if (loading.current) {
       throw new Error("Cannot update book while another book is loading");
     }

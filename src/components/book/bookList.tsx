@@ -2,7 +2,7 @@ import React from "react";
 import { Book } from "../../models";
 import { useDispatch } from "react-redux";
 import {
-  showBottomSheet,
+  showModal,
   BottomSheetTypes,
 } from "../../lib/features/modal/modalSlice";
 import BookDetails from "./bookDetails";
@@ -34,17 +34,17 @@ const BookList: React.FC<BookListProps> = ({
   });
 
   const onBookClick = (book?: Book) =>
-    dispatch(showBottomSheet({ book, type: BottomSheetTypes.BOOK_DETAILS }));
+    dispatch(showModal({ data: book, type: BottomSheetTypes.BOOK_DETAILS }));
 
   return (
     <div
       className={`flex gap-3 overflow-auto flex-grow scrollbar-hide ${className}
-      ${direction === "row" ? "flex-row h-fit " : "flex-col h-96 w-full"}
+      ${direction === "row" ? "flex-row h-fit " : "flex-col h-96"}
       `}
       ref={scrollableDivRef}
     >
       {books.map((book) => (
-        <div onClick={() => onBookClick(book)} className="h-full w-full">
+        <div onClick={() => onBookClick(book)} className="h-full">
           <BookDetails
             book={book}
             bookThumbnailSize={bookThumbnailSize}

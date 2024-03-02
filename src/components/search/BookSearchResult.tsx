@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { SquareSkeleton, LineSkeleton } from "../skeleton";
+import { Skeleton } from "../skeleton";
 import { Book, UserBook, UserBookData } from "../../models";
 import { RootState } from "@/src/lib/store";
 import { useSelector } from "react-redux";
@@ -92,7 +92,6 @@ const BookSearchResult: React.FC<BookComponentProps> = ({
       <div className="flex-shrink-0">
         <BookThumbnail
           src={book.thumbnailUrl}
-          fill
           className="rounded-xl !relative !w-16 !h-24"
         />
       </div>
@@ -117,16 +116,16 @@ export const SearchItemSkeleton: React.FC<SearchItemSkeletonProps> = ({
   return (
     <div className={`flex rounded-lg shadow space-x-4 ${className}`}>
       {/* Thumbnail Skeleton */}
-      <SquareSkeleton className="w-16 h-24 rounded-xl" />
+      <Skeleton className="w-16 h-24 rounded-xl" />
 
       {/* Text and Buttons Skeletons */}
       <div className="flex flex-col flex-grow justify-start items-start gap-2 mt-2">
-        <LineSkeleton className="h-2 rounded w-1/2" />
-        <LineSkeleton className="h-2 rounded w-1/3" />
+        <Skeleton className="h-2 rounded w-1/2" />
+        <Skeleton className="h-2 rounded w-1/3" />
         <div className="flex flex-row gap-4 mt-6">
-          <SquareSkeleton className="w-4 h-4 rounded-full" />
-          <SquareSkeleton className="w-4 h-4 rounded-full" />
-          <SquareSkeleton className="w-4 h-4 rounded-full" />
+          <Skeleton className="w-4 h-4 rounded-full" />
+          <Skeleton className="w-4 h-4 rounded-full" />
+          <Skeleton className="w-4 h-4 rounded-full" />
         </div>
       </div>
     </div>

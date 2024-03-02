@@ -9,7 +9,7 @@ import { selectAuth } from "@/src/lib/features/auth/authSlice";
 import useAuth from "@/src/hooks/useAuth";
 import {
   BottomSheetTypes,
-  showBottomSheet,
+  showModal,
 } from "@/src/lib/features/modal/modalSlice";
 import Avatar from "./avatar";
 import { EventTracker } from "@/src/eventTracker";

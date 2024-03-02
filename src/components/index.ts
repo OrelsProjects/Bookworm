@@ -2,7 +2,7 @@ import { Button } from "./button";
 import { Switch } from "./switch";
 import { Input } from "./input";
 import { Label } from "./label";
-import BottomSheet from "./bottomSheet/bottomSheet";
+import Modal from "./modal/modal";
 import Tabs from "./tabs";
 import SearchBar from "./search/searchBar";
 import Rating from "./rating";
@@ -15,7 +15,7 @@ export {
   Label,
   Tabs,
   SearchBar,
-  BottomSheet,
+  Modal as BottomSheet,
   Rating,
   Loading,
 };

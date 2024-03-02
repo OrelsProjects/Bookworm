@@ -2,15 +2,15 @@ import React from "react";
 import { Book } from "../../models";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  showBottomSheet,
+  showModal,
   BottomSheetTypes,
 } from "../../lib/features/modal/modalSlice";
 import useScrollPosition, {
   ScrollDirection,
 } from "../../hooks/useScrollPosition";
-import { BooksListData } from "../../models/booksList";
-import ReadListThumbnail from "./readListThumbnail";
+import BooksListThumbnail from "./booksListThumbnail";
 import { selectBooksLists } from "../../lib/features/booksLists/booksListsSlice";
+import { BooksListData } from "../../models/booksList";
 
 type BookListProps = {
   className?: string;
@@ -19,16 +19,25 @@ type BookListProps = {
   bookThumbnailSize?: "small" | "medium" | "large";
 };
 
-const ReadList: React.FC<BookListProps> = ({
+const BooksListList: React.FC<BookListProps> = ({
   className,
   onNextPageScroll,
   bookThumbnailSize,
 }) => {
+  const dispatch = useDispatch();
   const { booksListsData } = useSelector(selectBooksLists);
   const { scrollableDivRef } = useScrollPosition({
     onThreshold: () => onNextPageScroll?.(),
     scrollDirection: ScrollDirection.Height,
   });
+
+  const onListClick = (booksListData: BooksListData) =>
+    dispatch(
+      showModal({
+        data: booksListData,
+        type: BottomSheetTypes.BOOKS_LIST_DETAILS,
+      })
+    );
 
   return (
     <div
@@ -36,8 +45,11 @@ const ReadList: React.FC<BookListProps> = ({
       ref={scrollableDivRef}
     >
       {booksListsData?.map((booksListData) => (
-        <div className="w-full h-full flex flex-row gap-2">
-          <ReadListThumbnail books={booksListData?.booksInList ?? []} />
+        <div
+          className="w-full h-full flex flex-row gap-2"
+          onClick={() => onListClick(booksListData)}
+        >
+          <BooksListThumbnail books={booksListData?.booksInList ?? []} />
           <div className="flex flex-col">
             <div className="text-lg font-semibold">{booksListData.name}</div>
             <div className="text-sm font-light">
@@ -51,4 +63,4 @@ const ReadList: React.FC<BookListProps> = ({
   );
 };
 
-export default ReadList;
+export default BooksListList;

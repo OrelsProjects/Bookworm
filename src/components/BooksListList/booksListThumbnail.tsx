@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Book } from "../../models";
-import Loading from "../loading";
-import { SquareSkeleton } from "../skeleton";
+import { Skeleton } from "../skeleton";
 
 export interface BookThumbnailProps {
   books: Book[];
   className?: string;
 }
 
-const ReadListThumbnail: React.FC<BookThumbnailProps> = ({ books }) => {
+const BooksListThumbnail: React.FC<BookThumbnailProps> = ({ books }) => {
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [thumbnailBooks, setThumbnailBooks] = useState<Book[]>(
     books.slice(0, 4)
@@ -106,8 +105,16 @@ const ReadListThumbnail: React.FC<BookThumbnailProps> = ({ books }) => {
     ));
   };
 
+  const ThumbnailDefault = () => {
+    return <div className="w-full h-full" style={{ background: "#D9D9D9" }} />;
+  };
+
   const Thumbnail = () => {
-    switch (thumbnailBooks.length) {
+    let booksCount = thumbnailBooks.length;
+    if (!thumbnailBooks) {
+      booksCount = 0;
+    }
+    switch (booksCount) {
       case 1:
         return <Thumbnail1Book />;
       case 2:
@@ -117,19 +124,19 @@ const ReadListThumbnail: React.FC<BookThumbnailProps> = ({ books }) => {
       case 4:
         return <Thumbnail4Books />;
       default:
-        return <Thumbnail1Book />;
+        return <ThumbnailDefault />;
     }
   };
 
   return (
     <div className="flex flex-col flex-wrap items-start justify-center w-24 h-32 rounded-2xl bg-clip-border	overflow-hidden">
-      {books && imagesLoaded ? (
+      {imagesLoaded ? (
         <Thumbnail />
       ) : (
-        <SquareSkeleton className="w-24 h-32 rounded-2xl" />
+        <Skeleton className="w-24 h-32 rounded-2xl" />
       )}
     </div>
   );
 };
 
-export default ReadListThumbnail;
+export default BooksListThumbnail;

@@ -5,12 +5,13 @@ import { Book } from "../../../models";
 
 export enum BottomSheetTypes {
   BOOK_DETAILS = "BOOK_DETAILS",
+  BOOKS_LIST_DETAILS = "BOOKS_LIST_DETAILS",
   ADD_BOOK_TO_BACKLOG = "ADD_BOOK_TO_BACKLOG",
   ADD_BOOK_TO_READ_LIST = "ADD_BOOK_TO_READ_LIST",
 }
 
 export interface BottomSheetState {
-  data?: Book;
+  data?: any;
   type: BottomSheetTypes | null;
   isOpen: boolean;
   error: string | null;
@@ -29,23 +30,24 @@ const bottomSheetSlice = createSlice({
   name: "modal",
   initialState,
   reducers: {
-    showBottomSheet: (
+    showModal: (
       state,
-      action: PayloadAction<{ book?: Book; type: BottomSheetTypes }>
+      action: PayloadAction<{ data?: any; type: BottomSheetTypes }>
     ) => {
-      state.data = action.payload.book;
+      state.data = action.payload.data;
       state.type = action.payload.type;
       state.isOpen = true;
       state.error = null;
     },
-    hideBottomSheet: (state) => {
+    hideModal: (state) => {
       state.isOpen = false;
       state.error = null;
     },
   },
 });
 
-export const { showBottomSheet, hideBottomSheet } = bottomSheetSlice.actions;
+export const { showModal: showModal, hideModal: hideModal } =
+  bottomSheetSlice.actions;
 export const selectModal = (state: RootState) => state.modal;
 
 export default bottomSheetSlice.reducer;

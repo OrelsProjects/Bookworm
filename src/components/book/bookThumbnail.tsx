@@ -5,8 +5,9 @@ import { Book } from "../../models";
 import { useDispatch } from "react-redux";
 import {
   BottomSheetTypes,
-  showBottomSheet,
+  showModal,
 } from "../../lib/features/modal/modalSlice";
+import { Skeleton } from "../skeleton";
 
 export interface BookThumbnailProps {
   title?: string;
@@ -17,6 +18,7 @@ export interface BookThumbnailProps {
   placeholder?: PlaceholderValue;
   blurDataURL?: string;
   className?: string;
+  imageClassName?: string;
   onClick?: (book: Book) => void;
   Icon?: React.ReactNode;
 }
@@ -37,15 +39,22 @@ const BookThumbnail: React.FC<BookThumbnailProps> = ({
   const bookTitle = book?.title ?? title;
 
   return (
-    <div className="w-fit h-fit relative flex-shrink-0">
-      <img
-        src={thumbnailUrl ?? "/thumbnailPlaceholder.png"}
-        alt={`${bookTitle} thumbnail`}
-        height={height}
-        width={width}
-        onClick={onClick && book ? () => onClick(book) : undefined}
-        className={`rounded-lg ${className}`}
-      />
+    <div className="h-full relative flex-shrink-0">
+      {thumbnailUrl ? (
+        <img
+          src={thumbnailUrl ?? "/thumbnailPlaceholder.png"}
+          alt={`${bookTitle} thumbnail`}
+          height={height}
+          width={width}
+          onClick={onClick && book ? () => onClick(book) : undefined}
+          className={`rounded-lg ${className}`}
+        />
+      ) : (
+        <Skeleton
+          className={`rounded-lg h-full w-full ${className}`}
+          type="none"
+        />
+      )}
       {Icon}
     </div>
   );

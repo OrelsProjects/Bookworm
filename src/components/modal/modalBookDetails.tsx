@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { ReactElement } from "react";
 
 import { Add, Bookmark, Checkmark } from "../icons";
 import Book from "../../models/book";
@@ -9,12 +9,17 @@ import useBook from "../../hooks/useBook";
 import { UserBookData } from "../../models/userBook";
 import Rating from "../rating";
 import BookButtons from "../book/buttons";
+import BookThumbnail from "../book/bookThumbnail";
+import Modal, { ModalProps } from "./modal";
 
 type ModalBookDetailsProps = {
   book: Book;
-};
+} & ModalProps;
 
-const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({ book }) => {
+const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
+  book,
+  ...modalProps
+}) => {
   const { getBookFullData } = useBook();
   const [bookData, setBookData] = React.useState<
     UserBookData | null | undefined
@@ -46,8 +51,22 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({ book }) => {
     </div>
   );
 
+  const BookGeneralDetails = ({ book }: { book: Book }) => (
+    <div className="h-full w-full flex flex-col gap-4">
+      <div>
+        <div className="font text-foreground line-clamp-1 font-bold text-xl pr-2">
+          {book.title}
+        </div>
+        <div className="text-lg text-foreground line-clamp-2">
+          {book.authors?.join(", ")}
+        </div>
+      </div>
+      <Rating rating={bookData?.goodreadsData?.goodreadsRating} />
+    </div>
+  );
+
   const Summary = () =>
-    book.description && (
+    book.description ? (
       <div className="w-full flex relative flex-col justify-start gap-1 px-8">
         <div className="text-foreground font-bold text-xl">Summary</div>
         <div className="text-foreground overflow-auto h-60 scrollbar-hide font-light shadow-inner">
@@ -55,27 +74,27 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({ book }) => {
         </div>
         <div className="absolute bottom-0 w-full extra-text-shadow"></div>
       </div>
+    ) : (
+      <></>
     );
+
+  const Thumbnail = (): ReactElement => (
+    <BookThumbnail
+      src={book.thumbnailUrl ?? "/thumbnailPlaceholder.png"}
+      book={book}
+      className="w-full h-full"
+    />
+  );
 
   const ThumbnailAndDetails = () => (
     <div className="w-full flex flex-col items-center justify-center gap-4 absolute">
       <div className="w-full flex flex-row justify-evenly">
-        <img
+        <BookThumbnail
           src={book.thumbnailUrl ?? "/thumbnailPlaceholder.png"}
-          alt={book.title}
+          book={book}
           className="rounded-lg !w-28 !h-44 !relative flex-shrink-0"
         />
-        <div className="flex flex-col justify-center items-start gap-4 mt-14 w-2/4">
-          <div className="flex flex-col justify-center items-start gap-1">
-            <div className="font text-foreground line-clamp-1 font-bold text-xl pr-2">
-              {book.title}
-            </div>
-            <div className="text-lg text-foreground line-clamp-2">
-              {book.authors?.join(", ")}
-            </div>
-          </div>
-          <Rating rating={bookData?.goodreadsData?.goodreadsRating} />
-        </div>
+        <BookGeneralDetails book={book} />
       </div>
       <BookButtons book={book} />
       <Summary />
@@ -83,15 +102,13 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({ book }) => {
   );
 
   return (
-    <div className="h-full w-full bg-background absolute bottom-0 rounded-t-5xl flex justify-center items-center">
-      <div className="absolute !-top-12 w-full">
-        <div className="flex flex-col relative w-full">
-          <div className="h-44 w-full flex justify-start">
-            <ThumbnailAndDetails />
-          </div>
-        </div>
-      </div>
-    </div>
+    <Modal
+      thumbnail={Thumbnail()}
+      buttonsRow={Buttons()}
+      thumbnailDetails={BookGeneralDetails({ book })}
+      bottomSection={Summary()}
+      {...modalProps}
+    />
   );
 };
 

@@ -9,7 +9,7 @@ import { Toaster } from "react-hot-toast";
 import DataProvider from "./providers/DataProvider";
 import AnimationProvider from "./providers/AnimationProvider";
 import Header from "./_components/header";
-import BottomSheetProvider from "./providers/BottomSheetProvider";
+import ModalProvider from "./providers/ModalProvider";
 import BottomBar from "../components/bottomBar/bottomBar";
 import BottomBarProvider from "./providers/BottomBarProvider";
 import NavigationProvider from "./providers/NavigationProvider";
@@ -42,7 +42,7 @@ export default function RootLayout({
                       {children}
                     </div>
                   </AnimationProvider>
-                  <BottomSheetProvider />
+                  <ModalProvider />
                   <BottomBarProvider />
                   <Toaster />
                 </DataProvider>

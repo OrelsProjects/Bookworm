@@ -34,13 +34,24 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       return;
     }
     try {
-      dispatch(
-        setLoading({
-          loading: true,
-          message: "Welcome back! Just a moment, we're grabbing your user :)",
-        })
-      );
-      isLoadingUserFetch.current = true;
+      const userStringified = localStorage.getItem("user") ?? null;
+      if (userStringified) {
+        const user = JSON.parse(userStringified);
+        dispatch(setUser(user));
+        dispatch(
+          setLoading({
+            loading: false,
+          })
+        );
+      } else {
+        dispatch(
+          setLoading({
+            loading: true,
+            message: "Welcome back! Just a moment, we're grabbing your user :)",
+          })
+        );
+        isLoadingUserFetch.current = true;
+      }
 
       const session = await fetchAuthSession();
       const userId = session.userSub ?? "";
@@ -70,11 +81,13 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const userWithDetails = userResponse.data.result;
       if (userWithDetails) {
         dispatch(setUser({ ...userWithDetails, token }));
+        localStorage.setItem("user", JSON.stringify(userWithDetails));
       } else {
         dispatch(setUser({ ...user, token }));
         throw new Error("Failed to confirm user in db");
       }
     } catch (error: any) {
+      localStorage.removeItem("user");
       Logger.error("Error fetching user", { error });
       toast.error("Error fetching user");
     } finally {

@@ -72,7 +72,7 @@ const Avatar: React.FC<AvatarProps> = ({ avatarUrl }) => {
     router.push("/privacy-policy");
     toggleDropdown();
   };
-  console.log("render avatar");
+
   return (
     <div className="relative rounded-full">
       <img
@@ -99,7 +99,7 @@ const Avatar: React.FC<AvatarProps> = ({ avatarUrl }) => {
               //   ),
               //   position: 0,
               //   onClick: () => {
-              //     dispatch(showBottomSheet({ type: BottomSheetTypes.IMPORT_BOOKS }));
+              //     dispatch(showModal({ type: BottomSheetTypes.IMPORT_BOOKS }));
               //   },
               // },
               {
