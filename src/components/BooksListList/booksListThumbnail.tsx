@@ -17,7 +17,9 @@ const BooksListThumbnail: React.FC<BookThumbnailProps> = ({ books }) => {
     setThumbnailBooks(books.slice(0, 4));
     let imagesToLoad = thumbnailBooks.map((book) => new Image());
     let imagesLoadedCount = 0;
-
+    if (books.length === 0) {
+      setImagesLoaded(true);
+    }
     thumbnailBooks.forEach((book, index) => {
       if (book.thumbnailUrl) {
         imagesToLoad[index].src = book.thumbnailUrl;

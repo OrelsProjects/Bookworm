@@ -48,6 +48,7 @@ const BooksListList: React.FC<BookListProps> = ({
         <div
           className="w-full h-full flex flex-row gap-2"
           onClick={() => onListClick(booksListData)}
+          key={`books-list-${booksListData.listId}`}
         >
           <BooksListThumbnail books={booksListData?.booksInList ?? []} />
           <div className="flex flex-col">

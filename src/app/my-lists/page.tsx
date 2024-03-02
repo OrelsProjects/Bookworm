@@ -22,11 +22,13 @@ const MyLists = () => {
     router.push("/my-library");
   }, [router]);
 
-  dispatch(
-    showModal({
-      type: BottomSheetTypes.BOOKS_LIST_DETAILS,
-    })
-  );
+  const onAddListClick = () => {
+    dispatch(
+      showModal({
+        type: BottomSheetTypes.BOOKS_LIST_DETAILS,
+      })
+    );
+  };
 
   const UserBooks = () => (
     <div className="w-full h-full flex flex-col gap-2">
@@ -48,7 +50,12 @@ const MyLists = () => {
     <div className="w-full h-full flex flex-col gap-2">
       <div className="w-full flex flex-row justify-between">
         <div className="text-xl font-bold">My lists</div>
-        <Plus.Fill className="w-6 h-6 !text-foreground" />
+        <div>
+          <Plus.Fill
+            className="w-6 h-6 !text-foreground"
+            onClick={onAddListClick}
+          />
+        </div>
       </div>
       <div className="w-full">
         <BooksListList direction="column" />

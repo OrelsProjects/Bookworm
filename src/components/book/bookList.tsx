@@ -44,7 +44,11 @@ const BookList: React.FC<BookListProps> = ({
       ref={scrollableDivRef}
     >
       {books.map((book) => (
-        <div onClick={() => onBookClick(book)} className="h-full">
+        <div
+          onClick={() => onBookClick(book)}
+          className="h-full"
+          key={`book-in-books-list-${book?.bookId}`}
+        >
           <BookDetails
             book={book}
             bookThumbnailSize={bookThumbnailSize}
