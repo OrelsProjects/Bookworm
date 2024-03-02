@@ -51,7 +51,7 @@ const MyLists = () => {
         onSubmit={(value: string) => searchBooks(value)}
         placeholder="Search in Your Books..."
       />
-      <div className="w-full flex flex-col">
+      <div className="w-full flex flex-col gap-3">
         <UserBooks />
         <UserBooksLists />
       </div>
