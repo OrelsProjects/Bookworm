@@ -9,7 +9,7 @@ import { ImportStatus } from "./importStatus";
 
 export {
   User,
-  Book,
+  type Book,
   Genre,
   BookSubGenre,
   GoodreadsData,
