@@ -19,6 +19,7 @@ import {
 } from "../models/booksList";
 import { Book, User } from "../models";
 import { IResponse } from "../models/dto/response";
+import { DuplicateError } from "../models/errors/duplicateError";
 
 const useBooksList = () => {
   const loading = useRef(false);
@@ -48,9 +49,9 @@ const useBooksList = () => {
         axios.defaults.headers.common["user_id"] = user.userId;
       }
 
-      const response = await axios.get("/api/list");
+      const response = await axios.get<IResponse<BooksListData[]>>("/api/list");
       const booksListsData = response.data;
-      dispatch(setBooksLists(booksListsData.result));
+      dispatch(setBooksLists(booksListsData.result ?? []));
       localStorage.setItem("booksList", JSON.stringify(booksListsData.result));
     } catch (error: any) {
       Logger.error("Failed to fetch users books lists", error);
@@ -62,6 +63,7 @@ const useBooksList = () => {
 
   const createBooksList = async (booksListPayload: CreateBooksListPayload) => {
     try {
+      loading.current = true;
       const response = await axios.post<IResponse<BooksListData>>(
         "/api/list",
         booksListPayload
@@ -76,6 +78,12 @@ const useBooksList = () => {
       }
     } catch (error: any) {
       Logger.error("Failed to create books list", error);
+      if (error.response?.status === 409) {
+        throw new DuplicateError("List with the same name already exists");
+      }
+      throw error;
+    } finally {
+      loading.current = false;
     }
   };
 

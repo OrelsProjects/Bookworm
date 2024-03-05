@@ -3,10 +3,12 @@ import { IconBaseProps } from "react-icons";
 import { FaBookmark } from "react-icons/fa";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { IoAddCircle } from "react-icons/io5";
-import { TiHome, TiHomeOutline } from "react-icons/ti";
-import { LuBookPlus } from "react-icons/lu";
+import { FaHouse } from "react-icons/fa6";
 import { FaPlus } from "react-icons/fa6";
-
+import { FaBarsStaggered } from "react-icons/fa6";
+import { FaBookMedical } from "react-icons/fa6";
+import { FaSliders } from "react-icons/fa6";
+import { CiMenuBurger } from "react-icons/ci";
 
 export type Icon = {
   Fill: React.ElementType;
@@ -16,7 +18,7 @@ export type Icon = {
 const IconFill =
   (Icon: React.FC<IconBaseProps>): React.ElementType =>
   (props: IconBaseProps) =>
-    <Icon {...props} className={`text-primary ${props.className}`} />;
+    <Icon {...props} className={`text-primary ${props.className}`} size={40} />;
 
 const IconOutline =
   (Icon: React.FC<IconBaseProps>, className?: string): React.ElementType =>
@@ -44,16 +46,31 @@ export const Checkmark: Icon = {
 };
 
 export const NavigationHome: Icon = {
-  Fill: IconFill(TiHome),
-  Outline: IconOutline(TiHomeOutline),
+  Fill: IconFill(FaHouse),
+  Outline: IconOutline(FaHouse, "text-background"),
 };
 
 export const NavigationLists: Icon = {
-  Fill: IconFill(LuBookPlus),
-  Outline: IconOutline(LuBookPlus, "text-background"),
+  Fill: IconFill(FaBookMedical),
+  Outline: IconOutline(FaBookMedical, "text-background"),
+};
+
+export const BurgerMenu: Icon = {
+  Fill: IconFill(FaBarsStaggered),
+  Outline: IconOutline(FaBarsStaggered),
+};
+
+export const BurgerLines: Icon = {
+  Fill: IconFill(CiMenuBurger),
+  Outline: IconOutline(CiMenuBurger),
 };
 
 export const Plus: Icon = {
   Fill: IconFill(FaPlus),
   Outline: IconOutline(FaPlus),
+};
+
+export const Sliders: Icon = {
+  Fill: IconFill(FaSliders),
+  Outline: IconOutline(FaSliders),
 };

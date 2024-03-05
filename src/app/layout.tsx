@@ -10,7 +10,6 @@ import DataProvider from "./providers/DataProvider";
 import AnimationProvider from "./providers/AnimationProvider";
 import Header from "./_components/header";
 import ModalProvider from "./providers/ModalProvider";
-import BottomBar from "../components/bottomBar/bottomBar";
 import BottomBarProvider from "./providers/BottomBarProvider";
 import NavigationProvider from "./providers/NavigationProvider";
 
@@ -29,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.className} flex flex-col overflow-hidden overscroll-none`}
+        className={`${inter.className} h-screen w-screen overflow-hidden overscroll-none`}
       >
         <StoreProvider>
           <AuthProvider>
@@ -37,8 +36,8 @@ export default function RootLayout({
               <APIProvider>
                 <DataProvider>
                   <AnimationProvider>
-                    <div className="!font-sans w-full h-full flex flex-col justify-center items-center p-4">
-                      <Header className="pb-3" />
+                    <div className="!roboto w-screen h-screen flex flex-col p-4 absolute">
+                      <Header className="pt-3" />
                       {children}
                     </div>
                   </AnimationProvider>

@@ -10,6 +10,7 @@ import useTable from "../../hooks/useTable";
 import useScrollPosition from "../../hooks/useScrollPosition";
 import { SearchBarComponent } from "../../components/search/searchBarComponent";
 import BookList from "../../components/book/bookList";
+import { ThumbnailSize } from "../../consts/thumbnail";
 
 export default function MyLibrary(): React.ReactNode {
   const { userBooks, sortBooks, nextPage, searchBooks } = useTable();
@@ -27,13 +28,14 @@ export default function MyLibrary(): React.ReactNode {
     setSortBy(tabItem.value as BookSort);
 
   return (
-    <div className="w-full h-full flex flex-col gap-2 pb-4">
-      <SearchBarComponent
-        onChange={(value: string) => searchBooks(value)}
-        onSubmit={(value: string) => searchBooks(value)}
-        placeholder="Search in Your Books..."
-      />
-      <div className="flex flex-col gap-0">
+    <div className="w-full h-full grid grid-rows-[auto,1fr] gap-5">
+    <SearchBarComponent
+      onChange={(value: string) => searchBooks(value)}
+      onSubmit={(value: string) => searchBooks(value)}
+      placeholder="Search in Your Books..."
+    />
+    <div className="overflow-auto scrollbar-hide flex flex-col gap-5">
+      <div className="flex flex-col gap-4">
         <Tabs
           Title={() => <div className="font-bold text-xl">Sort by</div>}
           items={sorterTabItems}
@@ -48,8 +50,11 @@ export default function MyLibrary(): React.ReactNode {
         books={userBookDataSorted.map((ubd) => ubd.bookData.book)}
         onNextPageScroll={nextPage}
         direction="column"
-        bookThumbnailSize="small"
+        bookThumbnailSize={ThumbnailSize.Small}
+        disableScroll
       />
     </div>
+  </div>
+  
   );
 }

@@ -6,13 +6,13 @@ import { useSelector } from "react-redux";
 import useBook from "@/src/hooks/useBook";
 import toast from "react-hot-toast";
 import { Logger } from "@/src/logger";
-import { isBooksEqualExactly, removeSubtitle } from "@/src/utils/bookUtils";
+import { isBooksEqualExactly } from "@/src/utils/bookUtils";
 import BookThumbnail from "../book/bookThumbnail";
 import { Add, Bookmark, Checkmark } from "../icons";
 import Title from "../book/title";
 import Authors from "../book/authors";
 
-interface BookComponentProps {
+export interface BookComponentProps {
   book: Book;
   isFirstInList?: boolean;
 }
@@ -88,7 +88,7 @@ const BookSearchResult: React.FC<BookComponentProps> = ({
   );
 
   return (
-    <div className="flex flex-row justify-start items-start gap-3 h-full">
+    <div className="flex flex-row justify-start items-start gap-3 h-full overflow-auto">
       <div className="flex-shrink-0">
         <BookThumbnail
           src={book.thumbnailUrl}
@@ -96,7 +96,7 @@ const BookSearchResult: React.FC<BookComponentProps> = ({
         />
       </div>
       <div className="h-24 flex flex-col justify-between">
-        <div className="flex flex-col w-8">
+        <div className="flex flex-col">
           <Title title={book.title} />
           <Authors authors={book.authors} prefix="by" />
         </div>

@@ -14,6 +14,8 @@ import ModalBookDetails from "../../components/modal/modalBookDetails";
 import Modal from "../../components/modal/modal";
 import ModalBooksList from "../../components/modal/modalBooksList";
 import { BooksListData } from "../../models/booksList";
+import { darkenColor } from "../../utils/thumbnailUtils";
+import { ThumbnailSize } from "../../consts/thumbnail";
 
 type RenderComponentProps = {
   book?: Book;
@@ -23,7 +25,6 @@ const ModalProvider: React.FC = () => {
   const { data, type, isOpen }: BottomSheetState = useSelector(
     (state: RootState) => state.modal
   );
-
   const dispatch = useDispatch();
 
   const RenderComponent = useCallback(() => {
@@ -42,9 +43,10 @@ const ModalProvider: React.FC = () => {
     return (
       <ModalBooksList
         booksListData={booksListData}
+        thumbnailSize={ThumbnailSize.Large}
         isOpen={isOpen}
         onClose={() => dispatch(hideModal())}
-        backgroundColor={firstBook?.thumbnailColor}
+        backgroundColor={darkenColor(firstBook?.thumbnailColor)}
       />
     );
   };
@@ -55,7 +57,7 @@ const ModalProvider: React.FC = () => {
         book={book}
         isOpen={isOpen}
         onClose={() => dispatch(hideModal())}
-        backgroundColor={book?.thumbnailColor}
+        backgroundColor={darkenColor(book?.thumbnailColor)}
       />
     );
 

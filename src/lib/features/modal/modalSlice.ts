@@ -34,6 +34,7 @@ const bottomSheetSlice = createSlice({
       state,
       action: PayloadAction<{ data?: any; type: BottomSheetTypes }>
     ) => {
+      if (state.isOpen) return;
       state.data = action.payload.data;
       state.type = action.payload.type;
       state.isOpen = true;
@@ -46,8 +47,7 @@ const bottomSheetSlice = createSlice({
   },
 });
 
-export const { showModal: showModal, hideModal: hideModal } =
-  bottomSheetSlice.actions;
+export const { showModal, hideModal } = bottomSheetSlice.actions;
 export const selectModal = (state: RootState) => state.modal;
 
 export default bottomSheetSlice.reducer;

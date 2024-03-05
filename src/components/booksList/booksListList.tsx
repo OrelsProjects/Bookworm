@@ -1,6 +1,5 @@
 import React from "react";
-import { Book } from "../../models";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   showModal,
   BottomSheetTypes,
@@ -9,23 +8,27 @@ import useScrollPosition, {
   ScrollDirection,
 } from "../../hooks/useScrollPosition";
 import BooksListThumbnail from "./booksListThumbnail";
-import { selectBooksLists } from "../../lib/features/booksLists/booksListsSlice";
 import { BooksListData } from "../../models/booksList";
+import { ThumbnailSize } from "../../consts/thumbnail";
 
 type BookListProps = {
   className?: string;
   direction: "row" | "column";
   onNextPageScroll?: () => void;
-  bookThumbnailSize?: "small" | "medium" | "large";
+  bookThumbnailSize?: ThumbnailSize;
+  disableScroll?: boolean;
+  booksListsData?: BooksListData[];
 };
 
 const BooksListList: React.FC<BookListProps> = ({
   className,
   onNextPageScroll,
   bookThumbnailSize,
+  disableScroll,
+  booksListsData,
 }) => {
   const dispatch = useDispatch();
-  const { booksListsData } = useSelector(selectBooksLists);
+
   const { scrollableDivRef } = useScrollPosition({
     onThreshold: () => onNextPageScroll?.(),
     scrollDirection: ScrollDirection.Height,
@@ -41,22 +44,30 @@ const BooksListList: React.FC<BookListProps> = ({
 
   return (
     <div
-      className={`flex gap-3 overflow-auto h-72 flex-col scrollbar-hide ${className}`}
+      className={`flex gap-2 h-full flex-col scrollbar-hide ${className}
+      ${disableScroll ? "" : "overflow-auto"}`}
       ref={scrollableDivRef}
     >
       {booksListsData?.map((booksListData) => (
-        <div
-          className="w-full h-full flex flex-row gap-2"
-          onClick={() => onListClick(booksListData)}
-          key={`books-list-${booksListData.listId}`}
-        >
-          <BooksListThumbnail books={booksListData?.booksInList ?? []} />
-          <div className="flex flex-col">
-            <div className="text-lg font-semibold">{booksListData.name}</div>
-            <div className="text-sm font-light">
-              {booksListData.description}
+        <div className="h-full">
+          <div
+            className="w-full h-full flex flex-row gap-2"
+            onClick={() => onListClick(booksListData)}
+            key={`books-list-${booksListData.listId}`}
+          >
+            <BooksListThumbnail
+              books={
+                booksListData?.booksInList?.map(
+                  (bookInList) => bookInList.book
+                ) ?? []
+              }
+            />
+            <div className="flex flex-col">
+              <div className="text-lg font-semibold">{booksListData.name}</div>
+              <div className="text-sm font-light">
+                {booksListData.description}
+              </div>
             </div>
-            <div></div>
           </div>
         </div>
       ))}

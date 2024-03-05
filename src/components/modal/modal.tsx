@@ -5,12 +5,14 @@ import React, { useEffect, useRef, useState } from "react";
 import { IoArrowBack } from "react-icons/io5";
 import BookThumbnail from "../book/bookThumbnail";
 import { Skeleton } from "../skeleton";
+import { ThumbnailSize, getThumbnailSize } from "../../consts/thumbnail";
 
 export interface ModalProps {
   isOpen: boolean;
   backgroundColor?: string;
   onClose?: () => void;
   className?: string;
+  thumbnailSize?: ThumbnailSize;
 }
 
 interface ModalContentProps {
@@ -18,6 +20,7 @@ interface ModalContentProps {
   thumbnailDetails?: React.ReactNode;
   buttonsRow?: React.ReactNode;
   bottomSection?: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 const modalAnimationVariants = {
@@ -37,12 +40,14 @@ const bottomSheetVariants = {
 const Modal: React.FC<ModalProps & ModalContentProps> = ({
   thumbnail,
   thumbnailDetails,
+  thumbnailSize,
   buttonsRow,
   bottomSection,
   isOpen,
   backgroundColor,
   onClose,
   className,
+  children,
 }) => {
   const [shouldRender, setShouldRender] = useState(isOpen);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -59,42 +64,20 @@ const Modal: React.FC<ModalProps & ModalContentProps> = ({
   }, [isOpen]);
 
   const ContentContainer = ({ children }: { children: React.ReactNode }) => (
-    <div className="h-full w-full flex flex-col justify-start items-center">
+    <div className="h-full w-full flex flex-col justify-start items-center gap-10 px-8 pb-4">
       {children}
     </div>
   );
 
   const TopSectionContainer = ({ children }: { children: React.ReactNode }) => (
-    <div className="w-full flex flex-row justify-center gap-2 relative pt-4">
+    <div className="w-full flex flex-row justify-start gap-2 relative pt-4">
       {children}
-    </div>
-  );
-
-  const DetailsSkeleton = () => (
-    <div className="h-full flex flex-col justify-between">
-      <Skeleton className="rounded-full w-40 h-6" type="none" />
-      <Skeleton className="rounded-full w-40 h-6" type="none" />
-      <Skeleton className="rounded-full w-40 h-6" type="none" />
-    </div>
-  );
-
-  const ButtonsSkeleton = () => (
-    <div className="h-24 w-full flex flex-row justify-evenly items-center gap-4">
-      <Skeleton className="rounded-full w-8 h-8" type="none" />
-      <Skeleton className="rounded-full w-8 h-8" type="none" />
-      <Skeleton className="rounded-full w-8 h-8" type="none" />
-    </div>
-  );
-
-  const BottomSkeleton = () => (
-    <div className="p-4 w-full h-full">
-      <Skeleton className="rounded-lg p-4 w-full h-full" type="none" />
     </div>
   );
 
   return (
     shouldRender && (
-      <div className="absolute top-0 left-0 right-0 bottom-0 w-screen h-screen">
+      <div className="absolute top-0 left-0 right-0 bottom-0 w-screen h-screen z-50">
         <div className="flex justify-center items-center relative w-full h-full">
           <motion.div
             ref={modalRef}
@@ -126,19 +109,24 @@ const Modal: React.FC<ModalProps & ModalContentProps> = ({
                 <div className="h-fit w-full">
                   <div className="w-full h-full flex flex-col items-center overflow-visible gap-4">
                     <TopSectionContainer>
-                      <div className="w-32 h-fit">
-                        <div className="w-full h-44 -mt-12">
-                          {thumbnail ?? <BookThumbnail />}
-                        </div>
+                      <div
+                        className={`-mt-12 ${
+                          getThumbnailSize(thumbnailSize).className
+                        } flex-shrink-0`}
+                      >
+                        {thumbnail ?? (
+                          <BookThumbnail className="w-full h-full" />
+                        )}
                       </div>
-                      <div className="h-full flex flex-col justify-center items-start gap-1 w-min">
-                        {thumbnailDetails ?? <DetailsSkeleton />}
+                      <div className="h-full flex flex-col justify-center items-start gap-1">
+                        {thumbnailDetails}
                       </div>
                     </TopSectionContainer>
-                    {buttonsRow ?? <ButtonsSkeleton />}
+                    {buttonsRow}
                   </div>
                 </div>
-                {bottomSection ?? <BottomSkeleton />}
+                {bottomSection}
+                {children}
               </ContentContainer>
             </motion.div>
           </motion.div>

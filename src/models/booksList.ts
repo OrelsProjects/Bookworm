@@ -1,4 +1,5 @@
 import { Book } from "./book";
+import { BookInList, BookInListNoListId } from "./bookInList";
 
 export interface BooksList {
   listId: string;
@@ -16,8 +17,16 @@ export interface BooksList {
 
 export type CreateBooksListPayload = Omit<
   BooksList,
-  "listId" | "createdAt" | "updatedAt" | "isDeleted"
-> & { bookIds: number[] | null };
+  | "listId"
+  | "createdAt"
+  | "updatedAt"
+  | "isDeleted"
+  | "userId"
+  | "publicURL"
+  | "publishedAt"
+  | "expiresAt"
+  | "isVisible"
+> & { booksInList?: BookInListNoListId[] };
 
 export type CreateBooksListResponse = Omit<
   BooksList,
@@ -25,5 +34,5 @@ export type CreateBooksListResponse = Omit<
 >;
 
 export type BooksListData = BooksList & {
-  booksInList?: Book[];
+  booksInList?: (BookInList & { book: Book })[];
 };

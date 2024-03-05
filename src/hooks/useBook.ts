@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { Book, GoodreadsData, User, UserBook, UserBookData } from "../models";
 import axios from "axios";
 import { Books, CreateBooksResponse } from "../models/book";
@@ -22,8 +22,7 @@ import { RootState } from "../lib/store";
 import ReadingStatus, { ReadingStatusEnum } from "../models/readingStatus";
 import { Logger } from "../logger";
 import { EventTracker } from "../eventTracker";
-import { BookData } from "../models/userBook";
-import { sortByAuthor, sortByDateAdded, sortByTitle } from "../utils/bookUtils";
+import { sortByDateAdded } from "../utils/bookUtils";
 
 // ErrorDeleteUserBook error class
 class ErrorDeleteUserBook extends Error {
@@ -141,7 +140,7 @@ const useBook = () => {
     });
     try {
       const responseAddBooks = await axios.post<IResponse<CreateBooksResponse>>(
-        "/api/book",
+        "/api/books",
         book
       );
       const createBookResponse = responseAddBooks.data.result ?? {};
@@ -281,7 +280,6 @@ const useBook = () => {
   const updateUserBook = async (
     updateBookBody: UpdateUserBookBody
   ): Promise<UserBook> => {
-    
     if (loading.current) {
       throw new Error("Cannot update book while another book is loading");
     }
@@ -340,12 +338,24 @@ const useBook = () => {
     } catch (error) {}
   };
 
-  const getBookFullData = (book?: Book): UserBookData | null | undefined => {
-    const userBookData = userBooksData.find(
-      (userBookData) => userBookData.bookData?.book?.bookId === book?.bookId
-    );
-    return userBookData;
-  };
+  function getBookFullData(bookId: number): UserBookData | null;
+  function getBookFullData(book: Book): UserBookData | null;
+  function getBookFullData(bookOrBookId: Book | number): UserBookData | null {
+    if (typeof bookOrBookId === "number") {
+      return (
+        userBooksData.find(
+          (userBookData) => userBookData.bookData?.book?.bookId === bookOrBookId
+        ) ?? null
+      );
+    } else {
+      return (
+        userBooksData.find(
+          (userBookData) =>
+            userBookData.bookData?.book?.bookId === bookOrBookId.bookId
+        ) ?? null
+      );
+    }
+  }
 
   return {
     getBookGoodreadsData,

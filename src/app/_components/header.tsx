@@ -16,15 +16,13 @@ import { EventTracker } from "@/src/eventTracker";
 import { TabItems } from "@/src/components/tabs";
 import { Logger } from "@/src/logger";
 import Feedback from "@/src/components/feedback";
-import Sidebar from "../../components/mobile/sidebar";
+import Sidebar from "./sidebar";
 
 export interface HeaderProps {
   className?: string;
 }
 
 const Header = ({ className }: HeaderProps): React.ReactNode => {
-  const router = useRouter();
-  const pathname = usePathname();
   const { user, loadingState, error } = useSelector(selectAuth);
   const { signInWithGoogle } = useAuth();
   // const [tabs, setTabs] = React.useState<TabItems>([

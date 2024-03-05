@@ -10,13 +10,15 @@ import useScrollPosition, {
   ScrollDirection,
 } from "../../hooks/useScrollPosition";
 import { Add } from "../icons";
+import { ThumbnailSize } from "../../consts/thumbnail";
 
 type BookListProps = {
   books: (Book | undefined)[];
   className?: string;
   direction: "row" | "column";
   onNextPageScroll?: () => void;
-  bookThumbnailSize?: "small" | "medium" | "large";
+  bookThumbnailSize?: ThumbnailSize;
+  disableScroll?: boolean;
 };
 
 const BookList: React.FC<BookListProps> = ({
@@ -25,6 +27,7 @@ const BookList: React.FC<BookListProps> = ({
   direction = "row",
   onNextPageScroll,
   bookThumbnailSize,
+  disableScroll,
 }) => {
   const dispatch = useDispatch();
   const { scrollableDivRef } = useScrollPosition({
@@ -38,8 +41,9 @@ const BookList: React.FC<BookListProps> = ({
 
   return (
     <div
-      className={`flex gap-3 overflow-auto flex-grow scrollbar-hide ${className}
+      className={`flex gap-3 flex-grow scrollbar-hide ${className}
       ${direction === "row" ? "flex-row h-fit " : "flex-col h-96"}
+      ${disableScroll ? "" : "overflow-auto"}
       `}
       ref={scrollableDivRef}
     >

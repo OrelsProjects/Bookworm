@@ -2,9 +2,8 @@
 
 import React, { ReactElement } from "react";
 
-import { Add, Bookmark, Checkmark } from "../icons";
 import Book from "../../models/book";
-import { darkenColor } from "../../utils/thumbnailUtils";
+import { increaseLuminosity } from "../../utils/thumbnailUtils";
 import useBook from "../../hooks/useBook";
 import { UserBookData } from "../../models/userBook";
 import Rating from "../rating";
@@ -24,32 +23,10 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
   const [bookData, setBookData] = React.useState<
     UserBookData | null | undefined
   >(null);
-  const darkenedColor = darkenColor(book.thumbnailColor);
 
   React.useEffect(() => {
     setBookData(getBookFullData(book));
   }, [book]);
-
-  const ButtonImage = (
-    title: string,
-    Icon: React.ElementType,
-    height?: number,
-    width?: number,
-    color?: string
-  ) => (
-    <div className="flex flex-col justify-center items-center gap-2">
-      <Icon size={height || width} color={color || darkenedColor} />
-      <div className="text-foreground text-lg">{title}</div>
-    </div>
-  );
-
-  const Buttons = () => (
-    <div className="h-24 flex flex-row justify-evenly items-center gap-4">
-      {ButtonImage("Read", Add.Fill, 35, 35)}
-      {ButtonImage("Wishlist", Bookmark.Fill, 35, 35)}
-      {ButtonImage("Add to list", Checkmark.Outline, 35, 35, "white")}
-    </div>
-  );
 
   const BookGeneralDetails = ({ book }: { book: Book }) => (
     <div className="h-full w-full flex flex-col gap-4">
@@ -86,25 +63,10 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
     />
   );
 
-  const ThumbnailAndDetails = () => (
-    <div className="w-full flex flex-col items-center justify-center gap-4 absolute">
-      <div className="w-full flex flex-row justify-evenly">
-        <BookThumbnail
-          src={book.thumbnailUrl ?? "/thumbnailPlaceholder.png"}
-          book={book}
-          className="rounded-lg !w-28 !h-44 !relative flex-shrink-0"
-        />
-        <BookGeneralDetails book={book} />
-      </div>
-      <BookButtons book={book} />
-      <Summary />
-    </div>
-  );
-
   return (
     <Modal
       thumbnail={Thumbnail()}
-      buttonsRow={Buttons()}
+      buttonsRow={<BookButtons book={book} />}
       thumbnailDetails={BookGeneralDetails({ book })}
       bottomSection={Summary()}
       {...modalProps}

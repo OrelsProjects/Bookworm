@@ -1,10 +1,10 @@
 import React from "react";
-import { CiMenuBurger } from "react-icons/ci";
+import { BurgerMenu } from "../../components/icons";
 
 const Sidebar = () => {
   return (
     <div>
-      <CiMenuBurger className="text text-foreground w-6 h-6" />
+      <BurgerMenu.Outline className="w-6 h-6 " />
     </div>
   );
 };

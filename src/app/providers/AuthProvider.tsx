@@ -140,9 +140,9 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [dispatch]);
 
   return loadingState.loading ? (
-    <div className="w-full h-full flex justify-center items-center">
+    <div className="absolute w-screen h-screen top-0 bottom-0 right-0 left-0">
       <Loading
-        spinnerClassName="!w-24 !h-24 !fill-primary"
+        spinnerClassName="w-20 h-20"
         text={loadingState.message ?? ""}
       />
     </div>

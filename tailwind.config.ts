@@ -76,6 +76,9 @@ module.exports = {
         sm: "calc(var(--radius) - 4px)",
         "5xl": "2.5rem",
       },
+      borderWidth: {
+        1: "1px",
+      },
       keyframes: {
         "accordion-down": {
           from: { height: 0 },
@@ -98,14 +101,17 @@ module.exports = {
       },
       width: {
         "22": "5.5rem",
+        "30": "7.5rem",
+        "136": "34rem",
+        "144": "36rem",
         "288": "72rem",
-        comments: "33.5rem",
-        modal: "82rem",
-        "modal-md": "70rem",
-        "modal-sm": "60rem",
+        modal: "40rem" /* this is in pixels: 536px */,
+        "modal-md": "32rem",
+        "modal-sm": "28rem",
       },
       height: {
         "22": "5.5rem",
+        "30": "7.5rem",
         "136": "34rem",
         "144": "36rem",
         "288": "72rem",

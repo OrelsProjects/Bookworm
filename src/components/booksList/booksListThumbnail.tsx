@@ -1,31 +1,50 @@
 import React, { useState, useEffect } from "react";
 import { Book } from "../../models";
 import { Skeleton } from "../skeleton";
+import { ThumbnailSize, getThumbnailSize } from "../../consts/thumbnail";
 
-export interface BookThumbnailProps {
-  books: Book[];
+export interface BooksListThumbnailProps {
+  books?: Book[];
+  thumbnailSize?: ThumbnailSize;
   className?: string;
+  Icon?: React.ReactNode;
 }
 
-const BooksListThumbnail: React.FC<BookThumbnailProps> = ({ books }) => {
+type Props = BooksListThumbnailProps & React.HTMLProps<HTMLDivElement>;
+
+const BooksListThumbnail: React.FC<Props> = ({
+  books,
+  className,
+  thumbnailSize,
+  Icon,
+  ...props
+}) => {
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [thumbnailBooks, setThumbnailBooks] = useState<Book[]>(
-    books.slice(0, 4)
+    books?.slice(0, 4) ?? []
   );
   // Preload images
   useEffect(() => {
-    setThumbnailBooks(books.slice(0, 4));
+    const booksForThumbnail =
+      books?.filter((book) => book !== undefined).slice(0, 4) ?? [];
+    setThumbnailBooks(booksForThumbnail);
     let imagesToLoad = thumbnailBooks.map((book) => new Image());
     let imagesLoadedCount = 0;
-    if (books.length === 0) {
+    if (booksForThumbnail?.length === 0) {
       setImagesLoaded(true);
     }
-    thumbnailBooks.forEach((book, index) => {
+    booksForThumbnail.forEach((book, index) => {
       if (book.thumbnailUrl) {
         imagesToLoad[index].src = book.thumbnailUrl;
         imagesToLoad[index].onload = () => {
           imagesLoadedCount++;
-          if (imagesLoadedCount === thumbnailBooks.length) {
+          if (imagesLoadedCount === booksForThumbnail.length) {
+            setImagesLoaded(true);
+          }
+        };
+        imagesToLoad[index].onerror = () => {
+          imagesLoadedCount++;
+          if (imagesLoadedCount === booksForThumbnail.length) {
             setImagesLoaded(true);
           }
         };
@@ -47,21 +66,7 @@ const BooksListThumbnail: React.FC<BookThumbnailProps> = ({ books }) => {
     );
   };
 
-  const Thumbnail2Books = () => {
-    const book = thumbnailBooks[0];
-    return (
-      <img
-        src={book.thumbnailUrl}
-        alt={`${book.title} cover`}
-        className={`w-full h-full`}
-        style={{
-          backgroundColor: book.thumbnailColor || "transparent",
-        }}
-      />
-    );
-  };
-
-  const Thumbnail3Books = () => {
+  const Thumbnail2Or3Books = (booksCount: number = 2) => {
     return (
       <div className="flex gap-1 w-full h-full relative">
         <div className="w-full h-full absolute z-10">
@@ -76,12 +81,14 @@ const BooksListThumbnail: React.FC<BookThumbnailProps> = ({ books }) => {
           />
         </div>
         <div className="w-full h-full z-20 flex flex-row items-end">
-          {thumbnailBooks.slice(1, 3).map((book) => (
+          {thumbnailBooks.slice(1, booksCount).map((book) => (
             <img
               key={book.bookId}
               src={book.thumbnailUrl}
               alt={`${book.title} cover`}
-              className={`w-1/2 h-1/2`}
+              className={`${
+                booksCount === 2 ? "w-full h-full absolute top-1/2" : "w-1/2"
+              } h-1/2`}
               style={{
                 backgroundColor: book.thumbnailColor || "transparent",
               }}
@@ -91,6 +98,10 @@ const BooksListThumbnail: React.FC<BookThumbnailProps> = ({ books }) => {
       </div>
     );
   };
+
+  const Thumbnail2Books = () => Thumbnail2Or3Books(2);
+
+  const Thumbnail3Books = () => Thumbnail2Or3Books(3);
 
   const Thumbnail4Books = () => {
     return thumbnailBooks.map((book) => (
@@ -131,12 +142,18 @@ const BooksListThumbnail: React.FC<BookThumbnailProps> = ({ books }) => {
   };
 
   return (
-    <div className="flex flex-col flex-wrap items-start justify-center w-24 h-32 rounded-2xl bg-clip-border	overflow-hidden">
+    <div
+      className={`flex flex-col flex-wrap relative items-start justify-center ${
+        getThumbnailSize(thumbnailSize).className
+      } rounded-lg bg-clip-border	overflow-hidden ${className}`}
+      {...props}
+    >
       {imagesLoaded ? (
         <Thumbnail />
       ) : (
         <Skeleton className="w-24 h-32 rounded-2xl" />
       )}
+      {Icon}
     </div>
   );
 };

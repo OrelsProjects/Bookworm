@@ -29,14 +29,14 @@ input[type="text"]:-moz-ui-autofill {
     /* Primary/Medium */
     --primary-foreground: 9, 72, 123;
     /* Primary/weak */
-    --primary-weak: 0, 42, 77;
+    --primary-weak: 157, 87, 87;
     /* Not selected button (Surface/Secondary) */
     --secondary: 21, 63, 102;
     --background: 20, 20, 20;
     /* Text main color (Neutral/Default) */
     --foreground: 245, 245, 245;
     /* Text secondary color (Neutral/Strong) */
-    --muted: 193, 202, 209;
+    --muted: 154, 149, 149;
     /* Surface/Primary */
     --card: 21, 63, 102;
     /* Status/Success/Default */
@@ -114,7 +114,7 @@ input[type="text"]:-moz-ui-autofill {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground font-roboto;
+    @apply bg-background text-foreground;
   }
   body,
   input,
@@ -242,4 +242,11 @@ input[type="text"]:-moz-ui-autofill {
     transparent 100%
   );
   animation: shimmer 2s infinite;
+}
+
+.absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

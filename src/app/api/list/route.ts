@@ -49,8 +49,8 @@ export async function POST(req: NextRequest) {
       },
       error,
     });
-
-    return NextResponse.json({}, { status: 500 });
+    const statusCode = error.response?.status || 500;
+    return NextResponse.json({}, { status: statusCode });
   }
 }
 

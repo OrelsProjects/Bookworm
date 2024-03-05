@@ -6,12 +6,22 @@ interface LoadingProps {
   spinnerClassName?: string;
 }
 
+const separateBackslashN = (text: string): React.ReactNode[] => {
+  let splitText = text.split("\\n");
+  const textNodes: React.ReactNode[] = [];
+  splitText.forEach((t, index) => {
+    textNodes.push(<span key={index}>{t}</span>);
+    if (index !== splitText.length - 1) {
+      textNodes.push(<br key={`br-${index}`} />);
+    }
+  });
+  return textNodes;
+};
+
 const LoadingSvg = ({ className }: { className?: string }): React.ReactNode => (
   <svg
     aria-hidden="true"
-    className={`w-6 h-6 animate-spin fill-primary-weak bg-none ${
-      className ?? ""
-    }`}
+    className={`animate-spin fill-primary-weak bg-none ${className ?? ""}`}
     viewBox="0 0 100 101"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -39,7 +49,9 @@ const Loading: React.FC<LoadingProps> = ({
     role="status"
   >
     <LoadingSvg className={spinnerClassName} />
-    <div className="text-primary">{text}</div>
+    <div className="text-primary line-clamp-2 w-full text-center gap-0">
+      {text ? separateBackslashN(text) : null}
+    </div>
   </div>
 );
 

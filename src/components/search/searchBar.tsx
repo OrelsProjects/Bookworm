@@ -6,19 +6,18 @@ import BookSearchResult, { SearchItemSkeleton } from "./BookSearchResult";
 import toast from "react-hot-toast";
 import { SearchBarComponent } from "./searchBarComponent";
 
-const TOP_RESULTS_COUNT = 3;
-
-export interface CustomSearchBarProps {
-  item: React.ReactNode;
-  onSearch: (text: string) => void;
-}
+const TOP_RESULTS_COUNT = 10;
 
 export interface SearchBarProps {
+  CustomSearchItem?: typeof BookSearchResult;
+  CustomSearchItemSkeleton?: React.FC;
   className?: string;
   onSearch?: (text: string) => void;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({
+  CustomSearchItemSkeleton,
+  CustomSearchItem,
   className,
   onSearch,
 }: SearchBarProps) => {
@@ -50,20 +49,36 @@ const SearchBar: React.FC<SearchBarProps> = ({
       />
       <div className="flex flex-col gap-3 overflow-auto">
         {loading ? (
-          <>
-            <SearchItemSkeleton />
-            <SearchItemSkeleton />
-            <SearchItemSkeleton />
-          </>
+          CustomSearchItemSkeleton ? (
+            <CustomSearchItemSkeleton />
+          ) : (
+            <>
+              <SearchItemSkeleton />
+              <SearchItemSkeleton />
+              <SearchItemSkeleton />
+            </>
+          )
         ) : (
           books &&
           books.length > 0 && (
             <div className="flex flex-col gap-2 mt-2">
               <div className="font-bold text-2xl">Books</div>
-              <div className="flex gap-4 flex-col overflow-scroll">
-                {books.map(
-                  (book, i) =>
-                    i < TOP_RESULTS_COUNT && (
+              <div className="flex gap-4 flex-col overflow-scroll scrollbar-hidden">
+                {books
+                  .slice(0, TOP_RESULTS_COUNT)
+                  .map((book, i) =>
+                    CustomSearchItem ? (
+                      <CustomSearchItem
+                        key={
+                          book.title +
+                          book.isbn10 +
+                          book.datePublished +
+                          book.isbn
+                        }
+                        book={book}
+                        isFirstInList={i === 0}
+                      />
+                    ) : (
                       <BookSearchResult
                         key={
                           book.title +
@@ -75,7 +90,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
                         isFirstInList={i === 0}
                       />
                     )
-                )}
+                  )}
               </div>
             </div>
           )

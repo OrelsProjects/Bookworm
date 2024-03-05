@@ -17,7 +17,6 @@ const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
           resize ? "resize" : "resize-none"
         )}
         {...props}
-        /** Not expandable */
         rows={rows}
         ref={ref}
       />

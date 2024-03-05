@@ -1,9 +1,9 @@
 const cdnUrl = process.env.NEXT_PUBLIC_CDN_URL;
-const withPWA = require("next-pwa")({
-  dest: "public",
-});
+// const withPWA = require("next-pwa")({
+//   dest: "public",
+// });
 
-module.exports = withPWA({
+module.exports = {
   images: {
     remotePatterns: [
       {
@@ -42,4 +42,4 @@ module.exports = withPWA({
 
     return config;
   },
-});
+};
