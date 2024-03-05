@@ -38,17 +38,18 @@ const bottomSheetVariants = {
 };
 
 const Modal: React.FC<ModalProps & ModalContentProps> = ({
-  thumbnail,
-  thumbnailDetails,
+  // thumbnail,
+  // thumbnailDetails,
   thumbnailSize,
-  buttonsRow,
-  bottomSection,
+  // buttonsRow,
+  // bottomSection,
   isOpen,
   backgroundColor,
   onClose,
   className,
   children,
 }) => {
+  console.log("rendering Modal");
   const [shouldRender, setShouldRender] = useState(isOpen);
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -63,17 +64,6 @@ const Modal: React.FC<ModalProps & ModalContentProps> = ({
     }
   }, [isOpen]);
 
-  const ContentContainer = ({ children }: { children: React.ReactNode }) => (
-    <div className="h-full w-full flex flex-col justify-start items-center gap-10 px-8 pb-4">
-      {children}
-    </div>
-  );
-
-  const TopSectionContainer = ({ children }: { children: React.ReactNode }) => (
-    <div className="w-full flex flex-row justify-start gap-2 relative pt-4">
-      {children}
-    </div>
-  );
 
   return (
     shouldRender && (
@@ -105,29 +95,7 @@ const Modal: React.FC<ModalProps & ModalContentProps> = ({
               initial="closed"
               transition={{ duration: 0.3 }}
             >
-              <ContentContainer>
-                <div className="h-fit w-full">
-                  <div className="w-full h-full flex flex-col items-center overflow-visible gap-4">
-                    <TopSectionContainer>
-                      <div
-                        className={`-mt-12 ${
-                          getThumbnailSize(thumbnailSize).className
-                        } flex-shrink-0`}
-                      >
-                        {thumbnail ?? (
-                          <BookThumbnail className="w-full h-full" />
-                        )}
-                      </div>
-                      <div className="h-full flex flex-col justify-center items-start gap-1">
-                        {thumbnailDetails}
-                      </div>
-                    </TopSectionContainer>
-                    {buttonsRow}
-                  </div>
-                </div>
-                {bottomSection}
-                {children}
-              </ContentContainer>
+              {children}
             </motion.div>
           </motion.div>
         </div>

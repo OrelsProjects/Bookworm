@@ -13,12 +13,16 @@ import {
   BottomSheetTypes,
 } from "../../lib/features/modal/modalSlice";
 import { selectBooksLists } from "../../lib/features/booksLists/booksListsSlice";
+import Modal from "../../components/modal/modal";
+import { SearchBar } from "../../components";
 
 const MyLists = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { booksListsData } = useSelector(selectBooksLists);
   const { userBooks, nextPage, searchBooks } = useTable();
+  const [test, setTest] = React.useState<string>("test");
+
   const onSeeAllClick = useCallback(() => {
     router.push("/my-library");
   }, [router]);
@@ -69,7 +73,7 @@ const MyLists = () => {
   return (
     <div className="h-full w-full flex flex-col gap-4 pb-4 p-3">
       <SearchBarComponent
-        onChange={(value: string) => searchBooks(value)}
+        onChange={(value: string) => setTest(value)}
         onSubmit={(value: string) => searchBooks(value)}
         placeholder="Search in Your Books..."
       />

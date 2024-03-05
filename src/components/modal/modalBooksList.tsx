@@ -1,52 +1,69 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BooksListData } from "../../models/booksList";
-import Modal, { ModalProps } from "./modal";
 import { ThumbnailSize } from "../../consts/thumbnail";
 import { Input } from "../input";
 import { Add } from "../icons";
-import BooksListList from "../booksList/booksListList";
 import BooksListThumbnail from "../booksList/booksListThumbnail";
 import useBooksList from "../../hooks/useBooksList";
-import { Book, UserBook } from "../../models";
+import { Book } from "../../models";
 import useBook from "../../hooks/useBook";
 import toast from "react-hot-toast";
 import { DuplicateError } from "../../models/errors/duplicateError";
 import BookDetails from "../book/bookDetails";
 import { BookComponentProps } from "../search/BookSearchResult";
 import { Logger } from "../../logger";
-import SearchBar from "../search/searchBar";
-import AddBookToList from "../booksList/addBookToList";
 import { useFormik } from "formik";
+import { ContentContainer, TopSectionContainer } from "./modalContainers";
+import { Books } from "../../models/book";
 import { TextArea } from "../textarea";
+import SearchBar from "../search/searchBar";
 
 interface ModalBooksListProps {
   booksListData?: BooksListData;
   className?: string;
 }
 
-const ListName = ({
-  ...props
-}: React.InputHTMLAttributes<HTMLInputElement>) => (
-  <div className="h-full w-full flex justify-start">
-    <input
-      {...props}
-      // className="text-xl font-extralight border-1 rounded-md w-full flex h-10 bg-background px-3 py-2 text-md placeholder:text-muted focus-visible:none truncate"
-      // name="listName"
-      // defaultValue={booksListData?.name}
-      // onChange={formik.handleChange}
-      // value={formik.values.listName}
-      // key={booksListData?.listId}
-      // placeholder="Awesome List Vol1"
+const Thumbnail: React.FC<{ books?: Books }> = ({ books }) => (
+  <BooksListThumbnail books={books} thumbnailSize={ThumbnailSize.Large} />
+);
+
+const ListBooks: React.FC<{
+  value: string;
+  onChange: (e: any) => void;
+  onAddNewBookClick: () => void;
+  name: string;
+  key?: string;
+}> = ({ value, onChange, onAddNewBookClick, name, key }) => (
+  <div className="w-full flex flex-row gap-2 justify-start items-center">
+    <BooksListThumbnail
+      onClick={onAddNewBookClick}
+      className="flex-shrink-0"
+      Icon={
+        <div className="absolute-center">
+          <Add.Fill className="!text-background" />
+        </div>
+      }
+      thumbnailSize={ThumbnailSize.Small}
     />
+
+    <div className="w-full grid gap-2">
+      <div className={`text-muted`}>Book Name</div>
+      <TextArea
+        value={value}
+        rows={3}
+        name={name}
+        onChange={onChange}
+        placeholder="Comment"
+        key={key}
+      />
+    </div>
   </div>
 );
 
-const ModalBooksList: React.FC<ModalBooksListProps & ModalProps> = ({
+const ModalBooksList: React.FC<ModalBooksListProps> = ({
   booksListData,
   className,
-  ...modalProps
 }) => {
-  console.log("rendering ModalBooksList");
   const {
     createBooksList,
     addBookToList,
@@ -158,60 +175,36 @@ const ModalBooksList: React.FC<ModalBooksListProps & ModalProps> = ({
     />
   );
 
-  const Thumbnail = React.useMemo(
-    () => (
-      <BooksListThumbnail
-        books={booksListData?.booksInList?.map((bookInList) => bookInList.book)}
-        thumbnailSize={ThumbnailSize.Large}
-      />
-    ),
-    [booksListData?.booksInList]
-  );
-
   return (
-    <div className="flex flex-col">
-      <Modal
-        thumbnail={Thumbnail}
-        thumbnailDetails={
-          <ListName
-            className="text-xl font-extralight border-1 rounded-md w-full flex h-10 bg-background px-3 py-2 text-md placeholder:text-muted focus-visible:none truncate"
-            name="listName"
-            defaultValue={booksListData?.name}
-            onChange={formik.handleChange}
-            value={formik.values.listName}
-            key="list-name"
-            placeholder="Awesome List Vol1"
+    <ContentContainer>
+      <TopSectionContainer
+        thumbnail={
+          <Thumbnail
+            books={booksListData?.booksInList?.map(
+              (bookInList) => bookInList.book
+            )}
           />
         }
-        {...modalProps}
-        backgroundColor={modalProps.backgroundColor || "#B1B1B1"}
       >
-        <div className="w-full flex flex-row gap-2 justify-start items-center">
-          <BooksListThumbnail
-            onClick={() => setShowSearchBar(true)}
-            className="flex-shrink-0"
-            Icon={
-              <div className="absolute-center">
-                <Add.Fill className="!text-background" />
-              </div>
-            }
-            thumbnailSize={ThumbnailSize.Small}
-          />
-
-          <div className="w-full grid gap-2">
-            <div className={`text-muted`}>Book Name</div>
-            <TextArea
-              value={formik.values.newBookComments}
-              className="flex h-max border-1 rounded-md w-full bg-background px-3 py-2 text-md placeholder:text-muted focus-visible:none resize-none"
-              rows={3}
-              name="newBookComments"
-              onChange={formik.handleChange}
-              placeholder="Comment"
-            />
-          </div>
-        </div>
-      </Modal>
-    </div>
+        <Input
+          className="text-lg font-extralight border-1 rounded-md"
+          defaultValue={booksListData?.name}
+          name="listName"
+          onChange={formik.handleChange}
+          value={formik.values.listName}
+          placeholder="Awesome List Vol1"
+          key={booksListData?.listId}
+        />
+      </TopSectionContainer>
+      <ListBooks
+        value={formik.values.newBookComments}
+        onChange={formik.handleChange}
+        key={booksListData?.listId}
+        onAddNewBookClick={() => setShowSearchBar(true)}
+        name="newBookComments"
+      />
+      {showSearchBar && <SearchBar CustomSearchItem={SearchResult} />}
+    </ContentContainer>
   );
 };
 
