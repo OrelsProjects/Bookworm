@@ -1,4 +1,4 @@
-import { AnimationProps, MotionProps, motion } from "framer-motion";
+import { MotionProps, motion } from "framer-motion";
 import React from "react";
 
 export enum ExpandType {

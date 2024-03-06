@@ -40,12 +40,17 @@ const BookThumbnail: React.FC<BookThumbnailProps> = ({
   className,
   onClick,
   Icon,
+  thumbnailSize = ThumbnailSize.Medium,
 }) => {
   const thumbnailUrl = book?.thumbnailUrl ?? src;
   const bookTitle = book?.title ?? title;
 
   return (
-    <div className={`h-full relative flex-shrink-0 ${getThumbnailSize()}`}>
+    <div
+      className={`h-full relative flex-shrink-0 ${
+        getThumbnailSize(thumbnailSize).className
+      }`}
+    >
       {thumbnailUrl ? (
         <img
           src={thumbnailUrl ?? "/thumbnailPlaceholder.png"}

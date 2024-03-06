@@ -26,6 +26,7 @@ const BookButtons: React.FC<BookButtonsProps> = ({ book }) => {
   const buttonsColor = increaseLuminosity(book?.thumbnailColor);
 
   useEffect(() => {
+    if (!book) return;
     const userBookData = getBookFullData(book) ?? undefined;
     setBookData(userBookData);
     setBookRead(isBookRead(userBookData?.userBook));

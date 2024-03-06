@@ -1,15 +1,14 @@
 "use client";
 
-import React, { ReactElement } from "react";
+import React from "react";
 
 import Book from "../../models/book";
-import { increaseLuminosity } from "../../utils/thumbnailUtils";
 import useBook from "../../hooks/useBook";
 import { UserBookData } from "../../models/userBook";
 import Rating from "../rating";
 import BookButtons from "../book/buttons";
 import BookThumbnail from "../book/bookThumbnail";
-import Modal, { ModalProps } from "./modal";
+import { ModalProps } from "./modal";
 import { ModalContent } from "./modalContainers";
 
 type ModalBookDetailsProps = {

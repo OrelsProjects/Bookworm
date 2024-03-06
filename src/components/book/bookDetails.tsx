@@ -17,7 +17,7 @@ type BookDetailsProps = {
 
 const BookDetails: React.FC<BookDetailsProps> = ({
   book,
-  bookThumbnailSize = ThumbnailSize.Small,
+  bookThumbnailSize = ThumbnailSize.Medium,
   Icon,
   ThumbnailIcon,
   className,

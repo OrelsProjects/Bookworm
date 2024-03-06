@@ -53,7 +53,11 @@ const booksListsSlice = createSlice({
         (list) => list.listId === action.payload.listId
       );
       if (listIndex !== -1) {
-        state.booksListsData[listIndex].booksInList?.push(action.payload.book);
+        state.booksListsData[listIndex].booksInList?.push({
+          book: { ...action.payload.book },
+          listId: action.payload.listId,
+          bookId: action.payload.book.bookId,
+        });
       }
     },
     removeBookFromList: (

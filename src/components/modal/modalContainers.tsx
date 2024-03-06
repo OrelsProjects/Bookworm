@@ -37,6 +37,16 @@ const ContentContainer: React.FC<ModalContentContainer> = ({
     </div>
   </div>
 );
+const BottomSectionContainer: React.FC<ModalContentContainer> = ({
+  children,
+  className,
+}) => (
+  <div
+    className={`flex gap-2 w-full h-full flex-col scrollbar-hide ${className}`}
+  >
+    {children}
+  </div>
+);
 
 export const ModalContent: React.FC<ModalContentProps> = ({
   thumbnail,
@@ -55,6 +65,8 @@ export const ModalContent: React.FC<ModalContentProps> = ({
         {buttonsRow}
       </div>
     </div>
-    {bottomSection}
+    <BottomSectionContainer>
+      {bottomSection}
+    </BottomSectionContainer>
   </ContentContainer>
 );

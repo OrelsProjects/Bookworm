@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
   try {
     createBooksListBody = await req.json();
     const axios = GetAxiosInstance(req);
-    const response = await axios.post<BooksList>("/lists", createBooksListBody);
+    const response = await axios.post<BooksListData>("/lists", createBooksListBody);
 
     const booksList = response.data;
 
