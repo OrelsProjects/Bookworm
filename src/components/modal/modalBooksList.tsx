@@ -13,18 +13,18 @@ import BookDetails from "../book/bookDetails";
 import { BookComponentProps } from "../search/BookSearchResult";
 import { Logger } from "../../logger";
 import { useFormik } from "formik";
-import { ContentContainer, TopSectionContainer } from "./modalContainers";
 import { Books } from "../../models/book";
 import { TextArea } from "../textarea";
 import SearchBar from "../search/searchBar";
+import { ModalContent } from "./modalContainers";
+import BookList from "../book/bookList";
 
 interface ModalBooksListProps {
   booksListData?: BooksListData;
-  className?: string;
 }
 
 const Thumbnail: React.FC<{ books?: Books }> = ({ books }) => (
-  <BooksListThumbnail books={books} thumbnailSize={ThumbnailSize.Large} />
+  <BooksListThumbnail books={books} thumbnailSize={ThumbnailSize.Medium} />
 );
 
 const ListBooks: React.FC<{
@@ -32,9 +32,19 @@ const ListBooks: React.FC<{
   onChange: (e: any) => void;
   onAddNewBookClick: () => void;
   name: string;
+  books?: Books;
   key?: string;
-}> = ({ value, onChange, onAddNewBookClick, name, key }) => (
+}> = ({ value, onChange, onAddNewBookClick, name, key, books }) => (
   <div className="w-full flex flex-row gap-2 justify-start items-center">
+    {books && books.length > 0 && (
+      <BookList
+        books={books}
+        direction="column"
+        CustomBookComponent={({ book }) => (
+          <BookDetails book={book} bookThumbnailSize={ThumbnailSize.Small} />
+        )}
+      />
+    )}
     <BooksListThumbnail
       onClick={onAddNewBookClick}
       className="flex-shrink-0"
@@ -60,10 +70,7 @@ const ListBooks: React.FC<{
   </div>
 );
 
-const ModalBooksList: React.FC<ModalBooksListProps> = ({
-  booksListData,
-  className,
-}) => {
+const ModalBooksList: React.FC<ModalBooksListProps> = ({ booksListData }) => {
   const {
     createBooksList,
     addBookToList,
@@ -176,16 +183,15 @@ const ModalBooksList: React.FC<ModalBooksListProps> = ({
   );
 
   return (
-    <ContentContainer>
-      <TopSectionContainer
-        thumbnail={
-          <Thumbnail
-            books={booksListData?.booksInList?.map(
-              (bookInList) => bookInList.book
-            )}
-          />
-        }
-      >
+    <ModalContent
+      thumbnail={
+        <Thumbnail
+          books={booksListData?.booksInList?.map(
+            (bookInList) => bookInList.book
+          )}
+        />
+      }
+      thumbnailDetails={
         <Input
           className="text-lg font-extralight border-1 rounded-md"
           defaultValue={booksListData?.name}
@@ -195,16 +201,23 @@ const ModalBooksList: React.FC<ModalBooksListProps> = ({
           placeholder="Awesome List Vol1"
           key={booksListData?.listId}
         />
-      </TopSectionContainer>
-      <ListBooks
-        value={formik.values.newBookComments}
-        onChange={formik.handleChange}
-        key={booksListData?.listId}
-        onAddNewBookClick={() => setShowSearchBar(true)}
-        name="newBookComments"
-      />
-      {showSearchBar && <SearchBar CustomSearchItem={SearchResult} />}
-    </ContentContainer>
+      }
+      bottomSection={
+        <div className="w-full h-full flex flex-col gap-2">
+          <ListBooks
+            value={formik.values.newBookComments}
+            onChange={formik.handleChange}
+            key={booksListData?.listId}
+            onAddNewBookClick={() => setShowSearchBar(true)}
+            name="newBookComments"
+            books={booksListData?.booksInList?.map(
+              (bookInList) => bookInList.book
+            )}
+          />
+          {showSearchBar && <SearchBar CustomSearchItem={SearchResult} />}
+        </div>
+      }
+    />
   );
 };
 

@@ -3,23 +3,11 @@
 import { motion } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
 import { IoArrowBack } from "react-icons/io5";
-import BookThumbnail from "../book/bookThumbnail";
-import { Skeleton } from "../skeleton";
-import { ThumbnailSize, getThumbnailSize } from "../../consts/thumbnail";
-
 export interface ModalProps {
   isOpen: boolean;
   backgroundColor?: string;
   onClose?: () => void;
   className?: string;
-  thumbnailSize?: ThumbnailSize;
-}
-
-interface ModalContentProps {
-  thumbnail?: React.ReactNode;
-  thumbnailDetails?: React.ReactNode;
-  buttonsRow?: React.ReactNode;
-  bottomSection?: React.ReactNode;
   children?: React.ReactNode;
 }
 
@@ -37,19 +25,13 @@ const bottomSheetVariants = {
   closed: { y: 1 },
 };
 
-const Modal: React.FC<ModalProps & ModalContentProps> = ({
-  // thumbnail,
-  // thumbnailDetails,
-  thumbnailSize,
-  // buttonsRow,
-  // bottomSection,
+const Modal: React.FC<ModalProps> = ({
   isOpen,
   backgroundColor,
   onClose,
   className,
   children,
 }) => {
-  console.log("rendering Modal");
   const [shouldRender, setShouldRender] = useState(isOpen);
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -63,7 +45,6 @@ const Modal: React.FC<ModalProps & ModalContentProps> = ({
       return () => clearTimeout(timeout);
     }
   }, [isOpen]);
-
 
   return (
     shouldRender && (

@@ -10,6 +10,7 @@ import Rating from "../rating";
 import BookButtons from "../book/buttons";
 import BookThumbnail from "../book/bookThumbnail";
 import Modal, { ModalProps } from "./modal";
+import { ModalContent } from "./modalContainers";
 
 type ModalBookDetailsProps = {
   book: Book;
@@ -55,7 +56,7 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
       <></>
     );
 
-  const Thumbnail = (): ReactElement => (
+  const Thumbnail = () => (
     <BookThumbnail
       src={book.thumbnailUrl ?? "/thumbnailPlaceholder.png"}
       book={book}
@@ -64,11 +65,11 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
   );
 
   return (
-    <Modal
-      thumbnail={Thumbnail()}
+    <ModalContent
+      thumbnail={<Thumbnail />}
       buttonsRow={<BookButtons book={book} />}
-      thumbnailDetails={BookGeneralDetails({ book })}
-      bottomSection={Summary()}
+      thumbnailDetails={<BookGeneralDetails book={book} />}
+      bottomSection={<Summary />}
       {...modalProps}
     />
   );

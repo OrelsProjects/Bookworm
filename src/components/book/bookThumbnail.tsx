@@ -3,6 +3,7 @@ import { PlaceholderValue } from "next/dist/shared/lib/get-img-props";
 import React from "react";
 import { Book } from "../../models";
 import { Skeleton } from "../skeleton";
+import { ThumbnailSize, getThumbnailSize } from "../../consts/thumbnail";
 
 export enum IconPosition {
   TopLeft = "topLeft",
@@ -25,6 +26,7 @@ export interface BookThumbnailProps {
   onClick?: (book: Book) => void;
   Icon?: React.ReactNode;
   iconPosition?: IconPosition;
+  thumbnailSize?: ThumbnailSize;
 }
 
 const BookThumbnail: React.FC<BookThumbnailProps> = ({
@@ -43,7 +45,7 @@ const BookThumbnail: React.FC<BookThumbnailProps> = ({
   const bookTitle = book?.title ?? title;
 
   return (
-    <div className="h-full relative flex-shrink-0">
+    <div className={`h-full relative flex-shrink-0 ${getThumbnailSize()}`}>
       {thumbnailUrl ? (
         <img
           src={thumbnailUrl ?? "/thumbnailPlaceholder.png"}

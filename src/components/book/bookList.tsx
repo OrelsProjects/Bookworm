@@ -19,6 +19,7 @@ type BookListProps = {
   onNextPageScroll?: () => void;
   bookThumbnailSize?: ThumbnailSize;
   disableScroll?: boolean;
+  CustomBookComponent?: React.FC<{ book?: Book }>;
 };
 
 const BookList: React.FC<BookListProps> = ({
@@ -28,6 +29,7 @@ const BookList: React.FC<BookListProps> = ({
   onNextPageScroll,
   bookThumbnailSize,
   disableScroll,
+  CustomBookComponent,
 }) => {
   const dispatch = useDispatch();
   const { scrollableDivRef } = useScrollPosition({
@@ -53,21 +55,25 @@ const BookList: React.FC<BookListProps> = ({
           className="h-full"
           key={`book-in-books-list-${book?.bookId}`}
         >
-          <BookDetails
-            book={book}
-            bookThumbnailSize={bookThumbnailSize}
-            ThumbnailIcon={
-              direction === "row" && (
-                <Add.Outline className="w-8 h-8 absolute bottom-2 left-2 bg-background rounded-full border-none overflow-hidden" />
-              )
-            }
-            Icon={
-              direction === "column" && (
-                <Add.Outline className="w-8 h-8 flex-shrink-0" />
-              )
-            }
-            direction={direction}
-          />
+          {CustomBookComponent ? (
+            <CustomBookComponent book={book} />
+          ) : (
+            <BookDetails
+              book={book}
+              bookThumbnailSize={bookThumbnailSize}
+              ThumbnailIcon={
+                direction === "row" && (
+                  <Add.Outline className="w-8 h-8 absolute bottom-2 left-2 bg-background rounded-full border-none overflow-hidden" />
+                )
+              }
+              Icon={
+                direction === "column" && (
+                  <Add.Outline className="w-8 h-8 flex-shrink-0" />
+                )
+              }
+              direction={direction}
+            />
+          )}
         </div>
       ))}
     </div>
