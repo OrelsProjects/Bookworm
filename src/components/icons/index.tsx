@@ -9,6 +9,7 @@ import { FaBarsStaggered } from "react-icons/fa6";
 import { FaBookMedical } from "react-icons/fa6";
 import { FaSliders } from "react-icons/fa6";
 import { CiMenuBurger } from "react-icons/ci";
+import { MdCancel } from "react-icons/md";
 
 export type Icon = {
   Fill: React.ElementType;
@@ -26,7 +27,7 @@ const IconOutline =
     (
       <Icon
         {...props}
-        className={`text-foreground ${className} ${props.className}`}
+        className={`text-foreground ${className ?? ""} ${props.className}`}
       />
     );
 
@@ -73,4 +74,9 @@ export const Plus: Icon = {
 export const Sliders: Icon = {
   Fill: IconFill(FaSliders),
   Outline: IconOutline(FaSliders),
+};
+
+export const Cancel: Icon = {
+  Fill: IconFill(MdCancel),
+  Outline: IconOutline(MdCancel),
 };

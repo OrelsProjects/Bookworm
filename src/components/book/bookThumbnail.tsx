@@ -40,27 +40,26 @@ const BookThumbnail: React.FC<BookThumbnailProps> = ({
   className,
   onClick,
   Icon,
+  thumbnailSize = ThumbnailSize.Medium,
 }) => {
   const thumbnailUrl = book?.thumbnailUrl ?? src;
   const bookTitle = book?.title ?? title;
 
   return (
-    <div className={`h-full relative flex-shrink-0 ${getThumbnailSize()}`}>
-      {thumbnailUrl ? (
-        <img
-          src={thumbnailUrl ?? "/thumbnailPlaceholder.png"}
-          alt={`${bookTitle} thumbnail`}
-          height={height}
-          width={width}
-          onClick={onClick && book ? () => onClick(book) : undefined}
-          className={`rounded-lg ${className}`}
-        />
-      ) : (
-        <Skeleton
-          className={`rounded-lg h-full w-full ${className}`}
-          type="none"
-        />
-      )}
+    <div
+      className={`h-full relative flex-shrink-0 ${
+        getThumbnailSize(thumbnailSize).className
+      }`}
+    >
+      <img
+        src={thumbnailUrl ?? "/thumbnailPlaceholder.png"}
+        alt={`${bookTitle} thumbnail`}
+        height={height}
+        width={width}
+        onClick={onClick && book ? () => onClick(book) : undefined}
+        className={`rounded-lg ${ className ?? ""} w-full h-full object-cover`}
+      />
+
       {Icon}
     </div>
   );

@@ -8,17 +8,15 @@ export interface TextAreaProps
 }
 
 const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
-  ({ className, rows, resize, ...props }, ref) => {
+  ({ className, resize, ...props }) => {
     return (
       <textarea
         className={cn(
-          "flex h-10 w-full bg-background px-3 py-2 text-md placeholder:text-muted focus-visible:none",
+          "flex w-full rounded-lg bg-background px-3 py-2 text-md placeholder:text-muted focus-visible:none border-1 !scrollbar-hide",
           className,
           resize ? "resize" : "resize-none"
         )}
         {...props}
-        rows={rows}
-        ref={ref}
       />
     );
   }

@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import { selectAuth } from "@/src/lib/features/auth/authSlice";
 import useAuth from "@/src/hooks/useAuth";
 import {
-  BottomSheetTypes,
+  ModalTypes,
   showModal,
 } from "@/src/lib/features/modal/modalSlice";
 import Avatar from "./avatar";
@@ -55,7 +55,7 @@ const Header = ({ className }: HeaderProps): React.ReactNode => {
   return (
     !loadingState.loading && (
       <div
-        className={`flex justify-between items-center w-full z-30 relative ${className}`}
+        className={`flex justify-between items-center w-full z-30 relative ${className ?? ""}`}
       >
         <Sidebar />
         {user ? (

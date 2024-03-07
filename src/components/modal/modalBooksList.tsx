@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BooksListData } from "../../models/booksList";
 import { ThumbnailSize } from "../../consts/thumbnail";
 import { Input } from "../input";
-import { Add } from "../icons";
+import { Add, Cancel, Checkmark } from "../icons";
 import BooksListThumbnail from "../booksList/booksListThumbnail";
 import useBooksList from "../../hooks/useBooksList";
 import { Book } from "../../models";
@@ -17,55 +17,136 @@ import { Books } from "../../models/book";
 import { TextArea } from "../textarea";
 import SearchBar from "../search/searchBar";
 import { ModalContent } from "./modalContainers";
-import BookList from "../book/bookList";
+import { BookInListWithBook } from "../../models/bookInList";
+import BookThumbnail from "../book/bookThumbnail";
+import BooksListList from "../booksList/booksListList";
 
 interface ModalBooksListProps {
   booksListData?: BooksListData;
+}
+
+interface ListBookAndBookDetailsProps {
+  onAddNewBookClick: () => void;
+  onChange: (
+    bookInListWithBook: BookInListWithBook | null | undefined,
+    comment: string
+  ) => void;
+  value: string;
+  name: string;
+  key?: string;
+}
+
+interface ListBookProps extends ListBookAndBookDetailsProps {
+  booksInList?: BookInListWithBook[];
+}
+
+interface BookInListDetailsProps extends ListBookAndBookDetailsProps {
+  bookInList?: BookInListWithBook;
 }
 
 const Thumbnail: React.FC<{ books?: Books }> = ({ books }) => (
   <BooksListThumbnail books={books} thumbnailSize={ThumbnailSize.Medium} />
 );
 
-const ListBooks: React.FC<{
-  value: string;
-  onChange: (e: any) => void;
-  onAddNewBookClick: () => void;
-  name: string;
-  books?: Books;
-  key?: string;
-}> = ({ value, onChange, onAddNewBookClick, name, key, books }) => (
-  <div className="w-full flex flex-row gap-2 justify-start items-center">
-    {books && books.length > 0 && (
-      <BookList
-        books={books}
-        direction="column"
-        CustomBookComponent={({ book }) => (
-          <BookDetails book={book} bookThumbnailSize={ThumbnailSize.Small} />
-        )}
-      />
-    )}
-    <BooksListThumbnail
-      onClick={onAddNewBookClick}
-      className="flex-shrink-0"
-      Icon={
-        <div className="absolute-center">
-          <Add.Fill className="!text-background" />
-        </div>
-      }
-      thumbnailSize={ThumbnailSize.Small}
-    />
+const BookInListDetails: React.FC<BookInListDetailsProps> = ({
+  bookInList,
+  onAddNewBookClick,
+  onChange,
+  value,
+  name,
+  key,
+}) => {
+  const [comment, setComment] = useState("");
 
-    <div className="w-full grid gap-2">
-      <div className={`text-muted`}>Book Name</div>
-      <TextArea
-        value={value}
-        rows={3}
-        name={name}
-        onChange={onChange}
-        placeholder="Comment"
-        key={key}
+  useEffect(() => {
+    setComment(bookInList?.comments ?? "");
+  }, [value]);
+
+  return (
+    <div className="w-full flex flex-row gap-2">
+      <BookThumbnail
+        book={bookInList?.book}
+        onClick={onAddNewBookClick}
+        className="flex-shrink-0"
+        Icon={
+          <div className="absolute-center">
+            {bookInList?.book ? (
+              <Cancel.Fill className="!text-background" />
+            ) : (
+              <Add.Fill className="!text-background" />
+            )}
+          </div>
+        }
+        thumbnailSize={ThumbnailSize.Small}
       />
+
+      <div className="w-full h-full flex flex-col justify-start items-start gap-2">
+        <div
+          className={`${bookInList ? "text-foreground" : "text-muted"} h-fit`}
+        >
+          {bookInList?.book.title ?? "Book Name"}
+        </div>
+        <TextArea
+          value={comment}
+          rows={3}
+          name={name}
+          onChange={(e) => {
+            const value = e.target.value;
+            setComment(value);
+            onChange(bookInList, value);
+          }}
+          placeholder="Comment"
+          key={key}
+        />
+      </div>
+    </div>
+  );
+};
+
+const ListBooks: React.FC<ListBookProps> = ({
+  value,
+  onChange,
+  onAddNewBookClick,
+  name,
+  key,
+  booksInList,
+}) => (
+  <div className="w-full flex flex-col gap-2 justify-center items-start">
+    {booksInList?.map((bookInList) => (
+      <BookInListDetails
+        key={key}
+        bookInList={bookInList}
+        onAddNewBookClick={onAddNewBookClick}
+        onChange={onChange}
+        value={value}
+        name={name}
+      />
+    ))}
+    <div className="w-full flex flex-row gap-2">
+      <BooksListThumbnail
+        onClick={onAddNewBookClick}
+        className="flex-shrink-0"
+        Icon={
+          <div className="absolute-center">
+            <Add.Fill className="!text-background" />
+          </div>
+        }
+        thumbnailSize={ThumbnailSize.Small}
+      />
+
+      <div className="w-full h-full flex flex-col justify-start items-start gap-2">
+        <div className={`text-muted h-fit`}>Book Name</div>
+        <TextArea
+          value={value}
+          rows={3}
+          name={name}
+          onChange={(e) => {
+            onChange(null, e.target.value);
+          }}
+          placeholder="Comment"
+          key={key}
+        />
+      </div>
     </div>
   </div>
 );
@@ -78,33 +159,44 @@ const ModalBooksList: React.FC<ModalBooksListProps> = ({ booksListData }) => {
   } = useBooksList();
   const { addUserBook, getBookFullData, loading: loadingBook } = useBook();
   const [showSearchBar, setShowSearchBar] = useState(false);
+  const [currentBooksList, setCurrentBookList] = useState<
+    BooksListData | undefined
+  >();
+  const scrollRef = React.useRef<HTMLDivElement>(null);
+
+  const buildFormikValueName = (bookId: number) => `newBookComments-${bookId}`;
 
   const formik = useFormik({
     initialValues: {
       listName: booksListData?.name ?? "",
       newBookComments: "",
     },
-    onSubmit: (values) => {
-      // Handle form submission using values.listName and values.newBookComments
-      console.log(values);
-    },
+    onSubmit: (values) => {},
   });
 
   useEffect(() => {
-    if (booksListData) {
-      // setBooksComments(
-      //   booksListData.booksInList?.map((bookInList) => ({
-      //     bookId: bookInList.bookId,
-      //     comments: bookInList.comments ?? "",
-      //   })) ?? []
-      // );
-    }
+    setCurrentBookList(booksListData);
+    booksListData?.booksInList?.forEach((bookInList) => {
+      formik.setFieldValue(
+        buildFormikValueName(bookInList.bookId),
+        bookInList.comments
+      );
+    });
   }, [booksListData]);
 
-  const handleAddNewBookClick = async (book: Book, comments?: string) => {
-    try {
-      if (loadingList || loadingBook.current) return;
+  const isBookInList = (book: Book) =>
+    currentBooksList?.booksInList?.some(
+      (bookInList) => bookInList.bookId === book.bookId
+    );
 
+  const handleAddNewBookClick = async (book: Book) => {
+    try {
+      if (loadingList.current || loadingBook.current) return;
+
+      if (!formik.values.listName) {
+        formik.setFieldError("listName", "List name is required");
+        return;
+      }
       let bookWithId = book;
       if (!book.bookId) {
         bookWithId = await toast.promise(
@@ -125,16 +217,30 @@ const ModalBooksList: React.FC<ModalBooksListProps> = ({ booksListData }) => {
         );
       }
 
-      if (booksListData) {
-        await toast.promise(addBookToList(booksListData.listId, bookWithId), {
-          loading: "Adding book to list...",
-          success: (book) => {
-            return "Book added to list successfully!";
-          },
-          error: "Failed to add book to list.",
+      if (currentBooksList) {
+        await toast.promise(
+          addBookToList(currentBooksList.listId, bookWithId),
+          {
+            loading: `Adding ${book.title} to list...`,
+            success: `${book.title} added to list successfully!`,
+            error: `Failed to add ${book.title} to list.`,
+          }
+        );
+
+        const bookInList: BookInListWithBook = {
+          bookId: bookWithId.bookId,
+          listId: currentBooksList.listId,
+          comments: formik.values.newBookComments,
+          book: bookWithId,
+        };
+        const newBooksInList = [...(currentBooksList.booksInList ?? [])];
+        newBooksInList.push(bookInList);
+        setCurrentBookList({
+          ...currentBooksList,
+          booksInList: newBooksInList,
         });
       } else {
-        await toast.promise(
+        const createBooksListResponse = await toast.promise(
           createBooksList({
             name: formik.values.listName,
             description: "",
@@ -154,8 +260,10 @@ const ModalBooksList: React.FC<ModalBooksListProps> = ({ booksListData }) => {
                 : "Failed to create list.",
           }
         );
+        setCurrentBookList(createBooksListResponse);
       }
       setShowSearchBar(false);
+      formik.setFieldValue("newBookComments", "");
     } catch (e: any) {
       Logger.error("Error adding book to list", {
         data: {
@@ -172,12 +280,16 @@ const ModalBooksList: React.FC<ModalBooksListProps> = ({ booksListData }) => {
       book={book}
       bookThumbnailSize={ThumbnailSize.Medium}
       Icon={
-        <Add.Outline
-          className="w-8 h-8 flex-shrink-0"
-          onClick={() => {
-            handleAddNewBookClick(book);
-          }}
-        />
+        isBookInList(book) ? (
+          <Checkmark.Fill className="w-8 h-8 flex-shrink-0" />
+        ) : (
+          <Add.Outline
+            className="w-8 h-8 flex-shrink-0"
+            onClick={() => {
+              handleAddNewBookClick(book);
+            }}
+          />
+        )
       }
     />
   );
@@ -186,7 +298,7 @@ const ModalBooksList: React.FC<ModalBooksListProps> = ({ booksListData }) => {
     <ModalContent
       thumbnail={
         <Thumbnail
-          books={booksListData?.booksInList?.map(
+          books={currentBooksList?.booksInList?.map(
             (bookInList) => bookInList.book
           )}
         />
@@ -194,30 +306,64 @@ const ModalBooksList: React.FC<ModalBooksListProps> = ({ booksListData }) => {
       thumbnailDetails={
         <Input
           className="text-lg font-extralight border-1 rounded-md"
-          defaultValue={booksListData?.name}
+          defaultValue={currentBooksList?.name}
           name="listName"
           onChange={formik.handleChange}
           value={formik.values.listName}
           placeholder="Awesome List Vol1"
-          key={booksListData?.listId}
+          key={currentBooksList?.listId}
+          error={formik.errors.listName}
         />
       }
       bottomSection={
-        <div className="w-full h-full flex flex-col gap-2">
-          <ListBooks
-            value={formik.values.newBookComments}
-            onChange={formik.handleChange}
-            key={booksListData?.listId}
-            onAddNewBookClick={() => setShowSearchBar(true)}
-            name="newBookComments"
-            books={booksListData?.booksInList?.map(
-              (bookInList) => bookInList.book
-            )}
-          />
-          {showSearchBar && <SearchBar CustomSearchItem={SearchResult} />}
-        </div>
+        currentBooksList && (
+          <div className="w-full h-full flex flex-col gap-2 overflow-auto scrollbar-hide">
+            <div className="flex flex-col gap-2">
+              <ListBooks
+                value={formik.values.newBookComments}
+                onChange={(bookInList, comment) => {
+                  if (!bookInList) {
+                    formik.setFieldValue("newBookComments", comment);
+                  } else if (bookInList?.book) {
+                    formik.setFieldValue(
+                      buildFormikValueName(bookInList.book.bookId),
+                      comment
+                    );
+                  }
+                }}
+                key={currentBooksList?.listId}
+                onAddNewBookClick={() => {
+                  setShowSearchBar(true);
+                }}
+                name="newBookComments"
+                booksInList={currentBooksList?.booksInList?.map(
+                  (bookInList) => bookInList
+                )}
+              />
+              {showSearchBar && <SearchBar CustomSearchItem={SearchResult} />}
+            </div>
+          </div>
+        )
       }
-    />
+
+      /* {currentBooksList && (
+        <BooksListList
+          booksListsData={[
+            currentBooksList,
+            currentBooksList,
+            currentBooksList,
+            currentBooksList,
+            currentBooksList,
+            currentBooksList,
+            currentBooksList,
+            currentBooksList,
+            currentBooksList,
+            currentBooksList,
+          ]}
+          direction={"column"}
+        />
+      )} */
+    ></ModalContent>
   );
 };
 

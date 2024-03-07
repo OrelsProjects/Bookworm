@@ -1,3 +1,5 @@
+import Book from "./book";
+
 export interface BookInList {
   listId: string;
   bookId: number;
@@ -5,3 +7,5 @@ export interface BookInList {
 }
 
 export type BookInListNoListId = Omit<BookInList, "listId">;
+
+export type BookInListWithBook = BookInList & { book: Book };

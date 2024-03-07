@@ -21,6 +21,63 @@ import { Book, User } from "../models";
 import { IResponse } from "../models/dto/response";
 import { DuplicateError } from "../models/errors/duplicateError";
 
+const BOOK_LIST_DATA_KEY = "booksListData";
+
+const getBooksListFromLocalStorage = (): BooksListData[] => {
+  return JSON.parse(
+    localStorage.getItem(BOOK_LIST_DATA_KEY) ?? "[]"
+  ) as BooksListData[];
+};
+
+const setListInLocalStorage = (booksList: BooksListData[]) => {
+  localStorage.setItem(BOOK_LIST_DATA_KEY, JSON.stringify(booksList));
+};
+
+const addBookToListInLocalStorage = (book: Book, listId: string) => {
+  const booksListData: BooksListData[] = getBooksListFromLocalStorage();
+  booksListData?.forEach((list) => {
+    if (list.listId === listId) {
+      list.booksInList?.push({
+        book,
+        listId,
+        bookId: book.bookId,
+      });
+    }
+  });
+  setListInLocalStorage(booksListData);
+};
+
+const deleteBookFromListInLocalStorage = (listId: string, bookId: number) => {
+  const booksListData: BooksListData[] = getBooksListFromLocalStorage();
+  booksListData?.forEach((list) => {
+    if (list.listId === listId) {
+      list.booksInList = list.booksInList?.filter(
+        (bookInList) => bookInList.bookId !== bookId
+      );
+    }
+  });
+  setListInLocalStorage(booksListData);
+};
+
+const deleteListInLocalStorage = (listId: string) => {
+  const booksListData: BooksListData[] = getBooksListFromLocalStorage();
+  const updatedBooksListData = booksListData.filter(
+    (list) => list.listId !== listId
+  );
+  setListInLocalStorage(updatedBooksListData);
+};
+
+const updateListInLocalStorage = (booksList: BooksList) => {
+  const booksListData = getBooksListFromLocalStorage();
+  const index = booksListData.findIndex(
+    (list) => list.listId === booksList.listId
+  );
+  if (index !== -1) {
+    booksListData[index] = booksList;
+  }
+  setListInLocalStorage(booksListData);
+};
+
 const useBooksList = () => {
   const loading = useRef(false);
   const dispatch = useDispatch();
@@ -52,7 +109,7 @@ const useBooksList = () => {
       const response = await axios.get<IResponse<BooksListData[]>>("/api/list");
       const booksListsData = response.data;
       dispatch(setBooksLists(booksListsData.result ?? []));
-      localStorage.setItem("booksList", JSON.stringify(booksListsData.result));
+      setListInLocalStorage(booksListsData.result ?? []);
     } catch (error: any) {
       Logger.error("Failed to fetch users books lists", error);
     } finally {
@@ -61,7 +118,9 @@ const useBooksList = () => {
     }
   };
 
-  const createBooksList = async (booksListPayload: CreateBooksListPayload) => {
+  const createBooksList = async (
+    booksListPayload: CreateBooksListPayload
+  ): Promise<BooksListData | undefined> => {
     try {
       loading.current = true;
       const response = await axios.post<IResponse<BooksListData>>(
@@ -71,11 +130,9 @@ const useBooksList = () => {
       const booksListData: BooksListData | undefined = response.data.result;
       if (booksListData) {
         dispatch(addBooksList(booksListData));
-        localStorage.setItem(
-          "booksList",
-          JSON.stringify([...booksLists, booksListData])
-        );
+        setListInLocalStorage([...booksLists, booksListData]);
       }
+      return booksListData;
     } catch (error: any) {
       Logger.error("Failed to create books list", error);
       if (error.response?.status === 409) {
@@ -91,14 +148,7 @@ const useBooksList = () => {
     try {
       await axios.patch(`/api/list/`, booksList);
       dispatch(updateBooksListAction(booksList));
-      localStorage.setItem(
-        "booksList",
-        JSON.stringify(
-          booksLists.map((list) =>
-            list.listId === booksList.listId ? booksList : list
-          )
-        )
-      );
+      updateListInLocalStorage(booksList);
     } catch (error: any) {
       Logger.error("Failed to update books list", error);
     }
@@ -108,10 +158,7 @@ const useBooksList = () => {
     try {
       await axios.delete(`/api/list/${listId}`);
       dispatch(deleteBooksListAction(listId));
-      localStorage.setItem(
-        "booksList",
-        JSON.stringify(booksLists.filter((list) => list.listId !== listId))
-      );
+      deleteListInLocalStorage(listId);
     } catch (error: any) {
       Logger.error("Failed to delete books list", error);
     }
@@ -124,22 +171,16 @@ const useBooksList = () => {
         bookId: book.bookId,
       });
       dispatch(addBookToListAction({ listId, book }));
-      localStorage.setItem(
-        "booksList",
-        JSON.stringify(
-          booksLists.map((list) => {
-            if (list.listId === listId) {
-              return {
-                ...list,
-                booksInList: list.booksInList
-                  ? [...list.booksInList, book]
-                  : [book],
-              };
-            }
-            return list;
-          })
-        )
+      const booksList: BooksListData = JSON.parse(
+        localStorage.getItem("booksList") ?? "[]"
       );
+      booksList?.booksInList?.push({
+        book: { ...book },
+        listId: listId,
+        bookId: book.bookId,
+      });
+
+      addBookToListInLocalStorage(book, listId);
     } catch (error: any) {
       Logger.error("Failed to add book to list", error);
     }
@@ -155,22 +196,7 @@ const useBooksList = () => {
         params: urlParams,
       });
       dispatch(removeBookFromListAction({ listId, bookId }));
-      localStorage.setItem(
-        "booksList",
-        JSON.stringify(
-          booksLists.map((list) => {
-            if (list.listId === listId) {
-              return {
-                ...list,
-                booksInList: list.booksInList?.filter(
-                  (book) => book.bookId !== bookId
-                ),
-              };
-            }
-            return list;
-          })
-        )
-      );
+      deleteBookFromListInLocalStorage(listId, bookId);
     } catch (error: any) {
       Logger.error("Failed to remove book from list", error);
     }
@@ -178,7 +204,7 @@ const useBooksList = () => {
 
   return {
     booksLists,
-    loading: loading.current,
+    loading: loading,
     loadUserBooksLists,
     createBooksList,
     updateBooksList,

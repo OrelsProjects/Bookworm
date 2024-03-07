@@ -28,7 +28,7 @@ const BooksListThumbnail: React.FC<Props> = ({
     const booksForThumbnail =
       books?.filter((book) => book !== undefined).slice(0, 4) ?? [];
     setThumbnailBooks(booksForThumbnail);
-    let imagesToLoad = thumbnailBooks.map((book) => new Image());
+    let imagesToLoad = booksForThumbnail.map(() => new Image());
     let imagesLoadedCount = 0;
     if (booksForThumbnail?.length === 0) {
       setImagesLoaded(true);
@@ -145,7 +145,7 @@ const BooksListThumbnail: React.FC<Props> = ({
     <div
       className={`flex flex-col flex-wrap relative items-start justify-center ${
         getThumbnailSize(thumbnailSize).className
-      } rounded-lg bg-clip-border	overflow-hidden ${className}`}
+      } rounded-lg bg-clip-border	overflow-hidden ${className ?? ""}`}
       {...props}
     >
       {imagesLoaded ? (

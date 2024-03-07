@@ -1,23 +1,22 @@
 // authSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../../store";
-import { Book } from "../../../models";
 
-export enum BottomSheetTypes {
+export enum ModalTypes {
   BOOK_DETAILS = "BOOK_DETAILS",
   BOOKS_LIST_DETAILS = "BOOKS_LIST_DETAILS",
   ADD_BOOK_TO_BACKLOG = "ADD_BOOK_TO_BACKLOG",
   ADD_BOOK_TO_READ_LIST = "ADD_BOOK_TO_READ_LIST",
 }
 
-export interface BottomSheetState {
+export interface ModalState {
   data?: any;
-  type: BottomSheetTypes | null;
+  type: ModalTypes | null;
   isOpen: boolean;
   error: string | null;
 }
 
-const initialState: BottomSheetState = {
+const initialState: ModalState = {
   data: undefined,
   type: null,
   isOpen: false,
@@ -32,7 +31,7 @@ const bottomSheetSlice = createSlice({
   reducers: {
     showModal: (
       state,
-      action: PayloadAction<{ data?: any; type: BottomSheetTypes }>
+      action: PayloadAction<{ data?: any; type: ModalTypes }>
     ) => {
       if (state.isOpen) return;
       state.data = action.payload.data;

@@ -69,14 +69,14 @@ const Rating: React.FC<RatingProps> = ({
 
   const RatingLoading = () => (
     <div
-      className={`flex items-center justify-start w-content py-4 rounded-full bg-primary-foreground ${className}`}
+      className={`flex items-center justify-start w-content py-4 rounded-full bg-primary-foreground ${className ?? ""}`}
     >
       <Loading />
     </div>
   );
 
   const Stars = ({ user }: { user?: boolean }) => (
-    <div className={`flex items-center justify-start gap-1 ${className}`}>
+    <div className={`flex items-center justify-start gap-1 ${className ?? ""}`}>
       {[...Array(user ? fullStarsUser : fullStars)].map((_, index) => (
         <RatingStar
           key={index}
@@ -149,7 +149,7 @@ const Rating: React.FC<RatingProps> = ({
       {loading ? (
         <RatingLoading />
       ) : (
-        <div className={`flex flex-col gap-2 ${className}`}>
+        <div className={`flex flex-col gap-2 ${className ?? ""}`}>
           {userRating !== undefined &&
             userRating != null &&
             (fullStarsUser ?? 0) > 0 && <RatingComponent user />}

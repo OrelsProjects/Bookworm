@@ -1,15 +1,13 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import {
-  showModal,
-  BottomSheetTypes,
-} from "../../lib/features/modal/modalSlice";
+import { showModal, ModalTypes } from "../../lib/features/modal/modalSlice";
 import useScrollPosition, {
   ScrollDirection,
 } from "../../hooks/useScrollPosition";
 import BooksListThumbnail from "./booksListThumbnail";
 import { BooksListData } from "../../models/booksList";
 import { ThumbnailSize } from "../../consts/thumbnail";
+import { useRouter } from "next/navigation";
 
 type BookListProps = {
   className?: string;
@@ -38,13 +36,13 @@ const BooksListList: React.FC<BookListProps> = ({
     dispatch(
       showModal({
         data: booksListData,
-        type: BottomSheetTypes.BOOKS_LIST_DETAILS,
+        type: ModalTypes.BOOKS_LIST_DETAILS,
       })
     );
 
   return (
     <div
-      className={`flex gap-2 h-full flex-col scrollbar-hide ${className}
+      className={`flex gap-2 h-full flex-col scrollbar-hide ${className ?? ""}
       ${disableScroll ? "" : "overflow-auto"}`}
       ref={scrollableDivRef}
     >

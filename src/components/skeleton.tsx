@@ -9,7 +9,7 @@ const skeletonBaseColor = "bg-gray-500";
 const shimmerEffect = "shimmer-effect";
 
 const animationClass = ({ className, type }: SkeletonProps) => {
-  const baseClass = `${className} ${skeletonBaseColor}`;
+  const baseClass = `${className ?? ""} ${skeletonBaseColor}`;
   let extraClass = "";
   switch (type) {
     case "shimmer":

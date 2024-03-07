@@ -88,7 +88,7 @@ define(['exports'], (function (exports) { 'use strict';
         if (!moduleName || !className || !funcName || !paramName) {
           throw new Error(`Unexpected input to 'not-an-array' error.`);
         }
-        return `The parameter '${paramName}' passed into ` + `'${moduleName}.${className}.${funcName}()' must be an array.`;
+        return `The parameter '${paramName}' passed into ` + `'${moduleName}.${className ?? ""}.${funcName}()' must be an array.`;
       },
       'incorrect-type': ({
         expectedType,
@@ -100,7 +100,7 @@ define(['exports'], (function (exports) { 'use strict';
         if (!expectedType || !paramName || !moduleName || !funcName) {
           throw new Error(`Unexpected input to 'incorrect-type' error.`);
         }
-        const classNameStr = className ? `${className}.` : '';
+        const classNameStr = className ? `${className ?? ""}.` : '';
         return `The parameter '${paramName}' passed into ` + `'${moduleName}.${classNameStr}` + `${funcName}()' must be of type ${expectedType}.`;
       },
       'incorrect-class': ({
@@ -114,7 +114,7 @@ define(['exports'], (function (exports) { 'use strict';
         if (!expectedClassName || !moduleName || !funcName) {
           throw new Error(`Unexpected input to 'incorrect-class' error.`);
         }
-        const classNameStr = className ? `${className}.` : '';
+        const classNameStr = className ? `${className ?? ""}.` : '';
         if (isReturnValueProblem) {
           return `The return value from ` + `'${moduleName}.${classNameStr}${funcName}()' ` + `must be an instance of class ${expectedClassName}.`;
         }
@@ -130,7 +130,7 @@ define(['exports'], (function (exports) { 'use strict';
         if (!expectedMethod || !paramName || !moduleName || !className || !funcName) {
           throw new Error(`Unexpected input to 'missing-a-method' error.`);
         }
-        return `${moduleName}.${className}.${funcName}() expected the ` + `'${paramName}' parameter to expose a '${expectedMethod}' method.`;
+        return `${moduleName}.${className ?? ""}.${funcName}() expected the ` + `'${paramName}' parameter to expose a '${expectedMethod}' method.`;
       },
       'add-to-cache-list-unexpected-type': ({
         entry
@@ -196,7 +196,7 @@ define(['exports'], (function (exports) { 'use strict';
         funcName,
         paramName
       }) => {
-        return `The supplied '${paramName}' parameter was an unsupported type. ` + `Please check the docs for ${moduleName}.${className}.${funcName} for ` + `valid input types.`;
+        return `The supplied '${paramName}' parameter was an unsupported type. ` + `Please check the docs for ${moduleName}.${className ?? ""}.${funcName} for ` + `valid input types.`;
       },
       'not-array-of-class': ({
         value,
@@ -206,21 +206,21 @@ define(['exports'], (function (exports) { 'use strict';
         funcName,
         paramName
       }) => {
-        return `The supplied '${paramName}' parameter must be an array of ` + `'${expectedClass}' objects. Received '${JSON.stringify(value)},'. ` + `Please check the call to ${moduleName}.${className}.${funcName}() ` + `to fix the issue.`;
+        return `The supplied '${paramName}' parameter must be an array of ` + `'${expectedClass}' objects. Received '${JSON.stringify(value)},'. ` + `Please check the call to ${moduleName}.${className ?? ""}.${funcName}() ` + `to fix the issue.`;
       },
       'max-entries-or-age-required': ({
         moduleName,
         className,
         funcName
       }) => {
-        return `You must define either config.maxEntries or config.maxAgeSeconds` + `in ${moduleName}.${className}.${funcName}`;
+        return `You must define either config.maxEntries or config.maxAgeSeconds` + `in ${moduleName}.${className ?? ""}.${funcName}`;
       },
       'statuses-or-headers-required': ({
         moduleName,
         className,
         funcName
       }) => {
-        return `You must define either config.statuses or config.headers` + `in ${moduleName}.${className}.${funcName}`;
+        return `You must define either config.statuses or config.headers` + `in ${moduleName}.${className ?? ""}.${funcName}`;
       },
       'invalid-string': ({
         moduleName,
