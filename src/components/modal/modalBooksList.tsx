@@ -84,7 +84,7 @@ const BookInListDetails: React.FC<BookInListDetailsProps> = ({
         <div
           className={`${bookInList ? "text-foreground" : "text-muted"} h-fit`}
         >
-          {bookInList?.book.title ?? "Book Name"}
+          {bookInList?.book?.title ?? "Book Name"}
         </div>
         <TextArea
           value={comment}
