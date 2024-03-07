@@ -145,7 +145,7 @@ const BooksListThumbnail: React.FC<Props> = ({
     <div
       className={`flex flex-col flex-wrap relative items-start justify-center ${
         getThumbnailSize(thumbnailSize).className
-      } rounded-lg bg-clip-border	overflow-hidden ${className}`}
+      } rounded-lg bg-clip-border	overflow-hidden ${className ?? ""}`}
       {...props}
     >
       {imagesLoaded ? (

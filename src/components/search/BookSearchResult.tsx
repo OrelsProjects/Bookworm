@@ -65,7 +65,7 @@ const BookSearchResult: React.FC<BookComponentProps> = ({
     title: string;
   }) => (
     <div
-      className={`flex flex-col items-center ${className}`}
+      className={`flex flex-col items-center ${className ?? ""}`}
       onClick={() => onClick?.()}
     >
       {children}
@@ -114,7 +114,7 @@ export const SearchItemSkeleton: React.FC<SearchItemSkeletonProps> = ({
   className,
 }) => {
   return (
-    <div className={`flex rounded-lg shadow space-x-4 ${className}`}>
+    <div className={`flex rounded-lg shadow space-x-4 ${className ?? ""}`}>
       {/* Thumbnail Skeleton */}
       <Skeleton className="w-16 h-24 rounded-xl" />
 

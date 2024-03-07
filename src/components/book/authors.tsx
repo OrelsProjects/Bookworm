@@ -15,7 +15,7 @@ const Authors: React.FC<AuthorsProps> = ({
 }) => (
   <div className="flex flex-grow">
     <div
-      className={`text-primary text-sm font-normal flex-1 line-clamp-1 ${className}`}
+      className={`text-primary text-sm font-normal flex-1 line-clamp-1 ${className ?? ""}`}
       style={style}
     >
       {prefix} {authors?.join(", ")}

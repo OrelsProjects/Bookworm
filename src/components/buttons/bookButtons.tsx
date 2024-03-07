@@ -4,7 +4,7 @@ import { Button } from "../button";
 import Loading from "../loading";
 import { Book } from "@/src/models";
 import { useDispatch } from "react-redux";
-import { BottomSheetTypes, showModal } from "@/src/lib/features/modal/modalSlice";
+import { ModalTypes, showModal } from "@/src/lib/features/modal/modalSlice";
 
 export interface BookButtonProps {
   loading?: boolean;
@@ -19,7 +19,7 @@ export const DeleteButton = ({
 }: BookButtonProps): React.ReactNode => (
   <Button
     onClick={onClick}
-    className={`rounded-full flex justify-center items-center border-none h-11 w-11 p-2 ${className}`}
+    className={`rounded-full flex justify-center items-center border-none h-11 w-11 p-2 ${className ?? ""}`}
   >
     {loading ? (
       <Loading />
@@ -41,7 +41,7 @@ const FavoriteButton = ({
 }: BookButtonProps & { isFavorite: boolean | undefined }): React.ReactNode => (
   <Button
     onClick={onClick}
-    className={`rounded-full flex justify-center items-center border-none h-11 w-11 p-2 ${className}`}
+    className={`rounded-full flex justify-center items-center border-none h-11 w-11 p-2 ${className ?? ""}`}
   >
     {loading ? (
       <Loading />
@@ -66,10 +66,10 @@ const AddToReadListButton = ({
       variant="accent"
       onClick={() =>
         dispatch(
-          showModal({ data: book, type: BottomSheetTypes.ADD_BOOK_TO_READ_LIST })
+          showModal({ data: book, type: ModalTypes.ADD_BOOK_TO_READ_LIST })
         )
       }
-      className={`rounded-full relative ${className}`}
+      className={`rounded-full relative ${className ?? ""}`}
     >
       <div className={`${loading ? "opacity-0" : ""}`}>I've read it</div>
       {loading && (
@@ -94,9 +94,9 @@ const AddToBacklogButton = ({
     <Button
       variant="selected"
       onClick={() => {
-        dispatch(showModal({ data: book, type: BottomSheetTypes.ADD_BOOK_TO_BACKLOG }));
+        dispatch(showModal({ data: book, type: ModalTypes.ADD_BOOK_TO_BACKLOG }));
       }}
-      className={`rounded-full ${className}`}
+      className={`rounded-full ${className ?? ""}`}
     >
       {loading ? <Loading /> : "Add to library"}
     </Button>
@@ -115,9 +115,9 @@ const ShowDetailsButton = ({
     <Button
       variant="outline"
       onClick={() =>
-        dispatch(showModal({ data: book, type: BottomSheetTypes.BOOK_DETAILS }))
+        dispatch(showModal({ data: book, type: ModalTypes.BOOK_DETAILS }))
       }
-      className={`rounded-full border-none w-28 h-10 ${className}`}
+      className={`rounded-full border-none w-28 h-10 ${className ?? ""}`}
     >
       {loading ? (
         <Loading />

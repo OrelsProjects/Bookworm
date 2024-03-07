@@ -52,7 +52,7 @@ const Modal: React.FC<ModalProps> = ({
         <div className="flex justify-center items-center relative w-full h-full">
           <motion.div
             ref={modalRef}
-            className={`relative z-50 w-full h-full flex items-end justify-start rounded-lg ${className} z-10`}
+            className={`relative z-50 w-full h-full flex items-end justify-start rounded-lg ${className ?? ""} z-10`}
             style={{ backgroundColor: backgroundColor ?? "rgb(12, 12, 12)" }}
             variants={modalAnimationVariants}
             initial="closed"

@@ -27,7 +27,7 @@ const IconOutline =
     (
       <Icon
         {...props}
-        className={`text-foreground ${className} ${props.className}`}
+        className={`text-foreground ${className ?? ""} ${props.className}`}
       />
     );
 

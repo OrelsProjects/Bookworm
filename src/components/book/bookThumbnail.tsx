@@ -51,21 +51,15 @@ const BookThumbnail: React.FC<BookThumbnailProps> = ({
         getThumbnailSize(thumbnailSize).className
       }`}
     >
-      {thumbnailUrl ? (
-        <img
-          src={thumbnailUrl ?? "/thumbnailPlaceholder.png"}
-          alt={`${bookTitle} thumbnail`}
-          height={height}
-          width={width}
-          onClick={onClick && book ? () => onClick(book) : undefined}
-          className={`rounded-lg ${className}`}
-        />
-      ) : (
-        <Skeleton
-          className={`rounded-lg h-full w-full ${className}`}
-          type="none"
-        />
-      )}
+      <img
+        src={thumbnailUrl ?? "/thumbnailPlaceholder.png"}
+        alt={`${bookTitle} thumbnail`}
+        height={height}
+        width={width}
+        onClick={onClick && book ? () => onClick(book) : undefined}
+        className={`rounded-lg ${ className ?? ""} w-full h-full object-cover`}
+      />
+
       {Icon}
     </div>
   );

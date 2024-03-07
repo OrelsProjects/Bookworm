@@ -1,8 +1,8 @@
 "use client";
 
 import {
-  BottomSheetState,
-  BottomSheetTypes as ModalTypes,
+  ModalState,
+  ModalTypes as ModalTypes,
   hideModal,
 } from "@/src/lib/features/modal/modalSlice";
 import { RootState } from "@/src/lib/store";
@@ -14,12 +14,13 @@ import Modal from "../../components/modal/modal";
 import ModalBooksList from "../../components/modal/modalBooksList";
 import { BooksListData } from "../../models/booksList";
 import { darkenColor } from "../../utils/thumbnailUtils";
+import { useRouter } from "next/navigation";
 
 const ModalProvider: React.FC = () => {
-  const { data, type, isOpen }: BottomSheetState = useSelector(
+  const { data, type, isOpen }: ModalState = useSelector(
     (state: RootState) => state.modal
   );
-
+  const router = useRouter();
   const dispatch = useDispatch();
 
   const modalBackgroundColor = useMemo<string>((): string => {
@@ -66,11 +67,20 @@ const ModalProvider: React.FC = () => {
     []
   );
 
+  const handleOnClose = useCallback(() => {
+    dispatch(hideModal());
+    switch (type) {
+      case ModalTypes.BOOKS_LIST_DETAILS:
+        router.back();
+        break;
+    }
+  }, []);
+
   return (
     isOpen && (
       <Modal
         isOpen={isOpen}
-        onClose={() => dispatch(hideModal())}
+        onClose={() => handleOnClose()}
         backgroundColor={modalBackgroundColor}
       >
         <RenderComponent />

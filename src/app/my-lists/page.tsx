@@ -8,10 +8,7 @@ import BookList from "../../components/book/bookList";
 import BooksListList from "../../components/booksList/booksListList";
 import { Plus } from "../../components/icons";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  showModal,
-  BottomSheetTypes,
-} from "../../lib/features/modal/modalSlice";
+import { showModal, ModalTypes } from "../../lib/features/modal/modalSlice";
 import { selectBooksLists } from "../../lib/features/booksLists/booksListsSlice";
 import Modal from "../../components/modal/modal";
 import { SearchBar } from "../../components";
@@ -21,7 +18,6 @@ const MyLists = () => {
   const router = useRouter();
   const { booksListsData } = useSelector(selectBooksLists);
   const { userBooks, nextPage, searchBooks } = useTable();
-  const [test, setTest] = React.useState<string>("test");
 
   const onSeeAllClick = useCallback(() => {
     router.push("/my-library");
@@ -30,7 +26,7 @@ const MyLists = () => {
   const onAddListClick = () => {
     dispatch(
       showModal({
-        type: BottomSheetTypes.BOOKS_LIST_DETAILS,
+        type: ModalTypes.BOOKS_LIST_DETAILS,
       })
     );
   };
@@ -73,7 +69,7 @@ const MyLists = () => {
   return (
     <div className="h-full w-full flex flex-col gap-4 pb-4 p-3">
       <SearchBarComponent
-        onChange={(value: string) => setTest(value)}
+        onChange={(value: string) => searchBooks(value)}
         onSubmit={(value: string) => searchBooks(value)}
         placeholder="Search in Your Books..."
       />

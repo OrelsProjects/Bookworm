@@ -3,7 +3,7 @@ import { Book } from "../../models";
 import { useDispatch } from "react-redux";
 import {
   showModal,
-  BottomSheetTypes,
+  ModalTypes,
 } from "../../lib/features/modal/modalSlice";
 import BookDetails from "./bookDetails";
 import useScrollPosition, {
@@ -39,11 +39,11 @@ const BookList: React.FC<BookListProps> = ({
   });
 
   const onBookClick = (book?: Book) =>
-    dispatch(showModal({ data: book, type: BottomSheetTypes.BOOK_DETAILS }));
+    dispatch(showModal({ data: book, type: ModalTypes.BOOK_DETAILS }));
 
   return (
     <div
-      className={`flex gap-3 flex-grow scrollbar-hide ${className}
+      className={`flex gap-3 flex-grow scrollbar-hide ${className ?? ""}
       ${direction === "row" ? "flex-row h-fit " : "flex-col h-fit max-h-96"}
       ${disableScroll ? "" : "overflow-auto"}
       `}

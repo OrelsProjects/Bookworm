@@ -19,6 +19,7 @@ import SearchBar from "../search/searchBar";
 import { ModalContent } from "./modalContainers";
 import { BookInListWithBook } from "../../models/bookInList";
 import BookThumbnail from "../book/bookThumbnail";
+import BooksListList from "../booksList/booksListList";
 
 interface ModalBooksListProps {
   booksListData?: BooksListData;
@@ -80,7 +81,11 @@ const BookInListDetails: React.FC<BookInListDetailsProps> = ({
       />
 
       <div className="w-full h-full flex flex-col justify-start items-start gap-2">
-        <div className={`text-muted h-fit`}>Book Name</div>
+        <div
+          className={`${bookInList ? "text-foreground" : "text-muted"} h-fit`}
+        >
+          {bookInList?.book.title ?? "Book Name"}
+        </div>
         <TextArea
           value={comment}
           rows={3}
@@ -192,7 +197,6 @@ const ModalBooksList: React.FC<ModalBooksListProps> = ({ booksListData }) => {
         formik.setFieldError("listName", "List name is required");
         return;
       }
-
       let bookWithId = book;
       if (!book.bookId) {
         bookWithId = await toast.promise(
@@ -222,7 +226,7 @@ const ModalBooksList: React.FC<ModalBooksListProps> = ({ booksListData }) => {
             error: `Failed to add ${book.title} to list.`,
           }
         );
-        debugger;
+
         const bookInList: BookInListWithBook = {
           bookId: bookWithId.bookId,
           listId: currentBooksList.listId,
@@ -312,38 +316,54 @@ const ModalBooksList: React.FC<ModalBooksListProps> = ({ booksListData }) => {
         />
       }
       bottomSection={
-        <div className="w-full h-full flex flex-col gap-2">
-          <ListBooks
-            value={formik.values.newBookComments}
-            onChange={(bookInList, comment) => {
-              if (!bookInList) {
-                formik.setFieldValue("newBookComments", comment);
-              } else if (bookInList?.book) {
-                formik.setFieldValue(
-                  buildFormikValueName(bookInList.book.bookId),
-                  comment
-                );
-              }
-            }}
-            key={currentBooksList?.listId}
-            onAddNewBookClick={() => {
-              setShowSearchBar(true);
-              // scroll to the vbottom
-              debugger;
-              if (scrollRef.current) {
-                // scroll all the way to the bottom
-                scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-              }
-            }}
-            name="newBookComments"
-            booksInList={currentBooksList?.booksInList?.map(
-              (bookInList) => bookInList
-            )}
-          />
-          {showSearchBar && <SearchBar CustomSearchItem={SearchResult} />}
-        </div>
+        currentBooksList && (
+          <div className="w-full h-full flex flex-col gap-2 overflow-auto scrollbar-hide">
+            <div className="flex flex-col gap-2">
+              <ListBooks
+                value={formik.values.newBookComments}
+                onChange={(bookInList, comment) => {
+                  if (!bookInList) {
+                    formik.setFieldValue("newBookComments", comment);
+                  } else if (bookInList?.book) {
+                    formik.setFieldValue(
+                      buildFormikValueName(bookInList.book.bookId),
+                      comment
+                    );
+                  }
+                }}
+                key={currentBooksList?.listId}
+                onAddNewBookClick={() => {
+                  setShowSearchBar(true);
+                }}
+                name="newBookComments"
+                booksInList={currentBooksList?.booksInList?.map(
+                  (bookInList) => bookInList
+                )}
+              />
+              {showSearchBar && <SearchBar CustomSearchItem={SearchResult} />}
+            </div>
+          </div>
+        )
       }
-    />
+
+      /* {currentBooksList && (
+        <BooksListList
+          booksListsData={[
+            currentBooksList,
+            currentBooksList,
+            currentBooksList,
+            currentBooksList,
+            currentBooksList,
+            currentBooksList,
+            currentBooksList,
+            currentBooksList,
+            currentBooksList,
+            currentBooksList,
+          ]}
+          direction={"column"}
+        />
+      )} */
+    ></ModalContent>
   );
 };
 
