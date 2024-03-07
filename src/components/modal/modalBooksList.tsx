@@ -316,34 +316,32 @@ const ModalBooksList: React.FC<ModalBooksListProps> = ({ booksListData }) => {
         />
       }
       bottomSection={
-        currentBooksList && (
-          <div className="w-full h-full flex flex-col gap-2 overflow-auto scrollbar-hide">
-            <div className="flex flex-col gap-2">
-              <ListBooks
-                value={formik.values.newBookComments}
-                onChange={(bookInList, comment) => {
-                  if (!bookInList) {
-                    formik.setFieldValue("newBookComments", comment);
-                  } else if (bookInList?.book) {
-                    formik.setFieldValue(
-                      buildFormikValueName(bookInList.book.bookId),
-                      comment
-                    );
-                  }
-                }}
-                key={currentBooksList?.listId}
-                onAddNewBookClick={() => {
-                  setShowSearchBar(true);
-                }}
-                name="newBookComments"
-                booksInList={currentBooksList?.booksInList?.map(
-                  (bookInList) => bookInList
-                )}
-              />
-              {showSearchBar && <SearchBar CustomSearchItem={SearchResult} />}
-            </div>
+        <div className="w-full h-full flex flex-col gap-2 overflow-auto scrollbar-hide">
+          <div className="flex flex-col gap-2">
+            <ListBooks
+              value={formik.values.newBookComments}
+              onChange={(bookInList, comment) => {
+                if (!bookInList) {
+                  formik.setFieldValue("newBookComments", comment);
+                } else if (bookInList?.book) {
+                  formik.setFieldValue(
+                    buildFormikValueName(bookInList.book.bookId),
+                    comment
+                  );
+                }
+              }}
+              key={currentBooksList?.listId}
+              onAddNewBookClick={() => {
+                setShowSearchBar(true);
+              }}
+              name="newBookComments"
+              booksInList={currentBooksList?.booksInList?.map(
+                (bookInList) => bookInList
+              )}
+            />
+            {showSearchBar && <SearchBar CustomSearchItem={SearchResult} />}
           </div>
-        )
+        </div>
       }
 
       /* {currentBooksList && (
