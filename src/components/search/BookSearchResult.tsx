@@ -11,6 +11,7 @@ import BookThumbnail from "../book/bookThumbnail";
 import { Add, Bookmark, Checkmark } from "../icons";
 import Title from "../book/title";
 import Authors from "../book/authors";
+import { ThumbnailSize } from "../../consts/thumbnail";
 
 export interface BookComponentProps {
   book: Book;
@@ -88,11 +89,12 @@ const BookSearchResult: React.FC<BookComponentProps> = ({
   );
 
   return (
-    <div className="flex flex-row justify-start items-start gap-3 h-full overflow-auto">
+    <div className="flex flex-row justify-start items-start gap-2 h-full">
       <div className="flex-shrink-0">
         <BookThumbnail
           src={book.thumbnailUrl}
-          className="rounded-xl !relative !w-16 !h-24"
+          className="rounded-xl !relative"
+          thumbnailSize={ThumbnailSize.Small}
         />
       </div>
       <div className="h-24 flex flex-col justify-between">

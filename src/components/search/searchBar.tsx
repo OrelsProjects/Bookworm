@@ -38,7 +38,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
   const classNoItems = "rounded-full";
 
   return (
-    <div className={`w-full flex flex-col gap-4 ${className ?? ""}`}>
+    <div
+      className={`w-full flex flex-col gap-4 overflow-auto scroll-hide ${className ?? ""}`}
+    >
       <SearchBarComponent
         onSubmit={onSubmit}
         onChange={onChange}
@@ -47,7 +49,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         }`}
         placeholder="Search all books, authors..."
       />
-      <div className="flex flex-col gap-3 overflow-auto">
+      <div className="flex flex-col gap-3 overflow-auto scroll-hide">
         {loading ? (
           CustomSearchItemSkeleton ? (
             <CustomSearchItemSkeleton />
@@ -63,7 +65,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
           books.length > 0 && (
             <div className="flex flex-col gap-2 mt-2">
               <div className="font-bold text-2xl">Books</div>
-              <div className="flex gap-4 flex-col overflow-auto scrollbar-hide">
+              <div className="flex gap-6 flex-col overflow-auto scrollbar-hide">
                 {books
                   .slice(0, TOP_RESULTS_COUNT)
                   .map((book, i) =>
