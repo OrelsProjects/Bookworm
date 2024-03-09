@@ -8,7 +8,7 @@ import { UserBookData } from "./userBook";
 import { ImportStatus } from "./importStatus";
 
 export {
-  User,
+  type User,
   type Book,
   Genre,
   BookSubGenre,

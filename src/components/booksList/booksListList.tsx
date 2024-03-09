@@ -9,13 +9,18 @@ import { BooksListData } from "../../models/booksList";
 import { ThumbnailSize } from "../../consts/thumbnail";
 import { useRouter } from "next/navigation";
 import { Checkbox } from "../checkbox";
-import { Checkmark, BurgerLines, Circle } from "../icons";
+import { Checkmark, BurgerLines, Circle, Add, Share } from "../icons";
 import { Book } from "../../models";
 import { isBooksEqual } from "../../utils/bookUtils";
 
 interface EndElementProps {
   onEndElementClick: (booksList: BooksListData) => void;
   book: Book;
+}
+
+interface BottomElementProps {
+  onShareClick: (booksList: BooksListData) => void;
+  onAddBookClick: (booksList: BooksListData) => void;
 }
 
 interface BookListListProps {
@@ -25,11 +30,12 @@ interface BookListListProps {
   bookThumbnailSize?: ThumbnailSize;
   disableScroll?: boolean;
   booksListsData?: BooksListData[];
-  bottomElement?: React.ReactNode;
   // Used for elements
 }
 
-type Props = BookListListProps & { endElementProps?: EndElementProps };
+type Props = BookListListProps & { endElementProps?: EndElementProps } & {
+  bottomElementProps?: BottomElementProps;
+};
 
 const BooksListList: React.FC<Props> = ({
   className,
@@ -37,7 +43,7 @@ const BooksListList: React.FC<Props> = ({
   bookThumbnailSize,
   disableScroll,
   booksListsData,
-  bottomElement,
+  bottomElementProps,
   endElementProps,
 }) => {
   const dispatch = useDispatch();
@@ -58,7 +64,7 @@ const BooksListList: React.FC<Props> = ({
   return (
     <div
       className={`flex gap-2 h-fit flex-col scrollbar-hide ${className ?? ""}
-      ${disableScroll ? "" : "overflow-auto"}`}
+      ${disableScroll ? "" : "overflow-auto"} relative`}
       ref={scrollableDivRef}
     >
       {booksListsData?.map((listData) => (
@@ -78,13 +84,34 @@ const BooksListList: React.FC<Props> = ({
             />
             <div className="flex flex-col w-full flex-shrink">
               <div className="text-lg font-semibold">{listData.name}</div>
-              <div className="text-sm font-light">{listData.description}</div>
-            </div>
-            {bottomElement && (
-              <div className="flex flex-col justify-center items-center mt-auto ml-auto">
-                {bottomElement}
+              <div className="text-sm font-light line-clamp-3">
+                {listData.description}
               </div>
-            )}
+              {bottomElementProps && (
+                <div className="w-full flex flex-row justify-end self-end  mt-auto ml-auto gap-6">
+                  <div className="flex flex-col gap-0 justify-center items-center">
+                    <Add.Fill
+                      iconSize="xs"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        bottomElementProps.onAddBookClick(listData);
+                      }}
+                    />
+                    <div className="text-sm text-foreground">Add Book</div>
+                  </div>
+                  <div className="flex flex-col gap-0 justify-center items-center">
+                    <Share.Fill
+                      iconSize="xs"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        bottomElementProps.onShareClick(listData);
+                      }}
+                    />
+                    <div className="text-sm text-foreground">Share Link</div>
+                  </div>
+                </div>
+              )}
+            </div>
             {endElementProps && (
               <div
                 className="flex flex-col justify-center items-center ml-auto"

@@ -1,6 +1,6 @@
 import React from "react";
 import { IconBaseProps } from "react-icons";
-import { FaBookmark } from "react-icons/fa";
+import { FaBookmark, FaShare } from "react-icons/fa";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { IoAddCircle } from "react-icons/io5";
 import {
@@ -39,7 +39,7 @@ const IconFill =
           height: heightPx,
           width: widthPx,
         }}
-        className={`text-primary ${props.className} !w-[${widthPx}] !h-[${heightPx}]`}
+        className={`text-foreground ${props.className} !w-[${widthPx}] !h-[${heightPx}]`}
       />
     );
   };
@@ -117,4 +117,9 @@ export const Cancel: Icon = {
 export const Circle: Icon = {
   Fill: IconFill(GiCircle),
   Outline: IconOutline(GiCircle),
+};
+
+export const Share: Icon = {
+  Fill: IconFill(FaShare),
+  Outline: IconOutline(FaShare),
 };

@@ -36,7 +36,7 @@ const BottomBar = () => {
             >
               {isItemSelected(item) ? (
                 <item.icon.Fill
-                  className={item.className}
+                  className={`${item.className} !text-primary`}
                   iconSize={item.size}
                 />
               ) : (

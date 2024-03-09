@@ -53,7 +53,7 @@ const MyLists = () => {
         </div>
         <div className="text-base font-light">
           Ready to create and share your Readlist with friends? Spread the joy
-          of reading by inviting them to join in! 
+          of reading by inviting them to join in!
         </div>
       </div>
 
@@ -86,6 +86,19 @@ const MyLists = () => {
           direction="column"
           disableScroll
           booksListsData={booksListsData}
+          bottomElementProps={{
+            onAddBookClick: (list) => {
+              dispatch(
+                showModal({
+                  type: ModalTypes.BOOKS_LIST_DETAILS,
+                  data: list,
+                })
+              );
+            },
+            onShareClick: (list) => {
+              console.log("share list", list);
+            },
+          }}
         />
       )}
     </div>

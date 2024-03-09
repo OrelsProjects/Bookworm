@@ -31,7 +31,7 @@ type ButtonImageProps = {
   buttonsColor?: string;
 };
 
-const ButtonImage: React.FC<ButtonImageProps> = ({
+export const ButtonImage: React.FC<ButtonImageProps> = ({
   title,
   Icon,
   iconSize = "sm",
