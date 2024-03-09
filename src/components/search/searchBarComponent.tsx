@@ -6,6 +6,8 @@ interface SearchBarComponentProps {
   onChange: (value: string) => any;
   placeholder?: string;
   className?: string;
+  onFocus?: () => any;
+  onBlur?: () => any;
 }
 
 export const SearchBarComponent: React.FC<SearchBarComponentProps> = ({
@@ -13,6 +15,8 @@ export const SearchBarComponent: React.FC<SearchBarComponentProps> = ({
   onChange,
   className,
   placeholder,
+  onFocus,
+  onBlur,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [previousSearchTerm, setPreviousSearchTerm] = useState("");
@@ -25,7 +29,9 @@ export const SearchBarComponent: React.FC<SearchBarComponentProps> = ({
   }, [searchTerm]);
 
   return (
-    <div className={`w-full flex justify-between items-center ${className ?? ""}`}>
+    <div
+      className={`w-full flex justify-between items-center ${className ?? ""}`}
+    >
       <form
         onSubmit={(event: any) => {
           event.preventDefault();
@@ -33,6 +39,8 @@ export const SearchBarComponent: React.FC<SearchBarComponentProps> = ({
             onSubmit(event.target[0].value);
           }
         }}
+        onFocus={onFocus}
+        onBlur={onBlur}
         className={`w-full`}
       >
         <label

@@ -13,6 +13,8 @@ export interface SearchBarProps {
   CustomSearchItemSkeleton?: React.FC;
   className?: string;
   onSearch?: (text: string) => void;
+  onFocus?: () => any;
+  onEmpty?: () => any;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({
@@ -20,9 +22,16 @@ const SearchBar: React.FC<SearchBarProps> = ({
   CustomSearchItem,
   className,
   onSearch,
+  onFocus,
+  onEmpty,
 }: SearchBarProps) => {
-  const { loading, error, updateSearchValue, books }: UseSearchResult =
-    useSearch();
+  const {
+    loading,
+    error,
+    updateSearchValue,
+    books,
+    searchValue,
+  }: UseSearchResult = useSearch();
 
   useEffect(() => {
     if (error) {
@@ -32,14 +41,21 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   const onSubmit = (value: string) =>
     onSearch ? onSearch(value) : updateSearchValue(value);
-  const onChange = (value: string) => updateSearchValue(value);
+  const onChange = (value: string) => {
+    if (!value) {
+      onEmpty?.();
+    } else {
+      onFocus?.();
+    }
+    updateSearchValue(value);
+  };
 
   // const classItems = "px-6 py-4 rounded-t-3xl rounded-b-lg";
   const classNoItems = "rounded-full";
 
   return (
     <div
-      className={`w-full flex flex-col gap-4 overflow-auto scroll-hide ${
+      className={`w-full flex flex-col gap-4 overflow-auto scrollbar-hide ${
         className ?? ""
       }`}
     >
@@ -51,15 +67,15 @@ const SearchBar: React.FC<SearchBarProps> = ({
         }`}
         placeholder="Search all books, authors..."
       />
-      <div className="flex flex-col gap-3 overflow-auto scroll-hide">
+      <div className="flex flex-col gap-3 overflow-auto scrollbar-hide">
         {loading ? (
           CustomSearchItemSkeleton ? (
             <CustomSearchItemSkeleton />
           ) : (
             <>
-              <SearchItemSkeleton />
-              <SearchItemSkeleton />
-              <SearchItemSkeleton />
+              {Array.from(Array(TOP_RESULTS_COUNT)).map((_, index) => (
+                <SearchItemSkeleton key={`search-item-skeleton-${index}`} />
+              ))}
             </>
           )
         ) : (

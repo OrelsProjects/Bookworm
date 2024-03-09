@@ -39,7 +39,7 @@ function useScrollPosition(options?: AdditionalOptions) {
       }
       pagingTimeout = setTimeout(() => {
         options?.onThreshold?.();
-      }, options?.timeBetweenScrollCalls || 100);
+      }, options?.timeBetweenScrollCalls || 50);
     }
   };
 

@@ -18,14 +18,14 @@ export const sorterTabItems: TabItem[] = [
 ];
 
 export const filterTabItems: TabItem[] = [
-  {
-    label: "Author",
-    value: "Author",
-  },
-  {
-    label: "Published Year",
-    value: "Published Year",
-  },
+  // {
+  //   label: "Author",
+  //   value: "Author",
+  // },
+  // {
+  //   label: "Published Year",
+  //   value: "Published Year",
+  // },
   {
     label: "Read list",
     value: "Read list",

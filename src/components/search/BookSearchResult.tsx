@@ -2,9 +2,9 @@ import React from "react";
 import { Skeleton } from "../skeleton";
 import { Book } from "../../models";
 import BookThumbnail from "../book/bookThumbnail";
-import Title from "../book/title";
+import Title from "../book/bookTitle";
 import Authors from "../book/authors";
-import BookButtons from "../book/buttons";
+import BookButtons from "../book/bookButtons";
 
 export interface BookComponentProps {
   book: Book;

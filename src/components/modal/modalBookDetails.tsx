@@ -6,10 +6,11 @@ import Book from "../../models/book";
 import useBook from "../../hooks/useBook";
 import { UserBookData } from "../../models/userBook";
 import Rating from "../rating";
-import BookButtons from "../book/buttons";
+import BookButtons from "../book/bookButtons";
 import BookThumbnail from "../book/bookThumbnail";
 import { ModalProps } from "./modal";
 import { ModalContent } from "./modalContainers";
+import BookGeneralDetails from "./_components/bookGeneralDetails";
 
 type ModalBookDetailsProps = {
   book: Book;
@@ -28,20 +29,6 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
     const bookFullData = getBookFullData(book);
     setBookData(bookFullData);
   }, [userBooksData]);
-
-  const BookGeneralDetails = () => (
-    <div className="h-full w-full flex flex-col gap-4">
-      <div>
-        <div className="font text-foreground line-clamp-1 font-bold text-xl pr-2">
-          {book.title}
-        </div>
-        <div className="text-lg text-foreground line-clamp-2">
-          {book.authors?.join(", ")}
-        </div>
-      </div>
-      <Rating rating={bookData?.goodreadsData?.goodreadsRating} />
-    </div>
-  );
 
   const Summary = () =>
     book.description ? (
@@ -64,13 +51,15 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
     />
   );
 
-  const ButtonsRow = () => <BookButtons book={book} iconSize="lg"/>;
+  const ButtonsRow = () => <BookButtons book={book} iconSize="lg" />;
 
   return (
     <ModalContent
       thumbnail={<Thumbnail />}
       buttonsRow={<ButtonsRow />}
-      thumbnailDetails={<BookGeneralDetails />}
+      thumbnailDetails={
+        bookData && <BookGeneralDetails userBookData={bookData} />
+      }
       bottomSection={<Summary />}
       {...modalProps}
     />

@@ -3,7 +3,7 @@ import { Book } from "../../models";
 import BookThumbnail from "./bookThumbnail";
 import { Add } from "../icons";
 import Authors from "./authors";
-import Title from "./title";
+import Title from "./bookTitle";
 import { ThumbnailSize, getThumbnailSize } from "../../consts/thumbnail";
 
 type BookDetailsProps = {

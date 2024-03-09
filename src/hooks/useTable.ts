@@ -18,7 +18,7 @@ const useTable = () => {
   const currentTableType = useRef<TableType>(TableType.TO_READ);
   const [userBooks, setUserBooks] = useState<UserBookData[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(15);
+  const [pageSize, setPageSize] = useState(50);
   const [totalRecords, setTotalRecords] = useState(0);
   const [readBooksCount, setReadBooksCount] = useState(0);
   const [toReadBooksCount, setToReadBooksCount] = useState(0);
@@ -41,7 +41,7 @@ const useTable = () => {
   };
 
   const getFilteredBooks = (tableType: TableType, search: string) => {
-    return getSearchBooks(search)
+    return getSearchBooks(search);
     // .filter(
     //   (userBook) => userBook.readingStatus?.readingStatusId === tableType
     // );
@@ -60,7 +60,8 @@ const useTable = () => {
     setUserBooks(newUserBooks);
     setTotalRecords(userBooksData.length);
     const readBooks = userBooksData.filter(
-      (userBook) => userBook.readingStatus?.readingStatusId === ReadingStatusEnum.READ
+      (userBook) =>
+        userBook.readingStatus?.readingStatusId === ReadingStatusEnum.READ
     );
     const toReadBooks = userBooksData.filter(
       (userBook) =>
@@ -70,11 +71,11 @@ const useTable = () => {
     setToReadBooksCount(toReadBooks.length);
   };
 
-  const nextPage = useCallback(() => {
+  const nextPage = () => {
     setCurrentPage((prevPage) => {
       return prevPage + 1;
     });
-  }, [currentTableType, updateUserBooks]);
+  };
 
   const handlePageSizeChange = (size: number) => {
     setPageSize(size);

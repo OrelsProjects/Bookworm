@@ -5,6 +5,7 @@ import { Book } from "../models";
 import { IResponse } from "../models/dto/response";
 import { Books } from "../models/book";
 import { EventTracker } from "../eventTracker";
+import slugify from "slugify";
 
 // Define a type for the hook's return value
 export interface UseSearchResult {
@@ -18,6 +19,7 @@ export interface UseSearchResult {
 function useSearch(): UseSearchResult {
   const [searchValue, setSearchValue] = useState<string>("");
   const [results, setResults] = useState<Book[] | null>(null);
+  const [resultsToUpdate, setResultsToUpdate] = useState<Book[] | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -28,6 +30,21 @@ function useSearch(): UseSearchResult {
     setSearchValue(value);
   };
 
+  const updateResults = (value: Book[] | null) => {
+    if (value === results) {
+      return;
+    }
+    if (!searchValue) {
+      setResults(null);
+    } else {
+      setResults(value);
+    }
+  };
+
+  useEffect(() => {
+    updateResults(resultsToUpdate);
+  }, [resultsToUpdate]);
+
   const fetchBooks = async (value: string) => {
     try {
       setLoading(true);
@@ -35,12 +52,15 @@ function useSearch(): UseSearchResult {
       if (!value) {
         return [];
       }
+      if (!slugify(value)) {
+        return [];
+      }
       EventTracker.track("User search new book", { query: value });
       const response = await axios.get<IResponse<Book[]>>(
         `/api/google-books?query=${value}`
       );
       const books: Books = response.data.result ?? [];
-      setResults(books);
+      setResultsToUpdate(books);
     } catch (error: any) {
       setError(error.message);
       return [];
@@ -54,7 +74,8 @@ function useSearch(): UseSearchResult {
 
   useEffect(() => {
     if (searchValue === "") {
-      setResults(null);
+      setResultsToUpdate(null);
+      setLoading(false);
     }
 
     if (searchValue) {

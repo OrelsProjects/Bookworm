@@ -3,13 +3,16 @@ import { IconBaseProps } from "react-icons";
 import { FaBookmark } from "react-icons/fa";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { IoAddCircle } from "react-icons/io5";
-import { FaHouse } from "react-icons/fa6";
-import { FaPlus } from "react-icons/fa6";
-import { FaBarsStaggered } from "react-icons/fa6";
-import { FaBookMedical } from "react-icons/fa6";
+import {
+  FaHouse,
+  FaPlus,
+  FaBarsStaggered,
+  FaBookMedical,
+} from "react-icons/fa6";
 import { FaSliders } from "react-icons/fa6";
 import { CiMenuBurger } from "react-icons/ci";
 import { MdCancel } from "react-icons/md";
+import { GiCircle } from "react-icons/gi";
 import { IconSize, SpecialIconSize, getIconSize } from "../../consts/icon";
 
 export type Icon = {
@@ -36,7 +39,7 @@ const IconFill =
           height: heightPx,
           width: widthPx,
         }}
-        className={`text-primary ${props.className}`}
+        className={`text-primary ${props.className} !w-[${widthPx}] !h-[${heightPx}]`}
       />
     );
   };
@@ -109,4 +112,9 @@ export const Sliders: Icon = {
 export const Cancel: Icon = {
   Fill: IconFill(MdCancel),
   Outline: IconOutline(MdCancel),
+};
+
+export const Circle: Icon = {
+  Fill: IconFill(GiCircle),
+  Outline: IconOutline(GiCircle),
 };

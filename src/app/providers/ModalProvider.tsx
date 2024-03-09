@@ -15,6 +15,7 @@ import ModalBooksList from "../../components/modal/modalBooksList";
 import { BooksListData } from "../../models/booksList";
 import { darkenColor } from "../../utils/thumbnailUtils";
 import { useRouter } from "next/navigation";
+import ModalAddBookToList from "../../components/modal/modalAddBookToList";
 
 const ModalProvider: React.FC = () => {
   const { data, type, isOpen }: ModalState = useSelector(
@@ -26,7 +27,7 @@ const ModalProvider: React.FC = () => {
   const modalBackgroundColor = useMemo<string>((): string => {
     const defaultColor = "rgb(255,255,255)";
     switch (type) {
-      case ModalTypes.BOOK_DETAILS:
+      case ModalTypes.BOOK_DETAILS || ModalTypes.ADD_BOOK_TO_LIST:
         return darkenColor(data?.thumbnailColor) ?? defaultColor;
       case ModalTypes.BOOKS_LIST_DETAILS:
         const firstBook = data?.booksInList?.[0]?.book;
@@ -35,17 +36,6 @@ const ModalProvider: React.FC = () => {
         return defaultColor;
     }
   }, [data]);
-
-  const RenderComponent = useCallback(() => {
-    switch (type) {
-      case ModalTypes.BOOK_DETAILS:
-        return RenderBookDetails(data);
-      case ModalTypes.BOOKS_LIST_DETAILS:
-        return RenderBooksListDetails(data);
-      default:
-        return null;
-    }
-  }, [data, type]);
 
   const RenderBooksListDetails = useCallback(
     (booksListData?: BooksListData) => {
@@ -67,13 +57,39 @@ const ModalProvider: React.FC = () => {
     []
   );
 
+  const RenderAddBookToList = useCallback((book?: Book) => {
+    return (
+      book && (
+        <ModalAddBookToList
+          book={book}
+          isOpen={isOpen}
+          onClose={() => dispatch(hideModal())}
+          backgroundColor={darkenColor(book?.thumbnailColor)}
+        />
+      )
+    );
+  }, []);
+
+  const RenderComponent = () => {
+    switch (type) {
+      case ModalTypes.BOOK_DETAILS:
+        return RenderBookDetails(data);
+      case ModalTypes.BOOKS_LIST_DETAILS:
+        return RenderBooksListDetails(data);
+      case ModalTypes.ADD_BOOK_TO_LIST:
+        return RenderAddBookToList(data);
+      default:
+        return null;
+    }
+  };
+
   const handleOnClose = useCallback(() => {
     dispatch(hideModal());
-    switch (type) {
-      case ModalTypes.BOOKS_LIST_DETAILS:
-        router.back();
-        break;
-    }
+    // switch (type) {
+    //   case ModalTypes.BOOKS_LIST_DETAILS:
+    //     router.back();
+    //     break;
+    // }
   }, []);
 
   return (

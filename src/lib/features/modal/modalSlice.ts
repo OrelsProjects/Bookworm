@@ -5,8 +5,7 @@ import type { RootState } from "../../store";
 export enum ModalTypes {
   BOOK_DETAILS = "BOOK_DETAILS",
   BOOKS_LIST_DETAILS = "BOOKS_LIST_DETAILS",
-  ADD_BOOK_TO_BACKLOG = "ADD_BOOK_TO_BACKLOG",
-  ADD_BOOK_TO_READ_LIST = "ADD_BOOK_TO_READ_LIST",
+  ADD_BOOK_TO_LIST = "ADD_BOOK_TO_LIST",
 }
 
 export interface ModalState {
@@ -33,7 +32,6 @@ const bottomSheetSlice = createSlice({
       state,
       action: PayloadAction<{ data?: any; type: ModalTypes }>
     ) => {
-      if (state.isOpen) return;
       state.data = action.payload.data;
       state.type = action.payload.type;
       state.isOpen = true;

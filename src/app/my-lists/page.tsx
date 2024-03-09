@@ -6,7 +6,7 @@ import { SearchBarComponent } from "../../components/search/searchBarComponent";
 import useTable from "../../hooks/useTable";
 import BookList from "../../components/book/bookList";
 import BooksListList from "../../components/booksList/booksListList";
-import { Plus } from "../../components/icons";
+import { Add, Plus } from "../../components/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { showModal, ModalTypes } from "../../lib/features/modal/modalSlice";
 import { selectBooksLists } from "../../lib/features/booksLists/booksListsSlice";
@@ -45,10 +45,32 @@ const MyLists = () => {
     </div>
   );
 
+  const EmptyList = () => (
+    <div className="mt-3 w-fit h-fit flex flex-col gap-8">
+      <div className="flex flex-col gap-2">
+        <div className="text-base font-bold">
+          You have no Readlists for now :(
+        </div>
+        <div className="text-base font-light">
+          Ready to create and share your Readlist with friends? Spread the joy
+          of reading by inviting them to join in! 
+        </div>
+      </div>
+
+      <div
+        className="w-full h-fit flex flex-row gap-2 rounded-full text-background bg-foreground p-2"
+        onClick={onAddListClick}
+      >
+        <Add.Fill className="!text-background" iconSize="sm" />
+        Create your first shareable Readlist
+      </div>
+    </div>
+  );
+
   const UserBooksLists = () => (
     <div className="w-full h-full flex flex-col gap-2">
       <div className="w-full flex flex-row justify-between">
-        <div className="text-xl font-bold">My lists</div>
+        <div className="text-2xl font-bold">My Readlists</div>
         <div>
           <Plus.Fill
             className="!text-foreground"
@@ -57,11 +79,15 @@ const MyLists = () => {
           />
         </div>
       </div>
-      <BooksListList
-        direction="column"
-        disableScroll
-        booksListsData={booksListsData}
-      />
+      {booksListsData.length === 0 ? (
+        <EmptyList />
+      ) : (
+        <BooksListList
+          direction="column"
+          disableScroll
+          booksListsData={booksListsData}
+        />
+      )}
     </div>
   );
 
