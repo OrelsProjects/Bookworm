@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import SearchBar from "../../components/search/searchBar";
 import useTable from "../../hooks/useTable";

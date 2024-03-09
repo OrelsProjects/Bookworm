@@ -61,7 +61,8 @@ const BookButtons: React.FC<BookButtonsProps> = ({
   iconSize,
   className,
 }) => {
-  const { getBookFullData, updateBookReadingStatus, loading } = useBook();
+  const { getBookFullData, updateBookReadingStatus, loading, userBooksData } =
+    useBook();
   const [bookData, setBookData] = React.useState<UserBookData | undefined>();
   const [bookRead, setBookRead] = React.useState(false);
   const buttonsColor = increaseLuminosity(book?.thumbnailColor);
@@ -87,7 +88,7 @@ const BookButtons: React.FC<BookButtonsProps> = ({
     const userBookData = getBookFullData(book) ?? undefined;
     setBookData(userBookData);
     setBookRead(isBookRead(userBookData?.userBook));
-  }, [book]);
+  }, [book, userBooksData]);
 
   return (
     <div

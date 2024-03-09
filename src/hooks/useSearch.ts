@@ -11,7 +11,6 @@ export interface UseSearchResult {
   searchValue: string;
   books: Book[] | null;
   loading: boolean;
-  loadingAddBook: Book | null;
   error: string | null;
   updateSearchValue: (value: string) => void;
 }
@@ -21,7 +20,6 @@ function useSearch(): UseSearchResult {
   const [results, setResults] = useState<Book[] | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [loadingAddBook, setLoadingAddBook] = useState<Book | null>(null);
 
   const updateSearchValue = (value: string) => {
     if (value === searchValue) {
@@ -70,7 +68,6 @@ function useSearch(): UseSearchResult {
     updateSearchValue,
     books: results,
     loading,
-    loadingAddBook,
     error,
   };
 }

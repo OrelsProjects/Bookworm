@@ -4,7 +4,6 @@ import { Book } from "../../models";
 import BookThumbnail from "../book/bookThumbnail";
 import Title from "../book/title";
 import Authors from "../book/authors";
-import { ThumbnailSize } from "../../consts/thumbnail";
 import BookButtons from "../book/buttons";
 
 export interface BookComponentProps {
