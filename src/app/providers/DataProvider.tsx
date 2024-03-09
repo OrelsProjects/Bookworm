@@ -34,6 +34,7 @@ const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
         loadingUserBooks.current = false;
       }
     };
+
     if (state === AuthStateType.SIGNED_IN && user) {
       loadUserDataAsync();
     }

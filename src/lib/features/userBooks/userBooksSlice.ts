@@ -4,6 +4,8 @@ import type { RootState } from "../../store"; // Adjust the import path as neces
 import { Book, GoodreadsData, UserBook, UserBookData } from "@/src/models";
 import { compareBooks } from "@/src/models/book";
 
+export const USER_BOOKS_KEY = "userBooks";
+
 type UserBookId = number;
 
 interface SetUserBooksLoadingProps {
@@ -16,6 +18,10 @@ interface userBooksState {
   loading: boolean;
   error: string | null;
 }
+
+const setUserBooksDataInLocalStorage = (userBooksData: UserBookData[]) => {
+  localStorage.setItem(USER_BOOKS_KEY, JSON.stringify(userBooksData));
+};
 
 const initialState: userBooksState = {
   userBooksData: [],
@@ -50,11 +56,11 @@ const userBooksSlice = createSlice({
       if (!bookExists) {
         state.userBooksData.push(...action.payload);
       }
-      localStorage.setItem("userBooks", JSON.stringify(state.userBooksData));
+      setUserBooksDataInLocalStorage(state.userBooksData);
     },
     setUserBooks: (state, action: PayloadAction<UserBookData[]>) => {
       state.userBooksData = action.payload;
-      localStorage.setItem("userBooks", JSON.stringify(action.payload));
+      setUserBooksDataInLocalStorage(state.userBooksData);
     },
     updateUserBook: (state, action: PayloadAction<UserBook>) => {
       const index = state.userBooksData.findIndex(
@@ -66,7 +72,7 @@ const userBooksSlice = createSlice({
         userBooksDataNew[index].userBook = action.payload;
         state.userBooksData = userBooksDataNew;
       }
-      localStorage.setItem("userBooks", JSON.stringify(state.userBooksData));
+      setUserBooksDataInLocalStorage(state.userBooksData);
     },
     deleteUserBook: (state, action: PayloadAction<UserBookId>) => {
       const index = state.userBooksData.findIndex(
@@ -77,7 +83,7 @@ const userBooksSlice = createSlice({
         userBooksDataNew.splice(index, 1);
         state.userBooksData = userBooksDataNew;
       }
-      localStorage.setItem("userBooks", JSON.stringify(state.userBooksData));
+      setUserBooksDataInLocalStorage(state.userBooksData);
     },
     updateUserBookGoodreadsData: (
       state,
@@ -89,7 +95,7 @@ const userBooksSlice = createSlice({
       if (index !== -1) {
         state.userBooksData[index].goodreadsData = action.payload.goodreadsData;
       }
-      localStorage.setItem("userBooks", JSON.stringify(state.userBooksData));
+      setUserBooksDataInLocalStorage(state.userBooksData);
     },
     updateUserBookData: (state, action: PayloadAction<UserBookData>) => {
       const index = state.userBooksData.findIndex(
@@ -98,11 +104,9 @@ const userBooksSlice = createSlice({
           action.payload.userBook.userBookId
       );
       if (index !== -1) {
-        const userBooksDataNew = [...state.userBooksData];
-        userBooksDataNew[index] = action.payload;
-        state.userBooksData = userBooksDataNew;
+        state.userBooksData[index] = action.payload;
       }
-      localStorage.setItem("userBooks", JSON.stringify(state.userBooksData));
+      setUserBooksDataInLocalStorage(state.userBooksData);
     },
     setError: (state, action: PayloadAction<string | null>) => {
       state.error = action.payload;

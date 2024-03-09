@@ -39,7 +39,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   return (
     <div
-      className={`w-full flex flex-col gap-4 overflow-auto scroll-hide ${className ?? ""}`}
+      className={`w-full flex flex-col gap-4 overflow-auto scroll-hide ${
+        className ?? ""
+      }`}
     >
       <SearchBarComponent
         onSubmit={onSubmit}
@@ -78,7 +80,6 @@ const SearchBar: React.FC<SearchBarProps> = ({
                           book.isbn
                         }
                         book={book}
-                        isFirstInList={i === 0}
                       />
                     ) : (
                       <BookSearchResult
@@ -89,7 +90,6 @@ const SearchBar: React.FC<SearchBarProps> = ({
                           book.isbn
                         }
                         book={book}
-                        isFirstInList={i === 0}
                       />
                     )
                   )}

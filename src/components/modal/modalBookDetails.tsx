@@ -19,16 +19,17 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
   book,
   ...modalProps
 }) => {
-  const { getBookFullData } = useBook();
+  const { getBookFullData, userBooksData } = useBook();
   const [bookData, setBookData] = React.useState<
     UserBookData | null | undefined
   >(null);
 
   React.useEffect(() => {
-    setBookData(getBookFullData(book));
-  }, [book]);
+    const bookFullData = getBookFullData(book);
+    setBookData(bookFullData);
+  }, [userBooksData]);
 
-  const BookGeneralDetails = ({ book }: { book: Book }) => (
+  const BookGeneralDetails = () => (
     <div className="h-full w-full flex flex-col gap-4">
       <div>
         <div className="font text-foreground line-clamp-1 font-bold text-xl pr-2">
@@ -44,9 +45,9 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
 
   const Summary = () =>
     book.description ? (
-      <div className="w-full flex relative flex-col justify-start gap-1 px-8">
+      <div className="w-full flex relative flex-col justify-start gap-1 overflow-auto">
         <div className="text-foreground font-bold text-xl">Summary</div>
-        <div className="text-foreground overflow-auto h-60 scrollbar-hide font-light shadow-inner">
+        <div className="text-foreground overflow-auto h-full scrollbar-hide font-light shadow-inner">
           {book.description}
         </div>
         <div className="absolute bottom-0 w-full extra-text-shadow"></div>
@@ -63,11 +64,13 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
     />
   );
 
+  const ButtonsRow = () => <BookButtons book={book} />;
+
   return (
     <ModalContent
       thumbnail={<Thumbnail />}
-      buttonsRow={<BookButtons book={book} />}
-      thumbnailDetails={<BookGeneralDetails book={book} />}
+      buttonsRow={<ButtonsRow />}
+      thumbnailDetails={<BookGeneralDetails />}
       bottomSection={<Summary />}
       {...modalProps}
     />

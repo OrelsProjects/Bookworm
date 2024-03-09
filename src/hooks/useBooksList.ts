@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../lib/store";
@@ -30,6 +30,7 @@ const getBooksListFromLocalStorage = (): BooksListData[] => {
 };
 
 const setListInLocalStorage = (booksList: BooksListData[]) => {
+  localStorage.removeItem(BOOK_LIST_DATA_KEY);
   localStorage.setItem(BOOK_LIST_DATA_KEY, JSON.stringify(booksList));
 };
 
@@ -85,16 +86,21 @@ const useBooksList = () => {
     (state: RootState) => state.booksLists.booksListsData
   );
 
+  useEffect(() => {
+    localStorage.removeItem("booksList");
+  }, []);
+
   const loadUserBooksLists = async (user?: User | null) => {
     if (loading.current) {
       throw new Error(
         "Operation in progress. Please wait until the current operation completes."
       );
     }
-    const booksList = JSON.parse(localStorage.getItem("booksList") ?? "[]");
-    if (booksList) {
-      if (Array.isArray(booksList)) {
-        dispatch(setBooksLists([...booksList]));
+
+    const currentBooksList = getBooksListFromLocalStorage();
+    if (currentBooksList) {
+      if (Array.isArray(currentBooksList)) {
+        dispatch(setBooksLists([...currentBooksList]));
       }
     }
 
@@ -107,9 +113,10 @@ const useBooksList = () => {
       }
 
       const response = await axios.get<IResponse<BooksListData[]>>("/api/list");
-      const booksListsData = response.data;
-      dispatch(setBooksLists(booksListsData.result ?? []));
-      setListInLocalStorage(booksListsData.result ?? []);
+      const booksListsDataResponse = response.data.result ?? [];
+
+      dispatch(setBooksLists(booksListsDataResponse ?? []));
+      setListInLocalStorage(booksListsDataResponse ?? []);
     } catch (error: any) {
       Logger.error("Failed to fetch users books lists", error);
     } finally {
@@ -171,9 +178,9 @@ const useBooksList = () => {
         bookId: book.bookId,
       });
       dispatch(addBookToListAction({ listId, book }));
-      const booksList: BooksListData = JSON.parse(
-        localStorage.getItem("booksList") ?? "[]"
-      );
+      const booksList: BooksListData = booksLists.find(
+        (list) => list.listId === listId
+      ) as BooksListData;
       booksList?.booksInList?.push({
         book: { ...book },
         listId: listId,

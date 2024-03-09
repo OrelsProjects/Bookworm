@@ -1,5 +1,5 @@
 "use client";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Book, GoodreadsData, User, UserBook, UserBookData } from "../models";
 import axios from "axios";
 import { Books, CreateBooksResponse } from "../models/book";
@@ -9,6 +9,7 @@ import {
 } from "../models/dto/userBookDTO";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  USER_BOOKS_KEY,
   addUserBooks as addUserBooksRedux,
   deleteUserBook as deleteUserBookRedux,
   setUserBooks,
@@ -23,14 +24,13 @@ import ReadingStatus, { ReadingStatusEnum } from "../models/readingStatus";
 import { Logger } from "../logger";
 import { EventTracker } from "../eventTracker";
 import { sortByDateAdded } from "../utils/bookUtils";
+import { ErrorDeleteUserBook } from "../models/errors/userBookErrors";
 
-// ErrorDeleteUserBook error class
-class ErrorDeleteUserBook extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = "ErrorDeleteUserBook";
-  }
-}
+const getUserBooksFromLocalStorage = (): UserBookData[] => {
+  return JSON.parse(
+    localStorage.getItem(USER_BOOKS_KEY) ?? "[]"
+  ) as UserBookData[];
+};
 
 export enum BookSort {
   Title = "Title",
@@ -207,9 +207,7 @@ const useBook = () => {
       }
       loading.current = true;
 
-      let currentUserBooks = JSON.parse(
-        localStorage.getItem("userBooks") ?? "[]"
-      );
+      let currentUserBooks = getUserBooksFromLocalStorage();
       if (currentUserBooks) {
         if (Array.isArray(currentUserBooks)) {
           dispatch(setUserBooks(sortByDateAdded([...currentUserBooks])));
@@ -279,9 +277,9 @@ const useBook = () => {
 
   const updateUserBook = async (
     updateBookBody: UpdateUserBookBody
-  ): Promise<UserBook> => {
+  ): Promise<UserBook | undefined> => {
     if (loading.current) {
-      throw new Error("Cannot update book while another book is loading");
+      return;
     }
     loading.current = true;
     EventTracker.track("User update book", {
@@ -309,7 +307,6 @@ const useBook = () => {
         userBook: newUserBook,
         readingStatus: new ReadingStatus(updateBookBody.readingStatusId),
       };
-
       dispatch(updateUserBookData(userBookData));
       return newUserBook;
     } catch (error: any) {
@@ -333,9 +330,7 @@ const useBook = () => {
       userBookId: userBook.userBookId,
       readingStatusId: readingStatus,
     };
-    try {
-      await updateUserBook(updateBookBody);
-    } catch (error) {}
+    await updateUserBook(updateBookBody);
   };
 
   function getBookFullData(bookId: number): UserBookData | null;

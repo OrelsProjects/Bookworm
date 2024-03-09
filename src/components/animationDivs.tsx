@@ -1,15 +1,25 @@
-import { MotionProps, motion } from "framer-motion";
+import {
+  AnimatePresence,
+  LayoutProps,
+  MotionProps,
+  motion,
+} from "framer-motion";
 import React from "react";
 
 export enum ExpandType {
   TopLeft,
   Center,
+  General,
+  Modal,
 }
 
-interface AnimationDivProps {
+interface AnimationDivProps extends LayoutProps {
+  key?: string | number;
+  isOpen?: boolean; // Add this line
   children?: React.ReactNode;
   innerRef?: React.RefObject<HTMLDivElement>;
   className?: string;
+  style?: React.CSSProperties;
   animationProps?: MotionProps;
 }
 
@@ -22,17 +32,23 @@ const GeneralDiv = ({
   className,
   animationProps,
   innerRef,
+  isOpen = true,
   ...props
 }: AnimationDivProps) => {
   return (
-    <motion.div
-      ref={innerRef}
-      className={`w-full h-full ${className || ""}`}
-      {...animationProps}
-      {...props}
-    >
-      {children}
-    </motion.div>
+    <AnimatePresence mode="wait">
+      {isOpen && (
+        <motion.div
+          key={props.key ?? `${Math.random()}`}
+          ref={innerRef}
+          className={`w-full h-full ${className || ""}`}
+          {...animationProps}
+          {...props}
+        >
+          {children}
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };
 
@@ -40,6 +56,7 @@ const opacityAnimationProps: MotionProps = {
   initial: { opacity: 0 },
   animate: { opacity: 1 },
   exit: { opacity: 0 },
+  transition: { duration: 0.3 },
 };
 
 const bottomToMidAnimationProps: MotionProps = {
@@ -63,8 +80,20 @@ const expandingCenterAnimationProps: MotionProps = {
   transition: { duration: 0.1, ease: "easeInOut" },
 };
 
+const expandingModal: MotionProps = {
+  initial: { height: 0 },
+  animate: { height: "80%" },
+  exit: { height: 0 },
+  transition: {
+    duration: 0.4,
+    ease: "easeInOut",
+    type: "tween",
+    stiffness: 70,
+  },
+};
+
 // Opacity Animation Wrapper
-export const OpacityDiv = ({ innerRef, ...props }: AnimationDivProps) => (
+const OpacityDiv = ({ innerRef, ...props }: AnimationDivProps) => (
   <GeneralDiv
     innerRef={innerRef}
     {...props}
@@ -73,7 +102,7 @@ export const OpacityDiv = ({ innerRef, ...props }: AnimationDivProps) => (
 );
 
 // Bottom to Middle Animation Wrapper
-export const BottomToMidDiv = ({ innerRef, ...props }: AnimationDivProps) => (
+const BottomToMidDiv = ({ innerRef, ...props }: AnimationDivProps) => (
   <GeneralDiv
     innerRef={innerRef}
     {...props}
@@ -87,20 +116,24 @@ const getExpandProps = (expandType?: ExpandType): MotionProps => {
       return expandingTopLeftAnimationProps;
     case ExpandType.Center:
       return expandingCenterAnimationProps;
+    case ExpandType.Modal:
+      return expandingModal;
     default:
       return expandingTopLeftAnimationProps;
   }
 };
 
 // Expanding Animation Wrapper
-export const ExpandingDiv = ({
-  innerRef,
-  expandType,
-  ...props
-}: ExpandDivProps) => (
+const ExpandingDiv = ({ innerRef, expandType, ...props }: ExpandDivProps) => (
   <GeneralDiv
     innerRef={innerRef}
     {...props}
-    animationProps={getExpandProps()}
+    animationProps={getExpandProps(expandType)}
   />
 );
+
+const ListDiv = ({ innerRef, ...props }: AnimationDivProps) => (
+  <AnimatePresence>{props.children}</AnimatePresence>
+);
+
+export { GeneralDiv, ExpandingDiv, OpacityDiv, BottomToMidDiv, ListDiv };

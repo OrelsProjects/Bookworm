@@ -83,9 +83,9 @@ const BooksListThumbnail: React.FC<Props> = ({
         <div className="w-full h-full z-20 flex flex-row items-end">
           {thumbnailBooks.slice(1, booksCount).map((book) => (
             <img
-              key={book.bookId}
+              key={props.key || book.bookId}
               src={book.thumbnailUrl}
-              alt={`${book.title} cover`}
+              alt={props.alt || `${book.title} cover`}
               className={`${
                 booksCount === 2 ? "w-full h-full absolute top-1/2" : "w-1/2"
               } h-1/2`}

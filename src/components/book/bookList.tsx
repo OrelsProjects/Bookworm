@@ -1,10 +1,7 @@
 import React from "react";
 import { Book } from "../../models";
 import { useDispatch } from "react-redux";
-import {
-  showModal,
-  ModalTypes,
-} from "../../lib/features/modal/modalSlice";
+import { showModal, ModalTypes } from "../../lib/features/modal/modalSlice";
 import BookDetails from "./bookDetails";
 import useScrollPosition, {
   ScrollDirection,
@@ -63,12 +60,19 @@ const BookList: React.FC<BookListProps> = ({
               bookThumbnailSize={bookThumbnailSize}
               ThumbnailIcon={
                 direction === "row" && (
-                  <Add.Outline className="w-8 h-8 absolute bottom-2 left-2 bg-background rounded-full border-none overflow-hidden" />
+                  <div className="relative">
+                    <div className="absolute bottom-2 left-2 w-fit h-fit rounded-full overflow-hidden flex items-center justify-center">
+                      <Add.Outline
+                        className="!text-background !bg-foreground -m-1 border-none"
+                        size="md"
+                      />
+                    </div>
+                  </div>
                 )
               }
               Icon={
                 direction === "column" && (
-                  <Add.Outline className="w-8 h-8 flex-shrink-0" />
+                  <Add.Outline className="flex-shrink-0" size="md" />
                 )
               }
               direction={direction}

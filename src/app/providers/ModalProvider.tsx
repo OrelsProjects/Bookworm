@@ -77,15 +77,14 @@ const ModalProvider: React.FC = () => {
   }, []);
 
   return (
-    isOpen && (
-      <Modal
-        isOpen={isOpen}
-        onClose={() => handleOnClose()}
-        backgroundColor={modalBackgroundColor}
-      >
-        <RenderComponent />
-      </Modal>
-    )
+    <Modal
+      isOpen={isOpen}
+      onClose={() => handleOnClose()}
+      backgroundColor={modalBackgroundColor}
+      key="modal"
+    >
+      <RenderComponent />
+    </Modal>
   );
 };
 

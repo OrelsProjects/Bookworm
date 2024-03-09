@@ -1,93 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, {  } from "react";
 import { Skeleton } from "../skeleton";
-import { Book, UserBook, UserBookData } from "../../models";
-import { RootState } from "@/src/lib/store";
-import { useSelector } from "react-redux";
-import useBook from "@/src/hooks/useBook";
-import toast from "react-hot-toast";
-import { Logger } from "@/src/logger";
-import { isBooksEqualExactly } from "@/src/utils/bookUtils";
+import { Book } from "../../models";
 import BookThumbnail from "../book/bookThumbnail";
-import { Add, Bookmark, Checkmark } from "../icons";
 import Title from "../book/title";
 import Authors from "../book/authors";
 import { ThumbnailSize } from "../../consts/thumbnail";
+import BookButtons from "../book/buttons";
 
 export interface BookComponentProps {
   book: Book;
-  isFirstInList?: boolean;
 }
 
-const BookSearchResult: React.FC<BookComponentProps> = ({
-  book,
-  isFirstInList,
-}) => {
-  const { favoriteBook } = useBook();
-  const [loadingFavorite, setLoadingFavorite] = useState(false);
-  const [userBookData, setUserBookData] = useState<UserBookData | undefined>(
-    undefined
-  );
-  const userBooksData: UserBookData[] = useSelector(
-    (state: RootState) => state.userBooks.userBooksData
-  );
-
-  useEffect(() => {
-    const userBookData = userBooksData.find(
-      (userBookData) =>
-        isFirstInList && isBooksEqualExactly(userBookData.bookData.book, book)
-    );
-    setUserBookData(userBookData);
-  }, [userBooksData]);
-
-  const onFavorite = async (userBook: UserBook) => {
-    try {
-      setLoadingFavorite(true);
-      await favoriteBook(userBook);
-    } catch (error: any) {
-      Logger.error("Failed to favorite book", {
-        data: userBook,
-        error,
-      });
-      toast.error("Something went wrong.. We're on it!");
-    } finally {
-      setLoadingFavorite(false);
-    }
-  };
-
-  const Button = ({
-    onClick,
-    className,
-    children,
-    title,
-  }: {
-    onClick?: () => void;
-    className?: string;
-    children: React.ReactNode;
-    title: string;
-  }) => (
-    <div
-      className={`flex flex-col items-center ${className ?? ""}`}
-      onClick={() => onClick?.()}
-    >
-      {children}
-      <div className="text-sm font-light">{title}</div>
-    </div>
-  );
-
-  const Buttons = () => (
-    <div className="flex flex-row gap-4">
-      <Button title="Read?" onClick={() => {}}>
-        <Add.Fill className="w-4 h-4" />
-      </Button>
-      <Button title="To Read">
-        <Bookmark.Outline className="w-3 h-4" />
-      </Button>
-      <Button title="Readlist" onClick={() => {}}>
-        <Checkmark.Outline className="w-4 h-4" />
-      </Button>
-    </div>
-  );
-
+const BookSearchResult: React.FC<BookComponentProps> = ({ book }) => {
   return (
     <div className="flex flex-row justify-start items-start gap-2 h-full">
       <div className="flex-shrink-0">
@@ -97,12 +21,12 @@ const BookSearchResult: React.FC<BookComponentProps> = ({
           thumbnailSize={ThumbnailSize.Small}
         />
       </div>
-      <div className="h-24 flex flex-col justify-between">
+      <div className="h-full flex flex-col justify-between items-start">
         <div className="flex flex-col">
           <Title title={book.title} />
           <Authors authors={book.authors} prefix="by" />
         </div>
-        <Buttons />
+        <BookButtons book={book} className="!justify-start"/>
       </div>
     </div>
   );

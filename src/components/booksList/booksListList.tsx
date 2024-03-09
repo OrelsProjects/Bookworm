@@ -59,6 +59,7 @@ const BooksListList: React.FC<BookListProps> = ({
                   (bookInList) => bookInList.book
                 ) ?? []
               }
+              alt={`${booksListData.name} list thumbnail`}
             />
             <div className="flex flex-col">
               <div className="text-lg font-semibold">{booksListData.name}</div>

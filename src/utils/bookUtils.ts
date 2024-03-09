@@ -1,5 +1,5 @@
 import { search } from "fast-fuzzy";
-import { Book, UserBook, UserBookData } from "../models";
+import { Book, UserBookData } from "../models";
 
 const fuzzySearchOptions = {
   threshold: 0.8,

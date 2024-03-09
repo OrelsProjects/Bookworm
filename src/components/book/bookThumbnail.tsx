@@ -47,7 +47,7 @@ const BookThumbnail: React.FC<BookThumbnailProps> = ({
 
   return (
     <div
-      className={`h-full relative flex-shrink-0 ${
+      className={`relative flex-shrink-0 ${
         getThumbnailSize(thumbnailSize).className
       }`}
     >
@@ -57,7 +57,7 @@ const BookThumbnail: React.FC<BookThumbnailProps> = ({
         height={height}
         width={width}
         onClick={onClick && book ? () => onClick(book) : undefined}
-        className={`rounded-lg ${ className ?? ""} w-full h-full object-cover`}
+        className={`rounded-lg ${ className ?? ""} w-full h-full`}
       />
 
       {Icon}

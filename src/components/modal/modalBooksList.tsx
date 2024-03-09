@@ -17,9 +17,9 @@ import { Books } from "../../models/book";
 import { TextArea } from "../textarea";
 import SearchBar from "../search/searchBar";
 import { ModalContent } from "./modalContainers";
-import { BookInListWithBook } from "../../models/bookInList";
+import { BookInList, BookInListWithBook } from "../../models/bookInList";
 import BookThumbnail from "../book/bookThumbnail";
-import BooksListList from "../booksList/booksListList";
+import { ListDiv, OpacityDiv } from "../animationDivs";
 
 interface ModalBooksListProps {
   booksListData?: BooksListData;
@@ -27,6 +27,7 @@ interface ModalBooksListProps {
 
 interface ListBookAndBookDetailsProps {
   onAddNewBookClick: () => void;
+  onDeleteBookClick: (bookInList: BookInList) => void;
   onChange: (
     bookInListWithBook: BookInListWithBook | null | undefined,
     comment: string
@@ -51,6 +52,7 @@ const Thumbnail: React.FC<{ books?: Books }> = ({ books }) => (
 const BookInListDetails: React.FC<BookInListDetailsProps> = ({
   bookInList,
   onAddNewBookClick,
+  onDeleteBookClick,
   onChange,
   value,
   name,
@@ -66,14 +68,18 @@ const BookInListDetails: React.FC<BookInListDetailsProps> = ({
     <div className="w-full flex flex-row gap-2">
       <BookThumbnail
         book={bookInList?.book}
-        onClick={onAddNewBookClick}
         className="flex-shrink-0"
         Icon={
-          <div className="absolute-center">
+          <div className="absolute-center overflow-hidden rounded-full">
             {bookInList?.book ? (
-              <Cancel.Fill className="!text-background" />
+              <Cancel.Fill
+                className="!text-background !bg-foreground -m-1 border-none rounded-full"
+                size="md"
+                key={`delete-book-${bookInList.book.bookId}`}
+                onClick={() => onDeleteBookClick(bookInList)}
+              />
             ) : (
-              <Add.Fill className="!text-background" />
+              <Add.Fill className="!text-background" size="md" />
             )}
           </div>
         }
@@ -82,7 +88,9 @@ const BookInListDetails: React.FC<BookInListDetailsProps> = ({
 
       <div className="w-full h-full flex flex-col justify-start items-start gap-2">
         <div
-          className={`${bookInList ? "text-foreground" : "text-muted"} h-fit`}
+          className={`${
+            bookInList ? "text-foreground" : "text-muted"
+          } h-fit line-clamp-1`}
         >
           {bookInList?.book?.title ?? "Book Name"}
         </div>
@@ -107,45 +115,52 @@ const ListBooks: React.FC<ListBookProps> = ({
   value,
   onChange,
   onAddNewBookClick,
+  onDeleteBookClick,
   name,
   key,
   booksInList,
 }) => (
-  <div className="w-full flex flex-col gap-2 justify-center items-start">
-    {booksInList?.map((bookInList) => (
-      <BookInListDetails
-        key={key}
-        bookInList={bookInList}
-        onAddNewBookClick={onAddNewBookClick}
-        onChange={onChange}
-        value={value}
-        name={name}
-      />
-    ))}
-    <div className="w-full flex flex-row gap-2">
-      <BooksListThumbnail
-        onClick={onAddNewBookClick}
-        className="flex-shrink-0"
-        Icon={
-          <div className="absolute-center">
-            <Add.Fill className="!text-background" />
-          </div>
-        }
-        thumbnailSize={ThumbnailSize.Small}
-      />
-
-      <div className="w-full h-full flex flex-col justify-start items-start gap-2">
-        <div className={`text-muted h-fit`}>Book Name</div>
-        <TextArea
-          value={value}
-          rows={3}
-          name={name}
-          onChange={(e) => {
-            onChange(null, e.target.value);
-          }}
-          placeholder="Comment"
+  <div key={key ?? "modal-books-list-books"}>
+    <div className="w-full flex flex-col gap-2 justify-center items-start">
+      {booksInList?.map((bookInList) => (
+        <BookInListDetails
           key={key}
+          bookInList={bookInList}
+          onAddNewBookClick={onAddNewBookClick}
+          onDeleteBookClick={onDeleteBookClick}
+          onChange={onChange}
+          value={value}
+          name={name}
         />
+      ))}
+      <div className="w-full flex flex-row gap-2">
+        <BooksListThumbnail
+          className="flex-shrink-0"
+          Icon={
+            <div className="absolute-center">
+              <Add.Fill
+                className="!text-background"
+                size="md"
+                onClick={onAddNewBookClick}
+              />
+            </div>
+          }
+          thumbnailSize={ThumbnailSize.Small}
+        />
+
+        <div className="w-full h-full flex flex-col justify-start items-start gap-2">
+          <div className={`text-muted h-fit`}>Book Name</div>
+          <TextArea
+            value={value}
+            rows={3}
+            name={name}
+            onChange={(e) => {
+              onChange(null, e.target.value);
+            }}
+            placeholder="Comment"
+            key={key}
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -155,6 +170,7 @@ const ModalBooksList: React.FC<ModalBooksListProps> = ({ booksListData }) => {
   const {
     createBooksList,
     addBookToList,
+    removeBookFromList,
     loading: loadingList,
   } = useBooksList();
   const { addUserBook, getBookFullData, loading: loadingBook } = useBook();
@@ -162,7 +178,6 @@ const ModalBooksList: React.FC<ModalBooksListProps> = ({ booksListData }) => {
   const [currentBooksList, setCurrentBookList] = useState<
     BooksListData | undefined
   >();
-  const scrollRef = React.useRef<HTMLDivElement>(null);
 
   const buildFormikValueName = (bookId: number) => `newBookComments-${bookId}`;
 
@@ -188,6 +203,37 @@ const ModalBooksList: React.FC<ModalBooksListProps> = ({ booksListData }) => {
     currentBooksList?.booksInList?.some(
       (bookInList) => bookInList.bookId === book.bookId
     );
+
+  const handleDeleteBookClick = async (bookInList: BookInList) => {
+    try {
+      if (loadingList.current || loadingBook.current) return;
+      if (!currentBooksList) return;
+
+      await toast.promise(
+        removeBookFromList(currentBooksList.listId, bookInList.bookId),
+        {
+          loading: `Removing book from list...`,
+          success: `book removed from list successfully!`,
+          error: `Failed to remove book from list.`,
+        }
+      );
+      const newBooksInList = currentBooksList.booksInList?.filter(
+        (book) => book.bookId !== bookInList.bookId
+      );
+
+      setCurrentBookList({
+        ...currentBooksList,
+        booksInList: newBooksInList,
+      });
+    } catch (e: any) {
+      Logger.error("Error removing book from list", {
+        data: {
+          bookInList,
+        },
+        error: e,
+      });
+    }
+  };
 
   const handleAddNewBookClick = async (book: Book) => {
     try {
@@ -281,10 +327,11 @@ const ModalBooksList: React.FC<ModalBooksListProps> = ({ booksListData }) => {
       bookThumbnailSize={ThumbnailSize.Medium}
       Icon={
         isBookInList(book) ? (
-          <Checkmark.Fill className="w-8 h-8 flex-shrink-0" />
+          <Checkmark.Fill className="flex-shrink-0" size="md" />
         ) : (
           <Add.Outline
-            className="w-8 h-8 flex-shrink-0"
+            className="flex-shrink-0"
+            size="md"
             onClick={() => {
               handleAddNewBookClick(book);
             }}
@@ -316,10 +363,16 @@ const ModalBooksList: React.FC<ModalBooksListProps> = ({ booksListData }) => {
         />
       }
       bottomSection={
-        <div className="w-full h-full flex flex-col gap-2 overflow-auto scrollbar-hide">
+        <div
+          className="w-full h-full flex flex-col gap-2 overflow-auto scrollbar-hide"
+          key="modal-books-list"
+        >
           <div className="flex flex-col gap-2">
             <ListBooks
               value={formik.values.newBookComments}
+              onDeleteBookClick={(bookInList) => {
+                handleDeleteBookClick(bookInList);
+              }}
               onChange={(bookInList, comment) => {
                 if (!bookInList) {
                   formik.setFieldValue("newBookComments", comment);
@@ -339,28 +392,14 @@ const ModalBooksList: React.FC<ModalBooksListProps> = ({ booksListData }) => {
                 (bookInList) => bookInList
               )}
             />
-            {showSearchBar && <SearchBar CustomSearchItem={SearchResult} />}
+            {showSearchBar && (
+              <OpacityDiv key="modal-books-list-search-bar">
+                <SearchBar CustomSearchItem={SearchResult} />
+              </OpacityDiv>
+            )}
           </div>
         </div>
       }
-
-      /* {currentBooksList && (
-        <BooksListList
-          booksListsData={[
-            currentBooksList,
-            currentBooksList,
-            currentBooksList,
-            currentBooksList,
-            currentBooksList,
-            currentBooksList,
-            currentBooksList,
-            currentBooksList,
-            currentBooksList,
-            currentBooksList,
-          ]}
-          direction={"column"}
-        />
-      )} */
     ></ModalContent>
   );
 };

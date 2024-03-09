@@ -42,7 +42,10 @@ const Dropdown: React.FC<DropdownProps> = ({
 
   return (
     <ExpandingDiv
-      className={`bg-primary-weak rounded-lg flex-col justify-center items-start shadow-xl ${className ?? ""}`}
+      key="dropdown"
+      className={`bg-primary-weak rounded-lg flex-col justify-center items-start shadow-xl ${
+        className ?? ""
+      }`}
       innerRef={dropdownRef}
       expandType={ExpandType.TopLeft}
     >

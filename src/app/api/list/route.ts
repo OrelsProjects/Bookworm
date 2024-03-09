@@ -7,6 +7,7 @@ import {
   BooksListData,
   CreateBooksListPayload,
 } from "../../../models/booksList";
+import { setThumbnailColorsToBooksListData } from "./_utils/thumbnailUtils";
 
 export async function GET(
   req: NextRequest
@@ -14,7 +15,8 @@ export async function GET(
   try {
     const axios = GetAxiosInstance(req);
     const response = await axios.get<BooksListData[]>("/lists");
-    const bookListData = response.data;
+    let bookListData = response.data;
+    bookListData = await setThumbnailColorsToBooksListData(bookListData);
     const result = {
       result: bookListData,
     };
@@ -32,8 +34,10 @@ export async function POST(req: NextRequest) {
   try {
     createBooksListBody = await req.json();
     const axios = GetAxiosInstance(req);
-    const response = await axios.post<BooksListData>("/lists", createBooksListBody);
-
+    const response = await axios.post<BooksListData>(
+      "/lists",
+      createBooksListBody
+    );
     const booksList = response.data;
 
     return NextResponse.json(

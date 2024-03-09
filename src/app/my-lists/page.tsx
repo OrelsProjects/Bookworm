@@ -10,8 +10,6 @@ import { Plus } from "../../components/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { showModal, ModalTypes } from "../../lib/features/modal/modalSlice";
 import { selectBooksLists } from "../../lib/features/booksLists/booksListsSlice";
-import Modal from "../../components/modal/modal";
-import { SearchBar } from "../../components";
 
 const MyLists = () => {
   const dispatch = useDispatch();
@@ -53,7 +51,8 @@ const MyLists = () => {
         <div className="text-xl font-bold">My lists</div>
         <div>
           <Plus.Fill
-            className="w-6 h-6 !text-foreground"
+            className="!text-foreground"
+            size="sm"
             onClick={onAddListClick}
           />
         </div>

@@ -4,7 +4,7 @@ import { BurgerMenu } from "../../components/icons";
 const Sidebar = () => {
   return (
     <div>
-      <BurgerMenu.Outline className="w-6 h-6 " />
+      <BurgerMenu.Outline size="sm" />
     </div>
   );
 };

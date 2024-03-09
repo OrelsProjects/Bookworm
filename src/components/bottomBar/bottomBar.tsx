@@ -35,9 +35,15 @@ const BottomBar = () => {
               }}
             >
               {isItemSelected(item) ? (
-                <item.icon.Fill className={item.className} />
+                <item.icon.Fill
+                  className={item.className}
+                  size={item.size}
+                />
               ) : (
-                <item.icon.Outline className={`${item.className} !text-background`} />
+                <item.icon.Outline
+                  className={`${item.className} !text-background`}
+                  size={item.size}
+                />
               )}
             </div>
           );

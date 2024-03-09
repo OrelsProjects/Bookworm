@@ -6,8 +6,6 @@ import {
 } from "@/src/utils/apiUtils";
 import { User } from "@/src/models";
 import { IResponse } from "@/src/models/dto/response";
-import { UserDTO } from "@/src/models/dto/userDTO";
-import { FromResponseUser } from "@/src/models/user";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(
@@ -48,8 +46,11 @@ export async function GET(
     Logger.info("About to get user", getUserIdFromRequest(req), {
       headers: req.headers,
     });
-    const response = await axios.get<UserDTO>("/user");
-    const user = FromResponseUser(response.data, getTokenFromRequest(req));
+    const response = await axios.get<User>("/user");
+    const user = {
+      ...response.data,
+      token: getTokenFromRequest(req),
+    };
     return NextResponse.json({ result: user }, { status: 200 });
   } catch (error: any) {
     Logger.error("Error getting user", getUserIdFromRequest(req), {
