@@ -39,7 +39,7 @@ const IconFill =
           height: heightPx,
           width: widthPx,
         }}
-        className={`text-foreground ${props.className} !w-[${widthPx}] !h-[${heightPx}]`}
+        className={`text-primary ${props.className} !w-[${widthPx}] !h-[${heightPx}]`}
       />
     );
   };

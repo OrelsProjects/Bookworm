@@ -122,9 +122,9 @@ const ListBooks: React.FC<ListBookProps> = ({
 }) => (
   <div key={key ?? "modal-books-list-books"}>
     <div className="w-full flex flex-col gap-2 justify-center items-start">
-      {booksInList?.map((bookInList) => (
+      {booksInList?.map((bookInList, index) => (
         <BookInListDetails
-          key={key}
+          key={`${key}-book-in-modal-books-list-${index}`}
           bookInList={bookInList}
           onAddNewBookClick={onAddNewBookClick}
           onDeleteBookClick={onDeleteBookClick}

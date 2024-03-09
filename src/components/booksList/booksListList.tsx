@@ -96,6 +96,7 @@ const BooksListList: React.FC<Props> = ({
                         e.stopPropagation();
                         bottomElementProps.onAddBookClick(listData);
                       }}
+                      className="!text-foreground"
                     />
                     <div className="text-sm text-foreground">Add Book</div>
                   </div>
@@ -106,6 +107,7 @@ const BooksListList: React.FC<Props> = ({
                         e.stopPropagation();
                         bottomElementProps.onShareClick(listData);
                       }}
+                      className="!text-foreground"
                     />
                     <div className="text-sm text-foreground">Share Link</div>
                   </div>
