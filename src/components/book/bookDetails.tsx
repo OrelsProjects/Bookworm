@@ -17,7 +17,7 @@ type BookDetailsProps = {
 
 const BookDetails: React.FC<BookDetailsProps> = ({
   book,
-  bookThumbnailSize = ThumbnailSize.Medium,
+  bookThumbnailSize = "md",
   Icon,
   ThumbnailIcon,
   className,
@@ -28,14 +28,17 @@ const BookDetails: React.FC<BookDetailsProps> = ({
   const sizeClass = direction === "row" ? thumbnailSize.width : "w-full";
   return (
     <div
-      className={`h-fit flex ${flexDirection} flex-shrink-0 justify-start items-start gap-2 ${sizeClass} ${className ?? ""}`}
+      className={`h-fit flex ${flexDirection} flex-shrink-0 justify-start items-center gap-2 ${sizeClass} ${
+        className ?? ""
+      }`}
     >
       <BookThumbnail
         book={book}
         className={`flex-shrink-0 ${thumbnailSize.className}`}
         Icon={ThumbnailIcon}
+        thumbnailSize={bookThumbnailSize}
       />
-      <div className={`flex flex-col  gap-2 overflow-visible flex-grow`}>
+      <div className={`flex flex-col  gap-2 overflow-visible flex-grow self-start`}>
         <div className={`flex flex-col -gap-1`}>
           <Title title={book?.title ?? ""} className="font-sm" />
           <Authors authors={book?.authors} className="text-primary" />

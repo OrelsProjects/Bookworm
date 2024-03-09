@@ -18,7 +18,7 @@ export type Icon = {
 };
 
 interface IconProps extends IconBaseProps {
-  size: IconSize;
+  iconSize: IconSize;
 }
 
 const IconFill =
@@ -26,38 +26,41 @@ const IconFill =
     Icon: React.FC<IconBaseProps>,
     specialIcon?: SpecialIconSize
   ): React.ElementType<IconProps> =>
-  ({ size: iconSize, ...props }: IconProps) =>
-    (
+  ({ iconSize, ...props }: IconProps) => {
+    const { heightPx, widthPx } = getIconSize({ size: iconSize, specialIcon });
+
+    return (
       <Icon
-        {...props} // Override with actual props passed to the component
-        className={`text-primary ${
-          getIconSize({
-            iconSize,
-            specialIcon,
-          }).className
-        } ${props.className}`}
+        {...props}
+        style={{
+          height: heightPx,
+          width: widthPx,
+        }}
+        className={`text-primary ${props.className}`}
       />
     );
+  };
 
-// Enhanced IconOutline function to accept and apply defaultProps
 const IconOutline =
   (
     Icon: React.FC<IconBaseProps>,
     className?: string,
     specialIcon?: SpecialIconSize
   ): React.ElementType<IconProps> =>
-  ({ size: iconSize, ...props }: IconProps) =>
-    (
+  ({ iconSize, ...props }: IconProps) => {
+    const { heightPx, widthPx } = getIconSize({ size: iconSize, specialIcon });
+    return (
       <Icon
         {...props}
-        className={`text-foreground ${
-          getIconSize({
-            iconSize,
-            specialIcon,
-          }).className
-        } ${className ?? ""} ${props.className}`}
+        style={{
+          height: heightPx,
+          width: widthPx,
+        }}
+        className={`text-foreground ${className ?? ""} ${props.className}`}
       />
     );
+  };
+
 export const Add: Icon = {
   Fill: IconFill(IoAddCircle),
   Outline: IconOutline(IoAddCircle),

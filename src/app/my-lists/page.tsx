@@ -52,7 +52,7 @@ const MyLists = () => {
         <div>
           <Plus.Fill
             className="!text-foreground"
-            size="sm"
+            iconSize="sm"
             onClick={onAddListClick}
           />
         </div>

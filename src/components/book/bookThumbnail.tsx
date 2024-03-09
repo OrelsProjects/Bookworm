@@ -40,7 +40,7 @@ const BookThumbnail: React.FC<BookThumbnailProps> = ({
   className,
   onClick,
   Icon,
-  thumbnailSize = ThumbnailSize.Medium,
+  thumbnailSize = "md",
 }) => {
   const thumbnailUrl = book?.thumbnailUrl ?? src;
   const bookTitle = book?.title ?? title;

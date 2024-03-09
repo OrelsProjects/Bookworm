@@ -15,7 +15,7 @@ type Props = BooksListThumbnailProps & React.HTMLProps<HTMLDivElement>;
 const BooksListThumbnail: React.FC<Props> = ({
   books,
   className,
-  thumbnailSize,
+  thumbnailSize = "md",
   Icon,
   ...props
 }) => {

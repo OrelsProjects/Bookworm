@@ -14,7 +14,7 @@ type BookListProps = {
   className?: string;
   direction: "row" | "column";
   onNextPageScroll?: () => void;
-  bookThumbnailSize?: ThumbnailSize;
+  thumbnailSize?: ThumbnailSize;
   disableScroll?: boolean;
   CustomBookComponent?: React.FC<{ book?: Book }>;
 };
@@ -24,7 +24,7 @@ const BookList: React.FC<BookListProps> = ({
   className,
   direction = "row",
   onNextPageScroll,
-  bookThumbnailSize,
+  thumbnailSize,
   disableScroll,
   CustomBookComponent,
 }) => {
@@ -41,7 +41,7 @@ const BookList: React.FC<BookListProps> = ({
   return (
     <div
       className={`flex gap-3 flex-grow scrollbar-hide ${className ?? ""}
-      ${direction === "row" ? "flex-row h-fit " : "flex-col h-fit max-h-96"}
+      ${direction === "row" ? "flex-row h-fit " : "flex-col h-fit"}
       ${disableScroll ? "" : "overflow-auto"}
       `}
       ref={scrollableDivRef}
@@ -57,14 +57,14 @@ const BookList: React.FC<BookListProps> = ({
           ) : (
             <BookDetails
               book={book}
-              bookThumbnailSize={bookThumbnailSize}
+              bookThumbnailSize={thumbnailSize}
               ThumbnailIcon={
                 direction === "row" && (
                   <div className="relative">
                     <div className="absolute bottom-2 left-2 w-fit h-fit rounded-full overflow-hidden flex items-center justify-center">
                       <Add.Outline
                         className="!text-background !bg-foreground -m-1 border-none"
-                        size="md"
+                        iconSize="lg"
                       />
                     </div>
                   </div>
@@ -72,7 +72,9 @@ const BookList: React.FC<BookListProps> = ({
               }
               Icon={
                 direction === "column" && (
-                  <Add.Outline className="flex-shrink-0" size="md" />
+                  <div className="h-full justify-self-center">
+                    <Add.Outline className="flex-shrink-0" iconSize="md" />
+                  </div>
                 )
               }
               direction={direction}

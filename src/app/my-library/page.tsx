@@ -29,32 +29,31 @@ export default function MyLibrary(): React.ReactNode {
 
   return (
     <div className="w-full h-full grid grid-rows-[auto,1fr] gap-5">
-    <SearchBarComponent
-      onChange={(value: string) => searchBooks(value)}
-      onSubmit={(value: string) => searchBooks(value)}
-      placeholder="Search in Your Books..."
-    />
-    <div className="overflow-auto scrollbar-hide flex flex-col gap-5">
-      <div className="flex flex-col gap-4">
-        <Tabs
-          Title={() => <div className="font-bold text-xl">Sort by</div>}
-          items={sorterTabItems}
-          onClick={onSortClick}
-        />
-        <Tabs
-          Title={() => <div className="font-bold text-xl">Filter by</div>}
-          items={filterTabItems}
+      <SearchBarComponent
+        onChange={(value: string) => searchBooks(value)}
+        onSubmit={(value: string) => searchBooks(value)}
+        placeholder="Search in Your Books..."
+      />
+      <div className="overflow-auto scrollbar-hide flex flex-col gap-5">
+        <div className="flex flex-col gap-4">
+          <Tabs
+            Title={() => <div className="font-bold text-xl">Sort by</div>}
+            items={sorterTabItems}
+            onClick={onSortClick}
+          />
+          <Tabs
+            Title={() => <div className="font-bold text-xl">Filter by</div>}
+            items={filterTabItems}
+          />
+        </div>
+        <BookList
+          books={userBookDataSorted.map((ubd) => ubd.bookData.book)}
+          onNextPageScroll={nextPage}
+          direction="column"
+          thumbnailSize="sm"
+          disableScroll
         />
       </div>
-      <BookList
-        books={userBookDataSorted.map((ubd) => ubd.bookData.book)}
-        onNextPageScroll={nextPage}
-        direction="column"
-        bookThumbnailSize={ThumbnailSize.Small}
-        disableScroll
-      />
     </div>
-  </div>
-  
   );
 }

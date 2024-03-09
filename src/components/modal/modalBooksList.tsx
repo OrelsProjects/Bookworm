@@ -46,7 +46,7 @@ interface BookInListDetailsProps extends ListBookAndBookDetailsProps {
 }
 
 const Thumbnail: React.FC<{ books?: Books }> = ({ books }) => (
-  <BooksListThumbnail books={books} thumbnailSize={ThumbnailSize.Medium} />
+  <BooksListThumbnail books={books} thumbnailSize="md" />
 );
 
 const BookInListDetails: React.FC<BookInListDetailsProps> = ({
@@ -74,16 +74,16 @@ const BookInListDetails: React.FC<BookInListDetailsProps> = ({
             {bookInList?.book ? (
               <Cancel.Fill
                 className="!text-background !bg-foreground -m-1 border-none rounded-full"
-                size="md"
+                iconSize="md"
                 key={`delete-book-${bookInList.book.bookId}`}
                 onClick={() => onDeleteBookClick(bookInList)}
               />
             ) : (
-              <Add.Fill className="!text-background" size="md" />
+              <Add.Fill className="!text-background" iconSize="md" />
             )}
           </div>
         }
-        thumbnailSize={ThumbnailSize.Small}
+        thumbnailSize="sm"
       />
 
       <div className="w-full h-full flex flex-col justify-start items-start gap-2">
@@ -140,12 +140,12 @@ const ListBooks: React.FC<ListBookProps> = ({
             <div className="absolute-center">
               <Add.Fill
                 className="!text-background"
-                size="md"
+                iconSize="md"
                 onClick={onAddNewBookClick}
               />
             </div>
           }
-          thumbnailSize={ThumbnailSize.Small}
+          thumbnailSize="sm"
         />
 
         <div className="w-full h-full flex flex-col justify-start items-start gap-2">
@@ -324,14 +324,14 @@ const ModalBooksList: React.FC<ModalBooksListProps> = ({ booksListData }) => {
   const SearchResult: React.FC<BookComponentProps> = ({ book }) => (
     <BookDetails
       book={book}
-      bookThumbnailSize={ThumbnailSize.Medium}
+      bookThumbnailSize="md"
       Icon={
         isBookInList(book) ? (
-          <Checkmark.Fill className="flex-shrink-0" size="md" />
+          <Checkmark.Fill className="flex-shrink-0" iconSize="md" />
         ) : (
           <Add.Outline
             className="flex-shrink-0"
-            size="md"
+            iconSize="md"
             onClick={() => {
               handleAddNewBookClick(book);
             }}

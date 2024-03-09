@@ -60,11 +60,11 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
     <BookThumbnail
       src={book.thumbnailUrl ?? "/thumbnailPlaceholder.png"}
       book={book}
-      className="w-full h-full"
+      thumbnailSize="lg"
     />
   );
 
-  const ButtonsRow = () => <BookButtons book={book} />;
+  const ButtonsRow = () => <BookButtons book={book} iconSize="lg"/>;
 
   return (
     <ModalContent

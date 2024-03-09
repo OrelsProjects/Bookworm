@@ -1,4 +1,4 @@
-import React, {  } from "react";
+import React from "react";
 import { Skeleton } from "../skeleton";
 import { Book } from "../../models";
 import BookThumbnail from "../book/bookThumbnail";
@@ -18,7 +18,7 @@ const BookSearchResult: React.FC<BookComponentProps> = ({ book }) => {
         <BookThumbnail
           src={book.thumbnailUrl}
           className="rounded-xl !relative"
-          thumbnailSize={ThumbnailSize.Small}
+          thumbnailSize="sm"
         />
       </div>
       <div className="h-full flex flex-col justify-between items-start">
@@ -26,7 +26,7 @@ const BookSearchResult: React.FC<BookComponentProps> = ({ book }) => {
           <Title title={book.title} />
           <Authors authors={book.authors} prefix="by" />
         </div>
-        <BookButtons book={book} className="!justify-start"/>
+        <BookButtons book={book} className="!justify-start" iconSize="xs" />
       </div>
     </div>
   );

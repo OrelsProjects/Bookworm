@@ -9,15 +9,18 @@ import {
 } from "../../models/readingStatus";
 import { increaseLuminosity } from "../../utils/thumbnailUtils";
 import toast from "react-hot-toast";
+import { IconSize } from "../../consts/icon";
 
 type BookButtonsProps = {
   book: Book;
+  iconSize: IconSize;
   className?: string;
 };
 
 type ButtonImageProps = {
   title: string;
   Icon: React.ElementType;
+  iconSize?: IconSize;
   selected: boolean;
   width?: number;
   height?: number;
@@ -29,6 +32,7 @@ type ButtonImageProps = {
 const ButtonImage: React.FC<ButtonImageProps> = ({
   title,
   Icon,
+  iconSize = "sm",
   selected,
   width = 35,
   height = 35,
@@ -45,13 +49,18 @@ const ButtonImage: React.FC<ButtonImageProps> = ({
         width,
         fill: selected ? buttonsColor : "currentColor",
       }}
+      iconSize={iconSize}
       className={`${selected ? "" : "!text-foreground"}`}
     />
     <div className="text-foreground text-lg">{title}</div>
   </div>
 );
 
-const BookButtons: React.FC<BookButtonsProps> = ({ book, className }) => {
+const BookButtons: React.FC<BookButtonsProps> = ({
+  book,
+  iconSize,
+  className,
+}) => {
   const { getBookFullData, updateBookReadingStatus, loading } = useBook();
   const [bookData, setBookData] = React.useState<UserBookData | undefined>();
   const [bookRead, setBookRead] = React.useState(false);
@@ -59,6 +68,12 @@ const BookButtons: React.FC<BookButtonsProps> = ({ book, className }) => {
 
   const handleUpdateBookReadingStatus = async (status: ReadingStatusEnum) => {
     if (!bookData || loading.current) return;
+    if (
+      bookData?.userBook?.readingStatusId &&
+      bookData?.userBook?.readingStatusId === status
+    ) {
+      return;
+    }
     const readingStatusName = readingStatusToName(status);
     await toast.promise(updateBookReadingStatus(bookData?.userBook, status), {
       loading: `Adding ${book?.title} to list: ${readingStatusName}...`,
@@ -82,6 +97,7 @@ const BookButtons: React.FC<BookButtonsProps> = ({ book, className }) => {
         ButtonImage({
           title: "Read",
           Icon: bookRead ? Checkmark.Fill : Add.Fill,
+          iconSize,
           selected: bookRead,
           buttonsColor,
           onClick: () => handleUpdateBookReadingStatus(ReadingStatusEnum.READ),
@@ -90,6 +106,7 @@ const BookButtons: React.FC<BookButtonsProps> = ({ book, className }) => {
         ButtonImage({
           title: "To Read",
           Icon: Bookmark.Fill,
+          iconSize,
           selected: !bookRead && !!bookData,
           width: 24,
           buttonsColor,
@@ -100,6 +117,7 @@ const BookButtons: React.FC<BookButtonsProps> = ({ book, className }) => {
         ButtonImage({
           title: "Add to list",
           Icon: Add.Outline,
+          iconSize,
           selected: false,
           buttonsColor,
         })}
