@@ -387,11 +387,7 @@ const ModalBooksList: React.FC<ModalBooksListProps> = ({ booksListData }) => {
                 (bookInList) => bookInList
               )}
             />
-            {showSearchBar && (
-              <OpacityDiv key="modal-books-list-search-bar">
-                <SearchBar CustomSearchItem={SearchResult} />
-              </OpacityDiv>
-            )}
+            {showSearchBar && <SearchBar CustomSearchItem={SearchResult} />}
           </div>
         </div>
       }

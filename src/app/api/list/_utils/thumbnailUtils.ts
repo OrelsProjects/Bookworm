@@ -1,6 +1,5 @@
 import { Book } from "../../../../models";
-import { BookInListWithBook } from "../../../../models/bookInList";
-import { BooksListData, SafeBooksListData } from "../../../../models/booksList";
+import { BooksListData } from "../../../../models/booksList";
 import { getAverageColor } from "../../_utils/thumbnailUtils";
 
 async function setThumbnailColorsToBooksInList(books: Book[]): Promise<Book[]> {
@@ -32,9 +31,12 @@ export async function setThumbnailColorsToBooksListData(
         continue;
       }
       const booksWithColors = await setThumbnailColorsToBooksInList(books);
-      booksList.booksInList = {
-        ...booksList.booksInList,
-      };
+      booksList.booksInList = booksWithColors.map((book, index) => {
+        return {
+          ...booksList.booksInList[index],
+          book,
+        };
+      });
     }
     return booksListData;
   } catch (error: any) {
@@ -69,17 +71,4 @@ export async function setThumbnailColorsToBooks(
   } catch (error: any) {
     return books;
   }
-}
-
-export async function setThumbnailColorsToSafeBooksInList(
-  safeBooks: SafeBooksListData[]
-): Promise<SafeBooksListData[]> {
-  for (const safeBook of safeBooks) {
-    try {
-      safeBook.books = await setThumbnailColorsToBooksInList(
-        safeBook.books
-      );
-    } catch (error: any) {}
-  }
-  return safeBooks;
 }
