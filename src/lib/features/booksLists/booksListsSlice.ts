@@ -111,25 +111,3 @@ export const selectBooksLists = (state: RootState): UserListsState =>
   state.booksLists;
 
 export default booksListsSlice.reducer;
-
-/**
- *   debugger;
-      const listIndex = state.booksListsData.findIndex(
-        (list) => list.listId === action.payload.bookInList.listId
-      );
-      if (listIndex) {
-        let bookInListInState = state.booksListsData[
-          listIndex
-        ].booksInList?.find(
-          (bookInList) => bookInList.bookId === action.payload.bookInList.bookId
-        );
-        if (!bookInListInState) return;
-        bookInListInState = {
-          ...bookInListInState,
-          ...action.payload.bookInList,
-        };
-        state.booksListsData[listIndex].booksInList = [
-          ...state.booksListsData[listIndex].booksInList!,
-        ];
-      }
- */

@@ -6,6 +6,7 @@ import { AuthStateType, selectAuth } from "../../lib/features/auth/authSlice";
 import useBook from "../../hooks/useBook";
 import { Logger } from "@/src/logger";
 import useBooksList from "../../hooks/useBooksList";
+import useUserRecommendations from "../../hooks/useRecommendations";
 
 interface DataProviderProps {
   children?: React.ReactNode;
@@ -14,8 +15,10 @@ interface DataProviderProps {
 const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
   const { loadUserBooks } = useBook();
   const { loadUserBooksLists } = useBooksList();
+  const { loadUserRecommendations } = useUserRecommendations();
   const { user, state } = useSelector(selectAuth);
   const loadingUserBooks = useRef<boolean>(false);
+  const [dataLoaded, setDataLoaded] = React.useState(false);
 
   useEffect(() => {
     const loadUserDataAsync = async () => {
@@ -25,6 +28,7 @@ const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
         Promise.allSettled([
           loadUserBooksLists(user),
           loadUserBooks(user),
+          loadUserRecommendations(user),
         ]).finally(() => {
           loadingUserBooks.current = false;
         });
@@ -35,7 +39,8 @@ const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
       }
     };
 
-    if (state === AuthStateType.SIGNED_IN && user) {
+    if (state === AuthStateType.SIGNED_IN && user && !dataLoaded) {
+      setDataLoaded(true);
       loadUserDataAsync();
     }
   }, [state, user]);

@@ -1,3 +1,4 @@
+import Book from "./book";
 import { BookInListNoListId, BookInListWithBook } from "./bookInList";
 
 export interface BooksList {
@@ -33,5 +34,11 @@ export type CreateBooksListResponse = Omit<
 >;
 
 export type BooksListData = BooksList & {
-  booksInList: BookInListWithBook[]
+  booksInList: BookInListWithBook[];
 };
+
+export type SafeBooksListData = {
+  description: string | null;
+  publicURL: string | null;
+  name: string;
+} & { books?: Book[] };

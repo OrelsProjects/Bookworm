@@ -22,6 +22,7 @@ import { Book, User } from "../models";
 import { IResponse } from "../models/dto/response";
 import { DuplicateError } from "../models/errors/duplicateError";
 import { BookInList } from "../models/bookInList";
+import { LoadingError } from "../models/errors/loadingError";
 
 const BOOK_LIST_DATA_KEY = "booksListData";
 
@@ -108,7 +109,7 @@ const useBooksList = () => {
 
   const loadUserBooksLists = async (user?: User | null) => {
     if (loading.current) {
-      throw new Error(
+      throw new LoadingError(
         "Operation in progress. Please wait until the current operation completes."
       );
     }

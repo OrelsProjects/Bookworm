@@ -3,6 +3,7 @@ import authReducer from "./features/auth/authSlice";
 import userBooksReducer from "./features/userBooks/userBooksSlice";
 import modalReducer from "./features/modal/modalSlice";
 import booksListsReducer from "./features/booksLists/booksListsSlice";
+import recommendationsReducer from "./features/recommendations/recommendationsSlice";
 
 export const makeStore = () => {
   return configureStore({
@@ -11,6 +12,7 @@ export const makeStore = () => {
       userBooks: userBooksReducer,
       modal: modalReducer,
       booksLists: booksListsReducer,
+      recommendations: recommendationsReducer,
     },
   });
 };

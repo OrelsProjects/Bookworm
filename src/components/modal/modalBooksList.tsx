@@ -227,6 +227,7 @@ const ModalBooksList: React.FC<ModalBooksListProps> = ({ booksListData }) => {
         formik.setFieldError("listName", "List name is required");
         return;
       }
+      const newBooksComments = formik.values.newBookComments;
       let bookWithId = book;
       if (!book.bookId) {
         bookWithId = await toast.promise(
@@ -260,7 +261,7 @@ const ModalBooksList: React.FC<ModalBooksListProps> = ({ booksListData }) => {
         const bookInList: BookInListWithBook = {
           bookId: bookWithId.bookId,
           listId: currentBooksList.listId,
-          comments: formik.values.newBookComments,
+          comments: newBooksComments,
           book: bookWithId,
         };
         const newBooksInList = [...(currentBooksList.booksInList ?? [])];
@@ -292,8 +293,9 @@ const ModalBooksList: React.FC<ModalBooksListProps> = ({ booksListData }) => {
         );
         setCurrentBookList(createBooksListResponse);
       }
-      setShowSearchBar(false);
-      formik.setFieldValue("newBookComments", "");
+      if (formik.values.newBookComments === newBooksComments) {
+        formik.setFieldValue("newBookComments", "");
+      }
     } catch (e: any) {
       Logger.error("Error adding book to list", {
         data: {
