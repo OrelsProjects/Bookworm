@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { showModal, ModalTypes } from "../../lib/features/modal/modalSlice";
 import useScrollPosition, {
@@ -12,6 +12,7 @@ import { Checkbox } from "../checkbox";
 import { Checkmark, BurgerLines, Circle, Add, Share } from "../icons";
 import { Book } from "../../models";
 import { isBooksEqual } from "../../utils/bookUtils";
+import { CommentsArea } from "../modal/_components/commentsArea";
 
 interface EndElementProps {
   onEndElementClick: (booksList: BooksListData) => void;
@@ -30,7 +31,6 @@ interface BookListListProps {
   bookThumbnailSize?: ThumbnailSize;
   disableScroll?: boolean;
   booksListsData?: BooksListData[];
-  // Used for elements
 }
 
 type Props = BookListListProps & { endElementProps?: EndElementProps } & {
@@ -61,6 +61,14 @@ const BooksListList: React.FC<Props> = ({
       })
     );
 
+  const isBookInList = useCallback(
+    (listData: BooksListData): boolean =>
+      !!listData.booksInList?.some((bookInList) =>
+        isBooksEqual(bookInList.book, endElementProps?.book)
+      ),
+    [endElementProps?.book]
+  );
+
   return (
     <div
       className={`flex gap-2 h-fit flex-col scrollbar-hide ${className ?? ""}
@@ -68,7 +76,10 @@ const BooksListList: React.FC<Props> = ({
       ref={scrollableDivRef}
     >
       {booksListsData?.map((listData) => (
-        <div className="h-full w-full">
+        <div
+          className="h-full w-full flex flex-col gap-2"
+          key={`books-list-${listData.listId}`}
+        >
           <div
             className="w-full h-full flex flex-row gap-2"
             onClick={() => onListClick(listData)}
@@ -127,15 +138,20 @@ const BooksListList: React.FC<Props> = ({
                   uncheckedComponent={
                     <Circle.Fill iconSize="lg" className="!text-foreground" />
                   }
-                  checked={
-                    !!listData.booksInList?.some((bookInList) =>
-                      isBooksEqual(bookInList.book, endElementProps?.book)
-                    )
-                  }
+                  checked={isBookInList(listData)}
                 />
               </div>
             )}
           </div>
+          {isBookInList(listData) && (
+            <CommentsArea
+              className="w-full"
+              bookInList={listData.booksInList?.find((bookInList) =>
+                isBooksEqual(bookInList.book, endElementProps?.book)
+              )}
+              placeholder="Leave your comment here..."
+            />
+          )}
         </div>
       ))}
     </div>

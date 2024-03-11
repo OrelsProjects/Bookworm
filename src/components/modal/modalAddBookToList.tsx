@@ -5,18 +5,15 @@ import React from "react";
 import Book from "../../models/book";
 import useBook from "../../hooks/useBook";
 import { UserBookData } from "../../models/userBook";
-import BookButtons from "../book/bookButtons";
 import BookThumbnail from "../book/bookThumbnail";
 import { ModalProps } from "./modal";
 import { ModalContent } from "./modalContainers";
 import BookGeneralDetails from "./_components/bookGeneralDetails";
 import useBooksList from "../../hooks/useBooksList";
-import { BurgerLines, Checkmark } from "../icons";
+import { BurgerLines } from "../icons";
 import BooksListList from "../booksList/booksListList";
-import { Checkbox } from "../checkbox";
-import { BooksList, BooksListData } from "../../models/booksList";
+import { BooksListData } from "../../models/booksList";
 import toast from "react-hot-toast";
-import { isEqual } from "lodash";
 import { isBooksEqual } from "../../utils/bookUtils";
 
 type ModalBookDetailsProps = {

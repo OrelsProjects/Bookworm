@@ -1,8 +1,9 @@
 // completeUserBookSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../../store"; // Adjust the import path as necessary
-import { BooksList, BooksListData } from "../../../models/booksList";
+import { BooksListData } from "../../../models/booksList";
 import { Book } from "../../../models";
+import { BookInList } from "../../../models/bookInList";
 
 export interface UserListsState {
   booksListsData: BooksListData[];
@@ -60,6 +61,24 @@ const booksListsSlice = createSlice({
         });
       }
     },
+    updateBookInList: (
+      state,
+      action: PayloadAction<{ bookInList: BookInList }>
+    ) => {
+      const listIndex = state.booksListsData.findIndex(
+        (list) => list.listId === action.payload.bookInList.listId
+      );
+      if (listIndex !== -1) {
+        const updatedBooksList = state.booksListsData[
+          listIndex
+        ].booksInList?.map((book) =>
+          book.bookId === action.payload.bookInList.bookId
+            ? { ...book, ...action.payload.bookInList }
+            : book
+        );
+        state.booksListsData[listIndex].booksInList = updatedBooksList;
+      }
+    },
     removeBookFromList: (
       state,
       action: PayloadAction<{ listId: string; bookId: number }>
@@ -84,6 +103,7 @@ export const {
   updateBooksList,
   deleteBooksList,
   addBookToList,
+  updateBookInList,
   removeBookFromList,
 } = booksListsSlice.actions;
 
@@ -91,3 +111,25 @@ export const selectBooksLists = (state: RootState): UserListsState =>
   state.booksLists;
 
 export default booksListsSlice.reducer;
+
+/**
+ *   debugger;
+      const listIndex = state.booksListsData.findIndex(
+        (list) => list.listId === action.payload.bookInList.listId
+      );
+      if (listIndex) {
+        let bookInListInState = state.booksListsData[
+          listIndex
+        ].booksInList?.find(
+          (bookInList) => bookInList.bookId === action.payload.bookInList.bookId
+        );
+        if (!bookInListInState) return;
+        bookInListInState = {
+          ...bookInListInState,
+          ...action.payload.bookInList,
+        };
+        state.booksListsData[listIndex].booksInList = [
+          ...state.booksListsData[listIndex].booksInList!,
+        ];
+      }
+ */

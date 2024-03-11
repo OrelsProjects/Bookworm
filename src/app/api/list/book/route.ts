@@ -4,14 +4,13 @@ import { GetAxiosInstance } from "@/src/utils/apiUtils";
 import { NextRequest, NextResponse } from "next/server";
 import {
   BooksList,
-  BooksListData,
-  CreateBooksListPayload,
 } from "../../../../models/booksList";
+import { BookInList } from "../../../../models/bookInList";
 
 const URL = "/list/book";
 
 export async function POST(req: NextRequest) {
-  let createBookInList: {bookId: string, listId: string} | null = null;
+  let createBookInList: { bookId: string; listId: string } | null = null;
   try {
     createBookInList = await req.json();
     const axios = GetAxiosInstance(req);
@@ -60,6 +59,24 @@ export async function DELETE(
       data: {
         listId,
         bookId,
+      },
+      error,
+    });
+    return NextResponse.json({}, { status: 500 });
+  }
+}
+
+export async function PATCH(req: NextRequest) {
+  let bookInList: BookInList | null = null;
+  try {
+    bookInList = await req.json();
+    const axios = GetAxiosInstance(req);
+    await axios.patch(URL, bookInList);
+    return NextResponse.json(bookInList, { status: 200 });
+  } catch (error: any) {
+    Logger.error("Error updating books list", {
+      data: {
+        booksList: bookInList,
       },
       error,
     });

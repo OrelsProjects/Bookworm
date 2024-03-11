@@ -38,6 +38,9 @@ const BookList: React.FC<BookListProps> = ({
   const onBookClick = (book?: Book) =>
     dispatch(showModal({ data: book, type: ModalTypes.BOOK_DETAILS }));
 
+  const onAddBookClick = (book?: Book) =>
+    dispatch(showModal({ data: book, type: ModalTypes.ADD_BOOK_TO_LIST }));
+
   return (
     <div
       className={`flex gap-3 flex-grow scrollbar-hide ${className ?? ""}
@@ -61,7 +64,13 @@ const BookList: React.FC<BookListProps> = ({
               ThumbnailIcon={
                 direction === "row" && (
                   <div className="relative">
-                    <div className="absolute bottom-2 left-2 w-fit h-fit rounded-full overflow-hidden flex items-center justify-center">
+                    <div
+                      className="absolute bottom-2 left-2 w-fit h-fit rounded-full overflow-hidden flex items-center justify-center"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onAddBookClick(book);
+                      }}
+                    >
                       <Add.Outline
                         className="!text-background !bg-foreground -m-1 border-none"
                         iconSize="lg"

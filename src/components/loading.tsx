@@ -18,7 +18,7 @@ const separateBackslashN = (text: string): React.ReactNode[] => {
   return textNodes;
 };
 
-const LoadingSvg = ({ className }: { className?: string }): React.ReactNode => (
+export const LoadingSvg = ({ className }: { className?: string }): React.ReactNode => (
   <svg
     aria-hidden="true"
     className={`animate-spin fill-primary-weak bg-none ${className ?? ""}`}

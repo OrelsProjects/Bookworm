@@ -1,5 +1,4 @@
-import { Book } from "./book";
-import { BookInList, BookInListNoListId, BookInListWithBook } from "./bookInList";
+import { BookInListNoListId, BookInListWithBook } from "./bookInList";
 
 export interface BooksList {
   listId: string;
@@ -34,5 +33,5 @@ export type CreateBooksListResponse = Omit<
 >;
 
 export type BooksListData = BooksList & {
-  booksInList?: BookInListWithBook[]
+  booksInList: BookInListWithBook[]
 };

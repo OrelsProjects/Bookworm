@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { BooksListData } from "../../models/booksList";
 import { ThumbnailSize } from "../../consts/thumbnail";
 import { Input } from "../input";
@@ -19,7 +19,9 @@ import SearchBar from "../search/searchBar";
 import { ModalContent } from "./modalContainers";
 import { BookInList, BookInListWithBook } from "../../models/bookInList";
 import BookThumbnail from "../book/bookThumbnail";
-import { ListDiv, OpacityDiv } from "../animationDivs";
+import { OpacityDiv } from "../animationDivs";
+import { rest } from "lodash";
+import { CommentsArea } from "./_components/commentsArea";
 
 interface ModalBooksListProps {
   booksListData?: BooksListData;
@@ -45,25 +47,18 @@ interface BookInListDetailsProps extends ListBookAndBookDetailsProps {
   bookInList?: BookInListWithBook;
 }
 
-const Thumbnail: React.FC<{ books?: Books }> = ({ books }) => (
-  <BooksListThumbnail books={books} thumbnailSize="md" />
-);
+const Thumbnail: React.FC<{ books?: Books; thumbnailSize: ThumbnailSize }> = ({
+  books,
+  thumbnailSize,
+}) => <BooksListThumbnail books={books} thumbnailSize={thumbnailSize} />;
 
 const BookInListDetails: React.FC<BookInListDetailsProps> = ({
   bookInList,
-  onAddNewBookClick,
   onDeleteBookClick,
-  onChange,
   value,
   name,
   key,
 }) => {
-  const [comment, setComment] = useState("");
-
-  useEffect(() => {
-    setComment(bookInList?.comments ?? "");
-  }, [value]);
-
   return (
     <div className="w-full flex flex-row gap-2">
       <BookThumbnail
@@ -94,18 +89,7 @@ const BookInListDetails: React.FC<BookInListDetailsProps> = ({
         >
           {bookInList?.book?.title ?? "Book Name"}
         </div>
-        <TextArea
-          value={comment}
-          rows={3}
-          name={name}
-          onChange={(e) => {
-            const value = e.target.value;
-            setComment(value);
-            onChange(bookInList, value);
-          }}
-          placeholder="Comment"
-          key={key}
-        />
+        <CommentsArea key={key} name={name} bookInList={bookInList} />
       </div>
     </div>
   );
@@ -130,7 +114,7 @@ const ListBooks: React.FC<ListBookProps> = ({
           onDeleteBookClick={onDeleteBookClick}
           onChange={onChange}
           value={value}
-          name={name}
+          name={`${name}-${bookInList.bookId}`}
         />
       ))}
       <div className="w-full flex flex-row gap-2">
@@ -348,23 +332,32 @@ const ModalBooksList: React.FC<ModalBooksListProps> = ({ booksListData }) => {
           books={currentBooksList?.booksInList?.map(
             (bookInList) => bookInList.book
           )}
+          thumbnailSize="lg"
         />
       }
       thumbnailDetails={
-        <Input
-          className="text-lg font-extralight border-1 rounded-md"
-          defaultValue={currentBooksList?.name}
-          name="listName"
-          onChange={formik.handleChange}
-          value={formik.values.listName}
-          placeholder="Awesome List Vol1"
-          key={currentBooksList?.listId}
-          error={formik.errors.listName}
-        />
+        <div className="flex flex-col w-full gap-2">
+          <Input
+            className="w-full text-lg font-extralight border-1 rounded-md"
+            defaultValue={currentBooksList?.name}
+            name="listName"
+            onChange={formik.handleChange}
+            value={formik.values.listName}
+            placeholder="Awesome List Vol1"
+            key={currentBooksList?.listId}
+            error={formik.errors.listName}
+          />
+          <CommentsArea
+            key={currentBooksList?.listId}
+            name="listComments"
+            bookListData={currentBooksList}
+            className="w-full"
+          />
+        </div>
       }
       bottomSection={
         <div
-          className="w-full h-full flex flex-col gap-2 overflow-auto scrollbar-hide"
+          className="w-full h-full flex flex-col gap-2 overflow-auto scrollbar-hide pb-4"
           key="modal-books-list"
         >
           <div className="flex flex-col gap-2">

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import axios from "axios";
+import axios, { CanceledError } from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../lib/store";
 import { Logger } from "../logger";
@@ -11,6 +11,7 @@ import {
   deleteBooksList as deleteBooksListAction,
   addBookToList as addBookToListAction,
   removeBookFromList as removeBookFromListAction,
+  updateBookInList as updateBookInListAction,
 } from "../lib/features/booksLists/booksListsSlice";
 import {
   BooksList,
@@ -20,6 +21,7 @@ import {
 import { Book, User } from "../models";
 import { IResponse } from "../models/dto/response";
 import { DuplicateError } from "../models/errors/duplicateError";
+import { BookInList } from "../models/bookInList";
 
 const BOOK_LIST_DATA_KEY = "booksListData";
 
@@ -48,6 +50,20 @@ const addBookToListInLocalStorage = (book: Book, listId: string) => {
   setListInLocalStorage(booksListData);
 };
 
+const updateBookInListInLocalStorage = (bookInList: BookInList) => {
+  const booksListData: BooksListData[] = getBooksListFromLocalStorage();
+  booksListData?.forEach((list) => {
+    if (list.listId === bookInList.listId && list.booksInList) {
+      list.booksInList = list.booksInList?.map((bookInListWithBook) =>
+        bookInListWithBook.bookId === bookInList.bookId
+          ? { ...bookInListWithBook, ...bookInList }
+          : bookInListWithBook
+      );
+    }
+  });
+  setListInLocalStorage(booksListData);
+};
+
 const deleteBookFromListInLocalStorage = (listId: string, bookId: number) => {
   const booksListData: BooksListData[] = getBooksListFromLocalStorage();
   booksListData?.forEach((list) => {
@@ -68,15 +84,12 @@ const deleteListInLocalStorage = (listId: string) => {
   setListInLocalStorage(updatedBooksListData);
 };
 
-const updateListInLocalStorage = (booksList: BooksList) => {
-  const booksListData = getBooksListFromLocalStorage();
-  const index = booksListData.findIndex(
-    (list) => list.listId === booksList.listId
+const updateListInLocalStorage = (booksListData: BooksListData) => {
+  const booksListDataFromLocalStorage = getBooksListFromLocalStorage();
+  const updatedBooksListData = booksListDataFromLocalStorage.map((list) =>
+    list.listId === booksListData.listId ? booksListData : list
   );
-  if (index !== -1) {
-    booksListData[index] = booksList;
-  }
-  setListInLocalStorage(booksListData);
+  setListInLocalStorage(updatedBooksListData);
 };
 
 const useBooksList = () => {
@@ -85,6 +98,9 @@ const useBooksList = () => {
   const booksLists = useSelector(
     (state: RootState) => state.booksLists.booksListsData
   );
+
+  const updateBooksListCancelToken = axios.CancelToken.source();
+  const updateBookInListCancelToken = axios.CancelToken.source();
 
   useEffect(() => {
     localStorage.removeItem("booksList");
@@ -151,13 +167,21 @@ const useBooksList = () => {
     }
   };
 
-  const updateBooksList = async (booksList: BooksList) => {
+  const cancelUpdateBooksList = () => {
+    updateBooksListCancelToken.cancel("Operation cancelled by user");
+  };
+
+  const updateBooksList = async (booksListData: BooksListData) => {
     try {
-      await axios.patch(`/api/list/`, booksList);
-      dispatch(updateBooksListAction(booksList));
-      updateListInLocalStorage(booksList);
+      const { booksInList, ...booksList } = booksListData;
+      await axios.patch(`/api/list/`, booksList, {
+        cancelToken: updateBooksListCancelToken.token,
+      });
+      dispatch(updateBooksListAction(booksListData));
+      updateListInLocalStorage(booksListData);
     } catch (error: any) {
       Logger.error("Failed to update books list", error);
+      throw error;
     }
   };
 
@@ -168,6 +192,7 @@ const useBooksList = () => {
       deleteListInLocalStorage(listId);
     } catch (error: any) {
       Logger.error("Failed to delete books list", error);
+      throw error;
     }
   };
 
@@ -178,18 +203,10 @@ const useBooksList = () => {
         bookId: book.bookId,
       });
       dispatch(addBookToListAction({ listId, book }));
-      const booksList: BooksListData = booksLists.find(
-        (list) => list.listId === listId
-      ) as BooksListData;
-      booksList?.booksInList?.push({
-        book: { ...book },
-        listId: listId,
-        bookId: book.bookId,
-      });
-
       addBookToListInLocalStorage(book, listId);
     } catch (error: any) {
       Logger.error("Failed to add book to list", error);
+      throw error;
     }
   };
 
@@ -206,6 +223,29 @@ const useBooksList = () => {
       deleteBookFromListInLocalStorage(listId, bookId);
     } catch (error: any) {
       Logger.error("Failed to remove book from list", error);
+      throw error;
+    }
+  };
+
+  const cancelUpdateBookInList = () => {
+    updateBookInListCancelToken.cancel("Operation cancelled by user");
+  };
+
+  const updateBookInList = async (bookInList: BookInList) => {
+    try {
+      await axios.patch(`/api/list/book`, bookInList, {
+        cancelToken: updateBookInListCancelToken.token,
+      });
+
+      dispatch(updateBookInListAction({ bookInList }));
+      updateBookInListInLocalStorage(bookInList);
+    } catch (error: any) {
+      Logger.error("Failed to update book in list", error);
+      if (error instanceof CanceledError) {
+        console.log("Operation cancelled by user");
+        return;
+      }
+      throw error;
     }
   };
 
@@ -215,8 +255,11 @@ const useBooksList = () => {
     loadUserBooksLists,
     createBooksList,
     updateBooksList,
+    cancelUpdateBooksList,
     deleteBooksList,
     addBookToList,
+    updateBookInList,
+    cancelUpdateBookInList,
     removeBookFromList,
   };
 };

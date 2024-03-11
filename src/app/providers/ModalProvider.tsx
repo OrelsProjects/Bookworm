@@ -21,17 +21,18 @@ const ModalProvider: React.FC = () => {
   const { data, type, isOpen }: ModalState = useSelector(
     (state: RootState) => state.modal
   );
-  const router = useRouter();
   const dispatch = useDispatch();
 
   const modalBackgroundColor = useMemo<string>((): string => {
     const defaultColor = "rgb(255,255,255)";
     switch (type) {
-      case ModalTypes.BOOK_DETAILS || ModalTypes.ADD_BOOK_TO_LIST:
+      case ModalTypes.BOOK_DETAILS:
         return darkenColor(data?.thumbnailColor) ?? defaultColor;
       case ModalTypes.BOOKS_LIST_DETAILS:
         const firstBook = data?.booksInList?.[0]?.book;
         return darkenColor(firstBook?.thumbnailColor) ?? defaultColor;
+      case ModalTypes.ADD_BOOK_TO_LIST:
+        return darkenColor(data?.thumbnailColor) ?? defaultColor;
       default:
         return defaultColor;
     }
