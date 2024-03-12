@@ -1,8 +1,8 @@
-import { Logger } from "@/src/logger";
 import { IResponse } from "@/src/models/dto/response";
-import { GetAxiosInstance } from "@/src/utils/apiUtils";
+import { GetAxiosInstance, getUserIdFromRequest } from "@/src/utils/apiUtils";
 import { NextRequest, NextResponse } from "next/server";
 import { SafeBooksListData } from "../../../../models/booksList";
+import Logger from "../../../../utils/loggerServer";
 // import { setThumbnailColorsToSafeBooksInList } from "../_utils/thumbnailUtils";
 
 export async function GET(
@@ -22,9 +22,13 @@ export async function GET(
     };
     return NextResponse.json(result, { status: 200 });
   } catch (error: any) {
-    Logger.error("Error getting user book lists", {
-      error,
-    });
+    Logger.error(
+      "Error getting user book lists",
+      getUserIdFromRequest(req),
+      {
+        error,
+      }
+    );
     return NextResponse.json({}, { status: 500 });
   }
 }

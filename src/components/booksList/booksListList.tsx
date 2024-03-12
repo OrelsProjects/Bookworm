@@ -57,7 +57,7 @@ const BooksListList: React.FC<Props> = ({
     dispatch(
       showModal({
         data: booksListData,
-        type: ModalTypes.BOOKS_LIST_DETAILS_EDIT,
+        type: ModalTypes.BOOKS_LIST_DETAILS,
       })
     );
 

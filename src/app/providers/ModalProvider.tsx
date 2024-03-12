@@ -16,8 +16,10 @@ import { darkenColor } from "../../utils/thumbnailUtils";
 import ModalAddBookToList from "../../components/modal/modalAddBookToList";
 import { ModalBooksList } from "../../components/modal/modalBooksList";
 import ModalBooksListEdit from "../../components/modal/modalBooksListEdit";
+import { useRouter } from "next/navigation";
 
 const ModalProvider: React.FC = () => {
+  const router = useRouter();
   const { data, type, isOpen }: ModalState = useSelector(
     (state: RootState) => state.modal
   );

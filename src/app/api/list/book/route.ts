@@ -1,11 +1,9 @@
-import { Logger } from "@/src/logger";
 import { IResponse } from "@/src/models/dto/response";
-import { GetAxiosInstance } from "@/src/utils/apiUtils";
+import { GetAxiosInstance, getUserIdFromRequest } from "@/src/utils/apiUtils";
 import { NextRequest, NextResponse } from "next/server";
-import {
-  BooksList,
-} from "../../../../models/booksList";
+import { BooksList } from "../../../../models/booksList";
 import { BookInList } from "../../../../models/bookInList";
+import Logger from "../../../../utils/loggerServer";
 
 const URL = "/list/book";
 
@@ -25,7 +23,7 @@ export async function POST(req: NextRequest) {
       { status: 200 }
     );
   } catch (error: any) {
-    Logger.error("Error creating user book", {
+    Logger.error("Error creating user book", getUserIdFromRequest(req), {
       data: {
         createBookInList,
       },
@@ -55,13 +53,17 @@ export async function DELETE(
     });
     return NextResponse.json(response.data, { status: 200 });
   } catch (error: any) {
-    Logger.error("Error deleting book from list", {
-      data: {
-        listId,
-        bookId,
-      },
-      error,
-    });
+    Logger.error(
+      "Error deleting book from list",
+      getUserIdFromRequest(req),
+      {
+        data: {
+          listId,
+          bookId,
+        },
+        error,
+      }
+    );
     return NextResponse.json({}, { status: 500 });
   }
 }
@@ -74,7 +76,7 @@ export async function PATCH(req: NextRequest) {
     await axios.patch(URL, bookInList);
     return NextResponse.json(bookInList, { status: 200 });
   } catch (error: any) {
-    Logger.error("Error updating books list", {
+    Logger.error("Error updating books list", getUserIdFromRequest(req), {
       data: {
         booksList: bookInList,
       },

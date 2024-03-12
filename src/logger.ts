@@ -12,7 +12,7 @@ export interface LogItem {
   error?: Error;
 }
 
-export const initLogger = (userId?: string) => {
+export const initLogger = () => {
   try {
     const env = process.env.NODE_ENV ?? "development";
     datadogLogs.init({

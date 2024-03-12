@@ -26,7 +26,9 @@ const BooksListThumbnail: React.FC<Props> = ({
   // Preload images
   useEffect(() => {
     const booksForThumbnail =
-      books?.filter((book) => book !== undefined).slice(0, 4) ?? [];
+      books
+        ?.filter((book) => book !== undefined && book.thumbnailUrl)
+        .slice(0, 4) ?? [];
     setThumbnailBooks(booksForThumbnail);
     let imagesToLoad = booksForThumbnail.map(() => new Image());
     let imagesLoadedCount = 0;

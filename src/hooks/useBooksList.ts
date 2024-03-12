@@ -129,7 +129,7 @@ const useBooksList = () => {
         axios.defaults.headers.common["user_id"] = user.userId;
       }
 
-      const response = await axios.get<IResponse<BooksListData[]>>("/api/list");
+      const response = await axios.get<IResponse<BooksListData[]>>("/api/lists");
       const booksListsDataResponse = response.data.result ?? [];
 
       dispatch(setBooksLists(booksListsDataResponse ?? []));

@@ -1,28 +1,49 @@
-import { Logger } from "@/src/logger";
 import { IResponse } from "@/src/models/dto/response";
-import { GetAxiosInstance } from "@/src/utils/apiUtils";
+import { GetAxiosInstance, getUserIdFromRequest } from "@/src/utils/apiUtils";
 import { NextRequest, NextResponse } from "next/server";
 import {
   BooksList,
   BooksListData,
   CreateBooksListPayload,
+  SafeBooksListData,
 } from "../../../models/booksList";
-import { setThumbnailColorsToBooksListData } from "./_utils/thumbnailUtils";
+import Logger from "../../../utils/loggerServer";
+import {
+  setThumbnailColorsToBooks,
+  setThumbnailColorsToBooksListData,
+} from "./_utils/thumbnailUtils";
 
 export async function GET(
   req: NextRequest
-): Promise<NextResponse<IResponse<BooksListData[]>>> {
+): Promise<NextResponse<IResponse<SafeBooksListData>>> {
   try {
+    const listUrl = req.nextUrl.searchParams.get("url") as string;
     const axios = GetAxiosInstance(req);
-    const response = await axios.get<BooksListData[]>("/lists");
+    const params = new URLSearchParams({
+      url: listUrl,
+    });
+    const response = await axios.get<SafeBooksListData>("/list", {
+      params,
+    });
+
     let bookListData = response.data;
-    bookListData = await setThumbnailColorsToBooksListData(bookListData);
+    if (!bookListData) {
+      return NextResponse.json({ error: "List not found" }, { status: 404 });
+    }
+    let books = bookListData.booksInList.map((book) => book.book);
+    books = await setThumbnailColorsToBooks(books);
+    bookListData.booksInList = bookListData.booksInList.map((bookInList, index) => {
+      return {
+        ...bookInList,
+        book: books[index],
+      };
+    });
     const result = {
       result: bookListData,
     };
     return NextResponse.json(result, { status: 200 });
   } catch (error: any) {
-    Logger.error("Error getting user book lists", {
+    Logger.error("Error getting user book lists", getUserIdFromRequest(req), {
       error,
     });
     return NextResponse.json({}, { status: 500 });
@@ -47,7 +68,7 @@ export async function POST(req: NextRequest) {
       { status: 200 }
     );
   } catch (error: any) {
-    Logger.error("Error creating book list", {
+    Logger.error("Error creating book list", getUserIdFromRequest(req), {
       data: {
         createBooksListBody,
       },
@@ -65,14 +86,11 @@ export async function PATCH(
   try {
     updateBooksListBody = await req.json();
     const axios = GetAxiosInstance(req);
-    const response = await axios.patch<BooksList>(
-      "/list",
-      updateBooksListBody
-    );
+    const response = await axios.patch<BooksList>("/list", updateBooksListBody);
     const booksList: BooksList = response.data;
     return NextResponse.json({ result: booksList }, { status: 200 });
   } catch (error: any) {
-    Logger.error("Error updating book list", {
+    Logger.error("Error updating book list", getUserIdFromRequest(req), {
       data: {
         updateBooksListBody,
       },
@@ -98,7 +116,7 @@ export async function DELETE(
     });
     return NextResponse.json(response.data, { status: 200 });
   } catch (error: any) {
-    Logger.error("Error deleting user book list", {
+    Logger.error("Error deleting user book list", getUserIdFromRequest(req), {
       data: {
         listId,
       },

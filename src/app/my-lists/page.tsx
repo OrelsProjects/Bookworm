@@ -24,7 +24,7 @@ const MyLists = () => {
   const onAddListClick = () => {
     dispatch(
       showModal({
-        type: ModalTypes.BOOKS_LIST_DETAILS,
+        type: ModalTypes.BOOKS_LIST_DETAILS_EDIT,
       })
     );
   };
@@ -99,12 +99,12 @@ const MyLists = () => {
             },
             onShareClick: (list) => {
               console.log("share list", list);
-              dispatch(
-                showModal({
-                  type: ModalTypes.BOOKS_LIST_DETAILS,
-                  data: list,
-                })
-              );
+              // dispatch(
+              //   showModal({
+              //     type: ModalTypes.BOOKS_LIST_DETAILS,
+              //     data: list,
+              //   })
+              // );
             },
           }}
         />
@@ -113,13 +113,13 @@ const MyLists = () => {
   );
 
   return (
-    <div className="h-full w-full flex flex-col gap-4 pb-4 p-3">
+    <div className="h-full w-full flex flex-col gap-4 pb-4 p-3 overflow-auto scrollbar-hide">
       <SearchBarComponent
         onChange={(value: string) => searchBooks(value)}
         onSubmit={(value: string) => searchBooks(value)}
         placeholder="Search in Your Books..."
       />
-      <div className="flex gap-3 flex-grow scrollbar-hide overflow-auto flex-col h-96">
+      <div className="flex gap-3 flex-grow flex-col h-full">
         <UserBooks />
         <UserBooksLists />
       </div>
