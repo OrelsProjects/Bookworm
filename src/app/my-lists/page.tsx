@@ -10,6 +10,7 @@ import { Add, Plus } from "../../components/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { showModal, ModalTypes } from "../../lib/features/modal/modalSlice";
 import { selectBooksLists } from "../../lib/features/booksLists/booksListsSlice";
+import toast from "react-hot-toast";
 
 const MyLists = () => {
   const dispatch = useDispatch();
@@ -98,13 +99,11 @@ const MyLists = () => {
               );
             },
             onShareClick: (list) => {
-              console.log("share list", list);
-              // dispatch(
-              //   showModal({
-              //     type: ModalTypes.BOOKS_LIST_DETAILS,
-              //     data: list,
-              //   })
-              // );
+              const baseUrl = window.location.origin;
+              navigator.clipboard.writeText(
+                `${baseUrl}${list.publicURL}` ?? ""
+              );
+              toast.success("Link copied to clipboard!");
             },
           }}
         />
