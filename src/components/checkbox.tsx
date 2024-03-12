@@ -3,11 +3,28 @@ import { cn } from "../lib/utils";
 
 export interface CheckboxProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
-  checkedComponent: React.ReactNode;
-  uncheckedComponent: React.ReactNode;
+  checkedComponent?: React.ReactNode;
+  uncheckedComponent?: React.ReactNode;
   checked: boolean;
   error?: string;
 }
+
+const defaultCheckedComponent = (
+  <input
+    id="inline-checkbox"
+    type="checkbox"
+    checked
+    className="w-4 h-4 text-blue-600 bg-muted border-gray-300 rounded focus:ring-blue-500"
+  />
+);
+const defaultUncheckedComponent = (
+  <input
+    id="inline-checkbox"
+    type="checkbox"
+    checked={false}
+    className="w-4 h-4 text-blue-600 bg-muted border-gray-300 rounded focus:ring-blue-500"
+  />
+);
 
 const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
   (
@@ -31,7 +48,9 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
           {...props}
         />
         <div className={cn("cursor-pointer", className)}>
-          {checked ? checkedComponent : uncheckedComponent}
+          {checked
+            ? checkedComponent ?? defaultCheckedComponent
+            : uncheckedComponent ?? defaultUncheckedComponent}
         </div>
         {error && (
           <div className="flex items-center ml-2">

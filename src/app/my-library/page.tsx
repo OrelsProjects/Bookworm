@@ -13,10 +13,17 @@ import Dropdown from "../../components/dropdown";
 import useBooksList from "../../hooks/useBooksList";
 import { Checkbox } from "../../components/checkbox";
 import { Filter } from "../../components/icons";
+import { ExpandType } from "../../components/animationDivs";
 
 export default function MyLibrary(): React.ReactNode {
-  const { sortBooks, filterBooks, nextPage, searchBooks, filteredBy } =
-    useTable();
+  const {
+    sortBooks,
+    filterBooks,
+    nextPage,
+    searchBooks,
+    filteredBy,
+    userBooks,
+  } = useTable();
   const { booksLists } = useBooksList();
 
   const [userBookDataSorted, setUserBookDataSorted] = React.useState<
@@ -24,8 +31,14 @@ export default function MyLibrary(): React.ReactNode {
   >([]);
   const [showFilterDropdown, setShowFilterDropdown] = React.useState(false);
 
-  const onSortClick = (tabItem: TabItem) =>
-    setUserBookDataSorted(sortBooks(tabItem.value as BookSort));
+  useEffect(() => {
+    setUserBookDataSorted(userBooks);
+  }, [userBooks]);
+
+  const onSortClick = (tabItem: TabItem) => {
+    const filteredBooks = filterBooks(undefined, undefined, booksLists);
+    setUserBookDataSorted(sortBooks(tabItem.value as BookSort, filteredBooks));
+  };
 
   const onFilterClick = (value: string) =>
     setUserBookDataSorted(filterBooks("readlist", value, booksLists));
@@ -44,7 +57,7 @@ export default function MyLibrary(): React.ReactNode {
             items={sorterTabItems}
             onClick={onSortClick}
           />
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 relative">
             <div className="font-bold text-xl">Filter by</div>
             <Button
               key={`tab-filter-readlist`}
@@ -53,7 +66,9 @@ export default function MyLibrary(): React.ReactNode {
                 setShowFilterDropdown(!showFilterDropdown);
               }}
               variant="outline"
-              className="rounded-full flex-shrink-0 !min-w-20 h-6 p-2 w-max"
+              className={`rounded-full flex-shrink-0 !min-w-20 h-6 p-2 w-max
+                ${filteredBy.length > 0 ? "border-none bg-primary-weak" : ""}
+              `}
             >
               <div className="w-fit flex flex-row gap-1 justify-start items-center">
                 <Filter.Fill className="!text-foreground" iconSize="xs" />
@@ -61,25 +76,33 @@ export default function MyLibrary(): React.ReactNode {
               </div>
             </Button>
             {showFilterDropdown && (
-              <Dropdown
-                items={booksLists.map((list) => {
-                  return {
-                    label: list.name,
-                    leftIcon: (
-                      <Checkbox
-                        checked={
-                          filteredBy?.filter === "readlist" &&
-                          list.name === filteredBy.value
-                        }
-                        checkedComponent={undefined}
-                        uncheckedComponent={undefined}
-                      />
-                    ),
-                    onClick: () => onFilterClick(list.name),
-                  };
-                })}
-                onClose={() => setShowFilterDropdown(false)}
-              />
+              <div className="absolute top-full left-0 mt-1 z-50">
+                <Dropdown
+                  className="!w-fit"
+                  expandType={ExpandType.TopRight}
+                  closeOnSelection={false}
+                  items={booksLists.map((list) => {
+                    return {
+                      label: list.name,
+                      leftIcon: (
+                        <Checkbox
+                          className="h-4 w-4 flex-shrink-0"
+                          checked={
+                            filteredBy.find(
+                              (f) =>
+                                f.filter === "readlist" && f.value === list.name
+                            )
+                              ? true
+                              : false
+                          }
+                        />
+                      ),
+                      onClick: () => onFilterClick(list.name),
+                    };
+                  })}
+                  onClose={() => setShowFilterDropdown(false)}
+                />
+              </div>
             )}
           </div>
         </div>

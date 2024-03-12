@@ -8,6 +8,7 @@ import React from "react";
 
 export enum ExpandType {
   TopLeft,
+  TopRight,
   Center,
   General,
   Modal,
@@ -73,6 +74,13 @@ const expandingTopLeftAnimationProps: MotionProps = {
   transition: { duration: 0.1, ease: "easeInOut" },
 };
 
+const expandingTopRightAnimationProps: MotionProps = {
+  initial: { scaleX: 0, scaleY: 0, originX: 0, originY: 0 },
+  animate: { scaleX: 1, scaleY: 1, originX: 0, originY: 0 },
+  exit: { scaleX: 0, scaleY: 0, originX: 0, originY: 1 },
+  transition: { duration: 0.1, ease: "easeInOut" },
+};
+
 const expandingCenterAnimationProps: MotionProps = {
   initial: { scaleX: 1, scaleY: 1, originX: 0.5, originY: 0.5 },
   animate: { scaleX: 1.1, scaleY: 1.1, originX: 0.5, originY: 0.5 },
@@ -118,6 +126,8 @@ const getExpandProps = (expandType?: ExpandType): MotionProps => {
       return expandingCenterAnimationProps;
     case ExpandType.Modal:
       return expandingModal;
+    case ExpandType.TopRight:
+      return expandingTopRightAnimationProps;
     default:
       return expandingTopLeftAnimationProps;
   }
@@ -125,11 +135,7 @@ const getExpandProps = (expandType?: ExpandType): MotionProps => {
 
 // Expanding Animation Wrapper
 const ExpandingDiv = ({ innerRef, expandType, ...props }: ExpandDivProps) => (
-  <GeneralDiv
-    innerRef={innerRef}
-    {...props}
-    animationProps={getExpandProps(expandType)}
-  />
+  <motion.div ref={innerRef} {...props} {...getExpandProps(expandType)} />
 );
 
 const ListDiv = ({ innerRef, ...props }: AnimationDivProps) => (

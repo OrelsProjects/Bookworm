@@ -30,10 +30,12 @@ const useTable = () => {
   const [toReadBooksCount, setToReadBooksCount] = useState(0);
   const [searchValue, setSearchValue] = useState("");
   const [sortedBy, setSortedBy] = useState<BookSort>();
-  const [filteredBy, setFilteredBy] = useState<{
-    filter: BookFilter;
-    value: string;
-  }>();
+  const [filteredBy, setFilteredBy] = useState<
+    {
+      filter: BookFilter;
+      value: string;
+    }[]
+  >([]);
 
   useEffect(() => {
     updateUserBooks(currentPage, currentTableType.current, searchValue);
@@ -100,23 +102,35 @@ const useTable = () => {
   };
 
   const filterBooks = (
-    filter: BookFilter,
-    value: string,
-    booksLists: BooksListData[],
+    filter?: BookFilter,
+    value?: string,
+    booksLists: BooksListData[] = [],
     userBooksToFilter: UserBookData[] = userBooks
   ): UserBookData[] => {
-    let filteredBooks = userBooks;
-    try {
-      switch (filter) {
-        case "readlist":
-          filteredBooks = filterByReadlist(
-            value,
-            [...userBooks],
-            [...booksLists]
-          );
-          break;
+    let filters = [...filteredBy];
+    let filteredBooks = [...userBooksToFilter];
+    if (filter && value) {
+      const isFilterInUse = filteredBy?.find((f) => f.value === value);
+      if (!isFilterInUse) {
+        filters.push({ filter, value });
+      } else {
+        filters = filters.filter((f) => f.value !== value);
       }
-      setFilteredBy({ filter, value });
+    }
+
+    try {
+      for (const { filter, value } of filters) {
+        switch (filter) {
+          case "readlist":
+            filteredBooks = filterByReadlist(
+              value,
+              [...filteredBooks],
+              [...booksLists]
+            );
+            break;
+        }
+      }
+      setFilteredBy(filters);
       return sortedBy ? sortBooks(sortedBy, filteredBooks) : filteredBooks;
     } catch (error: any) {
       Logger.error("Error filtering books", {

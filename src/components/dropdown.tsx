@@ -12,12 +12,16 @@ export interface DropdownProps {
   items: DropdownItem[];
   onClose?: () => void;
   className?: string;
+  expandType?: ExpandType;
+  closeOnSelection?: boolean;
 }
 
 const Dropdown: React.FC<DropdownProps> = ({
   items = [],
   onClose,
   className,
+  expandType = ExpandType.TopLeft,
+  closeOnSelection = true,
 }) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -47,7 +51,7 @@ const Dropdown: React.FC<DropdownProps> = ({
         className ?? ""
       }`}
       innerRef={dropdownRef}
-      expandType={ExpandType.TopLeft}
+      expandType={expandType}
     >
       {items
         .sort((a, b) => (a.position || 0) - (b.position || 0))
@@ -55,9 +59,10 @@ const Dropdown: React.FC<DropdownProps> = ({
           <div
             key={`dropdown-item-${item.label}`}
             className="w-full h-12 flex items-center justify-start px-4 hover:cursor-pointer hover:bg-primary rounded-lg"
-            onClick={() => {
-              item.onClick();
-              onClose?.();
+            onClick={(e) => {
+              e.stopPropagation();
+              item.onClick(); 
+              closeOnSelection && onClose?.();
             }}
           >
             {item.leftIcon && (

@@ -14,13 +14,13 @@ export const bottomBarItems: BottomBarItem[] = [
     name: "Home",
     icon: NavigationHome,
     path: "/home",
-    size: "md",
+    size: "sm",
   },
   {
     name: "My lists",
     icon: NavigationLists,
     path: "/my-lists",
     className: "p-0.5 mt-0.5",
-    size: "md",
+    size: "sm",
   },
 ];
