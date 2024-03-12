@@ -3,7 +3,7 @@ import { IResponse } from "@/src/models/dto/response";
 import { GetAxiosInstance } from "@/src/utils/apiUtils";
 import { NextRequest, NextResponse } from "next/server";
 import { SafeBooksListData } from "../../../../models/booksList";
-import { setThumbnailColorsToSafeBooksInList } from "../_utils/thumbnailUtils";
+// import { setThumbnailColorsToSafeBooksInList } from "../_utils/thumbnailUtils";
 
 export async function GET(
   req: NextRequest
@@ -14,9 +14,9 @@ export async function GET(
       "/lists/recommendation"
     );
     let safeBooksListData = response.data;
-    safeBooksListData = await setThumbnailColorsToSafeBooksInList(
-      safeBooksListData
-    );
+    // safeBooksListData = await setThumbnailColorsToSafeBooksInList(
+    //   safeBooksListData
+    // );
     const result = {
       result: safeBooksListData,
     };
