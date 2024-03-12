@@ -92,13 +92,19 @@ const MyLists = () => {
             onAddBookClick: (list) => {
               dispatch(
                 showModal({
-                  type: ModalTypes.BOOKS_LIST_DETAILS,
+                  type: ModalTypes.BOOKS_LIST_DETAILS_EDIT,
                   data: list,
                 })
               );
             },
             onShareClick: (list) => {
               console.log("share list", list);
+              dispatch(
+                showModal({
+                  type: ModalTypes.BOOKS_LIST_DETAILS,
+                  data: list,
+                })
+              );
             },
           }}
         />

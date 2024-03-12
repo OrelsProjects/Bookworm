@@ -1,11 +1,17 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectUserBooks } from "../lib/features/userBooks/userBooksSlice";
 import { UserBookData } from "../models";
 import { Logger } from "../logger";
-import { BookSort } from "./useBook";
-import { sortByTitle, sortByAuthor, sortByDateAdded } from "../utils/bookUtils";
+import { BookFilter, BookSort } from "./useBook";
+import {
+  sortByTitle,
+  sortByAuthor,
+  sortByDateAdded,
+  filterByReadlist,
+} from "../utils/bookUtils";
 import { ReadingStatusEnum } from "../models/readingStatus";
+import { BooksListData } from "../models/booksList";
 
 export enum TableType {
   READ = 1,
@@ -23,6 +29,11 @@ const useTable = () => {
   const [readBooksCount, setReadBooksCount] = useState(0);
   const [toReadBooksCount, setToReadBooksCount] = useState(0);
   const [searchValue, setSearchValue] = useState("");
+  const [sortedBy, setSortedBy] = useState<BookSort>();
+  const [filteredBy, setFilteredBy] = useState<{
+    filter: BookFilter;
+    value: string;
+  }>();
 
   useEffect(() => {
     updateUserBooks(currentPage, currentTableType.current, searchValue);
@@ -88,9 +99,40 @@ const useTable = () => {
     setSearchValue("");
   };
 
+  const filterBooks = (
+    filter: BookFilter,
+    value: string,
+    booksLists: BooksListData[],
+    userBooksToFilter: UserBookData[] = userBooks
+  ): UserBookData[] => {
+    let filteredBooks = userBooks;
+    try {
+      switch (filter) {
+        case "readlist":
+          filteredBooks = filterByReadlist(
+            value,
+            [...userBooks],
+            [...booksLists]
+          );
+          break;
+      }
+      setFilteredBy({ filter, value });
+      return sortedBy ? sortBooks(sortedBy, filteredBooks) : filteredBooks;
+    } catch (error: any) {
+      Logger.error("Error filtering books", {
+        data: {
+          filter,
+          value,
+        },
+        error,
+      });
+      return userBooks;
+    }
+  };
+
   const sortBooks = (
-    sort: BookSort,
-    userBookDataToSort: UserBookData[]
+    sort?: BookSort,
+    userBookDataToSort: UserBookData[] = userBooks
   ): UserBookData[] => {
     try {
       let sortedUserBooks: UserBookData[] = userBookDataToSort;
@@ -105,6 +147,7 @@ const useTable = () => {
           sortedUserBooks = sortByDateAdded([...userBookDataToSort]);
           break;
       }
+      setSortedBy(sort);
       return sortedUserBooks;
     } catch (error: any) {
       Logger.error("Error sorting books", {
@@ -142,6 +185,8 @@ const useTable = () => {
     readBooksCount,
     toReadBooksCount,
     sortBooks,
+    filterBooks,
+    filteredBy,
   };
 };
 

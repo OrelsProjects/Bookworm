@@ -38,6 +38,8 @@ export enum BookSort {
   DateAdded = "DateAdded",
 }
 
+export type BookFilter = "readlist";
+
 const useBook = () => {
   const loading = useRef(false);
   const dispatch = useDispatch();

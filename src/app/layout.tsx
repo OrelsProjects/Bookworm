@@ -37,7 +37,7 @@ export default function RootLayout({
                 <DataProvider>
                   <AnimationProvider>
                     <div className="!roboto w-screen h-screen flex flex-col p-4 absolute">
-                      <Header className="pt-3" />
+                      <Header className="pb-3" />
                       {children}
                     </div>
                   </AnimationProvider>

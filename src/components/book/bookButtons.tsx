@@ -45,20 +45,13 @@ export const ButtonImage: React.FC<ButtonImageProps> = ({
   height = 35,
   classNameIcon = "",
 }) => {
-  const textSize = useMemo(() => {
-    switch (iconSize) {
-      case "xs":
-        return "text-sm font-light";
-      case "sm":
-        return "text-sm";
-      case "md":
-        return "text-md";
-      case "lg":
-        return "text-lg";
-      default:
-        return "text-sm";
-    }
-  }, [iconSize]);
+  const textSize = {
+    xs: "text-sm font-light",
+    sm: "text-sm",
+    md: "text-md",
+    lg: "text-lg",
+    xl: "text-xl",
+  };
 
   return (
     <div
@@ -74,7 +67,7 @@ export const ButtonImage: React.FC<ButtonImageProps> = ({
         iconSize={iconSize}
         className={`${selected ? "" : "!text-foreground"}`}
       />
-      <div className={`text-foreground ${textSize}`}>{title}</div>
+      <div className={`text-foreground ${textSize[iconSize]}`}>{title}</div>
     </div>
   );
 };

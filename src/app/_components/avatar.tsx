@@ -18,7 +18,6 @@ type AvatarProps = {
 
 const Avatar: React.FC<AvatarProps> = ({ avatarUrl }) => {
   const router = useRouter();
-  const dispatch = useDispatch();
   const { userBooksData } = useSelector(selectUserBooks);
   const [showDropdown, setShowDropdown] = React.useState<boolean>(false);
   const [isClosing, setIsClosing] = React.useState<boolean>(false);
@@ -76,7 +75,7 @@ const Avatar: React.FC<AvatarProps> = ({ avatarUrl }) => {
   return (
     <div className="relative rounded-full">
       <img
-        src="/avatar.png"
+        src={avatarUrl ?? "/avatar.png"}
         height={36}
         width={36}
         alt={"avatar"}

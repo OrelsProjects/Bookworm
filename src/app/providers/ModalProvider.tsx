@@ -84,10 +84,10 @@ const ModalProvider: React.FC = () => {
         return RenderBookDetails(data);
       case ModalTypes.BOOKS_LIST_DETAILS:
         return RenderBooksListDetails(data);
+      case ModalTypes.BOOKS_LIST_DETAILS_EDIT:
+        return RenderBooksListDetailsEdit(data);
       case ModalTypes.ADD_BOOK_TO_LIST:
         return RenderAddBookToList(data);
-      case ModalTypes.ADD_BOOK_TO_LIST_EDIT:
-        return RenderBooksListDetailsEdit(data);
       default:
         return null;
     }

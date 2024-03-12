@@ -1,5 +1,4 @@
 import { TabItem } from "../../../components/tabs";
-import { FaFilter } from "react-icons/fa6";
 import { BookSort } from "../../../hooks/useBook";
 
 export const sorterTabItems: TabItem[] = [
@@ -14,21 +13,5 @@ export const sorterTabItems: TabItem[] = [
   {
     label: "Author",
     value: BookSort.Author,
-  },
-];
-
-export const filterTabItems: TabItem[] = [
-  // {
-  //   label: "Author",
-  //   value: "Author",
-  // },
-  // {
-  //   label: "Published Year",
-  //   value: "Published Year",
-  // },
-  {
-    label: "Read list",
-    value: "Read list",
-    icon: <FaFilter />,
   },
 ];

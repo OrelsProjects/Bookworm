@@ -7,10 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { selectAuth } from "@/src/lib/features/auth/authSlice";
 import useAuth from "@/src/hooks/useAuth";
-import {
-  ModalTypes,
-  showModal,
-} from "@/src/lib/features/modal/modalSlice";
+import { ModalTypes, showModal } from "@/src/lib/features/modal/modalSlice";
 import Avatar from "./avatar";
 import { EventTracker } from "@/src/eventTracker";
 import { TabItems } from "@/src/components/tabs";
@@ -46,16 +43,18 @@ const Header = ({ className }: HeaderProps): React.ReactNode => {
   }
 
   useEffect(() => {
-    if (error) {      
+    if (error) {
       toast.error("Something went wrong.. we're on it!");
       Logger.error("Error in header", { data: { error } });
     }
   }, [error]);
-
+  console.log(user);
   return (
     !loadingState.loading && (
       <div
-        className={`flex justify-between items-center w-full z-30 relative ${className ?? ""}`}
+        className={`flex justify-between items-center w-full z-30 relative ${
+          className ?? ""
+        }`}
       >
         <Sidebar />
         {user ? (

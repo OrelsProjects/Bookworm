@@ -1,6 +1,6 @@
 import React from "react";
 import { IconBaseProps } from "react-icons";
-import { FaBookmark, FaShare } from "react-icons/fa";
+import { FaBookmark, FaShare, FaFilter } from "react-icons/fa";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { IoAddCircle } from "react-icons/io5";
 import {
@@ -122,4 +122,9 @@ export const Circle: Icon = {
 export const Share: Icon = {
   Fill: IconFill(FaShare),
   Outline: IconOutline(FaShare),
+};
+
+export const Filter: Icon = {
+  Fill: IconFill(FaFilter),
+  Outline: IconOutline(FaFilter),
 };
