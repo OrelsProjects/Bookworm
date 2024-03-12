@@ -80,22 +80,36 @@ export const BookButtons: React.FC<BookButtonsProps> = ({
   classNameIcon = "",
 }) => {
   const dispatch = useDispatch();
-  const { getBookFullData, updateBookReadingStatus, loading, userBooksData } =
-    useBook();
+  const {
+    getBookFullData,
+    updateBookReadingStatus,
+    addUserBook,
+    loading,
+    userBooksData,
+  } = useBook();
   const [bookData, setBookData] = React.useState<UserBookData | undefined>();
   const [bookRead, setBookRead] = React.useState(false);
   const buttonsColor = increaseLuminosity(book?.thumbnailColor);
 
   const handleUpdateBookReadingStatus = async (status: ReadingStatusEnum) => {
-    if (!bookData || loading.current) return;
+    if (loading.current) return;
+    let addPromise: Promise<any> | undefined = undefined;
     if (
       bookData?.userBook?.readingStatusId &&
       bookData?.userBook?.readingStatusId === status
     ) {
       return;
     }
+    if (!bookData) {
+      addPromise = addUserBook({
+        book,
+        readingStatusId: status as number,
+      });
+    } else {
+      addPromise = updateBookReadingStatus(bookData.userBook, status);
+    }
     const readingStatusName = readingStatusToName(status);
-    await toast.promise(updateBookReadingStatus(bookData?.userBook, status), {
+    await toast.promise(addPromise, {
       loading: `Adding ${book?.title} to list: ${readingStatusName}...`,
       success: `${book?.title} added to list: ${readingStatusName}`,
       error: `Failed to add ${book?.title} to list: ${readingStatusName}`,

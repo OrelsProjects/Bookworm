@@ -116,16 +116,27 @@ const useBook = () => {
     }
   };
 
-  const addUserBook = async (
-    book: Book,
-    isFavorite?: boolean,
-    suggestionSource?: string,
-    userComments?: string,
-    dateAdded?: string,
-    userRating?: number,
-    readingStartDate?: string,
-    readingFinishDate?: string
-  ): Promise<UserBook> => {
+  const addUserBook = async ({
+    book,
+    isFavorite,
+    suggestionSource,
+    userComments,
+    dateAdded,
+    userRating,
+    readingStartDate,
+    readingFinishDate,
+    readingStatusId,
+  }: {
+    book: Book;
+    isFavorite?: boolean;
+    suggestionSource?: string;
+    userComments?: string;
+    dateAdded?: string;
+    userRating?: number;
+    readingStartDate?: string;
+    readingFinishDate?: string;
+    readingStatusId?: ReadingStatusEnum;
+  }): Promise<UserBook> => {
     if (loading.current) {
       throw new Error("Cannot add book while another book is loading");
     }
@@ -139,23 +150,12 @@ const useBook = () => {
       userRating,
       readingStartDate,
       readingFinishDate,
+      readingStatusId,
     });
     try {
-      const responseAddBooks = await axios.post<IResponse<CreateBooksResponse>>(
-        "/api/books",
-        book
-      );
-      const createBookResponse = responseAddBooks.data.result ?? {};
-      const books: Books =
-        createBookResponse.success?.concat(
-          createBookResponse.duplicates ?? []
-        ) ?? [];
-      if (books.length === 0) {
-        throw new Error("No books returned from backend");
-      }
-      const bookToAdd = books[0];
-      const createUserBookBody: CreateUserBookBody = {
-        bookId: books[0].bookId,
+      let bookToAdd: Book = book;
+      let createUserBookBody: CreateUserBookBody = {
+        bookId: book.bookId,
         isFavorite: isFavorite ?? false,
         suggestionSource: suggestionSource ?? "",
         userComments: userComments ?? "",
@@ -163,7 +163,25 @@ const useBook = () => {
         userRating: userRating,
         readingStartDate: readingStartDate ?? new Date().toISOString(),
         readingFinishDate: readingFinishDate ?? new Date().toISOString(),
+        readingStatusId: readingStatusId,
       };
+      if (!book.bookId) {
+        const responseAddBooks = await axios.post<
+          IResponse<CreateBooksResponse>
+        >("/api/books", book);
+        const createBookResponse = responseAddBooks.data.result ?? {};
+        const books: Books =
+          createBookResponse.success?.concat(
+            createBookResponse.duplicates ?? []
+          ) ?? [];
+        if (books.length === 0) {
+          throw new Error("No books returned from backend");
+        }
+        createUserBookBody = {
+          ...createUserBookBody,
+          bookId: books[0].bookId,
+        };
+      }
       const responseAddUserBooks = await axios.post<IResponse<UserBook>>(
         "/api/user-books",
         createUserBookBody

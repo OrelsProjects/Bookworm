@@ -51,7 +51,7 @@ const BookDetails: React.FC<BookDetailsProps> = ({
           </div>
         )}
       </div>
-      <div className="h-full flex justify-center items-center">{Icon}</div>
+      <div className="h-full flex justify-center items-center z-20">{Icon}</div>
     </div>
   );
 };

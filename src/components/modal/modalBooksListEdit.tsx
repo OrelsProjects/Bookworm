@@ -230,7 +230,7 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({ booksListData }) =>
       if (!book.bookId) {
         bookWithId = await toast.promise(
           (async () => {
-            const userBook = await addUserBook(book);
+            const userBook = await addUserBook({book});
             return (
               getBookFullData(userBook.bookId)?.bookData.book ?? {
                 ...book,

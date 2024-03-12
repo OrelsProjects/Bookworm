@@ -44,7 +44,7 @@ const BookList: React.FC<BookListProps> = ({
   return (
     <div
       className={`flex gap-3 flex-grow scrollbar-hide ${className ?? ""}
-      ${direction === "row" ? "flex-row h-fit " : "flex-col h-fit"}
+      ${direction === "row" ? "flex-row h-fit" : "flex-col h-96"}
       ${disableScroll ? "" : "overflow-auto"}
       `}
       ref={scrollableDivRef}
@@ -81,7 +81,13 @@ const BookList: React.FC<BookListProps> = ({
               }
               Icon={
                 direction === "column" && (
-                  <div className="h-full justify-self-center">
+                  <div
+                    className="h-full justify-self-center"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onAddBookClick(book);
+                    }}
+                  >
                     <Add.Outline className="flex-shrink-0" iconSize="md" />
                   </div>
                 )

@@ -10,6 +10,7 @@ import { SafeBooksListData } from "../../../models/booksList";
 import { ModalTypes, showModal } from "../../../lib/features/modal/modalSlice";
 import { Loading } from "../../../components";
 import { useRouter } from "next/navigation";
+import useBooksList from "../../../hooks/useBooksList";
 
 export default function BooksListView({
   params,
@@ -17,6 +18,7 @@ export default function BooksListView({
   params: { listName: string };
 }) {
   const { user } = useSelector(selectAuth);
+  const { booksLists } = useBooksList();
   const router = useRouter();
   const dispatch = useDispatch();
   const loading = useRef(false);
