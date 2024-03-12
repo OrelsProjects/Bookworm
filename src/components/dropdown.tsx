@@ -58,19 +58,19 @@ const Dropdown: React.FC<DropdownProps> = ({
         .map((item) => (
           <div
             key={`dropdown-item-${item.label}`}
-            className="w-full h-12 flex items-center justify-start px-4 hover:cursor-pointer hover:bg-primary rounded-lg"
+            className="w-full h-12 flex items-center justify-start px-4 hover:cursor-pointer sm:hover:bg-primary rounded-lg"
             onClick={(e) => {
               e.stopPropagation();
-              item.onClick(); 
+              item.onClick();
               closeOnSelection && onClose?.();
             }}
           >
             {item.leftIcon && (
-              <div className="mr-4 flex items-center justify-center">
+              <div className="mr-2 flex items-center justify-center">
                 {item.leftIcon}
               </div>
             )}
-            <div className="text-foreground">{item.label}</div>
+            <div className="text-background">{item.label}</div>
           </div>
         ))}
     </ExpandingDiv>

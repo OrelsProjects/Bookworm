@@ -67,7 +67,7 @@ export default function MyLibrary(): React.ReactNode {
               }}
               variant="outline"
               className={`rounded-full flex-shrink-0 !min-w-20 h-6 p-2 w-max
-                ${filteredBy.length > 0 ? "border-none bg-primary-weak" : ""}
+                ${filteredBy.length > 0 ? "border-none bg-primary" : ""}
               `}
             >
               <div className="w-fit flex flex-row gap-1 justify-start items-center">

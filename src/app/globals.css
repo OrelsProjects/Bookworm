@@ -29,7 +29,7 @@ input[type="text"]:-moz-ui-autofill {
     /* Primary/Medium */
     --primary-foreground: 9, 72, 123;
     /* Primary/weak */
-    --primary-weak: 157, 87, 87;
+    --primary-weak: 217, 217, 217;
     /* Not selected button (Surface/Secondary) */
     --secondary: 21, 63, 102;
     --background: 20, 20, 20;
