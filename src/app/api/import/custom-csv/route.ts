@@ -21,7 +21,7 @@ const importCSV = async (
   } catch (error: any) {
     Logger.error("Error getting presigned url", getUserIdFromRequest(req), {
       error,
-      headers: axios.defaults.headers,
+      data: { headers: axios.defaults.headers },
     });
     throw error;
   }
@@ -36,7 +36,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   } catch (error: any) {
     Logger.error("Error uploading file", getUserIdFromRequest(req), {
       error: error ?? "Unknown error",
-      headers: axios.defaults.headers,
+      data: { headers: axios.defaults.headers },
     });
 
     return NextResponse.json({}, { status: 500 });

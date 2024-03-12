@@ -32,7 +32,7 @@ export async function POST(
   } catch (error: any) {
     Logger.error("Error creating user", getUserIdFromRequest(req), {
       error,
-      user,
+      data: user,
     });
     return NextResponse.json({}, { status: 500 });
   }
@@ -44,7 +44,7 @@ export async function GET(
   try {
     const axios = GetAxiosInstance(req);
     Logger.info("About to get user", getUserIdFromRequest(req), {
-      headers: req.headers,
+      data: { headers: req.headers },
     });
     const response = await axios.get<User>("/user");
     const user = {

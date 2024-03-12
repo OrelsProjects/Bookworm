@@ -44,10 +44,10 @@ const Header = ({ className }: HeaderProps): React.ReactNode => {
 
   useEffect(() => {
     if (error) {
-      toast.error("Something went wrong.. we're on it!");
       Logger.error("Error in header", { data: { error } });
     }
   }, [error]);
+
   console.log(user);
   return (
     !loadingState.loading && (
