@@ -24,7 +24,7 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="h-screen w-screen flex flex-col justify-center items-center px-8 gap-12">
+    <div className="h-full w-full flex flex-col justify-center items-center px-4 gap-12">
       <img
         src="/logo.png"
         alt="Bookshelf Logo"
@@ -40,7 +40,7 @@ const Login: React.FC = () => {
         className="rounded-full w-full"
       >
         <div className="h-full w-full flex flex-row gap-2">
-          <img src="/google.png" alt="Google Logo" width={24} height={24} />
+          <img src="/google.png" alt="Google Logo" width={22} height={24} />
           <div className="font-normal text-base">Continue with Google</div>
         </div>
       </Button>

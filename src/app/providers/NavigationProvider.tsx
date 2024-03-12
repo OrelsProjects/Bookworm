@@ -14,15 +14,15 @@ const NavigationProvider: React.FC<NavigationProviderProps> = ({
 }) => {
   const router = useRouter();
   const pathname = usePathname();
-  const { user } = useSelector(selectAuth);
+  const { user, state } = useSelector(selectAuth);
 
   useEffect(() => {
-    if (!user) {
-      if (pathname !== "/") {
-        router.push("/");
+    if (!user && state !== AuthStateType.SIGNED_IN) {
+      if (pathname !== "/login" && !pathname.includes("/list/")) {
+        router.push("/login");
       }
     }
-  }, [user]);
+  }, [user, pathname]);
 
   return <>{children}</>;
 };
