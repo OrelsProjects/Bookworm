@@ -8,6 +8,7 @@ import BookThumbnail from "../book/bookThumbnail";
 import useBook from "../../hooks/useBook";
 import { UserBookData } from "../../models";
 import BookButtons, { ButtonImage } from "../book/bookButtons";
+import { current } from "@reduxjs/toolkit";
 
 interface ModalBooksListProps<T extends SafeBooksListData> {
   booksListData?: T;
@@ -16,19 +17,8 @@ interface ModalBooksListProps<T extends SafeBooksListData> {
 export const ModalBooksList = <T extends SafeBooksListData>({
   booksListData,
 }: ModalBooksListProps<T>) => {
-  const { getBookFullData } = useBook();
+  const { getBookFullData, userBooksData } = useBook();
   const { booksLists } = useBooksList();
-
-  const [userBooksData, setUserBooksData] = useState<(UserBookData | null)[]>(
-    []
-  );
-
-  useEffect(() => {
-    const books =
-      booksListData?.booksInList.map((listData) => listData.book) ?? [];
-    const booksData = books.map((book) => getBookFullData(book)) ?? [];
-    setUserBooksData(booksData);
-  }, [booksListData]);
 
   const booksInUsersListsCount: number = useMemo(() => {
     let booksInUsersLists = 0;
@@ -36,7 +26,17 @@ export const ModalBooksList = <T extends SafeBooksListData>({
       const currentList = booksLists.find(
         (list) => list.name === booksListData.name
       );
-      booksInUsersLists = currentList?.booksInList.length || 0;
+      currentList?.booksInList.forEach((bookInList) => {
+        if (bookInList.book) {
+          const userHasBook = userBooksData.some(
+            (userBookData) =>
+              userBookData.bookData.book?.bookId === bookInList.book.bookId
+          );
+          if (userHasBook) {
+            booksInUsersLists++;
+          }
+        }
+      });
     }
     return booksInUsersLists;
   }, [booksListData, booksLists]);
