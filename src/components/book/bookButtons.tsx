@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Add, Bookmark, Checkmark } from "../icons";
 import { Book, UserBookData } from "../../models";
 import useBook from "../../hooks/useBook";
@@ -17,6 +17,8 @@ type BookButtonsProps = {
   book: Book;
   iconSize: IconSize;
   className?: string;
+  showAddToListButton?: boolean;
+  classNameIcon?: string;
 };
 
 type ButtonImageProps = {
@@ -29,39 +31,60 @@ type ButtonImageProps = {
   onClick?: () => void;
   className?: string;
   buttonsColor?: string;
+  classNameIcon?: string;
 };
 
 export const ButtonImage: React.FC<ButtonImageProps> = ({
   title,
   Icon,
+  onClick,
+  buttonsColor,
   iconSize = "sm",
   selected,
   width = 35,
   height = 35,
-  onClick,
-  buttonsColor,
-}) => (
-  <div
-    className={`flex flex-col justify-center items-center gap-2`}
-    onClick={onClick}
-  >
-    <Icon
-      style={{
-        height,
-        width,
-        fill: selected ? buttonsColor : "currentColor",
-      }}
-      iconSize={iconSize}
-      className={`${selected ? "" : "!text-foreground"}`}
-    />
-    <div className="text-foreground text-lg">{title}</div>
-  </div>
-);
+  classNameIcon = "",
+}) => {
+  const textSize = useMemo(() => {
+    switch (iconSize) {
+      case "xs":
+        return "text-sm font-light";
+      case "sm":
+        return "text-sm";
+      case "md":
+        return "text-md";
+      case "lg":
+        return "text-lg";
+      default:
+        return "text-sm";
+    }
+  }, [iconSize]);
 
-const BookButtons: React.FC<BookButtonsProps> = ({
+  return (
+    <div
+      className={`flex flex-col justify-center items-center gap-2 ${classNameIcon}`}
+      onClick={onClick}
+    >
+      <Icon
+        style={{
+          height,
+          width,
+          fill: selected ? buttonsColor : "currentColor",
+        }}
+        iconSize={iconSize}
+        className={`${selected ? "" : "!text-foreground"}`}
+      />
+      <div className={`text-foreground ${textSize}`}>{title}</div>
+    </div>
+  );
+};
+
+export const BookButtons: React.FC<BookButtonsProps> = ({
   book,
   iconSize,
   className,
+  showAddToListButton = true,
+  classNameIcon = "",
 }) => {
   const dispatch = useDispatch();
   const { getBookFullData, updateBookReadingStatus, loading, userBooksData } =
@@ -109,6 +132,7 @@ const BookButtons: React.FC<BookButtonsProps> = ({
           selected: bookRead,
           buttonsColor,
           onClick: () => handleUpdateBookReadingStatus(ReadingStatusEnum.READ),
+          classNameIcon,
         })}
       {book &&
         ButtonImage({
@@ -120,8 +144,10 @@ const BookButtons: React.FC<BookButtonsProps> = ({
           buttonsColor,
           onClick: () =>
             handleUpdateBookReadingStatus(ReadingStatusEnum.TO_READ),
+          classNameIcon,
         })}
       {bookRead &&
+        showAddToListButton &&
         ButtonImage({
           title: "Add to list",
           Icon: Add.Outline,
@@ -129,6 +155,7 @@ const BookButtons: React.FC<BookButtonsProps> = ({
           selected: false,
           buttonsColor,
           onClick: () => handleAddBookToList(),
+          classNameIcon,
         })}
     </div>
   );

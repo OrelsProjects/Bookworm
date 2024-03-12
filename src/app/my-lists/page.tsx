@@ -41,6 +41,7 @@ const MyLists = () => {
         books={userBooks.map((ubd) => ubd.bookData.book)}
         onNextPageScroll={nextPage}
         direction="row"
+        thumbnailSize="lg"
       />
     </div>
   );
@@ -86,6 +87,7 @@ const MyLists = () => {
           direction="column"
           disableScroll
           booksListsData={booksListsData}
+          bookThumbnailSize="md"
           bottomElementProps={{
             onAddBookClick: (list) => {
               dispatch(

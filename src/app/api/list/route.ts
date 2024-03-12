@@ -66,7 +66,7 @@ export async function PATCH(
     updateBooksListBody = await req.json();
     const axios = GetAxiosInstance(req);
     const response = await axios.patch<BooksList>(
-      "/lists",
+      "/list",
       updateBooksListBody
     );
     const booksList: BooksList = response.data;

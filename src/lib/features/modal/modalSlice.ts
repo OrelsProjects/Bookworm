@@ -6,6 +6,7 @@ export enum ModalTypes {
   BOOK_DETAILS = "BOOK_DETAILS",
   BOOKS_LIST_DETAILS = "BOOKS_LIST_DETAILS",
   ADD_BOOK_TO_LIST = "ADD_BOOK_TO_LIST",
+  ADD_BOOK_TO_LIST_EDIT = "ADD_BOOK_TO_LIST_EDIT",
 }
 
 export interface ModalState {

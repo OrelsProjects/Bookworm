@@ -11,11 +11,11 @@ import React, { useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ModalBookDetails from "../../components/modal/modalBookDetails";
 import Modal from "../../components/modal/modal";
-import ModalBooksList from "../../components/modal/modalBooksList";
 import { BooksListData } from "../../models/booksList";
 import { darkenColor } from "../../utils/thumbnailUtils";
-import { useRouter } from "next/navigation";
 import ModalAddBookToList from "../../components/modal/modalAddBookToList";
+import { ModalBooksList } from "../../components/modal/modalBooksList";
+import ModalBooksListEdit from "../../components/modal/modalBooksListEdit";
 
 const ModalProvider: React.FC = () => {
   const { data, type, isOpen }: ModalState = useSelector(
@@ -36,11 +36,18 @@ const ModalProvider: React.FC = () => {
       default:
         return defaultColor;
     }
-  }, [data]);
+  }, [type, data]);
 
   const RenderBooksListDetails = useCallback(
     (booksListData?: BooksListData) => {
       return <ModalBooksList booksListData={booksListData} />;
+    },
+    []
+  );
+
+  const RenderBooksListDetailsEdit = useCallback(
+    (booksListData?: BooksListData) => {
+      return <ModalBooksListEdit booksListData={booksListData} />;
     },
     []
   );
@@ -79,6 +86,8 @@ const ModalProvider: React.FC = () => {
         return RenderBooksListDetails(data);
       case ModalTypes.ADD_BOOK_TO_LIST:
         return RenderAddBookToList(data);
+      case ModalTypes.ADD_BOOK_TO_LIST_EDIT:
+        return RenderBooksListDetailsEdit(data);
       default:
         return null;
     }

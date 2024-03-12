@@ -43,7 +43,11 @@ export default function Home(): React.ReactNode {
         <div className="text-xl font-bold">Recommended for You</div>
         <div className="w-full">
           <BookList
-            books={recommendations[0].books ?? []}
+            books={
+              recommendations[0].booksInList.map(
+                (bookInList) => bookInList.book
+              ) ?? []
+            }
             onNextPageScroll={nextPage}
             direction="row"
             thumbnailSize="xl"

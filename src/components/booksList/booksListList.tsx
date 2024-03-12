@@ -57,7 +57,7 @@ const BooksListList: React.FC<Props> = ({
     dispatch(
       showModal({
         data: booksListData,
-        type: ModalTypes.BOOKS_LIST_DETAILS,
+        type: ModalTypes.ADD_BOOK_TO_LIST_EDIT,
       })
     );
 
@@ -92,6 +92,7 @@ const BooksListList: React.FC<Props> = ({
               }
               alt={`${listData.name} list thumbnail`}
               className="flex-shrink-0"
+              thumbnailSize={bookThumbnailSize}
             />
             <div className="flex flex-col w-full flex-shrink">
               <div className="text-lg font-semibold">{listData.name}</div>
