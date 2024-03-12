@@ -98,7 +98,7 @@ const ModalProvider: React.FC = () => {
 
   const handleOnClose = useCallback(() => {
     if (type === ModalTypes.BOOKS_LIST_DETAILS && pathname.includes("list/")) {
-      console.log("pushing to home");
+      console.log("pushing to home ");
       router.push("/home");
     }
     dispatch(hideModal());
