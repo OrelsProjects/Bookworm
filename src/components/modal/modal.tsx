@@ -21,6 +21,14 @@ const Modal: React.FC<ModalProps> = ({
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    const handleBackButtonClick = () => {
+      onClose?.();
+    };
+    window.addEventListener("popstate", handleBackButtonClick);
+
+    return () => window.removeEventListener("popstate", handleBackButtonClick);
+  }, []);
 
   return (
     <OpacityDiv
