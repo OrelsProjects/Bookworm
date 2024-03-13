@@ -147,13 +147,13 @@ const BooksListThumbnail: React.FC<Props> = ({
     <div
       className={`flex flex-col flex-wrap relative items-start justify-center ${
         getThumbnailSize(thumbnailSize).className
-      } rounded-lg bg-clip-border	overflow-hidden ${className ?? ""}`}
+      } rounded-xl bg-clip-border	overflow-hidden ${className ?? ""}`}
       {...props}
     >
       {imagesLoaded ? (
         <Thumbnail />
       ) : (
-        <Skeleton className="w-24 h-32 rounded-2xl" />
+        <Skeleton className="w-24 h-32 rounded-xl" />
       )}
       {Icon}
     </div>

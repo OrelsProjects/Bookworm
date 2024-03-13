@@ -72,7 +72,7 @@ const MyLists = () => {
   const UserBooksLists = () => (
     <div className="w-full h-full flex flex-col gap-2">
       <div className="w-full flex flex-row justify-between">
-        <div className="text-2xl font-bold">My Readlists</div>
+        <div className="text-xl font-bold">My Readlists</div>
         <div>
           <Plus.Fill
             className="!text-foreground"
