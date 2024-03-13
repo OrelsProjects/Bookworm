@@ -17,8 +17,17 @@ interface ModalBooksListProps<T extends SafeBooksListData> {
 export const ModalBooksList = <T extends SafeBooksListData>({
   booksListData,
 }: ModalBooksListProps<T>) => {
-  const { getBookFullData, userBooksData } = useBook();
+  const { userBooksData } = useBook();
   const { booksLists } = useBooksList();
+
+  useEffect(() => {
+    if (!booksListData) return;
+    const url = decodeURIComponent(booksListData.publicURL ?? "");
+    window.history.pushState(null, "", url);
+    return () => {
+      window.history.pushState(null, "", "/lists");
+    };
+  }, [booksListData]);
 
   const booksInUsersListsCount: number = useMemo(() => {
     let booksInUsersLists = 0;

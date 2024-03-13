@@ -7,7 +7,7 @@ import {
 } from "@/src/lib/features/modal/modalSlice";
 import { RootState } from "@/src/lib/store";
 import { Book } from "@/src/models";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ModalBookDetails from "../../components/modal/modalBookDetails";
 import Modal from "../../components/modal/modal";
@@ -17,12 +17,12 @@ import ModalAddBookToList from "../../components/modal/modalAddBookToList";
 import { ModalBooksList } from "../../components/modal/modalBooksList";
 import ModalBooksListEdit from "../../components/modal/modalBooksListEdit";
 import { usePathname, useRouter } from "next/navigation";
-
-const listUrlRegex = /\/list\/([a-z0-9-]+)-([a-f0-9]{6})/;
+import { useQueryState } from "nuqs";
 
 const ModalProvider: React.FC = () => {
   const router = useRouter();
   const pathname = usePathname();
+  const [, setName] = useQueryState("list");
   const { data, type, isOpen }: ModalState = useSelector(
     (state: RootState) => state.modal
   );
@@ -99,9 +99,6 @@ const ModalProvider: React.FC = () => {
   };
 
   const handleOnClose = useCallback(() => {
-    if (listUrlRegex.test(pathname)) {
-      router.push("/home");
-    }
     dispatch(hideModal());
   }, [pathname, router, dispatch]);
 

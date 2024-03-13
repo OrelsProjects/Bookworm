@@ -10,15 +10,14 @@ import { SafeBooksListData } from "../../../models/booksList";
 import { ModalTypes, showModal } from "../../../lib/features/modal/modalSlice";
 import { Loading } from "../../../components";
 import { useRouter } from "next/navigation";
-import useBooksList from "../../../hooks/useBooksList";
+
 
 export default function BooksListView({
   params,
 }: {
-  params: { listName: string };
+  params: { listUrl: string };
 }) {
   const { user } = useSelector(selectAuth);
-  const { booksLists } = useBooksList();
   const router = useRouter();
   const dispatch = useDispatch();
   const loading = useRef(false);
@@ -32,7 +31,7 @@ export default function BooksListView({
         axios.defaults.headers.common["user_id"] = user.userId;
       }
       const urlParams = new URLSearchParams();
-      urlParams.append("url", params.listName);
+      urlParams.append("url", params.listUrl);
       const response = await axios.get<IResponse<SafeBooksListData>>(
         "/api/list",
         {
@@ -55,7 +54,7 @@ export default function BooksListView({
 
   useEffect(() => {
     loadBooksList();
-  }, [params.listName]);
+  }, [params.listUrl]);
 
   if (loading.current) {
     return <Loading spinnerClassName="w-12 h-12" />;

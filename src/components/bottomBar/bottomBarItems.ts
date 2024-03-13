@@ -17,9 +17,9 @@ export const bottomBarItems: BottomBarItem[] = [
     size: "sm",
   },
   {
-    name: "My lists",
+    name: "Lists",
     icon: NavigationLists,
-    path: "/my-lists",
+    path: "/lists",
     className: "p-0.5 mt-0.5",
     size: "sm",
   },

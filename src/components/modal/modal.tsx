@@ -1,9 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { IoArrowBack } from "react-icons/io5";
 import { ExpandType, ExpandingDiv, OpacityDiv } from "../animationDivs";
+
 export interface ModalProps {
   isOpen: boolean;
   backgroundColor?: string;
@@ -20,6 +21,7 @@ const Modal: React.FC<ModalProps> = ({
   children,
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
+
 
   useEffect(() => {
     const handleBackButtonClick = () => {
