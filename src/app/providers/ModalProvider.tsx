@@ -18,6 +18,8 @@ import { ModalBooksList } from "../../components/modal/modalBooksList";
 import ModalBooksListEdit from "../../components/modal/modalBooksListEdit";
 import { usePathname, useRouter } from "next/navigation";
 
+const listUrlRegex = /\/list\/([a-z0-9-]+)-([a-f0-9]{6})/;
+
 const ModalProvider: React.FC = () => {
   const router = useRouter();
   const pathname = usePathname();
@@ -97,11 +99,11 @@ const ModalProvider: React.FC = () => {
   };
 
   const handleOnClose = useCallback(() => {
-    if (pathname.includes("list/")) {
+    if (listUrlRegex.test(pathname)) {
       router.push("/home");
     }
     dispatch(hideModal());
-  }, []);
+  }, [pathname, router, dispatch]);
 
   return (
     <Modal
