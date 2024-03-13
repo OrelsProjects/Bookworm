@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useEffect } from "react";
-import { Button, Tabs } from "../../components";
+import React, { useCallback, useEffect, useMemo } from "react";
+import { Button, Loading, Tabs } from "../../components";
 import { sorterTabItems } from "./_consts";
 import { UserBookData } from "../../models";
 import { TabItem } from "../../components/tabs";
-import { BookSort } from "../../hooks/useBook";
+import { BookFilter, BookSort } from "../../hooks/useBook";
 import useTable from "../../hooks/useTable";
 import { SearchBarComponent } from "../../components/search/searchBarComponent";
 import BookList from "../../components/book/bookList";
@@ -31,6 +31,8 @@ export default function MyLibrary(): React.ReactNode {
   >([]);
   const [showFilterDropdown, setShowFilterDropdown] = React.useState(false);
 
+  // return <Loading spinnerClassName="w-20 h-20" />;
+
   useEffect(() => {
     setUserBookDataSorted(userBooks);
   }, [userBooks]);
@@ -42,6 +44,81 @@ export default function MyLibrary(): React.ReactNode {
 
   const onFilterClick = (value: string) =>
     setUserBookDataSorted(filterBooks("readlist", value, booksLists));
+
+  const filterStatusDropdownText = useMemo(() => {
+    const filters = filteredBy.filter((f) => f.filter === "status");
+    if (filters.length === 0) return "Status";
+    if (filters.length === 1) return filteredBy[0].value;
+    return `Multi-status`;
+  }, [filteredBy]);
+
+  const filterReadlistDropdownText = useMemo(() => {
+    const filters = filteredBy.filter((f) => f.filter === "readlist");
+    if (filters.length === 0) return "Readlist";
+    if (filters.length === 1) return filteredBy[0].value;
+    return `Multi-readlists`;
+  }, [filteredBy]);
+
+  const getFilterDropdownText = useCallback(
+    (filter: BookFilter) => {
+      switch (filter) {
+        case "status":
+          return filterStatusDropdownText;
+        case "readlist":
+          return filterReadlistDropdownText;
+      }
+    },
+    [filterStatusDropdownText, filterReadlistDropdownText]
+  );
+
+  const ListFilter = ({ filter }: { filter: BookFilter }) => (
+    <>
+      <Button
+        key={`tab-filter-${filter}`}
+        onClick={(e) => {
+          e.stopPropagation();
+          setShowFilterDropdown(!showFilterDropdown);
+        }}
+        variant="outline"
+        className={`rounded-full flex-shrink-0 !min-w-20 h-6 p-2 w-max
+              ${filteredBy.length > 0 ? "border-none bg-primary" : ""}
+              `}
+      >
+        <div className="w-fit flex flex-row gap-1 justify-start items-center">
+          <Filter.Fill className="!text-foreground" iconSize="xs" />
+          {getFilterDropdownText(filter)}
+        </div>
+      </Button>
+      {showFilterDropdown && (
+        <div className="absolute top-full left-0 mt-1 z-50">
+          <Dropdown
+            className="!w-fit"
+            expandType={ExpandType.TopRight}
+            closeOnSelection={false}
+            items={booksLists.map((list) => {
+              return {
+                label: list.name,
+                leftIcon: (
+                  <Checkbox
+                    className="h-4 w-4 flex-shrink-0"
+                    checked={
+                      filteredBy.find(
+                        (f) => f.filter === filter && f.value === list.name
+                      )
+                        ? true
+                        : false
+                    }
+                  />
+                ),
+                onClick: () => onFilterClick(list.name),
+              };
+            })}
+            onClose={() => setShowFilterDropdown(false)}
+          />
+        </div>
+      )}
+    </>
+  );
 
   return (
     <div className="w-full h-full grid grid-rows-[auto,1fr] gap-5">
@@ -59,51 +136,7 @@ export default function MyLibrary(): React.ReactNode {
           />
           <div className="flex flex-col gap-2 relative">
             <div className="font-bold text-xl">Filter by</div>
-            <Button
-              key={`tab-filter-readlist`}
-              onClick={(e) => {
-                e.stopPropagation();
-                setShowFilterDropdown(!showFilterDropdown);
-              }}
-              variant="outline"
-              className={`rounded-full flex-shrink-0 !min-w-20 h-6 p-2 w-max
-                ${filteredBy.length > 0 ? "border-none bg-primary" : ""}
-              `}
-            >
-              <div className="w-fit flex flex-row gap-1 justify-start items-center">
-                <Filter.Fill className="!text-foreground" iconSize="xs" />
-                Readlist
-              </div>
-            </Button>
-            {showFilterDropdown && (
-              <div className="absolute top-full left-0 mt-1 z-50">
-                <Dropdown
-                  className="!w-fit"
-                  expandType={ExpandType.TopRight}
-                  closeOnSelection={false}
-                  items={booksLists.map((list) => {
-                    return {
-                      label: list.name,
-                      leftIcon: (
-                        <Checkbox
-                          className="h-4 w-4 flex-shrink-0"
-                          checked={
-                            filteredBy.find(
-                              (f) =>
-                                f.filter === "readlist" && f.value === list.name
-                            )
-                              ? true
-                              : false
-                          }
-                        />
-                      ),
-                      onClick: () => onFilterClick(list.name),
-                    };
-                  })}
-                  onClose={() => setShowFilterDropdown(false)}
-                />
-              </div>
-            )}
+            <ListFilter filter="readlist" />
           </div>
         </div>
         <BookList

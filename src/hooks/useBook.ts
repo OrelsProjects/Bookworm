@@ -38,7 +38,7 @@ export enum BookSort {
   DateAdded = "DateAdded",
 }
 
-export type BookFilter = "readlist";
+export type BookFilter = "readlist" | "status";
 
 const useBook = () => {
   const loading = useRef(false);

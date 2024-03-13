@@ -58,7 +58,10 @@ const Header = ({ className }: HeaderProps): React.ReactNode => {
       >
         <Sidebar />
         {user ? (
-          <Avatar avatarUrl={user?.profilePictureUrl} />
+          <Avatar
+            avatarUrl={user?.profilePictureUrl}
+            defaultText={user?.displayName ?? user.email}
+          />
         ) : (
           <Button
             size={"md"}

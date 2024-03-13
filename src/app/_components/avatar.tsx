@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Dropdown from "@/src/components/dropdown";
 import useAuth from "@/src/hooks/useAuth";
@@ -9,20 +9,37 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectUserBooks } from "@/src/lib/features/userBooks/userBooksSlice";
 import Papa from "papaparse";
 import { EventTracker } from "@/src/eventTracker";
+import { Feedback, Privacy, SignOut } from "../../components/icons";
 
 const FEEDBACK_GIVEN = "feedback_given";
 
 type AvatarProps = {
   avatarUrl?: string;
+  defaultText?: string;
 };
 
-const Avatar: React.FC<AvatarProps> = ({ avatarUrl }) => {
+const Avatar: React.FC<AvatarProps> = ({ avatarUrl, defaultText }) => {
   const router = useRouter();
   const { userBooksData } = useSelector(selectUserBooks);
   const [showDropdown, setShowDropdown] = React.useState<boolean>(false);
   const [isClosing, setIsClosing] = React.useState<boolean>(false);
+  const [avatarImageLoaded, setAvatarImageLoaded] =
+    React.useState<boolean>(false);
   const { signOut } = useAuth();
   let closingTimeout: NodeJS.Timeout | null = null;
+
+  useEffect(() => {
+    if (!avatarUrl) return;
+
+    const img = new Image();
+    img.src = avatarUrl;
+    img.onload = () => {
+      setAvatarImageLoaded(true);
+    };
+    img.onerror = () => {
+      setAvatarImageLoaded(false);
+    };
+  }, [avatarUrl]);
 
   const toggleIsClosing = () => {
     setIsClosing(true);
@@ -73,15 +90,20 @@ const Avatar: React.FC<AvatarProps> = ({ avatarUrl }) => {
   };
 
   return (
-    <div className="relative rounded-full">
-      <img
-        src={avatarUrl ?? "/avatar.png"}
-        height={36}
-        width={36}
-        alt={"avatar"}
-        className="cursor-pointer rounded-full"
-        onClick={toggleDropdown}
-      />
+    <div className="relative rounded-full h-9 w-9" onClick={toggleDropdown}>
+      {!avatarImageLoaded ? (
+        <img
+          src={avatarUrl}
+          height={36}
+          width={36}
+          alt={"avatar"}
+          className="cursor-pointer rounded-full"
+        />
+      ) : (
+        <div className="w-full h-full rounded-full bg-background border-1 border-foreground flex justify-center items-center">
+          {defaultText && (defaultText.substring(0, 2) || "").toUpperCase()}
+        </div>
+      )}
       {showDropdown && (
         <div className="absolute top-full right-0 w-36 mt-2">
           <Dropdown
@@ -104,11 +126,7 @@ const Avatar: React.FC<AvatarProps> = ({ avatarUrl }) => {
               {
                 label: "Feedback",
                 leftIcon: (
-                  <img
-                    src="/feedbackIcon.png"
-                    alt="feedback"
-                    className="!relative !w-8 !h-7"
-                  />
+                  <Feedback.Fill iconSize="sm" className="!text-background" />
                 ),
                 position: 1,
                 onClick: () => {
@@ -118,12 +136,7 @@ const Avatar: React.FC<AvatarProps> = ({ avatarUrl }) => {
               {
                 label: "Privacy",
                 leftIcon: (
-                  <img
-                    src="/privacy.png"
-                    height={24}
-                    width={24}
-                    alt="privacy"
-                  />
+                  <Privacy.Fill iconSize="sm" className="!text-background" />
                 ),
                 position: 2,
                 onClick: () => handleNavigateToPolicy(),
@@ -131,12 +144,7 @@ const Avatar: React.FC<AvatarProps> = ({ avatarUrl }) => {
               {
                 label: "Sign Out",
                 leftIcon: (
-                  <img
-                    src="/signOut.svg"
-                    height={24}
-                    width={24}
-                    alt="sign out"
-                  />
+                  <SignOut.Fill iconSize="sm" className="!text-background" />
                 ),
                 position: 3,
                 onClick: () => handleSignOut(),

@@ -1,5 +1,6 @@
 import React from "react";
 import { IconBaseProps } from "react-icons";
+import { VscFeedback } from "react-icons/vsc";
 import { FaBookmark, FaShare, FaFilter } from "react-icons/fa";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { IoAddCircle } from "react-icons/io5";
@@ -11,9 +12,10 @@ import {
 } from "react-icons/fa6";
 import { FaSliders } from "react-icons/fa6";
 import { CiMenuBurger } from "react-icons/ci";
-import { MdCancel } from "react-icons/md";
+import { MdCancel, MdPrivacyTip } from "react-icons/md";
 import { GiCircle } from "react-icons/gi";
 import { IconSize, SpecialIconSize, getIconSize } from "../../consts/icon";
+import { PiSignOutFill } from "react-icons/pi";
 
 export type Icon = {
   Fill: React.ElementType<IconProps>;
@@ -127,4 +129,19 @@ export const Share: Icon = {
 export const Filter: Icon = {
   Fill: IconFill(FaFilter),
   Outline: IconOutline(FaFilter),
+};
+
+export const Feedback: Icon = {
+  Fill: IconFill(VscFeedback),
+  Outline: IconOutline(VscFeedback),
+};
+
+export const Privacy: Icon = {
+  Fill: IconFill(MdPrivacyTip),
+  Outline: IconOutline(MdPrivacyTip),
+};
+
+export const SignOut: Icon = {
+  Fill: IconFill(PiSignOutFill),
+  Outline: IconOutline(PiSignOutFill),
 };

@@ -25,14 +25,12 @@ export default function Home(): React.ReactNode {
           See all
         </div>
       </div>
-      <div className="w-full">
-        <BookList
-          books={userBooks.map((ubd) => ubd.bookData.book)}
-          onNextPageScroll={nextPage}
-          direction="row"
-          thumbnailSize="xl"
-        />
-      </div>
+      <BookList
+        books={userBooks.map((ubd) => ubd.bookData.book)}
+        onNextPageScroll={nextPage}
+        direction="row"
+        thumbnailSize="xl"
+      />
     </>
   );
 

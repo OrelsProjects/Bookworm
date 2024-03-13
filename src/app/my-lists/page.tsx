@@ -112,13 +112,15 @@ const MyLists = () => {
   );
 
   return (
-    <div className="h-full w-full flex flex-col gap-4 pb-4 p-3 overflow-auto scrollbar-hide">
-      <SearchBarComponent
-        onChange={(value: string) => searchBooks(value)}
-        onSubmit={(value: string) => searchBooks(value)}
-        placeholder="Search in Your Books..."
-      />
-      <div className="flex gap-3 flex-grow flex-col h-full">
+    <div className="h-full w-full flex flex-col gap-4 pb-4 p-3">
+      <div className="h-fit">
+        <SearchBarComponent
+          onChange={(value: string) => searchBooks(value)}
+          onSubmit={(value: string) => searchBooks(value)}
+          placeholder="Search in Your Books..."
+        />
+      </div>
+      <div className="flex gap-3 flex-grow flex-col h-full overflow-auto scrollbar-hide">
         <UserBooks />
         <UserBooksLists />
       </div>

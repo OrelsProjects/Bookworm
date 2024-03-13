@@ -34,7 +34,7 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
     book.description ? (
       <div className="w-full flex relative flex-col justify-start gap-1 overflow-auto">
         <div className="text-foreground font-bold text-xl">Summary</div>
-        <div className="text-foreground overflow-auto h-full scrollbar-hide font-light shadow-inner">
+        <div className="text-foreground overflow-auto h-full scrollbar-hide font-thin shadow-inner pb-6">
           {book.description}
         </div>
         <div className="absolute bottom-0 w-full extra-text-shadow"></div>

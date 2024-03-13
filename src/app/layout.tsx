@@ -36,9 +36,11 @@ export default function RootLayout({
               <APIProvider>
                 <DataProvider>
                   <AnimationProvider>
-                    <div className="!roboto w-screen h-screen flex flex-col p-4 absolute">
-                      <Header className="pb-3" />
-                      {children}
+                    <div className="!roboto grid-rows-body w-screen h-screen flex flex-col p-4">
+                      <Header className="h-9 w-full" />
+                      <div className="flex-grow w-full overflow-auto">
+                        {children}
+                      </div>
                     </div>
                   </AnimationProvider>
                   <ModalProvider />

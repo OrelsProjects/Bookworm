@@ -10,7 +10,7 @@ const BookGeneralDetails: React.FC<{ userBookData: UserBookData }> = ({
       <div className="font text-foreground line-clamp-1 font-bold text-xl pr-2">
         {userBookData.bookData?.book?.title}
       </div>
-      <div className="text-lg text-foreground line-clamp-2">
+      <div className="text-lg text-muted line-clamp-2">
         {userBookData.bookData?.book?.authors?.join(", ")}
       </div>
     </div>
