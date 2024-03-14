@@ -54,13 +54,14 @@ export async function setThumbnailColorsToBooks(
     let booksWithColors: Book[] = [];
     for (const book of books) {
       if (!book.thumbnailUrl || book.thumbnailColor) {
-        continue;
+        booksWithColors.push(book);
+      } else {
+        const thumbnailColor = await getAverageColor(book.thumbnailUrl);
+        booksWithColors.push({
+          ...book,
+          thumbnailColor,
+        });
       }
-      const thumbnailColor = await getAverageColor(book.thumbnailUrl);
-      booksWithColors.push({
-        ...book,
-        thumbnailColor,
-      });
     }
     return booksWithColors;
   } catch (error: any) {
