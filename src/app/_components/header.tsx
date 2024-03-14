@@ -48,7 +48,6 @@ const Header = ({ className }: HeaderProps): React.ReactNode => {
     }
   }, [error]);
 
-  console.log(user);
   return (
     !loadingState.loading && (
       <div

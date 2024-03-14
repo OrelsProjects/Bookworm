@@ -16,7 +16,7 @@ import NavigationProvider from "./providers/NavigationProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  manifest: "/manifest.json",
+  // manifest: "/manifest.json",
   title: "BookWizard",
 };
 

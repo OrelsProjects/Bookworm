@@ -19,11 +19,6 @@ export async function POST(
     const response = await axios.post<CreateUser>("/user/confirm", {
       ...user,
     });
-    Logger.info("Confirmed user", user?.userId ?? "", {
-      data: {
-        response: response.data,
-      },
-    });
     const userResponse = response.data;
     return NextResponse.json({ result: userResponse }, { status: 200 });
   } catch (error: any) {
