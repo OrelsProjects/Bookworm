@@ -112,7 +112,7 @@ const useBook = () => {
       readingStatusId,
     });
     try {
-      let bookToAdd: Book = book;
+      let bookToAdd: Book = { ...book };
       let createUserBookBody: CreateUserBookBody = {
         bookId: book.bookId,
         isFavorite: false,
@@ -124,7 +124,7 @@ const useBook = () => {
         readingFinishDate: readingFinishDate ?? new Date().toISOString(),
         readingStatusId: readingStatusId,
       };
-      if (!book.bookId) {
+      if (!bookToAdd.bookId) {
         const responseAddBooks = await axios.post<
           IResponse<CreateBooksResponse>
         >("/api/books", book);
@@ -150,10 +150,11 @@ const useBook = () => {
       if (!userBook) {
         throw new Error("No user books returned from backend");
       }
+
       const userBookData: UserBookData = {
         userBook,
         bookData: {
-          book: bookToAdd,
+          book: { ...bookToAdd, bookId: createUserBookBody.bookId },
         },
         readingStatus: new ReadingStatus(userBook.readingStatusId),
       };
@@ -324,7 +325,9 @@ const useBook = () => {
       return (
         userBooksData.find(
           (userBookData) =>
-            userBookData.bookData?.book?.bookId === bookOrBookId.bookId
+            userBookData.bookData?.book?.bookId === bookOrBookId.bookId ||
+            userBookData.bookData?.book?.isbn === bookOrBookId.isbn ||
+            userBookData.bookData?.book?.isbn10 === bookOrBookId.isbn10
         ) ?? null
       );
     }

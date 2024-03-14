@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo } from "react";
 import { ModalContent } from "./modalContainers";
 import { SafeBooksListData } from "../../models/booksList";
 import BooksListThumbnail from "../booksList/booksListThumbnail";
@@ -6,9 +6,9 @@ import { BurgerLines } from "../icons";
 import useBooksList from "../../hooks/useBooksList";
 import BookThumbnail from "../book/bookThumbnail";
 import useBook from "../../hooks/useBook";
-import { UserBookData } from "../../models";
-import BookButtons, { ButtonImage } from "../book/bookButtons";
-import { current } from "@reduxjs/toolkit";
+import BookButtons from "../book/bookButtons";
+import { showModal, ModalTypes } from "../../lib/features/modal/modalSlice";
+import { useDispatch } from "react-redux";
 
 interface ModalBooksListProps<T extends SafeBooksListData> {
   booksListData?: T;
@@ -17,6 +17,7 @@ interface ModalBooksListProps<T extends SafeBooksListData> {
 export const ModalBooksList = <T extends SafeBooksListData>({
   booksListData,
 }: ModalBooksListProps<T>) => {
+  const dispatch = useDispatch();
   const { userBooksData } = useBook();
   const { booksLists } = useBooksList();
 
@@ -85,6 +86,15 @@ export const ModalBooksList = <T extends SafeBooksListData>({
             <div
               key={`book-in-list-${index}`}
               className="flex flex-row justify-start items-start gap-2"
+              onClick={(e) => {
+                e.stopPropagation();
+                dispatch(
+                  showModal({
+                    type: ModalTypes.BOOK_DETAILS,
+                    data: listData.book,
+                  })
+                );
+              }}
             >
               <BookThumbnail book={listData.book} thumbnailSize="md" />
               <div className="flex flex-col gap-1">

@@ -25,13 +25,8 @@ const SearchBar: React.FC<SearchBarProps> = ({
   onFocus,
   onEmpty,
 }: SearchBarProps) => {
-  const {
-    loading,
-    error,
-    updateSearchValue,
-    books,
-    searchValue,
-  }: UseSearchResult = useSearch();
+  const { loading, error, updateSearchValue, books }: UseSearchResult =
+    useSearch();
 
   useEffect(() => {
     if (error) {
@@ -50,7 +45,6 @@ const SearchBar: React.FC<SearchBarProps> = ({
     updateSearchValue(value);
   };
 
-  // const classItems = "px-6 py-4 rounded-t-3xl rounded-b-lg";
   const classNoItems = "rounded-full";
 
   return (
@@ -62,9 +56,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
       <SearchBarComponent
         onSubmit={onSubmit}
         onChange={onChange}
-        className={`transition-all duration-300 ease-in-out ${
-          books && books.length > 0 ? classNoItems : classNoItems
-        }`}
+        className="transition-all duration-300 ease-in-out rounded-full"
         placeholder="Search all books, authors..."
       />
       <div className="flex flex-col gap-3 overflow-auto scrollbar-hide">

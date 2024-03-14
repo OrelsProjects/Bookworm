@@ -5,14 +5,23 @@ import BookThumbnail from "../book/bookThumbnail";
 import Title from "../book/bookTitle";
 import Authors from "../book/authors";
 import BookButtons from "../book/bookButtons";
+import { useDispatch } from "react-redux";
+import { ModalTypes, showModal } from "../../lib/features/modal/modalSlice";
 
 export interface BookComponentProps {
   book: Book;
 }
 
 const BookSearchResult: React.FC<BookComponentProps> = ({ book }) => {
+  const dispatch = useDispatch();
   return (
-    <div className="flex flex-row justify-start items-start gap-2 h-full">
+    <div
+      className="flex flex-row justify-start items-start gap-2 h-full"
+      onClick={(e) => {
+        e.stopPropagation();
+        dispatch(showModal({ type: ModalTypes.BOOK_DETAILS, data: book }));
+      }}
+    >
       <div className="flex-shrink-0">
         <BookThumbnail
           src={book.thumbnailUrl}
@@ -20,12 +29,12 @@ const BookSearchResult: React.FC<BookComponentProps> = ({ book }) => {
           thumbnailSize="sm"
         />
       </div>
-      <div className="h-full flex flex-col justify-between items-start">
+      <div className="h-full flex flex-col justify-between items-start z-20">
         <div className="flex flex-col">
           <Title title={book.title} />
           <Authors authors={book.authors} prefix="by" />
         </div>
-        <BookButtons book={book} className="!justify-start" iconSize="xs" />
+      <BookButtons book={book} className="!justify-start" iconSize="xs" />
       </div>
     </div>
   );

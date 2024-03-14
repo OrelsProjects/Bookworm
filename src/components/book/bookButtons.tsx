@@ -56,7 +56,10 @@ export const ButtonImage: React.FC<ButtonImageProps> = ({
   return (
     <div
       className={`flex flex-col justify-center items-center gap-2 ${classNameIcon}`}
-      onClick={onClick}
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick?.();
+      }}
     >
       <Icon
         style={{
@@ -153,8 +156,7 @@ export const BookButtons: React.FC<BookButtonsProps> = ({
             handleUpdateBookReadingStatus(ReadingStatusEnum.TO_READ),
           classNameIcon,
         })}
-      {bookRead &&
-        showAddToListButton &&
+      {showAddToListButton &&
         ButtonImage({
           title: "Add to list",
           Icon: Add.Outline,
