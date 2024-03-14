@@ -17,7 +17,7 @@ import { isBooksEqual } from "../../utils/bookUtils";
 
 type ModalBookDetailsProps = {
   book: Book;
-}
+};
 
 const ModalAddBookToList: React.FC<ModalBookDetailsProps> = ({
   book,
@@ -68,7 +68,7 @@ const ModalAddBookToList: React.FC<ModalBookDetailsProps> = ({
   };
 
   const MyReadlists = () => (
-    <div className="w-full flex flex-col gap-4">
+    <div className="w-full flex flex-col gap-4 overflow-auto">
       <div className="w-full flex flex-row gap-1 justify-start items-center">
         <BurgerLines.Fill iconSize="sm" className="!text-foreground" />
         <div className="text-xl font-bold">My Readlists</div>
