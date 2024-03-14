@@ -71,7 +71,7 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
   const UserBooks = () => (
     <div className="w-full h-fit flex flex-col gap-2">
       <div className="w-full flex flex-row justify-between">
-        <div className="text-xl font-bold">Books I've Read</div>
+        <div className="text-xl font-bold">My Library</div>
         <div className="text-lg font-bold underline" onClick={onSeeAllClick}>
           See all
         </div>
