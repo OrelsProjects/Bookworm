@@ -7,6 +7,7 @@ import useBook from "../../hooks/useBook";
 import { Logger } from "@/src/logger";
 import useBooksList from "../../hooks/useBooksList";
 import useUserRecommendations from "../../hooks/useRecommendations";
+import axios from "axios";
 
 interface DataProviderProps {
   children?: React.ReactNode;
@@ -24,6 +25,7 @@ const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
     const loadUserDataAsync = async () => {
       try {
         if (loadingUserBooks.current) return;
+        axios.defaults.baseURL = window.location.origin;
         loadingUserBooks.current = true;
         await Promise.allSettled([
           loadUserBooksLists(user),
