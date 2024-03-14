@@ -25,11 +25,9 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
   const loadingBooksList = useRef(false);
 
   const loadBooksList = async () => {
-    if (loadingBooksList.current || !params.listUrl) return;
-    loadingBooksList.current = true;
     try {
       const urlParams = new URLSearchParams();
-      urlParams.append("url", params.listUrl);
+      urlParams.append("url", params.listUrl ?? "");
       const response = await axios.get<IResponse<SafeBooksListData>>(
         "/api/list",
         {
@@ -52,6 +50,8 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
 
   useEffect(() => {
     if (params.listUrl) {
+      if (loadingBooksList.current || !params.listUrl) return;
+      loadingBooksList.current = true;
       loadBooksList();
     }
   }, []);
