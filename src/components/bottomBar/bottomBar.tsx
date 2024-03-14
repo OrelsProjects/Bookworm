@@ -8,17 +8,14 @@ import { BottomBarItem, bottomBarItems } from "./bottomBarItems";
 const BottomBar = () => {
   const router = useRouter();
   const pathname = usePathname();
-  const [selected, setSelected] = React.useState<string>("");
+  const [selected, setSelected] = React.useState<BottomBarItem>();
 
   useEffect(() => {
-    if (bottomBarItems.map((item) => item.path).includes(pathname)) {
-      setSelected(pathname);
-    } else {
-      setSelected(bottomBarItems[0].path);
-    }
+    const selected = bottomBarItems.find((item) =>
+      pathname.includes(item.path)
+    );
+    setSelected(selected ?? bottomBarItems[0]);
   }, [pathname]);
-
-  const isItemSelected = (item: BottomBarItem) => selected === item.path;
 
   return (
     <div className="w-full flex flex-row justify-center z-40">
@@ -29,13 +26,16 @@ const BottomBar = () => {
               key={item.name}
               className="flex items-center justify-center w-full h-full"
               onClick={() => {
-                if (item.path === pathname) return;
+                if (pathname.includes(item.path)) return;
                 router.push(item.path);
-                setSelected(item.name);
+                setSelected(item);
               }}
             >
-              {isItemSelected(item) ? (
-                <item.icon.Fill className={item.className} iconSize={item.size} />
+              {selected?.path === item.path ? (
+                <item.icon.Fill
+                  className={item.className}
+                  iconSize={item.size}
+                />
               ) : (
                 <item.icon.Outline
                   className={`${item.className} !text-background`}

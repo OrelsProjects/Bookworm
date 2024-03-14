@@ -11,8 +11,8 @@ import {
   FaBookMedical,
 } from "react-icons/fa6";
 import { FaSliders } from "react-icons/fa6";
-import { CiMenuBurger } from "react-icons/ci";
-import { MdCancel, MdPrivacyTip } from "react-icons/md";
+import { CiMenuBurger, CiSearch } from "react-icons/ci";
+import { MdCancel, MdPrivacyTip, MdClear } from "react-icons/md";
 import { GiCircle } from "react-icons/gi";
 import { IconSize, SpecialIconSize, getIconSize } from "../../consts/icon";
 import { PiSignOutFill } from "react-icons/pi";
@@ -144,4 +144,14 @@ export const Privacy: Icon = {
 export const SignOut: Icon = {
   Fill: IconFill(PiSignOutFill),
   Outline: IconOutline(PiSignOutFill),
+};
+
+export const Search: Icon = {
+  Fill: IconFill(CiSearch),
+  Outline: IconOutline(CiSearch),
+};
+
+export const Clear: Icon = {
+  Fill: IconFill(MdClear),
+  Outline: IconOutline(MdClear),
 };

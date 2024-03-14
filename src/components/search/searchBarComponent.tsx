@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Input } from "../input";
+import { Clear, Search } from "../icons";
 
 interface SearchBarComponentProps {
   onSubmit: (value: string) => any;
@@ -45,16 +46,9 @@ export const SearchBarComponent: React.FC<SearchBarComponentProps> = ({
       >
         <label
           htmlFor="search-bar"
-          className="relative flex flex-row w-full bg-background rounded-full border-2 px-4 py-1"
+          className="relative flex flex-row justify-center items-center w-full bg-background rounded-full border-2 px-4 py-1"
         >
-          <img
-            src="search.svg"
-            alt="Search"
-            height={20}
-            width={20}
-            className="cursor-pointer"
-            onClick={() => onSubmit(searchTerm)}
-          />
+          <Search.Fill iconSize="sm" className="!text-foreground" />
           <Input
             type="text"
             id="search-bar"
@@ -63,16 +57,13 @@ export const SearchBarComponent: React.FC<SearchBarComponentProps> = ({
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <img
-            src="x.svg"
-            alt="clear"
-            height={20}
-            width={20}
-            className={`cursor-pointer ${
-              searchTerm ? "" : "invisible placeholder-gray-300"
-            }`}
-            onClick={() => setSearchTerm("")}
-          />
+          {searchTerm && (
+            <Clear.Fill
+              iconSize="xs"
+              className="!text-foreground"
+              onClick={() => setSearchTerm("")}
+            />
+          )}
         </label>
       </form>
     </div>

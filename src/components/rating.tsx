@@ -1,6 +1,6 @@
 // use client
 import * as React from "react";
- // Next.js Image component for optimized image serving
+// Next.js Image component for optimized image serving
 import { Button } from "./button"; // Adjust the import path as necessary
 import Loading from "./loading";
 
@@ -69,7 +69,9 @@ const Rating: React.FC<RatingProps> = ({
 
   const RatingLoading = () => (
     <div
-      className={`flex items-center justify-start w-content py-4 rounded-full bg-primary-foreground ${className ?? ""}`}
+      className={`flex items-center justify-start w-content py-4 rounded-full bg-primary-foreground ${
+        className ?? ""
+      }`}
     >
       <Loading />
     </div>
@@ -86,10 +88,7 @@ const Rating: React.FC<RatingProps> = ({
         />
       ))}
       {[...Array(user ? emptyStarsUser : emptyStars)].map((_, index) => (
-        <RatingStar
-          key={index}
-          className="inline-block w-4 h-4"
-        />
+        <RatingStar key={index} className="inline-block w-4 h-4" />
       ))}
       <p className="ms-1 text-lg font-thin text-foreground">
         {(user ? userRating : rating)?.toFixed(2)}
@@ -112,35 +111,10 @@ const Rating: React.FC<RatingProps> = ({
       <div
         className={`flex items-center justify-start w-fit rounded-full
       ${user ? "py-2.5" : ""}
+      ${className ?? ""}
       `}
       >
         <Stars user={user} />
-        {goodreadsUrl && !user && (
-          <Button
-            variant="outline"
-            asChild
-            className="rounded-full border-none"
-          >
-            <div className="flex flex-row gap-2">
-              {/* <a
-                className="text-sm text-primary hover:underline truncate"
-                href={goodreadsUrl}
-                target="_blank"
-                onClick={() => {
-                  EventTracker.track("User clicked on Goodreads link");
-                }}
-              >
-                View Details on Goodreads
-              </a> */}
-              <img
-                src="/externalLink.png"
-                alt="External Link"
-                width={16}
-                height={16}
-              />
-            </div>
-          </Button>
-        )}
       </div>
     );
   };
