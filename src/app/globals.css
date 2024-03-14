@@ -126,9 +126,6 @@ input[type="text"]:-moz-ui-autofill {
 }
 
 @layer utilities {
-  .grid-header-table {
-    @apply grid grid-cols-header-table;
-  }
 
   .modal-size {
     @apply h-modal-sm w-modal-sm;
@@ -139,9 +136,6 @@ input[type="text"]:-moz-ui-autofill {
   }
 
   @screen xl {
-    .grid-header-table {
-      @apply grid grid-cols-header-table-xl;
-    }
     .modal-size {
       @apply h-modal w-modal;
     }

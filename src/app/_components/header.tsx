@@ -50,27 +50,29 @@ const Header = ({ className }: HeaderProps): React.ReactNode => {
 
   return (
     !loadingState.loading && (
-      <div
-        className={`flex justify-between items-center w-full z-30 relative ${
-          className ?? ""
-        }`}
-      >
-        <Sidebar />
-        {user ? (
-          <Avatar
-            avatarUrl={user?.profilePictureUrl}
-            defaultText={user?.displayName ?? user.email}
-          />
-        ) : (
-          <Button
-            size={"md"}
-            variant="selected"
-            className="w-32"
-            onClick={() => signInWithGoogle()}
-          >
-            Login
-          </Button>
-        )}
+      <div className="fixed top-0 w-full">
+        <div
+          className={`flex justify-between items-center w-full z-30 relative ${
+            className ?? ""
+          }`}
+        >
+          <Sidebar />
+          {user ? (
+            <Avatar
+              avatarUrl={user?.profilePictureUrl}
+              defaultText={user?.displayName ?? user.email}
+            />
+          ) : (
+            <Button
+              size={"md"}
+              variant="selected"
+              className="w-32"
+              onClick={() => signInWithGoogle()}
+            >
+              Login
+            </Button>
+          )}
+        </div>
       </div>
     )
   );

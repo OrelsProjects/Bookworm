@@ -12,6 +12,7 @@ import Header from "./_components/header";
 import ModalProvider from "./providers/ModalProvider";
 import BottomBarProvider from "./providers/BottomBarProvider";
 import NavigationProvider from "./providers/NavigationProvider";
+import HeightProvider from "./providers/HeightProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.className} h-screen w-screen overflow-hidden overscroll-none`}
+        className={`${inter.className}`}
       >
         <StoreProvider>
           <AuthProvider>
@@ -36,13 +37,11 @@ export default function RootLayout({
               <APIProvider>
                 <DataProvider>
                   <AnimationProvider>
-                    <div className="!roboto grid-rows-body w-screen h-screen flex flex-col p-4">
-                      <Header className="h-9 w-full pb-5" />
-                      <div className="flex-grow w-full overflow-auto">
-                        {children}
-                      </div>
-                    </div>
+                    <HeightProvider className="p-4 pt-12 flex flex-col">
+                      {children}
+                    </HeightProvider>
                   </AnimationProvider>
+                  <Header className="h-9 w-full p-4 pb-2" />
                   <ModalProvider />
                   <BottomBarProvider />
                   <Toaster />

@@ -127,6 +127,7 @@ export default function MyLibrary(): React.ReactNode {
         onSubmit={(value: string) => searchBooks(value)}
         placeholder="Search in Your Books..."
       />
+
       <div className="h-full overflow-auto scrollbar-hide flex flex-col gap-5">
         <div className="flex flex-col gap-4">
           <Tabs

@@ -42,17 +42,16 @@ const BookList: React.FC<BookListProps> = ({
     dispatch(showModal({ data: book, type: ModalTypes.ADD_BOOK_TO_LIST }));
 
   return (
-    <div
-      className={`flex gap-3 flex-grow scrollbar-hide ${className ?? ""}
-      ${direction === "row" ? "flex-row h-fit" : "flex-col h-96"}
-      ${disableScroll ? "" : "overflow-auto"}
-      `}
-      ref={scrollableDivRef}
+    <li
+      className={`flex gap-3 flex-grow scrollbar-hide ${className ?? ""} ${
+        direction === "row" ? "flex-row h-fit" : "flex-col h-full"
+      } ${disableScroll ? "" : "overflow-auto"}`}
+      
     >
       {books.map((book) => (
-        <div
+        <ul
           onClick={() => onBookClick(book)}
-          className="h-full"
+          className="h-fit"
           key={`book-in-books-list-${book?.bookId}`}
         >
           {CustomBookComponent ? (
@@ -95,9 +94,9 @@ const BookList: React.FC<BookListProps> = ({
               direction={direction}
             />
           )}
-        </div>
+        </ul>
       ))}
-    </div>
+    </li>
   );
 };
 
