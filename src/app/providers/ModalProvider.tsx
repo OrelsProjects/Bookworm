@@ -17,12 +17,10 @@ import ModalAddBookToList from "../../components/modal/modalAddBookToList";
 import { ModalBooksList } from "../../components/modal/modalBooksList";
 import ModalBooksListEdit from "../../components/modal/modalBooksListEdit";
 import { usePathname, useRouter } from "next/navigation";
-import { useQueryState } from "nuqs";
 
 const ModalProvider: React.FC = () => {
   const router = useRouter();
   const pathname = usePathname();
-  const [, setName] = useQueryState("list");
   const { data, type, isOpen }: ModalState = useSelector(
     (state: RootState) => state.modal
   );
