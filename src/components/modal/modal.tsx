@@ -22,7 +22,6 @@ const Modal: React.FC<ModalProps> = ({
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
-
   useEffect(() => {
     const handleBackButtonClick = () => {
       onClose?.();
@@ -34,7 +33,7 @@ const Modal: React.FC<ModalProps> = ({
 
   return (
     <OpacityDiv
-      className="absolute top-0 left-0 right-0 bottom-0 w-screen h-screen overflow-x-clip z-50"
+      className="absolute top-0 left-0 right-0 bottom-0 w-screen h-screen overflow-y-auto overflow-x-clip z-50"
       innerRef={modalRef}
       key="modal-background"
       isOpen={isOpen}

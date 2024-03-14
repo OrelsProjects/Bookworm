@@ -119,6 +119,16 @@ module.exports = {
         modal: "40rem" /* this is in pixels: 536px */,
         "modal-md": "32rem",
         "modal-sm": "28rem",
+        "screen-fill": "100vh", // Fallback
+        screen: "-webkit-fill-available", // For Safari
+      },
+      minHeight: {
+        "screen-fill": "100vh", // Fallback
+        screen: "-webkit-fill-available", // For Safari
+      },
+      maxHeight: {
+        "screen-fill": "100vh", // Fallback
+        screen: "-webkit-fill-available", // For Safari
       },
       fontFamily: {
         sans: ["DM Sans", "sans-serif"],

@@ -26,7 +26,7 @@ const initialState: AuthState = {
   state: AuthStateType.SIGNED_OUT,
   loadingState: {
     loading: true,
-    message: "Hi there!",
+    message: "",
   },
   error: null,
 };
