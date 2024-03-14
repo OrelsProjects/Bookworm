@@ -62,7 +62,7 @@ export default function Home(): React.ReactNode {
   );
 
   return (
-    <div className="h-full w-full flex flex-col relative justify-top items-start gap-4 p-3 overflow-auto scrollbar-hide">
+    <div className="h-full w-full flex flex-col relative justify-top items-start gap-4 overflow-auto scrollbar-hide">
       <SearchBar
         onEmpty={() => setSearchFocused(false)}
         onFocus={() => setSearchFocused(true)}

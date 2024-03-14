@@ -65,7 +65,7 @@ const BookList: React.FC<BookListProps> = ({
                 direction === "row" && (
                   <div className="relative">
                     <div
-                      className="absolute bottom-2 left-2 w-fit h-fit rounded-full overflow-hidden flex items-center justify-center"
+                      className="absolute bottom-2 left-2 w-fit h-fit rounded-full overflow-hidden flex items-center justify-center shadow-sm shadow-black"
                       onClick={(e) => {
                         e.stopPropagation();
                         onAddBookClick(book);

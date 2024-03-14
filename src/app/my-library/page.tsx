@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useMemo } from "react";
-import { Button, Loading, Tabs } from "../../components";
+import { Button, Tabs } from "../../components";
 import { sorterTabItems } from "./_consts";
 import { UserBookData } from "../../models";
 import { TabItem } from "../../components/tabs";
@@ -121,13 +121,13 @@ export default function MyLibrary(): React.ReactNode {
   );
 
   return (
-    <div className="w-full h-full grid grid-rows-[auto,1fr] gap-5">
+    <div className="w-full h-full flex flex-col gap-5">
       <SearchBarComponent
         onChange={(value: string) => searchBooks(value)}
         onSubmit={(value: string) => searchBooks(value)}
         placeholder="Search in Your Books..."
       />
-      <div className="overflow-auto scrollbar-hide flex flex-col gap-5">
+      <div className="h-full overflow-auto scrollbar-hide flex flex-col gap-5">
         <div className="flex flex-col gap-4">
           <Tabs
             Title={() => <div className="font-bold text-xl">Sort by</div>}

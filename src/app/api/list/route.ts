@@ -8,10 +8,7 @@ import {
   SafeBooksListData,
 } from "../../../models/booksList";
 import Logger from "../../../utils/loggerServer";
-import {
-  setThumbnailColorsToBooks,
-  setThumbnailColorsToBooksListData,
-} from "./_utils/thumbnailUtils";
+import { setThumbnailColorsToBooks } from "./_utils/thumbnailUtils";
 
 export async function GET(
   req: NextRequest
@@ -32,12 +29,15 @@ export async function GET(
     }
     let books = bookListData.booksInList.map((book) => book.book);
     books = await setThumbnailColorsToBooks(books);
-    bookListData.booksInList = bookListData.booksInList.map((bookInList, index) => {
-      return {
-        ...bookInList,
-        book: books[index],
-      };
-    });
+
+    bookListData.booksInList = bookListData.booksInList.map(
+      (bookInList, index) => {
+        return {
+          ...bookInList,
+          book: books[index],
+        };
+      }
+    );
     const result = {
       result: bookListData,
     };

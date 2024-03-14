@@ -51,7 +51,7 @@ const Modal: React.FC<ModalProps> = ({
             whileHover={{ scale: 1.2 }}
           >
             <div
-              className="bg-background h-10 w-10 rounded-full flex justify-center items-center shadow-2xl"
+              className="bg-background h-10 w-10 rounded-full shadow-sm shadow-background flex justify-center items-center"
               onClick={onClose}
             >
               <IoArrowBack className="!text-foreground !w-6 !h-6" />

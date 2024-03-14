@@ -153,7 +153,7 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
     return <Loading spinnerClassName="w-12 h-12" />;
   }
   return (
-    <div className="h-full w-full flex flex-col gap-4 pb-4 p-3">
+    <div className="h-full w-full flex flex-col gap-4 pb-4">
       <div className="h-fit">
         <SearchBarComponent
           onChange={(value: string) => searchBooks(value)}

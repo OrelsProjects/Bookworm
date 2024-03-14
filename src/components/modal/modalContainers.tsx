@@ -21,7 +21,11 @@ const TopSectionContainer: React.FC<
       className ?? ""
     }`}
   >
-    <div className={`-mt-12 h-fit flex-shrink-0`}>{thumbnail}</div>
+    <div
+      className={`-mt-12 h-fit flex-shrink-0 shadow-background shadow-md rounded-xl`}
+    >
+      {thumbnail}
+    </div>
     {children}
   </div>
 );

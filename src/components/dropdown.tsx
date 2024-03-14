@@ -45,13 +45,13 @@ const Dropdown: React.FC<DropdownProps> = ({
   }, [onClose]);
 
   return (
-    <ExpandingDiv
+    <div
       key="dropdown"
       className={`bg-primary-weak rounded-lg flex-col justify-center items-start shadow-xl ${
         className ?? ""
       }`}
-      innerRef={dropdownRef}
-      expandType={expandType}
+      ref={dropdownRef}
+      // expandType={expandType}
     >
       {items
         .sort((a, b) => (a.position || 0) - (b.position || 0))
@@ -73,7 +73,7 @@ const Dropdown: React.FC<DropdownProps> = ({
             <div className="text-background">{item.label}</div>
           </div>
         ))}
-    </ExpandingDiv>
+    </div>
   );
 };
 

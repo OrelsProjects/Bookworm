@@ -12,7 +12,10 @@ async function setThumbnailColorsToBooksInList(books: Book[]): Promise<Book[]> {
         return book;
       }
       const thumbnailColor = await getAverageColor(book.thumbnailUrl);
-      return book;
+      return {
+        ...book,
+        thumbnailColor,
+      };
     });
 
     const newBooksWithColors: Book[] = await Promise.all(colorPromises);
@@ -48,26 +51,18 @@ export async function setThumbnailColorsToBooks(
   books: Book[]
 ): Promise<Book[]> {
   try {
-    const batchSize = 100;
-    const booksWithColors: Book[] = [];
-    for (let i = 0; i < books.length; i += batchSize) {
-      const batch = books.slice(i, i + batchSize);
-      const colorPromises = batch.map(async (book) => {
-        if (!book.thumbnailUrl || book.thumbnailColor) {
-          return book;
-        }
-        const thumbnailColor = await getAverageColor(book.thumbnailUrl);
-        book = {
-          ...book,
-          thumbnailColor,
-        };
-        return book;
+    let booksWithColors: Book[] = [];
+    for (const book of books) {
+      if (!book.thumbnailUrl || book.thumbnailColor) {
+        continue;
+      }
+      const thumbnailColor = await getAverageColor(book.thumbnailUrl);
+      booksWithColors.push({
+        ...book,
+        thumbnailColor,
       });
-
-      const newBooksWithColors: Book[] = await Promise.all(colorPromises);
-      booksWithColors.push(...newBooksWithColors);
     }
-    return books;
+    return booksWithColors;
   } catch (error: any) {
     return books;
   }

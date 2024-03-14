@@ -10,7 +10,14 @@ const separateBackslashN = (text: string): React.ReactNode[] => {
   let splitText = text.split("\\n");
   const textNodes: React.ReactNode[] = [];
   splitText.forEach((t, index) => {
-    textNodes.push(<span key={index}>{t}</span>);
+    textNodes.push(
+      <span
+        className={`${index === 0 ? "font-bold" : ""}`}
+        key={`loading-text-${index}`}
+      >
+        {t}
+      </span>
+    );
     if (index !== splitText.length - 1) {
       textNodes.push(<br key={`br-${index}`} />);
     }
@@ -18,7 +25,11 @@ const separateBackslashN = (text: string): React.ReactNode[] => {
   return textNodes;
 };
 
-export const LoadingSvg = ({ className }: { className?: string }): React.ReactNode => (
+export const LoadingSvg = ({
+  className,
+}: {
+  className?: string;
+}): React.ReactNode => (
   <svg
     aria-hidden="true"
     className={`animate-spin fill-primary-weak bg-none ${className ?? ""}`}
@@ -49,7 +60,7 @@ const Loading: React.FC<LoadingProps> = ({
     role="status"
   >
     <LoadingSvg className={spinnerClassName} />
-    <div className="text-primary line-clamp-2 w-full text-center gap-0">
+    <div className="text-foreground line-clamp-2 w-full text-center gap-0">
       {text ? separateBackslashN(text) : null}
     </div>
   </div>

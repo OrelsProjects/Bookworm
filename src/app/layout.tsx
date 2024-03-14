@@ -37,7 +37,7 @@ export default function RootLayout({
                 <DataProvider>
                   <AnimationProvider>
                     <div className="!roboto grid-rows-body w-screen h-screen flex flex-col p-4">
-                      <Header className="h-9 w-full" />
+                      <Header className="h-9 w-full pb-5" />
                       <div className="flex-grow w-full overflow-auto">
                         {children}
                       </div>
