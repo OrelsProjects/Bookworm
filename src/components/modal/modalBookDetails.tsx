@@ -14,11 +14,10 @@ import BookGeneralDetails from "./_components/bookGeneralDetails";
 
 type ModalBookDetailsProps = {
   book: Book;
-} & ModalProps;
+}
 
 const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
-  book,
-  ...modalProps
+  book
 }) => {
   const { getBookFullData, userBooksData } = useBook();
   const [bookData, setBookData] = React.useState<
@@ -61,7 +60,6 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
         bookData && <BookGeneralDetails userBookData={bookData} />
       }
       bottomSection={<Summary />}
-      {...modalProps}
     />
   );
 };

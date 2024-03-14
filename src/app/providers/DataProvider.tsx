@@ -25,13 +25,11 @@ const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
       try {
         if (loadingUserBooks.current) return;
         loadingUserBooks.current = true;
-        Promise.allSettled([
+        await Promise.allSettled([
           loadUserBooksLists(user),
           loadUserBooks(user),
           loadUserRecommendations(user),
-        ]).finally(() => {
-          loadingUserBooks.current = false;
-        });
+        ]);
       } catch (error: any) {
         Logger.error("Error loading user books", { error });
       } finally {

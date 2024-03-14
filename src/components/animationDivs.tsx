@@ -16,7 +16,7 @@ export enum ExpandType {
 
 interface AnimationDivProps extends LayoutProps {
   key?: string | number;
-  isOpen?: boolean; // Add this line
+  isOpen?: boolean;
   children?: React.ReactNode;
   innerRef?: React.RefObject<HTMLDivElement>;
   className?: string;
@@ -44,7 +44,7 @@ const GeneralDiv = ({
           ref={innerRef}
           className={`w-full h-full ${className || ""}`}
           {...animationProps}
-          {...props}
+          // {...props}
         >
           {children}
         </motion.div>

@@ -20,6 +20,7 @@ const APIProvider: React.FC<APIProviderProps> = ({ children }) => {
       axios.defaults.headers.common["Authorization"] = user.token;
       axios.defaults.headers.common["user_id"] = user.userId;
     }
+    axios.defaults.baseURL = window.location.origin;
   }, [user]);
 
   return <>{children}</>;

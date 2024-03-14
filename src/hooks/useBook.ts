@@ -45,45 +45,6 @@ const useBook = () => {
   const dispatch = useDispatch();
   const { userBooksData } = useSelector((state: RootState) => state.userBooks);
 
-  const favoriteBook = async (userBook: UserBook): Promise<void> => {
-    if (loading.current) {
-      throw new Error("Cannot favorite book while another book is loading");
-    }
-    loading.current = true;
-    try {
-      const isFavorite = !userBook.isFavorite;
-      const updateUserBookBody: UpdateUserBookBody = {
-        userBookId: userBook.userBookId,
-        isFavorite: isFavorite,
-      };
-      await axios.patch<UserBook>(`/api/user-books`, updateUserBookBody);
-      let userBookData: UserBookData | undefined = userBooksData.find(
-        (userBookData) =>
-          userBookData.userBook.userBookId === userBook.userBookId
-      );
-      if (!userBookData) {
-        throw new Error("No user book data found");
-      }
-      userBookData = {
-        ...userBookData,
-        userBook: {
-          ...userBookData.userBook,
-          isFavorite,
-        },
-      };
-      dispatch(updateUserBookData(userBookData));
-    } catch (error: any) {
-      Logger.error("Error favoriting book", {
-        data: {
-          userBook,
-        },
-        error,
-      });
-    } finally {
-      loading.current = false;
-    }
-  };
-
   const deleteUserBook = async (userBook: UserBook): Promise<void> => {
     if (loading.current) {
       throw new Error("Cannot delete book while another book is loading");
@@ -118,7 +79,6 @@ const useBook = () => {
 
   const addUserBook = async ({
     book,
-    isFavorite,
     suggestionSource,
     userComments,
     dateAdded,
@@ -143,7 +103,6 @@ const useBook = () => {
     loading.current = true;
     EventTracker.track("User add book", {
       book,
-      isFavorite,
       suggestionSource,
       userComments,
       dateAdded,
@@ -156,7 +115,7 @@ const useBook = () => {
       let bookToAdd: Book = book;
       let createUserBookBody: CreateUserBookBody = {
         bookId: book.bookId,
-        isFavorite: isFavorite ?? false,
+        isFavorite: false,
         suggestionSource: suggestionSource ?? "",
         userComments: userComments ?? "",
         dateAdded: dateAdded ?? new Date().toISOString(),
@@ -204,7 +163,6 @@ const useBook = () => {
       Logger.error("Error adding user book", {
         data: {
           book,
-          isFavorite,
           suggestionSource,
           userComments,
           dateAdded,
@@ -378,7 +336,6 @@ const useBook = () => {
     updateBookReadingStatus,
     loadUserBooks,
     addUserBook,
-    favoriteBook,
     deleteUserBook,
     getBookFullData,
     userBooksData,

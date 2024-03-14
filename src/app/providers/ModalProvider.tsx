@@ -26,6 +26,8 @@ const ModalProvider: React.FC = () => {
   );
   const dispatch = useDispatch();
 
+  useEffect(() => {}, [window.location.href]);
+
   const modalBackgroundColor = useMemo<string>((): string => {
     const defaultColor = "rgb(255,255,255)";
     switch (type) {
@@ -56,29 +58,12 @@ const ModalProvider: React.FC = () => {
   );
 
   const RenderBookDetails = useCallback(
-    (book?: Book) =>
-      book && (
-        <ModalBookDetails
-          book={book}
-          isOpen={isOpen}
-          onClose={() => dispatch(hideModal())}
-          backgroundColor={darkenColor(book?.thumbnailColor)}
-        />
-      ),
+    (book?: Book) => book && <ModalBookDetails book={book} />,
     []
   );
 
   const RenderAddBookToList = useCallback((book?: Book) => {
-    return (
-      book && (
-        <ModalAddBookToList
-          book={book}
-          isOpen={isOpen}
-          onClose={() => dispatch(hideModal())}
-          backgroundColor={darkenColor(book?.thumbnailColor)}
-        />
-      )
-    );
+    return book && <ModalAddBookToList book={book} />;
   }, []);
 
   const RenderComponent = () => {

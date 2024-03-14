@@ -6,7 +6,6 @@ import Book from "../../models/book";
 import useBook from "../../hooks/useBook";
 import { UserBookData } from "../../models/userBook";
 import BookThumbnail from "../book/bookThumbnail";
-import { ModalProps } from "./modal";
 import { ModalContent } from "./modalContainers";
 import BookGeneralDetails from "./_components/bookGeneralDetails";
 import useBooksList from "../../hooks/useBooksList";
@@ -18,7 +17,7 @@ import { isBooksEqual } from "../../utils/bookUtils";
 
 type ModalBookDetailsProps = {
   book: Book;
-} & ModalProps;
+}
 
 const ModalAddBookToList: React.FC<ModalBookDetailsProps> = ({
   book,
@@ -100,7 +99,6 @@ const ModalAddBookToList: React.FC<ModalBookDetailsProps> = ({
         bookData && <BookGeneralDetails userBookData={bookData} />
       }
       bottomSection={<MyReadlists />}
-      {...modalProps}
     />
   );
 };
