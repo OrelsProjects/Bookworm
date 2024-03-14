@@ -55,7 +55,7 @@ export default function Home(): React.ReactNode {
     );
 
   const Content = () => (
-    <div className="h-full w-full flex flex-col gap-4">
+    <div className="h-fit w-full flex flex-col gap-4">
       <Books />
       <Recommendations />
     </div>
