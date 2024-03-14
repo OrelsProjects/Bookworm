@@ -1,22 +1,60 @@
 "use client";
 
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { SearchBarComponent } from "../../components/search/searchBarComponent";
-import useTable from "../../hooks/useTable";
-import BookList from "../../components/book/bookList";
-import BooksListList from "../../components/booksList/booksListList";
-import { Add, Plus } from "../../components/icons";
+import { SearchBarComponent } from "../../../components/search/searchBarComponent";
+import useTable from "../../../hooks/useTable";
+import BookList from "../../../components/book/bookList";
+import BooksListList from "../../../components/booksList/booksListList";
+import { Add, Plus } from "../../../components/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { showModal, ModalTypes } from "../../lib/features/modal/modalSlice";
-import { selectBooksLists } from "../../lib/features/booksLists/booksListsSlice";
+import { showModal, ModalTypes } from "../../../lib/features/modal/modalSlice";
+import { selectBooksLists } from "../../../lib/features/booksLists/booksListsSlice";
 import toast from "react-hot-toast";
+import axios from "axios";
+import { SafeBooksListData } from "../../../models/booksList";
+import { IResponse } from "../../../models/dto/response";
+import { Logger } from "../../../logger";
+import { Loading } from "../../../components";
 
-const MyLists = () => {
+const MyLists = ({ params }: { params: { listUrl?: string } }) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { booksListsData } = useSelector(selectBooksLists);
   const { userBooks, nextPage, searchBooks } = useTable();
+  const loadingBooksList = useRef(false);
+
+  const loadBooksList = async () => {
+    if (loadingBooksList.current || !params.listUrl) return;
+    loadingBooksList.current = true;
+    try {
+      const urlParams = new URLSearchParams();
+      urlParams.append("url", params.listUrl);
+      const response = await axios.get<IResponse<SafeBooksListData>>(
+        "/api/list",
+        {
+          params: urlParams,
+        }
+      );
+      const bookList = response.data.result;
+      dispatch(
+        showModal({ type: ModalTypes.BOOKS_LIST_DETAILS, data: bookList })
+      );
+    } catch (error: any) {
+      Logger.error("Error getting books lists", {
+        error,
+      });
+      router.push("/404");
+    } finally {
+      loadingBooksList.current = false;
+    }
+  };
+
+  useEffect(() => {
+    if (params.listUrl) {
+      loadBooksList();
+    }
+  }, []);
 
   const onSeeAllClick = useCallback(() => {
     router.push("/my-library");
@@ -111,6 +149,9 @@ const MyLists = () => {
     </div>
   );
 
+  if (loadingBooksList.current) {
+    return <Loading spinnerClassName="w-12 h-12" />;
+  }
   return (
     <div className="h-full w-full flex flex-col gap-4 pb-4 p-3">
       <div className="h-fit">
