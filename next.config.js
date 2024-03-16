@@ -8,6 +8,9 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 });
 
 module.exports = withBundleAnalyzer({
+  experimental: {
+    fallbackNodePolyfills: false,
+  },
   images: {
     remotePatterns: [
       {
