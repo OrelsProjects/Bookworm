@@ -9,7 +9,7 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 
 module.exports = withBundleAnalyzer({
   experimental: {
-    // fallbackNodePolyfills: false,
+    fallbackNodePolyfills: false,
   },
   images: {
     remotePatterns: [

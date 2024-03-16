@@ -6,6 +6,7 @@ import { IResponse } from "../models/dto/response";
 import { Books } from "../models/book";
 import { EventTracker } from "../eventTracker";
 import slugify from "slugify";
+import { Logger } from "../logger";
 
 // Define a type for the hook's return value
 export interface UseSearchResult {
@@ -62,6 +63,7 @@ function useSearch(): UseSearchResult {
       const books: Books = response.data.result ?? [];
       setResultsToUpdate(books);
     } catch (error: any) {
+      Logger.error("Failed to fetch books", { error, data: { query: value } });
       setError(error.message);
       return [];
     } finally {
