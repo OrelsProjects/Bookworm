@@ -1,6 +1,4 @@
 import { Amplify } from "aws-amplify";
-import dotenv from "dotenv";
-dotenv.config();
 
 const config = {
   aws_project_region: "us-east-1",

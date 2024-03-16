@@ -5,8 +5,6 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { selectAuth } from "../../lib/features/auth/authSlice";
 import "../../eventTracker";
-import dotenv from "dotenv";
-dotenv.config();
 
 interface APIProviderProps {
   children?: React.ReactNode;

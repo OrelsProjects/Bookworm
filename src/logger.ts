@@ -1,7 +1,5 @@
 import { StatusType, datadogLogs } from "@datadog/browser-logs";
-import dotenv from "dotenv";
 import { User } from "./models";
-dotenv.config();
 
 interface Dict {
   [key: string]: any;

@@ -1,7 +1,5 @@
 import axios, { Axios } from "axios";
 import { NextRequest } from "next/server";
-import dotenv from "dotenv";
-dotenv.config();
 
 export function GetAxiosInstance(request: NextRequest): Axios;
 export function GetAxiosInstance(userId: string, token: string): Axios;

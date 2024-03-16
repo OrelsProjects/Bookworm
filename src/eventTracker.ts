@@ -1,8 +1,6 @@
 import { init, identify, track } from "mixpanel-browser";
-import dotenv from "dotenv";
 import { User } from "./models";
 import { Logger } from "./logger";
-dotenv.config();
 
 enum TimeoutLength {
   SHORT = 100,
