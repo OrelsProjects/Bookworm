@@ -11,7 +11,7 @@ import {
 import { fetchAuthSession } from "aws-amplify/auth";
 import { Hub } from "aws-amplify/utils";
 import "../../amplifyconfiguration";
-import { Loading } from "../../components";
+import Loading from "../../components/loading";
 import { initEventTracker, setUserEventTracker } from "../../eventTracker";
 
 import { Logger, initLogger, setUserLogger } from "@/src/logger";
@@ -141,10 +141,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   return loadingState.loading ? (
     <div className="absolute w-screen h-screen top-0 bottom-0 right-0 left-0">
-      <Loading
-        spinnerClassName="w-20 h-20"
-        text={loadingState.message ?? ""}
-      />
+      <Loading spinnerClassName="w-20 h-20" text={loadingState.message ?? ""} />
     </div>
   ) : (
     children

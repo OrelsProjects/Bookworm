@@ -1,4 +1,4 @@
-import mixpanel from "mixpanel-browser";
+import { init, identify, track } from "mixpanel-browser";
 import dotenv from "dotenv";
 import { User } from "./models";
 import { Logger } from "./logger";
@@ -14,12 +14,12 @@ interface Dict {
   [key: string]: any;
 }
 export const initEventTracker = () => {
-  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_API_KEY ?? "");
+  init(process.env.NEXT_PUBLIC_MIXPANEL_API_KEY ?? "");
 };
 
 export const setUserEventTracker = (user?: User | null) => {
   try {
-    mixpanel.identify(user?.userId);
+    identify(user?.userId);
   } catch (error: any) {
     Logger.error("Error setting user for event tracker", {
       data: {
@@ -55,6 +55,6 @@ export class EventTracker {
       console.log("Tracking event", eventName, props ?? "");
       return;
     }
-    mixpanel.track(eventName, props);
+    track(eventName, props);
   }
 }

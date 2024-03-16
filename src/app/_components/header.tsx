@@ -1,7 +1,6 @@
 "use client";
-import { Button } from "@/src/components";
+import { Button } from "@/src/components/button";
 import React, { useEffect } from "react";
-
 import { useSelector } from "react-redux";
 import { selectAuth } from "@/src/lib/features/auth/authSlice";
 import useAuth from "@/src/hooks/useAuth";

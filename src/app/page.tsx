@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { selectAuth } from "../lib/features/auth/authSlice";
-import { Loading } from "../components";
+import Loading from "../components/loading";
 
 function App() {
   const router = useRouter();

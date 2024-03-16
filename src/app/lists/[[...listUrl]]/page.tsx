@@ -15,7 +15,7 @@ import axios from "axios";
 import { SafeBooksListData } from "../../../models/booksList";
 import { IResponse } from "../../../models/dto/response";
 import { Logger } from "../../../logger";
-import { Loading } from "../../../components";
+import Loading from "../../../components/loading";
 
 const MyLists = ({ params }: { params: { listUrl?: string } }) => {
   const dispatch = useDispatch();

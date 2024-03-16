@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useCallback, useEffect, useMemo } from "react";
-import { Button, Tabs } from "../../components";
+import { Button } from "../../components/button";
+import Tabs from "../../components/tabs";
 import { sorterTabItems } from "./_consts";
 import { UserBookData } from "../../models";
 import { TabItem } from "../../components/tabs";

@@ -8,7 +8,7 @@ import { Logger } from "../../../logger";
 import { IResponse } from "../../../models/dto/response";
 import { SafeBooksListData } from "../../../models/booksList";
 import { ModalTypes, showModal } from "../../../lib/features/modal/modalSlice";
-import { Loading } from "../../../components";
+import Loading from "../../../components/loading";
 import { useRouter } from "next/navigation";
 
 export default function BooksListView({
