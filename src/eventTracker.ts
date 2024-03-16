@@ -1,4 +1,4 @@
-import { init, identify, track } from "mixpanel-browser";
+import mixpanel from "mixpanel-browser";
 import { User } from "./models";
 import { Logger } from "./logger";
 
@@ -12,12 +12,12 @@ interface Dict {
   [key: string]: any;
 }
 export const initEventTracker = () => {
-  init(process.env.NEXT_PUBLIC_MIXPANEL_API_KEY ?? "");
+  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_API_KEY ?? "");
 };
 
 export const setUserEventTracker = (user?: User | null) => {
   try {
-    identify(user?.userId);
+    mixpanel.identify(user?.userId);
   } catch (error: any) {
     Logger.error("Error setting user for event tracker", {
       data: {
@@ -46,13 +46,24 @@ export class EventTracker {
    * @param timeout how long to wait before sending the same event again
    */
   static track(eventName: string, props?: Dict, timeout?: TimeoutLength) {
-    if (timeout && timeoutEvent(eventName, timeout)) {
-      return;
+    try {
+      if (timeout && timeoutEvent(eventName, timeout)) {
+        return;
+      }
+      if (process.env.NODE_ENV !== "production") {
+        console.log("Tracking event", eventName, props ?? "");
+        return;
+      }
+      mixpanel.track(eventName, props);
+    } catch (error: any) {
+      Logger.error("Error tracking event", {
+        data: {
+          eventName,
+          props,
+          timeout,
+        },
+        error,
+      });
     }
-    if (process.env.NODE_ENV !== "production") {
-      console.log("Tracking event", eventName, props ?? "");
-      return;
-    }
-    track(eventName, props);
   }
 }
