@@ -3,7 +3,7 @@ import { Book } from "../../models";
 import { Skeleton } from "../skeleton";
 import { ThumbnailSize, getThumbnailSize } from "../../consts/thumbnail";
 
-export interface BooksListThumbnailProps {
+interface BooksListThumbnailProps {
   books?: Book[];
   thumbnailSize?: ThumbnailSize;
   className?: string;

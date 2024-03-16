@@ -28,11 +28,6 @@ export type CreateBooksListPayload = Omit<
   | "isVisible"
 > & { booksInList?: BookInListNoListId[] };
 
-export type CreateBooksListResponse = Omit<
-  BooksList,
-  "updatedAt" | "isDeleted" | "publicURL"
->;
-
 export type BooksListData = BooksList & {
   booksInList: BookInListWithBook[];
 };

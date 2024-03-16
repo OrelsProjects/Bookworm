@@ -1,6 +1,3 @@
-import Genre from "./genre";
-import GoodreadsData from "./goodreadsData";
-
 export type Books = Book[];
 
 export interface Book {
@@ -28,13 +25,6 @@ export type CreateBooksResponse = {
   success?: Book[];
   duplicates?: Book[];
   failure?: Book[];
-};
-
-export type GetBooksResponse = {
-  book: Book;
-  main_genre?: Genre;
-  subgenres?: Genre[];
-  goodreads_data?: GoodreadsData;
 };
 
 export default Book;

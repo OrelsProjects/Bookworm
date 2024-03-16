@@ -1,18 +1,12 @@
 "use client";
-import { Button, Tabs } from "@/src/components";
+import { Button } from "@/src/components";
 import React, { useEffect } from "react";
-import { useRouter, usePathname } from "next/navigation";
 
-import { useDispatch, useSelector } from "react-redux";
-import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 import { selectAuth } from "@/src/lib/features/auth/authSlice";
 import useAuth from "@/src/hooks/useAuth";
-import { ModalTypes, showModal } from "@/src/lib/features/modal/modalSlice";
 import Avatar from "./avatar";
-import { EventTracker } from "@/src/eventTracker";
-import { TabItems } from "@/src/components/tabs";
 import { Logger } from "@/src/logger";
-import Feedback from "@/src/components/feedback";
 import Sidebar from "./sidebar";
 
 export interface HeaderProps {

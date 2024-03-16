@@ -10,7 +10,6 @@ export enum ExpandType {
   TopLeft,
   TopRight,
   Center,
-  General,
   Modal,
 }
 
@@ -109,15 +108,6 @@ const OpacityDiv = ({ innerRef, ...props }: AnimationDivProps) => (
   />
 );
 
-// Bottom to Middle Animation Wrapper
-const BottomToMidDiv = ({ innerRef, ...props }: AnimationDivProps) => (
-  <GeneralDiv
-    innerRef={innerRef}
-    {...props}
-    animationProps={bottomToMidAnimationProps}
-  />
-);
-
 const getExpandProps = (expandType?: ExpandType): MotionProps => {
   switch (expandType) {
     case ExpandType.TopLeft:
@@ -138,8 +128,4 @@ const ExpandingDiv = ({ innerRef, expandType, ...props }: ExpandDivProps) => (
   <motion.div ref={innerRef} {...props} {...getExpandProps(expandType)} />
 );
 
-const ListDiv = ({ innerRef, ...props }: AnimationDivProps) => (
-  <AnimatePresence>{props.children}</AnimatePresence>
-);
-
-export { GeneralDiv, ExpandingDiv, OpacityDiv, BottomToMidDiv, ListDiv };
+export { ExpandingDiv, OpacityDiv };

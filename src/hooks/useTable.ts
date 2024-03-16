@@ -13,7 +13,7 @@ import {
 import { ReadingStatusEnum } from "../models/readingStatus";
 import { BooksListData } from "../models/booksList";
 
-export enum TableType {
+enum TableType {
   READ = 1,
   TO_READ = 2,
 }

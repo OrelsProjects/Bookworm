@@ -2,9 +2,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../../store"; // Adjust the import path as necessary
 import { User } from "../../../models";
-import _ from "lodash";
+import { isEqual } from "lodash";
 
-export type LoadingState = {
+type LoadingState = {
   loading: boolean;
   message?: string;
 };
@@ -37,7 +37,7 @@ const authSlice = createSlice({
   reducers: {
     setUser: (state, action: PayloadAction<User | null>) => {
       const currentUser = state.user;
-      if (_.isEqual(currentUser, action.payload)) {
+      if (isEqual(currentUser, action.payload)) {
         return;
       }
       state.user = action.payload;

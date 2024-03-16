@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BooksListData } from "../../models/booksList";
 import { ThumbnailSize } from "../../consts/thumbnail";
 import { Input } from "../input";
@@ -19,8 +19,6 @@ import SearchBar from "../search/searchBar";
 import { ModalContent } from "./modalContainers";
 import { BookInList, BookInListWithBook } from "../../models/bookInList";
 import BookThumbnail from "../book/bookThumbnail";
-import { OpacityDiv } from "../animationDivs";
-import { rest } from "lodash";
 import { CommentsArea } from "./_components/commentsArea";
 
 interface ModalBooksListProps {

@@ -1,14 +1,14 @@
 import React, { useEffect, useRef } from "react";
 import { ExpandType, ExpandingDiv } from "./animationDivs";
 
-export interface DropdownItem {
+interface DropdownItem {
   label: string;
   leftIcon?: React.ReactNode;
   position?: number;
   onClick: () => void;
 }
 
-export interface DropdownProps {
+interface DropdownProps {
   items: DropdownItem[];
   onClose?: () => void;
   className?: string;

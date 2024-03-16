@@ -4,13 +4,13 @@ import { User } from "./models";
 import { Logger } from "./logger";
 dotenv.config();
 
-export enum TimeoutLength {
+enum TimeoutLength {
   SHORT = 100,
   MEDIUM = 5000,
   LONG = 10000,
 }
 
-export interface Dict {
+interface Dict {
   [key: string]: any;
 }
 export const initEventTracker = () => {

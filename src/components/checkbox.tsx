@@ -1,7 +1,7 @@
 import React from "react";
 import { cn } from "../lib/utils";
 
-export interface CheckboxProps
+interface CheckboxProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   checkedComponent?: React.ReactNode;
   uncheckedComponent?: React.ReactNode;

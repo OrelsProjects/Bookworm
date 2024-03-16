@@ -5,7 +5,7 @@ import {
   CreateUserBookBody,
   DeleteUserBookBody,
   UpdateUserBookBody,
-} from "@/src/models/dto/userBookDTO";
+} from "@/src/models/userBook";
 import { GetAxiosInstance } from "@/src/utils/apiUtils";
 import { NextRequest, NextResponse } from "next/server";
 import { setThumbnailColorsToBooks } from "./_utils/thumbnailUtils";

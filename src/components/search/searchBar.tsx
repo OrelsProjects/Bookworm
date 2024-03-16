@@ -8,7 +8,7 @@ import { SearchBarComponent } from "./searchBarComponent";
 
 const TOP_RESULTS_COUNT = 10;
 
-export interface SearchBarProps {
+interface SearchBarProps {
   CustomSearchItem?: typeof BookSearchResult;
   CustomSearchItemSkeleton?: React.FC;
   className?: string;

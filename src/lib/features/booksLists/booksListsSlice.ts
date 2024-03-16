@@ -5,7 +5,7 @@ import { BooksListData } from "../../../models/booksList";
 import { Book } from "../../../models";
 import { BookInList } from "../../../models/bookInList";
 
-export interface UserListsState {
+interface UserListsState {
   booksListsData: BooksListData[];
   loading: boolean;
   error: string | null;

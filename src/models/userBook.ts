@@ -100,4 +100,14 @@ export class UserBookData {
   }
 }
 
+export type CreateUserBookBody = Omit<
+  UserBook,
+  "userBookId" | "userId" | "isDeleted"
+>;
+
+export type UpdateUserBookBody = Omit<UserBook, "bookId">;
+export type DeleteUserBookBody = {
+  userBookId: string;
+};
+
 export default UserBook;

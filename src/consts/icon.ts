@@ -67,7 +67,7 @@ const iconSizes = {
   },
 };
 
-export interface IconSizeProps {
+interface IconSizeProps {
   size: IconSize;
   specialIcon?: SpecialIconSize;
 }

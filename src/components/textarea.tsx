@@ -1,9 +1,9 @@
 import * as React from "react";
 
 import { cn } from "../lib/utils";
-import Loading, { LoadingSvg } from "./loading";
+import { LoadingSvg } from "./loading";
 
-export interface TextAreaProps
+interface TextAreaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   resize?: boolean;
   loading?: boolean;

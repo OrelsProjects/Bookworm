@@ -34,7 +34,7 @@ type ButtonImageProps = {
   classNameIcon?: string;
 };
 
-export const ButtonImage: React.FC<ButtonImageProps> = ({
+const ButtonImage: React.FC<ButtonImageProps> = ({
   title,
   Icon,
   onClick,

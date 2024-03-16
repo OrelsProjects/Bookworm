@@ -3,7 +3,11 @@ const cdnUrl = process.env.NEXT_PUBLIC_CDN_URL;
 //   dest: "public",
 // });
 
-module.exports = {
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
+});
+
+module.exports = withBundleAnalyzer({
   images: {
     remotePatterns: [
       {
@@ -24,22 +28,4 @@ module.exports = {
       },
     ],
   },
-  webpack: (config, { isServer }) => {
-    const prefix = config.assetPrefix ?? config.basePath ?? "";
-    config.module.rules.push({
-      test: /\.mp4$/,
-      use: [
-        {
-          loader: "file-loader",
-          options: {
-            publicPath: `${prefix}/_next/static/media/`,
-            outputPath: `${isServer ? "../" : ""}static/media/`,
-            name: "[name].[hash].[ext]",
-          },
-        },
-      ],
-    });
-
-    return config;
-  },
-};
+});

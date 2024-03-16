@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import { User } from "./models";
 dotenv.config();
 
-export interface Dict {
+interface Dict {
   [key: string]: any;
 }
 

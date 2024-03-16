@@ -6,7 +6,7 @@ import { Books, CreateBooksResponse } from "../models/book";
 import {
   CreateUserBookBody,
   UpdateUserBookBody,
-} from "../models/dto/userBookDTO";
+} from "../models/userBook";
 import { useDispatch, useSelector } from "react-redux";
 import {
   USER_BOOKS_KEY,

@@ -1,4 +1,4 @@
-export enum ReadingStatusNameEnum {
+enum ReadingStatusNameEnum {
   READ = "read",
   TO_READ = "to-read",
 }
