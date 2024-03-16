@@ -6,7 +6,8 @@ import { SearchBarComponent } from "../../../components/search/searchBarComponen
 import useTable from "../../../hooks/useTable";
 import BookList from "../../../components/book/bookList";
 import BooksListList from "../../../components/booksList/booksListList";
-import { Add, Plus } from "../../../components/icons";
+import { Add } from "../../../components/icons/add";
+import { Plus } from "../../../components/icons/plus";
 import { useDispatch, useSelector } from "react-redux";
 import { showModal, ModalTypes } from "../../../lib/features/modal/modalSlice";
 import { selectBooksLists } from "../../../lib/features/booksLists/booksListsSlice";

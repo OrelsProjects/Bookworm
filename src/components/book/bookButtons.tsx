@@ -1,5 +1,8 @@
 import React, { useEffect } from "react";
-import { Add, Bookmark, Checkmark } from "../icons";
+import { Add } from "../icons/add";
+import { Bookmark } from "../icons/bookmark";
+import { Checkmark } from "../icons/checkmark";
+
 import { Book, UserBookData } from "../../models";
 import useBook from "../../hooks/useBook";
 import { isBookRead } from "../../models/userBook";

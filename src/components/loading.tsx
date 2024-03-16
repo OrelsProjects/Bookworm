@@ -64,6 +64,6 @@ const Loading: React.FC<LoadingProps> = ({
       {text ? separateBackslashN(text) : null}
     </div>
   </div>
-);
+); 
 
 export default Loading;

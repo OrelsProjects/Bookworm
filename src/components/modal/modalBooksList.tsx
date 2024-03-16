@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from "react";
 import { ModalContent } from "./modalContainers";
 import { SafeBooksListData } from "../../models/booksList";
 import BooksListThumbnail from "../booksList/booksListThumbnail";
-import { BurgerLines } from "../icons";
+import { BurgerLines } from "../icons/burgerLines";
 import useBooksList from "../../hooks/useBooksList";
 import BookThumbnail from "../book/bookThumbnail";
 import useBook from "../../hooks/useBook";

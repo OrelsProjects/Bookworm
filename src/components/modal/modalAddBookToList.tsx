@@ -9,7 +9,7 @@ import BookThumbnail from "../book/bookThumbnail";
 import { ModalContent } from "./modalContainers";
 import BookGeneralDetails from "./_components/bookGeneralDetails";
 import useBooksList from "../../hooks/useBooksList";
-import { BurgerLines } from "../icons";
+import { BurgerLines } from "../icons/burgerLines";
 import BooksListList from "../booksList/booksListList";
 import { BooksListData } from "../../models/booksList";
 import toast from "react-hot-toast";

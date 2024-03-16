@@ -9,7 +9,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectUserBooks } from "@/src/lib/features/userBooks/userBooksSlice";
 import Papa from "papaparse";
 import { EventTracker } from "@/src/eventTracker";
-import { Feedback, Privacy, SignOut } from "../../components/icons";
+import { Feedback } from "../../components/icons/feedback";
+import { Privacy } from "../../components/icons/privacy";
+import { SignOut } from "../../components/icons/signOut";
 
 const FEEDBACK_GIVEN = "feedback_given";
 

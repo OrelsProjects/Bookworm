@@ -6,7 +6,7 @@ import BookDetails from "./bookDetails";
 import useScrollPosition, {
   ScrollDirection,
 } from "../../hooks/useScrollPosition";
-import { Add } from "../icons";
+import { Add } from "../icons/add";
 import { ThumbnailSize } from "../../consts/thumbnail";
 
 type BookListProps = {

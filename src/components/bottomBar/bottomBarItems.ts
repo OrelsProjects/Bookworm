@@ -1,5 +1,7 @@
 import { IconSize } from "../../consts/icon";
-import { Icon, NavigationHome, NavigationLists } from "../icons";
+import { Icon } from "../icons/iconContainer";
+import { NavigationHome } from "../icons/navigationHome";
+import { NavigationLists } from "../icons/navigationLists";
 
 export type BottomBarItem = {
   name: string;

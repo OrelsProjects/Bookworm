@@ -7,9 +7,11 @@ import useScrollPosition, {
 import BooksListThumbnail from "./booksListThumbnail";
 import { BooksListData } from "../../models/booksList";
 import { ThumbnailSize } from "../../consts/thumbnail";
-import { useRouter } from "next/navigation";
 import { Checkbox } from "../checkbox";
-import { Checkmark, BurgerLines, Circle, Add, Share } from "../icons";
+import { Checkmark } from "../icons/checkmark";
+import { Circle } from "../icons/circle";
+import { Add } from "../icons/add";
+import { Share } from "../icons/share";
 import { Book } from "../../models";
 import { isBooksEqual } from "../../utils/bookUtils";
 import { CommentsArea } from "../modal/_components/commentsArea";

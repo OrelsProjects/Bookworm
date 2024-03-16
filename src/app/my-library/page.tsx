@@ -13,7 +13,7 @@ import BookList from "../../components/book/bookList";
 import Dropdown from "../../components/dropdown";
 import useBooksList from "../../hooks/useBooksList";
 import { Checkbox } from "../../components/checkbox";
-import { Filter } from "../../components/icons";
+import { Filter } from "../../components/icons/filter";
 import { ExpandType } from "../../components/animationDivs";
 
 export default function MyLibrary(): React.ReactNode {

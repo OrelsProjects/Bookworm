@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Input } from "../input";
-import { Clear, Search } from "../icons";
+import { Search } from "../icons/search";
+import { Clear } from "../icons/clear";
 
 interface SearchBarComponentProps {
   onSubmit: (value: string) => any;

@@ -1,5 +1,5 @@
 import React from "react";
-import { BurgerMenu } from "../../components/icons";
+import { BurgerMenu } from "../../components/icons/burgerMenu";
 
 const Sidebar = () => {
   return (

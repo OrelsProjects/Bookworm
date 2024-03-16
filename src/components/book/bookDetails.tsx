@@ -1,7 +1,7 @@
 import React from "react";
 import { Book } from "../../models";
 import BookThumbnail from "./bookThumbnail";
-import { Add } from "../icons";
+import { Add } from "../icons/add";
 import Authors from "./authors";
 import Title from "./bookTitle";
 import { ThumbnailSize, getThumbnailSize } from "../../consts/thumbnail";

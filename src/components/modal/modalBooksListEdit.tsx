@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import { BooksListData } from "../../models/booksList";
 import { ThumbnailSize } from "../../consts/thumbnail";
 import { Input } from "../input";
-import { Add, Cancel, Checkmark } from "../icons";
+import { Add } from "../icons/add";
+import { Cancel } from "../icons/cancel";
+import { Checkmark } from "../icons/checkmark";
 import BooksListThumbnail from "../booksList/booksListThumbnail";
 import useBooksList from "../../hooks/useBooksList";
 import { Book } from "../../models";
@@ -102,51 +104,53 @@ const ListBooks: React.FC<ListBookProps> = ({
   key,
   booksInList,
 }) => (
-    <div className="w-full flex flex-col gap-2 justify-center items-start">
-      {booksInList?.map((bookInList, index) => (
-        <BookInListDetails
-          key={`${key}-book-in-modal-books-list-${index}`}
-          bookInList={bookInList}
-          onAddNewBookClick={onAddNewBookClick}
-          onDeleteBookClick={onDeleteBookClick}
-          onChange={onChange}
-          value={value}
-          name={`${name}-${bookInList.bookId}`}
-        />
-      ))}
-      <div className="w-full flex flex-row gap-2">
-        <BooksListThumbnail
-          className="flex-shrink-0"
-          Icon={
-            <div className="absolute-center">
-              <Add.Fill
-                className="!text-background"
-                iconSize="md"
-                onClick={onAddNewBookClick}
-              />
-            </div>
-          }
-          thumbnailSize="sm"
-        />
+  <div className="w-full flex flex-col gap-2 justify-center items-start">
+    {booksInList?.map((bookInList, index) => (
+      <BookInListDetails
+        key={`${key}-book-in-modal-books-list-${index}`}
+        bookInList={bookInList}
+        onAddNewBookClick={onAddNewBookClick}
+        onDeleteBookClick={onDeleteBookClick}
+        onChange={onChange}
+        value={value}
+        name={`${name}-${bookInList.bookId}`}
+      />
+    ))}
+    <div className="w-full flex flex-row gap-2">
+      <BooksListThumbnail
+        className="flex-shrink-0"
+        Icon={
+          <div className="absolute-center">
+            <Add.Fill
+              className="!text-background"
+              iconSize="md"
+              onClick={onAddNewBookClick}
+            />
+          </div>
+        }
+        thumbnailSize="sm"
+      />
 
-        <div className="w-full h-full flex flex-col justify-start items-start gap-2">
-          <div className={`text-muted h-fit`}>Book Name</div>
-          <TextArea
-            value={value}
-            rows={3}
-            name={name}
-            onChange={(e) => {
-              onChange(null, e.target.value);
-            }}
-            placeholder="Comment"
-            key={key}
-          />
-        </div>
+      <div className="w-full h-full flex flex-col justify-start items-start gap-2">
+        <div className={`text-muted h-fit`}>Book Name</div>
+        <TextArea
+          value={value}
+          rows={3}
+          name={name}
+          onChange={(e) => {
+            onChange(null, e.target.value);
+          }}
+          placeholder="Comment"
+          key={key}
+        />
       </div>
     </div>
+  </div>
 );
 
-const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({ booksListData }) => {
+const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
+  booksListData,
+}) => {
   const {
     createBooksList,
     addBookToList,
@@ -228,7 +232,7 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({ booksListData }) =>
       if (!book.bookId) {
         bookWithId = await toast.promise(
           (async () => {
-            const userBook = await addUserBook({book});
+            const userBook = await addUserBook({ book });
             return (
               getBookFullData(userBook.bookId)?.bookData.book ?? {
                 ...book,
