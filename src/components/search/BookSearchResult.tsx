@@ -29,7 +29,7 @@ const BookSearchResult: React.FC<BookComponentProps> = ({ book }) => {
           thumbnailSize="sm"
         />
       </div>
-      <div className="h-full flex flex-col justify-between items-start z-20">
+      <div className="h-full flex flex-col justify-between items-start">
         <div className="flex flex-col">
           <Title title={book.title} />
           <Authors authors={book.authors} prefix="by" />

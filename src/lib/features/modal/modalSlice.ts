@@ -9,19 +9,18 @@ export enum ModalTypes {
   ADD_BOOK_TO_LIST = "ADD_BOOK_TO_LIST",
 }
 
-export interface ModalState {
+interface ModalData {
   data?: any;
-  type: ModalTypes | null;
-  isOpen: boolean;
+  type: ModalTypes;
+}
+
+export interface ModalState {
+  modalStack: ModalData[];
   error: string | null;
 }
 
 const initialState: ModalState = {
-  data: undefined,
-  type: null,
-  isOpen: false,
-  // data: testBook,
-  // type: ModalTypes.ADD_BOOK_TO_BACKLOG,
+  modalStack: [],
   error: null,
 };
 
@@ -33,13 +32,11 @@ const bottomSheetSlice = createSlice({
       state,
       action: PayloadAction<{ data?: any; type: ModalTypes }>
     ) => {
-      state.data = action.payload.data;
-      state.type = action.payload.type;
-      state.isOpen = true;
+      state.modalStack.push(action.payload);
       state.error = null;
     },
     hideModal: (state) => {
-      state.isOpen = false;
+      state.modalStack.pop();
       state.error = null;
     },
   },

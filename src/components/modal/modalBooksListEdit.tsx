@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { BooksListData } from "../../models/booksList";
 import { ThumbnailSize } from "../../consts/thumbnail";
 import { Input } from "../input";
@@ -22,6 +22,7 @@ import { ModalContent } from "./modalContainers";
 import { BookInList, BookInListWithBook } from "../../models/bookInList";
 import BookThumbnail from "../book/bookThumbnail";
 import { CommentsArea } from "./_components/commentsArea";
+import BookDetailsSkeleton from "../skeletons/BookDetailsSkeleton";
 
 interface ModalBooksListProps {
   booksListData?: BooksListData;
@@ -47,10 +48,17 @@ interface BookInListDetailsProps extends ListBookAndBookDetailsProps {
   bookInList?: BookInListWithBook;
 }
 
-const Thumbnail: React.FC<{ books?: Books; thumbnailSize: ThumbnailSize }> = ({
-  books,
-  thumbnailSize,
-}) => <BooksListThumbnail books={books} thumbnailSize={thumbnailSize} />;
+const Thumbnail: React.FC<{
+  books?: Books;
+  thumbnailSize: ThumbnailSize;
+  loading?: boolean;
+}> = ({ books, thumbnailSize, loading }) => (
+  <BooksListThumbnail
+    books={books}
+    thumbnailSize={thumbnailSize}
+    loading={loading}
+  />
+);
 
 const BookInListDetails: React.FC<BookInListDetailsProps> = ({
   bookInList,
@@ -158,11 +166,10 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
     loading: loadingList,
   } = useBooksList();
   const { addUserBook, getBookFullData, loading: loadingBook } = useBook();
-  const [showSearchBar, setShowSearchBar] = useState(false);
   const [currentBooksList, setCurrentBookList] = useState<
     BooksListData | undefined
   >();
-
+  const searchBarRef = useRef<HTMLDivElement>(null);
   const buildFormikValueName = (bookId: number) => `newBookComments-${bookId}`;
 
   const formik = useFormik({
@@ -182,6 +189,15 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
       );
     });
   }, [booksListData]);
+
+  const scrollSearchBarIntoView = () => {
+    searchBarRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+
+    searchBarRef.current?.querySelector("input")?.focus();
+  };
 
   const isBookInList = (book: Book) =>
     currentBooksList?.booksInList?.some(
@@ -379,14 +395,30 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
               }}
               key={currentBooksList?.listId}
               onAddNewBookClick={() => {
-                setShowSearchBar(true);
+                scrollSearchBarIntoView();
               }}
               name="newBookComments"
               booksInList={currentBooksList?.booksInList?.map(
                 (bookInList) => bookInList
               )}
             />
-            {showSearchBar && <SearchBar CustomSearchItem={SearchResult} />}
+            <div ref={searchBarRef}>
+              <SearchBar
+                onSearch={() => {
+                  scrollSearchBarIntoView();
+                }}
+                CustomSearchItem={SearchResult}
+                CustomSearchItemSkeleton={() => (
+                  <div className="flex flex-col gap-2">
+                    {Array.from(Array(5)).map((_, index) => (
+                      <BookDetailsSkeleton
+                        key={`book-details-skeleton-${index}`}
+                      />
+                    ))}
+                  </div>
+                )}
+              />
+            </div>
           </div>
         </div>
       }

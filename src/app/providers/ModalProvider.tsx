@@ -21,18 +21,26 @@ import { usePathname, useRouter } from "next/navigation";
 const ModalProvider: React.FC = () => {
   const router = useRouter();
   const pathname = usePathname();
-  const { data, type, isOpen }: ModalState = useSelector(
+  const { modalStack }: ModalState = useSelector(
     (state: RootState) => state.modal
   );
   const dispatch = useDispatch();
 
   useEffect(() => {}, [window.location.href]);
 
+  const isOpen = useMemo<boolean>(() => modalStack.length > 0, [modalStack]);
+
+  const { data, type } = useMemo(
+    () => modalStack[modalStack.length - 1] ?? {},
+    [modalStack]
+  );
+
   const modalBackgroundColor = useMemo<string>((): string => {
     const defaultColor = "rgb(255,255,255)";
     switch (type) {
       case ModalTypes.BOOK_DETAILS:
         return darkenColor(data?.thumbnailColor) ?? defaultColor;
+      case ModalTypes.BOOKS_LIST_DETAILS_EDIT:
       case ModalTypes.BOOKS_LIST_DETAILS:
         const firstBook = data?.booksInList?.[0]?.book;
         return darkenColor(firstBook?.thumbnailColor) ?? defaultColor;

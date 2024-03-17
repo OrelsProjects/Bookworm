@@ -40,7 +40,7 @@ const Modal: React.FC<ModalProps> = ({
     >
       <div className="flex justify-center items-center relative w-full h-full">
         <div
-          className={`relative z-50 w-full h-full flex items-end justify-start rounded-lg ${
+          className={`relative z-50 w-full h-full flex items-end justify-start ${
             className ?? ""
           } z-10`}
           style={{ backgroundColor: backgroundColor ?? "rgb(12, 12, 12)" }}

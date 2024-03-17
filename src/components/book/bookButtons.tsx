@@ -92,6 +92,7 @@ export const BookButtons: React.FC<BookButtonsProps> = ({
     addUserBook,
     loading,
     userBooksData,
+    deleteUserBook,
   } = useBook();
   const [bookData, setBookData] = React.useState<UserBookData | undefined>();
   const [bookRead, setBookRead] = React.useState(false);
@@ -99,26 +100,36 @@ export const BookButtons: React.FC<BookButtonsProps> = ({
 
   const handleUpdateBookReadingStatus = async (status: ReadingStatusEnum) => {
     if (loading.current) return;
-    let addPromise: Promise<any> | undefined = undefined;
+    let promise: Promise<any> | undefined = undefined;
+    let loadingMessage = "";
+    let successMessage = "";
+    let errorMessage = "";
+    const readingStatusName = readingStatusToName(status);
     if (
       bookData?.userBook?.readingStatusId &&
       bookData?.userBook?.readingStatusId === status
     ) {
-      return;
-    }
-    if (!bookData) {
-      addPromise = addUserBook({
-        book,
-        readingStatusId: status as number,
-      });
+      promise = deleteUserBook(bookData.userBook);
+      loadingMessage = `Removing ${book?.title} from list ${readingStatusName}...`;
+      successMessage = `${book?.title} removed from list ${readingStatusName}`;
+      errorMessage = `Failed to remove ${book?.title} from list ${readingStatusName}`;
     } else {
-      addPromise = updateBookReadingStatus(bookData.userBook, status);
+      if (!bookData) {
+        promise = addUserBook({
+          book,
+          readingStatusId: status as number,
+        });
+      } else {
+        promise = updateBookReadingStatus(bookData.userBook, status);
+      }
+      loadingMessage = `Adding ${book?.title} to list: ${readingStatusName}...`;
+      successMessage = `${book?.title} updated to list: ${readingStatusName}`;
+      errorMessage = `Failed to add ${book?.title} to list: ${readingStatusName}`;
     }
-    const readingStatusName = readingStatusToName(status);
-    await toast.promise(addPromise, {
-      loading: `Adding ${book?.title} to list: ${readingStatusName}...`,
-      success: `${book?.title} added to list: ${readingStatusName}`,
-      error: `Failed to add ${book?.title} to list: ${readingStatusName}`,
+    await toast.promise(promise, {
+      loading: loadingMessage,
+      success: successMessage,
+      error: errorMessage,
     });
   };
 

@@ -8,6 +8,7 @@ interface BooksListThumbnailProps {
   thumbnailSize?: ThumbnailSize;
   className?: string;
   Icon?: React.ReactNode;
+  loading?: boolean;
 }
 
 type Props = BooksListThumbnailProps & React.HTMLProps<HTMLDivElement>;
@@ -17,6 +18,7 @@ const BooksListThumbnail: React.FC<Props> = ({
   className,
   thumbnailSize = "md",
   Icon,
+  loading,
   ...props
 }) => {
   const [imagesLoaded, setImagesLoaded] = useState(false);
@@ -147,15 +149,15 @@ const BooksListThumbnail: React.FC<Props> = ({
     <div
       className={`flex flex-col flex-wrap relative items-start justify-center ${
         getThumbnailSize(thumbnailSize).className
-      } rounded-xl bg-clip-border	overflow-hidden ${
-        className ?? ""
-      }`}
+      } rounded-xl bg-clip-border	overflow-hidden ${className ?? ""}`}
       {...props}
     >
-      {imagesLoaded ? (
+      {imagesLoaded && !loading ? (
         <Thumbnail />
       ) : (
-        <Skeleton className="w-24 h-32 rounded-xl" />
+        <Skeleton
+          className={`${getThumbnailSize(thumbnailSize).className} rounded-xl`}
+        />
       )}
       {Icon}
     </div>

@@ -6,7 +6,7 @@ import Authors from "./authors";
 import Title from "./bookTitle";
 import { ThumbnailSize, getThumbnailSize } from "../../consts/thumbnail";
 
-type BookDetailsProps = {
+export type BookDetailsProps = {
   book?: Book;
   bookThumbnailSize?: ThumbnailSize;
   Icon?: React.ReactNode;

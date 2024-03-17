@@ -8,10 +8,12 @@ import { SearchBarComponent } from "./searchBarComponent";
 
 const TOP_RESULTS_COUNT = 10;
 
-interface SearchBarProps {
+type SearchBarProps = {
   CustomSearchItem?: typeof BookSearchResult;
   CustomSearchItemSkeleton?: React.FC;
   className?: string;
+  autoFocus?: boolean;
+  onChange?: (text: string, previous?: string) => void;
   onSearch?: (text: string) => void;
   onFocus?: () => any;
   onEmpty?: () => any;
@@ -21,12 +23,18 @@ const SearchBar: React.FC<SearchBarProps> = ({
   CustomSearchItemSkeleton,
   CustomSearchItem,
   className,
+  onChange,
   onSearch,
   onFocus,
   onEmpty,
 }: SearchBarProps) => {
-  const { loading, error, updateSearchValue, books }: UseSearchResult =
-    useSearch();
+  const {
+    loading,
+    error,
+    updateSearchValue,
+    books,
+    searchValue,
+  }: UseSearchResult = useSearch();
 
   useEffect(() => {
     if (error) {
@@ -34,18 +42,23 @@ const SearchBar: React.FC<SearchBarProps> = ({
     }
   }, [error]);
 
-  const onSubmit = (value: string) =>
-    onSearch ? onSearch(value) : updateSearchValue(value);
-  const onChange = (value: string) => {
+  useEffect(() => {
+    if (loading) {
+      onSearch?.(searchValue);
+    }
+  }, [loading]);
+
+  const onSubmit = (value: string) => updateSearchValue(value);
+
+  const handleOnChange = (value: string) => {
     if (!value) {
       onEmpty?.();
     } else {
       onFocus?.();
     }
+    onChange?.(value, searchValue);
     updateSearchValue(value);
   };
-
-  const classNoItems = "rounded-full";
 
   return (
     <div
@@ -55,21 +68,25 @@ const SearchBar: React.FC<SearchBarProps> = ({
     >
       <SearchBarComponent
         onSubmit={onSubmit}
-        onChange={onChange}
+        onChange={handleOnChange}
         className="transition-all duration-300 ease-in-out rounded-full"
         placeholder="Search all books, authors..."
+        autoFocus
       />
       <div className="flex flex-col gap-3 overflow-auto scrollbar-hide">
         {loading ? (
-          CustomSearchItemSkeleton ? (
-            <CustomSearchItemSkeleton />
-          ) : (
-            <>
-              {Array.from(Array(TOP_RESULTS_COUNT)).map((_, index) => (
-                <SearchItemSkeleton key={`search-item-skeleton-${index}`} />
-              ))}
-            </>
-          )
+          <>
+            <div className="font-bold text-2xl invisible pt-2">Books</div>
+            {CustomSearchItemSkeleton ? (
+              <CustomSearchItemSkeleton />
+            ) : (
+              <>
+                {Array.from(Array(TOP_RESULTS_COUNT)).map((_, index) => (
+                  <SearchItemSkeleton key={`search-item-skeleton-${index}`} />
+                ))}
+              </>
+            )}
+          </>
         ) : (
           books &&
           books.length > 0 && (
