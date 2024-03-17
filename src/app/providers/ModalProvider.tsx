@@ -14,10 +14,10 @@ import Modal from "../../components/modal/modal";
 import { BooksListData } from "../../models/booksList";
 import { darkenColor } from "../../utils/thumbnailUtils";
 import ModalAddBookToList from "../../components/modal/modalAddBookToList";
-import { ModalBooksList } from "../../components/modal/modalBooksList";
 import ModalBooksListEdit from "../../components/modal/modalBooksListEdit";
 import { usePathname, useRouter } from "next/navigation";
 import { BookInList } from "../../models/bookInList";
+import { ModalBooksList } from "../../components/modal/booksList/modalBooksList";
 
 const ModalProvider: React.FC = () => {
   const router = useRouter();

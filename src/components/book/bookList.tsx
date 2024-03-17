@@ -1,13 +1,12 @@
 import React from "react";
 import { Book } from "../../models";
-import { useDispatch } from "react-redux";
-import { showModal, ModalTypes } from "../../lib/features/modal/modalSlice";
 import BookDetails from "./bookDetails";
 import useScrollPosition, {
   ScrollDirection,
 } from "../../hooks/useScrollPosition";
 import { Add } from "../icons/add";
 import { ThumbnailSize } from "../../consts/thumbnail";
+import { useModal } from "../../hooks/useModal";
 
 type BookListProps = {
   books: (Book | undefined)[];
@@ -28,18 +27,15 @@ const BookList: React.FC<BookListProps> = ({
   disableScroll,
   CustomBookComponent,
 }) => {
-  const dispatch = useDispatch();
+  const { showBookDetailsModal, showAddBookToListModal } = useModal();
   const { scrollableDivRef } = useScrollPosition({
     onThreshold: () => onNextPageScroll?.(), // TODO: Buggy scrolling. Once fixed, reduce the page size in useTable.ts
     scrollDirection:
       direction === "row" ? ScrollDirection.Width : ScrollDirection.Height,
   });
 
-  const onBookClick = (book?: Book) =>
-    dispatch(showModal({ data: { book }, type: ModalTypes.BOOK_DETAILS }));
-
-  const onAddBookClick = (book?: Book) =>
-    dispatch(showModal({ data: book, type: ModalTypes.ADD_BOOK_TO_LIST }));
+  const onBookClick = (book?: Book) => showBookDetailsModal({ book: book });
+  const onAddBookClick = (book?: Book) => showAddBookToListModal(book as Book);
 
   return (
     <li

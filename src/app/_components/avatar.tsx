@@ -110,21 +110,6 @@ const Avatar: React.FC<AvatarProps> = ({ avatarUrl, defaultText }) => {
         <div className="absolute top-full right-0 w-36 mt-2">
           <Dropdown
             items={[
-              // {
-              //   label: "Import Books",
-              //   leftIcon: (
-              //     <img
-              //       src="/import.svg"
-              //       alt="import"
-              //       fill
-              //       className="!relative !w-8 !h-7"
-              //     />
-              //   ),
-              //   position: 0,
-              //   onClick: () => {
-              //     dispatch(showModal({ type: BottomSheetTypes.IMPORT_BOOKS }));
-              //   },
-              // },
               {
                 label: "Feedback",
                 leftIcon: (

@@ -8,8 +8,7 @@ import BookList from "../../../components/book/bookList";
 import BooksListList from "../../../components/booksList/booksListList";
 import { Add } from "../../../components/icons/add";
 import { Plus } from "../../../components/icons/plus";
-import { useDispatch, useSelector } from "react-redux";
-import { showModal, ModalTypes } from "../../../lib/features/modal/modalSlice";
+import { useSelector } from "react-redux";
 import { selectBooksLists } from "../../../lib/features/booksLists/booksListsSlice";
 import toast from "react-hot-toast";
 import axios from "axios";
@@ -17,9 +16,10 @@ import { SafeBooksListData } from "../../../models/booksList";
 import { IResponse } from "../../../models/dto/response";
 import { Logger } from "../../../logger";
 import Loading from "../../../components/loading";
+import { useModal } from "../../../hooks/useModal";
 
 const MyLists = ({ params }: { params: { listUrl?: string } }) => {
-  const dispatch = useDispatch();
+  const { showBooksListModal, showBooksListEditModal } = useModal();
   const router = useRouter();
   const { booksListsData } = useSelector(selectBooksLists);
   const { userBooks, nextPage, searchBooks } = useTable();
@@ -36,9 +36,9 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
         }
       );
       const bookList = response.data.result;
-      dispatch(
-        showModal({ type: ModalTypes.BOOKS_LIST_DETAILS, data: bookList })
-      );
+      if (bookList) {
+        showBooksListModal(bookList);
+      }
     } catch (error: any) {
       Logger.error("Error getting books lists", {
         error,
@@ -57,17 +57,17 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
     }
   }, []);
 
+  useEffect(() => {
+    if (!params.listUrl) {
+      loadingBooksList.current = false;
+    }
+  }, [params.listUrl]);
+
   const onSeeAllClick = useCallback(() => {
     router.push("/my-library");
   }, [router]);
 
-  const onAddListClick = () => {
-    dispatch(
-      showModal({
-        type: ModalTypes.BOOKS_LIST_DETAILS_EDIT,
-      })
-    );
-  };
+  const onAddListClick = () => showBooksListEditModal();
 
   const UserBooks = () => (
     <div className="w-full h-fit flex flex-col gap-2">
@@ -129,14 +129,7 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
           booksListsData={booksListsData}
           bookThumbnailSize="md"
           bottomElementProps={{
-            onAddBookClick: (list) => {
-              dispatch(
-                showModal({
-                  type: ModalTypes.BOOKS_LIST_DETAILS_EDIT,
-                  data: list,
-                })
-              );
-            },
+            onAddBookClick: (list) => showBooksListModal(list),
             onShareClick: (list) => {
               const baseUrl = window.location.origin;
               navigator.clipboard.writeText(

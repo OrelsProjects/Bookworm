@@ -1,6 +1,5 @@
 import React, { useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { showModal, ModalTypes } from "../../lib/features/modal/modalSlice";
+import { useSelector } from "react-redux";
 import useScrollPosition, {
   ScrollDirection,
 } from "../../hooks/useScrollPosition";
@@ -15,8 +14,8 @@ import { Share } from "../icons/share";
 import { Book } from "../../models";
 import { isBooksEqual } from "../../utils/bookUtils";
 import { CommentsArea } from "../modal/_components/commentsArea";
-import useAuth from "../../hooks/useAuth";
 import { selectAuth } from "../../lib/features/auth/authSlice";
+import { useModal } from "../../hooks/useModal";
 
 interface EndElementProps {
   onEndElementClick: (booksList: BooksListData) => void;
@@ -50,21 +49,18 @@ const BooksListList: React.FC<Props> = ({
   bottomElementProps,
   endElementProps,
 }) => {
-  const dispatch = useDispatch();
   const { user } = useSelector(selectAuth);
+  const { showBookInListDetailsModal } = useModal();
   const { scrollableDivRef } = useScrollPosition({
     onThreshold: () => onNextPageScroll?.(),
     scrollDirection: ScrollDirection.Height,
   });
 
-  const onListClick = (booksListData: BooksListData) => {
-    dispatch(
-      showModal({
-        data: { ...booksListData, curatorName: user?.displayName },
-        type: ModalTypes.BOOKS_LIST_DETAILS,
-      })
-    );
-  };
+  const onListClick = (booksListData: BooksListData) =>
+    showBookInListDetailsModal({
+      ...booksListData,
+      curatorName: user?.displayName,
+    });
 
   const isBookInList = useCallback(
     (listData: BooksListData): boolean =>

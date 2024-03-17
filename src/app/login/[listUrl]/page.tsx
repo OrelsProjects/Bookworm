@@ -1,22 +1,21 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
 import axios from "axios";
 import { Logger } from "../../../logger";
 import { IResponse } from "../../../models/dto/response";
 import { SafeBooksListData } from "../../../models/booksList";
-import { ModalTypes, showModal } from "../../../lib/features/modal/modalSlice";
 import Loading from "../../../components/loading";
 import { useRouter } from "next/navigation";
+import { useModal } from "../../../hooks/useModal";
 
 export default function BooksListView({
   params,
 }: {
   params: { listUrl: string };
 }) {
+  const { showBooksListModal } = useModal();
   const router = useRouter();
-  const dispatch = useDispatch();
   const loading = useRef(false);
 
   const loadBooksList = async () => {
@@ -32,9 +31,9 @@ export default function BooksListView({
         }
       );
       const bookList = response.data.result;
-      dispatch(
-        showModal({ type: ModalTypes.BOOKS_LIST_DETAILS, data: bookList })
-      );
+      if (bookList) {
+        showBooksListModal(bookList);
+      }
     } catch (error: any) {
       Logger.error("Error getting books lists", {
         error,

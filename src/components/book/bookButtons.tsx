@@ -13,8 +13,7 @@ import {
 import { increaseLuminosity } from "../../utils/thumbnailUtils";
 import toast from "react-hot-toast";
 import { IconSize } from "../../consts/icon";
-import { useDispatch } from "react-redux";
-import { ModalTypes, showModal } from "../../lib/features/modal/modalSlice";
+import { useModal } from "../../hooks/useModal";
 
 type BookButtonsProps = {
   book: Book;
@@ -85,7 +84,6 @@ export const BookButtons: React.FC<BookButtonsProps> = ({
   showAddToListButton = true,
   classNameIcon = "",
 }) => {
-  const dispatch = useDispatch();
   const {
     getBookFullData,
     updateBookReadingStatus,
@@ -94,6 +92,7 @@ export const BookButtons: React.FC<BookButtonsProps> = ({
     userBooksData,
     deleteUserBook,
   } = useBook();
+  const { showAddBookToListModal } = useModal();
   const [bookData, setBookData] = React.useState<UserBookData | undefined>();
   const [bookRead, setBookRead] = React.useState(false);
   const buttonsColor = increaseLuminosity(book?.thumbnailColor);
@@ -133,9 +132,7 @@ export const BookButtons: React.FC<BookButtonsProps> = ({
     });
   };
 
-  const handleAddBookToList = () => {
-    dispatch(showModal({ data: book, type: ModalTypes.ADD_BOOK_TO_LIST }));
-  };
+  const handleAddBookToList = () => showAddBookToListModal(book);
 
   useEffect(() => {
     if (!book) return;

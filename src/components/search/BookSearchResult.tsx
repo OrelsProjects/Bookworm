@@ -6,7 +6,7 @@ import Title from "../book/bookTitle";
 import Authors from "../book/authors";
 import BookButtons from "../book/bookButtons";
 import { useDispatch } from "react-redux";
-import { ModalTypes, showModal } from "../../lib/features/modal/modalSlice";
+import { useModal } from "../../hooks/useModal";
 
 export interface BookComponentProps {
   book: Book;
@@ -14,12 +14,13 @@ export interface BookComponentProps {
 
 const BookSearchResult: React.FC<BookComponentProps> = ({ book }) => {
   const dispatch = useDispatch();
+  const { showBookDetailsModal } = useModal();
   return (
     <div
       className="flex flex-row justify-start items-start gap-2 h-full"
       onClick={(e) => {
         e.stopPropagation();
-        dispatch(showModal({ type: ModalTypes.BOOK_DETAILS, data: { book } }));
+        showBookDetailsModal({ book });
       }}
     >
       <div className="flex-shrink-0">
