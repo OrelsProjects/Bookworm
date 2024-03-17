@@ -129,7 +129,7 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
           booksListsData={booksListsData}
           bookThumbnailSize="md"
           bottomElementProps={{
-            onAddBookClick: (list) => showBooksListModal(list),
+            onAddBookClick: (list) => showBooksListEditModal(list),
             onShareClick: (list) => {
               const baseUrl = window.location.origin;
               navigator.clipboard.writeText(
