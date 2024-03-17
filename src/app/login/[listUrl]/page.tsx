@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { selectAuth } from "../../../lib/features/auth/authSlice";
+import { useDispatch } from "react-redux";
 import axios from "axios";
 import { Logger } from "../../../logger";
 import { IResponse } from "../../../models/dto/response";

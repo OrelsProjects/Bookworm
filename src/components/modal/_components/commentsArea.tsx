@@ -9,11 +9,13 @@ interface CommentAreaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   bookInList?: BookInListWithBook; // For book's comments
   bookListData?: BooksListData; // For list's comments
+  listName?: boolean;
 }
 
 export const CommentsArea: React.FC<CommentAreaProps> = ({
   bookInList,
   bookListData,
+  listName,
   ...props
 }) => {
   const {
@@ -28,11 +30,13 @@ export const CommentsArea: React.FC<CommentAreaProps> = ({
   const timeout = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    setComments(
-      bookInList?.comments
-        ? bookInList.comments
-        : bookListData?.description ?? ""
-    );
+    if (listName) {
+      setComments(bookListData?.name ?? "");
+    } else if (bookInList?.comments) {
+      setComments(bookInList.comments);
+    } else {
+      setComments(bookListData?.description ?? "");
+    }
   }, [bookInList, bookListData]);
 
   useEffect(() => {
@@ -47,10 +51,13 @@ export const CommentsArea: React.FC<CommentAreaProps> = ({
     }
     setLoading(true);
     try {
-      await updateBooksList({
-        ...bookListData,
-        description: comments,
-      });
+      const updateObject = { ...bookListData };
+      if (listName) {
+        updateObject.name = comments;
+      } else {
+        updateObject.description = comments;
+      }
+      await updateBooksList({ ...updateObject });
       setLoading(false);
     } catch (e: any) {
       toast.error("Failed to update.. We are on it 🛠️");
@@ -97,7 +104,9 @@ export const CommentsArea: React.FC<CommentAreaProps> = ({
         setLoading(false);
       }
     }
-    const currentComments = bookInList
+    const currentComments = listName
+      ? bookListData?.name ?? ""
+      : bookInList
       ? bookInList.comments
       : bookListData?.description ?? "";
     timeout.current = setTimeout(() => {
@@ -110,7 +119,7 @@ export const CommentsArea: React.FC<CommentAreaProps> = ({
   return (
     <TextArea
       value={comments}
-      rows={3}
+      rows={props.rows ?? 3}
       onChange={(e) => {
         const value = e.target.value;
         setComments(value);

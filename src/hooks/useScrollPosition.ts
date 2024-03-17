@@ -19,7 +19,9 @@ function useScrollPosition(options?: AdditionalOptions) {
   let pagingTimeout: NodeJS.Timeout | null = null;
 
   const handleScroll = () => {
+    debugger;
     if (!scrollableDivRef.current) return;
+    debugger;
     const scrollbar: HTMLDivElement = scrollableDivRef.current;
     const scrollPosition =
       options?.scrollDirection === ScrollDirection.Width
@@ -30,6 +32,7 @@ function useScrollPosition(options?: AdditionalOptions) {
         ? scrollbar.scrollWidth
         : scrollbar.scrollHeight;
     const scrollPercentage = (scrollPosition / totalSize) * 100;
+    console.log(scrollPercentage);
     if (
       scrollPercentage >= (options?.lowerThreshold ?? 50) &&
       scrollPercentage <= (options?.upperThreshold ?? 65)

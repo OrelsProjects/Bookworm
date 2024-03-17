@@ -11,14 +11,13 @@ import BookThumbnail from "../book/bookThumbnail";
 import { ModalProps } from "./modal";
 import { ModalContent } from "./modalContainers";
 import BookGeneralDetails from "./_components/bookGeneralDetails";
+import ReadMoreText from "../readMoreText";
 
 type ModalBookDetailsProps = {
   book: Book;
-}
+};
 
-const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
-  book
-}) => {
+const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({ book }) => {
   const { getBookFullData, userBooksData } = useBook();
   const [bookData, setBookData] = React.useState<
     UserBookData | null | undefined
@@ -34,7 +33,7 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
       <div className="w-full flex relative flex-col justify-start gap-1 overflow-auto">
         <div className="text-foreground font-bold text-xl">Summary</div>
         <div className="text-foreground overflow-auto h-full scrollbar-hide font-thin shadow-inner pb-6">
-          {book.description}
+          <ReadMoreText text={book?.description} maxLines={6} />
         </div>
         <div className="absolute bottom-0 w-full extra-text-shadow"></div>
       </div>

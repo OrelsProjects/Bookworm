@@ -6,10 +6,11 @@ import SearchBar from "../../components/search/searchBar";
 import useTable from "../../hooks/useTable";
 import BookList from "../../components/book/bookList";
 import useUserRecommendations from "../../hooks/useRecommendations";
+import { ReadingStatusEnum } from "../../models/readingStatus";
 
 export default function Home(): React.ReactNode {
   const router = useRouter();
-  const { userBooks, nextPage } = useTable();
+  const { userBooks, nextPage } = useTable(ReadingStatusEnum.TO_READ);
   const { recommendations } = useUserRecommendations();
   const [searchFocused, setSearchFocused] = useState(false);
 
@@ -20,7 +21,7 @@ export default function Home(): React.ReactNode {
   const Books = () => (
     <>
       <div className="w-full flex flex-row justify-between">
-        <div className="text-xl font-bold">My Library</div>
+        <div className="text-xl font-bold">My next read</div>
         <div className="text-lg font-bold underline" onClick={onSeeAllClick}>
           See all
         </div>
@@ -39,17 +40,28 @@ export default function Home(): React.ReactNode {
     recommendations.length > 0 && (
       <>
         <div className="text-xl font-bold">Recommended for You</div>
-        <div className="w-full">
-          <BookList
-            books={
-              recommendations[0].booksInList.map(
-                (bookInList) => bookInList.book
-              ) ?? []
-            }
-            onNextPageScroll={nextPage}
-            direction="row"
-            thumbnailSize="xl"
-          />
+        <div className="w-full flex flex-col gap-4">
+          {recommendations.length > 0 &&
+            recommendations.slice(0, 5).map((recommendation) => (
+              <div
+                className="flex flex-col gap-1"
+                key={`recommendation-${recommendation.publicURL}`}
+              >
+                <div className="text-lg font-extralight line-clamp-1">
+                  {recommendation.name}
+                </div>
+                <BookList
+                  books={
+                    recommendation.booksInList.map(
+                      (bookInList) => bookInList.book
+                    ) ?? []
+                  }
+                  onNextPageScroll={nextPage}
+                  direction="row"
+                  thumbnailSize="xl"
+                />
+              </div>
+            ))}
         </div>
       </>
     );
@@ -62,7 +74,7 @@ export default function Home(): React.ReactNode {
   );
 
   return (
-    <div className="h-full w-full flex flex-col relative justify-top items-start gap-4 overflow-auto scrollbar-hide">
+    <div className="h-full w-full flex flex-col relative justify-top items-start gap-4 overflow-auto">
       <SearchBar
         onEmpty={() => setSearchFocused(false)}
         onFocus={() => setSearchFocused(true)}

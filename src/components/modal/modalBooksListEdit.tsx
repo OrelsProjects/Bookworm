@@ -339,18 +339,17 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
       }
       thumbnailDetails={
         <div className="flex flex-col w-full gap-2">
-          <Input
-            className="w-full text-lg font-extralight border-1 rounded-md"
-            defaultValue={currentBooksList?.name}
+          <CommentsArea
+            key={`${currentBooksList?.listId}-title`}
             name="listName"
-            onChange={formik.handleChange}
-            value={formik.values.listName}
-            placeholder="Awesome List Vol1"
-            key={currentBooksList?.listId}
-            error={formik.errors.listName}
+            bookListData={currentBooksList}
+            className="w-full"
+            listName
+            rows={1}
+            placeholder="List name"
           />
           <CommentsArea
-            key={currentBooksList?.listId}
+            key={`${currentBooksList?.listId}-description`}
             name="listComments"
             bookListData={currentBooksList}
             className="w-full"

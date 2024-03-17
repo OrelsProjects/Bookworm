@@ -9,6 +9,7 @@ import useBook from "../../hooks/useBook";
 import BookButtons from "../book/bookButtons";
 import { showModal, ModalTypes } from "../../lib/features/modal/modalSlice";
 import { useDispatch } from "react-redux";
+import ReadMoreText from "../readMoreText";
 
 interface ModalBooksListProps<T extends SafeBooksListData> {
   booksListData?: T;
@@ -66,9 +67,12 @@ export const ModalBooksList = <T extends SafeBooksListData>({
           <div className="line-clamp-1 text-foreground font-bold text-xl">
             {booksListData?.name}
           </div>
-          <div className="line-clamp-3 text-muted text-lg">
-            {booksListData?.description}
+          <div className="line-clamp-1 text-muted text-lg">
+            {booksListData?.curatorName}
           </div>
+          {/* <div className="line-clamp-3 text-muted text-lg"> */}
+          <ReadMoreText text={booksListData?.description} maxLines={6} />
+          {/* </div> */}
         </div>
       }
       bottomSection={

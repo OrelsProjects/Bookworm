@@ -30,7 +30,7 @@ const BookList: React.FC<BookListProps> = ({
 }) => {
   const dispatch = useDispatch();
   const { scrollableDivRef } = useScrollPosition({
-    // onThreshold: () => onNextPageScroll?.(), // TODO: Buggy scrolling. Once fixed, reduce the page size in useTable.ts
+    onThreshold: () => onNextPageScroll?.(), // TODO: Buggy scrolling. Once fixed, reduce the page size in useTable.ts
     scrollDirection:
       direction === "row" ? ScrollDirection.Width : ScrollDirection.Height,
   });
@@ -46,13 +46,13 @@ const BookList: React.FC<BookListProps> = ({
       className={`flex gap-3 flex-grow scrollbar-hide ${className ?? ""} ${
         direction === "row" ? "flex-row h-fit" : "flex-col h-full"
       } ${disableScroll ? "" : "overflow-auto"}`}
-      
     >
       {books.map((book) => (
-        <ul
+        <div
           onClick={() => onBookClick(book)}
           className="h-fit"
           key={`book-in-books-list-${book?.bookId}`}
+          ref={scrollableDivRef}
         >
           {CustomBookComponent ? (
             <CustomBookComponent book={book} />
@@ -94,7 +94,7 @@ const BookList: React.FC<BookListProps> = ({
               direction={direction}
             />
           )}
-        </ul>
+        </div>
       ))}
     </li>
   );

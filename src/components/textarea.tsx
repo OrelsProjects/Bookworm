@@ -21,7 +21,11 @@ const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
           {...props}
         />
         {loading && (
-          <LoadingSvg className="absolute bottom-2 right-2 w-6 h-6 !fill-muted" />
+          <LoadingSvg
+            className={`absolute bottom-2 right-2 w-6 h-6 !fill-muted ${
+              props.rows === 1 ? "!w-4 !h-4 !bottom-1 !right-1" : ""
+            }`}
+          />
         )}
       </div>
     );

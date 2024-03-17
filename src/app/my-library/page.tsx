@@ -81,19 +81,22 @@ export default function MyLibrary(): React.ReactNode {
           setShowFilterDropdown(!showFilterDropdown);
         }}
         variant="outline"
-        className={`rounded-full flex-shrink-0 !min-w-20 h-6 p-2 w-max
+        className={`rounded-full flex-shrink-0 !min-w-20 h-6 p-4 w-max max-w-[70%]
               ${filteredBy.length > 0 ? "border-none bg-primary" : ""}
               `}
       >
-        <div className="w-fit flex flex-row gap-1 justify-start items-center">
-          <Filter.Fill className="!text-foreground" iconSize="xs" />
+        <div className="w-fit flex flex-row gap-1 justify-start items-center truncate">
+          <Filter.Fill
+            className="!text-foreground flex-shrink-0"
+            iconSize="xs"
+          />
           {getFilterDropdownText(filter)}
         </div>
       </Button>
       {showFilterDropdown && (
         <div className="absolute top-full left-0 mt-1 z-50">
           <Dropdown
-            className="!w-fit"
+            className="!w-fit max-w-[70%]"
             expandType={ExpandType.TopRight}
             closeOnSelection={false}
             items={booksLists.map((list) => {

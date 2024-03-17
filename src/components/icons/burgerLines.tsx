@@ -1,8 +1,8 @@
-import { CiMenuBurger } from "react-icons/ci";
+import { FaBars } from "react-icons/fa6";
 import { Icon, IconFill, IconOutline } from "./iconContainer";
 
 export const BurgerLines: Icon = {
-    Fill: IconFill(CiMenuBurger),
-    Outline: IconOutline(CiMenuBurger),
+    Fill: IconFill(FaBars),
+    Outline: IconOutline(FaBars),
   };
   

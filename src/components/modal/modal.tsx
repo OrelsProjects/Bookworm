@@ -33,7 +33,7 @@ const Modal: React.FC<ModalProps> = ({
 
   return (
     <OpacityDiv
-      className="absolute top-0 left-0 right-0 bottom-0 w-screen h-screen overflow-y-auto overflow-x-clip z-50"
+      className="absolute top-0 left-0 right-0 bottom-0 w-screen h-screen overflow-y-auto overflow-x-clip z-50 overscroll-none"
       innerRef={modalRef}
       key="modal-background"
       isOpen={isOpen}
@@ -58,7 +58,7 @@ const Modal: React.FC<ModalProps> = ({
           </motion.div>
           <ExpandingDiv
             key="modal"
-            className="h-4/5 w-full bg-background rounded-t-5xl"
+            className="h-4/5 w-full bg-background rounded-t-5xl overscroll-none"
             expandType={ExpandType.Modal}
             isOpen={isOpen}
           >

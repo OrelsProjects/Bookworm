@@ -62,10 +62,13 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const token = session?.tokens?.accessToken?.toString() ?? "";
       const profilePictureUrl =
         session?.tokens?.idToken?.payload?.picture?.toString() ?? "";
+      const displayName =
+        session?.tokens?.idToken?.payload?.name?.toString() ?? "";
       const user: CreateUser = {
         userId,
         email,
         profilePictureUrl,
+        displayName,
       };
       const userResponse = await axios.post<IResponse<CreateUser>>(
         "/api/user/confirm",

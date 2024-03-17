@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { showModal, ModalTypes } from "../../lib/features/modal/modalSlice";
 import useScrollPosition, {
   ScrollDirection,
@@ -15,6 +15,8 @@ import { Share } from "../icons/share";
 import { Book } from "../../models";
 import { isBooksEqual } from "../../utils/bookUtils";
 import { CommentsArea } from "../modal/_components/commentsArea";
+import useAuth from "../../hooks/useAuth";
+import { selectAuth } from "../../lib/features/auth/authSlice";
 
 interface EndElementProps {
   onEndElementClick: (booksList: BooksListData) => void;
@@ -49,19 +51,20 @@ const BooksListList: React.FC<Props> = ({
   endElementProps,
 }) => {
   const dispatch = useDispatch();
-
+  const { user } = useSelector(selectAuth);
   const { scrollableDivRef } = useScrollPosition({
     onThreshold: () => onNextPageScroll?.(),
     scrollDirection: ScrollDirection.Height,
   });
 
-  const onListClick = (booksListData: BooksListData) =>
+  const onListClick = (booksListData: BooksListData) => {
     dispatch(
       showModal({
-        data: booksListData,
+        data: { ...booksListData, curatorName: user?.displayName },
         type: ModalTypes.BOOKS_LIST_DETAILS,
       })
     );
+  };
 
   const isBookInList = useCallback(
     (listData: BooksListData): boolean =>
@@ -73,7 +76,7 @@ const BooksListList: React.FC<Props> = ({
 
   return (
     <div
-      className={`flex gap-2 h-fit flex-col scrollbar-hide ${className ?? ""}
+      className={`flex gap-6 h-fit flex-col scrollbar-hide ${className ?? ""}
       ${disableScroll ? "" : "overflow-auto"} relative`}
       ref={scrollableDivRef}
     >
@@ -97,7 +100,9 @@ const BooksListList: React.FC<Props> = ({
               thumbnailSize={bookThumbnailSize}
             />
             <div className="flex flex-col w-full flex-shrink">
-              <div className="text-lg font-semibold">{listData.name}</div>
+              <div className="text-lg font-semibold line-clamp-1">
+                {listData.name}
+              </div>
               <div className="text-sm font-light line-clamp-3">
                 {listData.description}
               </div>
@@ -105,7 +110,7 @@ const BooksListList: React.FC<Props> = ({
                 <div className="w-full flex flex-row justify-end self-end  mt-auto ml-auto gap-6">
                   <div className="flex flex-col gap-0 justify-center items-center">
                     <Add.Fill
-                      iconSize="xs"
+                      iconSize="sm"
                       onClick={(e) => {
                         e.stopPropagation();
                         bottomElementProps.onAddBookClick(listData);
@@ -116,7 +121,7 @@ const BooksListList: React.FC<Props> = ({
                   </div>
                   <div className="flex flex-col gap-0 justify-center items-center">
                     <Share.Fill
-                      iconSize="xs"
+                      iconSize="sm"
                       onClick={(e) => {
                         e.stopPropagation();
                         bottomElementProps.onShareClick(listData);

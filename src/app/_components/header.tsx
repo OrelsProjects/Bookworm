@@ -15,21 +15,6 @@ export interface HeaderProps {
 const Header = ({ className }: HeaderProps): React.ReactNode => {
   const { user, loadingState, error } = useSelector(selectAuth);
   const { signInWithGoogle } = useAuth();
-  // const [tabs, setTabs] = React.useState<TabItems>([
-  //   {
-  //     label: "Home",
-  //     href: "/home",
-  //     selected: true,
-  //   },
-  //   {
-  //     label: "My Library",
-  //     href: "/my-library",
-  //   },
-  //   // {
-  //   //   label: "Statistics",
-  //   //   href: "/statistics",
-  //   // },
-  // ]);
 
   if (!user) {
     return;
@@ -45,11 +30,11 @@ const Header = ({ className }: HeaderProps): React.ReactNode => {
     !loadingState.loading && (
       <div className="fixed top-0 w-full">
         <div
-          className={`flex justify-between items-center w-full z-30 relative ${
+          className={`flex justify-end items-center w-full z-30 relative ${
             className ?? ""
           }`}
         >
-          <Sidebar />
+          {/* <Sidebar /> */}
           {user ? (
             <Avatar
               avatarUrl={user?.profilePictureUrl}

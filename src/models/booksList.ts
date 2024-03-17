@@ -36,4 +36,4 @@ export type SafeBooksListData = {
   description: string | null;
   publicURL: string | null;
   name: string;
-} & { booksInList: BookInListWithBook[] };
+} & { booksInList: BookInListWithBook[] } & { curatorName?: string };

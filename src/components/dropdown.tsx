@@ -70,7 +70,7 @@ const Dropdown: React.FC<DropdownProps> = ({
                 {item.leftIcon}
               </div>
             )}
-            <div className="text-background">{item.label}</div>
+            <div className="text-background line-clamp-1">{item.label}</div>
           </div>
         ))}
     </div>

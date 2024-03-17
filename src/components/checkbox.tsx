@@ -1,8 +1,7 @@
 import React from "react";
 import { cn } from "../lib/utils";
 
-interface CheckboxProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {
+interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
   checkedComponent?: React.ReactNode;
   uncheckedComponent?: React.ReactNode;
   checked: boolean;
@@ -10,20 +9,24 @@ interface CheckboxProps
 }
 
 const defaultCheckedComponent = (
-  <input
-    id="inline-checkbox"
-    type="checkbox"
-    checked
-    className="w-4 h-4 text-blue-600 bg-muted border-gray-300 rounded focus:ring-blue-500"
-  />
+  <div className="w-4 h-4 flex justify-center items-center bg-blue-600 rounded">
+    {/* SVG icon for checkmark */}
+    <svg
+      className="w-3 h-3 text-white"
+      fill="currentColor"
+      viewBox="0 0 20 20"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        fillRule="evenodd"
+        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+        clipRule="evenodd"
+      />
+    </svg>
+  </div>
 );
 const defaultUncheckedComponent = (
-  <input
-    id="inline-checkbox"
-    type="checkbox"
-    checked={false}
-    className="w-4 h-4 text-blue-600 bg-muted border-gray-300 rounded focus:ring-blue-500"
-  />
+  <div className="w-4 h-4 bg-muted border-foreground rounded"></div>
 );
 
 const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(

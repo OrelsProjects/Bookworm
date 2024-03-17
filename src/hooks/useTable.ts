@@ -13,18 +13,13 @@ import {
 import { ReadingStatusEnum } from "../models/readingStatus";
 import { BooksListData } from "../models/booksList";
 
-enum TableType {
-  READ = 1,
-  TO_READ = 2,
-}
-
-const useTable = () => {
+const useTable = (readingStatus?: ReadingStatusEnum) => {
   const { userBooksData, loading, error } = useSelector(selectUserBooks);
 
-  const currentTableType = useRef<TableType>(TableType.TO_READ);
+  const currentReadingStatus = useRef<ReadingStatusEnum | undefined>(readingStatus);
   const [userBooks, setUserBooks] = useState<UserBookData[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(50);
+  const [pageSize, setPageSize] = useState(10);
   const [totalRecords, setTotalRecords] = useState(0);
   const [readBooksCount, setReadBooksCount] = useState(0);
   const [toReadBooksCount, setToReadBooksCount] = useState(0);
@@ -38,7 +33,7 @@ const useTable = () => {
   >([]);
 
   useEffect(() => {
-    updateUserBooks(currentPage, currentTableType.current, searchValue);
+    updateUserBooks(currentPage, currentReadingStatus.current, searchValue);
   }, [userBooksData, currentPage]);
 
   const getSearchBooks = (value: string = "") => {
@@ -53,19 +48,25 @@ const useTable = () => {
     );
   };
 
-  const getFilteredBooks = (tableType: TableType, search: string) => {
-    return getSearchBooks(search);
-    // .filter(
-    //   (userBook) => userBook.readingStatus?.readingStatusId === tableType
-    // );
+  const getFilteredBooks = (
+    search: string,
+    readingStatus?: ReadingStatusEnum
+  ) => {
+    let userBooks = getSearchBooks(search);
+    if (readingStatus) {
+      userBooks = userBooks.filter(
+        (userBook) => userBook.readingStatus?.readingStatusId === readingStatus
+      );
+    }
+    return userBooks;
   };
 
   const updateUserBooks = (
     page: number,
-    tableType: TableType,
+    readingStatus?: ReadingStatusEnum,
     search: string = ""
   ) => {
-    let newUserBooks = getFilteredBooks(tableType, search).slice(
+    let newUserBooks = getFilteredBooks(search, readingStatus).slice(
       0,
       page * pageSize
     );
@@ -94,10 +95,10 @@ const useTable = () => {
     setPageSize(size);
   };
 
-  const updateTableType = (newTableType: TableType) => {
-    currentTableType.current = newTableType;
+  const updateReadingStatus = (newReadingstatus: ReadingStatusEnum) => {
+    currentReadingStatus.current = newReadingstatus;
     setCurrentPage(1);
-    updateUserBooks(1, newTableType);
+    updateUserBooks(1, newReadingstatus);
     setSearchValue("");
   };
 
@@ -181,7 +182,7 @@ const useTable = () => {
    */
   const searchBooks = (value: string) => {
     setSearchValue(value);
-    updateUserBooks(3, currentTableType.current, value);
+    updateUserBooks(3, currentReadingStatus.current, value);
   };
 
   return {
@@ -193,7 +194,7 @@ const useTable = () => {
     totalRecords,
     nextPage,
     handlePageSizeChange,
-    updateTableType,
+    updateReadingStatus,
     searchBooks,
     searchValue,
     readBooksCount,

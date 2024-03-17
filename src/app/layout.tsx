@@ -37,11 +37,11 @@ export default function RootLayout({
               <APIProvider>
                 <DataProvider>
                   <AnimationProvider>
-                    <HeightProvider className="p-4 pt-12 flex flex-col">
+                    <HeightProvider className="p-4 pt-16 flex flex-col">
                       {children}
                     </HeightProvider>
                   </AnimationProvider>
-                  <Header className="h-9 w-full p-4 pb-2" />
+                  <Header className="h-9 w-full p-4 pt-8" />
                   <ModalProvider />
                   <BottomBarProvider />
                   <Toaster />
