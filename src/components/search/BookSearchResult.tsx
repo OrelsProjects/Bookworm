@@ -19,7 +19,7 @@ const BookSearchResult: React.FC<BookComponentProps> = ({ book }) => {
       className="flex flex-row justify-start items-start gap-2 h-full"
       onClick={(e) => {
         e.stopPropagation();
-        dispatch(showModal({ type: ModalTypes.BOOK_DETAILS, data: book }));
+        dispatch(showModal({ type: ModalTypes.BOOK_DETAILS, data: { book } }));
       }}
     >
       <div className="flex-shrink-0">
@@ -34,7 +34,7 @@ const BookSearchResult: React.FC<BookComponentProps> = ({ book }) => {
           <Title title={book.title} />
           <Authors authors={book.authors} prefix="by" />
         </div>
-      <BookButtons book={book} className="!justify-start" iconSize="xs" />
+        <BookButtons book={book} className="!justify-start" iconSize="xs" />
       </div>
     </div>
   );

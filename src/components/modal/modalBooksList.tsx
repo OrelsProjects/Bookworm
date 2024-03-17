@@ -70,10 +70,10 @@ export const ModalBooksList = <T extends SafeBooksListData>({
           <div className="line-clamp-1 text-muted text-lg">
             {booksListData?.curatorName}
           </div>
-          {/* <div className="line-clamp-3 text-muted text-lg"> */}
-          <ReadMoreText text={booksListData?.description} maxLines={6} />
-          {/* </div> */}
         </div>
+      }
+      buttonsRow={
+        <ReadMoreText text={booksListData?.description} maxLines={3} />
       }
       bottomSection={
         <div className="h-full w-full flex flex-col gap-6 mt-8 pb-2 overflow-auto scrollbar-hide">
@@ -86,7 +86,7 @@ export const ModalBooksList = <T extends SafeBooksListData>({
               {booksInUsersListsCount}/{booksListData?.booksInList.length}
             </div>
           </div>
-          {booksListData?.booksInList.map((listData, index) => (
+          {booksListData?.booksInList.map((bookInList, index) => (
             <div
               key={`book-in-list-${index}`}
               className="flex flex-row justify-start items-start gap-2"
@@ -95,24 +95,24 @@ export const ModalBooksList = <T extends SafeBooksListData>({
                 dispatch(
                   showModal({
                     type: ModalTypes.BOOK_DETAILS,
-                    data: listData.book,
+                    data: { book: bookInList.book, bookInList },
                   })
                 );
               }}
             >
-              <BookThumbnail book={listData.book} thumbnailSize="md" />
+              <BookThumbnail book={bookInList.book} thumbnailSize="md" />
               <div className="flex flex-col gap-1">
                 <div className="font-semibold line-clamp-2">
-                  {listData.book.title}
+                  {bookInList.book.title}
                 </div>
                 <div className="font-thin line-clamp-3">
-                  {listData.comments}
+                  {bookInList.comments}
                 </div>
               </div>
               <div className="h-full w-fit flex-shrink-0 ml-auto" id="buttons">
                 <div className="w-full h-full flex flex-col justify-evenly">
                   <BookButtons
-                    book={listData.book}
+                    book={bookInList.book}
                     iconSize="sm"
                     className="h-full !flex-col !gap-0"
                     classNameIcon="!gap-1"

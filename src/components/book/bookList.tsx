@@ -36,7 +36,7 @@ const BookList: React.FC<BookListProps> = ({
   });
 
   const onBookClick = (book?: Book) =>
-    dispatch(showModal({ data: book, type: ModalTypes.BOOK_DETAILS }));
+    dispatch(showModal({ data: { book }, type: ModalTypes.BOOK_DETAILS }));
 
   const onAddBookClick = (book?: Book) =>
     dispatch(showModal({ data: book, type: ModalTypes.ADD_BOOK_TO_LIST }));

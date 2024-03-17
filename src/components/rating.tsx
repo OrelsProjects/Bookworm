@@ -13,7 +13,7 @@ type StarProps = {
 };
 
 function clamp(num: number, min: number, max: number): number {
-  return Math.min(Math.max(num, min), max);
+  return Math.min(num, max);
 }
 
 export const RatingStar: React.FC<StarProps> = ({
@@ -62,9 +62,9 @@ const Rating: React.FC<RatingProps> = ({
   loading,
   className,
 }) => {
-  const fullStars = clamp(rating ? Math.floor(rating) : 0, 0, 5);
+  const fullStars = clamp(rating ? Math.ceil(rating) : 0, 0, 5);
   const emptyStars = clamp(5 - fullStars, 0, 5);
-  const fullStarsUser = clamp(userRating ? Math.floor(userRating) : 0, 0, 5);
+  const fullStarsUser = clamp(userRating ? Math.ceil(userRating) : 0, 0, 5);
   const emptyStarsUser = clamp(5 - fullStarsUser, 0, 5);
 
   const RatingLoading = () => (

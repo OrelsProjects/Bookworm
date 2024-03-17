@@ -38,18 +38,15 @@ const ReadMoreText: React.FC<ReadMoreTextProps> = ({
 
   return (
     text && (
-      <div>
+      <div className="text-muted font-thin text-xl flex flex-col items-start">
         <p
-          className={`${
-            isCollapsed ? maxLinesClass : ""
-          } text-text-muted text-md ${className}`}
+          className={` ${className} ${
+            isCollapsed ? `${maxLinesClass} !h-full` : ""
+          } `}
         >
-          {text}
+          {text}{" "}
         </p>
-        <button
-          className="text-foreground font-bold underline"
-          onClick={toggleCollapse}
-        >
+        <button className="font-normal underline" onClick={toggleCollapse}>
           {isCollapsed ? "Read more" : "Read less"}
         </button>
       </div>

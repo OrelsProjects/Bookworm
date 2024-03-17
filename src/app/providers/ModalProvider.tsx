@@ -17,6 +17,7 @@ import ModalAddBookToList from "../../components/modal/modalAddBookToList";
 import { ModalBooksList } from "../../components/modal/modalBooksList";
 import ModalBooksListEdit from "../../components/modal/modalBooksListEdit";
 import { usePathname, useRouter } from "next/navigation";
+import { BookInList } from "../../models/bookInList";
 
 const ModalProvider: React.FC = () => {
   const router = useRouter();
@@ -39,7 +40,7 @@ const ModalProvider: React.FC = () => {
     const defaultColor = "rgb(255,255,255)";
     switch (type) {
       case ModalTypes.BOOK_DETAILS:
-        return darkenColor(data?.thumbnailColor) ?? defaultColor;
+        return darkenColor(data?.book?.thumbnailColor) ?? defaultColor;
       case ModalTypes.BOOKS_LIST_DETAILS_EDIT:
       case ModalTypes.BOOKS_LIST_DETAILS:
         const firstBook = data?.booksInList?.[0]?.book;
@@ -66,7 +67,10 @@ const ModalProvider: React.FC = () => {
   );
 
   const RenderBookDetails = useCallback(
-    (book?: Book) => book && <ModalBookDetails book={book} />,
+    (data?: { book: Book; bookInList?: BookInList }) =>
+      data && (
+        <ModalBookDetails book={data?.book} bookInList={data.bookInList} />
+      ),
     []
   );
 

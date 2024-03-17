@@ -5,19 +5,22 @@ import React from "react";
 import Book from "../../models/book";
 import useBook from "../../hooks/useBook";
 import { UserBookData } from "../../models/userBook";
-import Rating from "../rating";
 import BookButtons from "../book/bookButtons";
 import BookThumbnail from "../book/bookThumbnail";
-import { ModalProps } from "./modal";
 import { ModalContent } from "./modalContainers";
 import BookGeneralDetails from "./_components/bookGeneralDetails";
 import ReadMoreText from "../readMoreText";
+import { BookInList } from "../../models/bookInList";
 
 type ModalBookDetailsProps = {
   book: Book;
+  bookInList?: BookInList;
 };
 
-const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({ book }) => {
+const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
+  book,
+  bookInList,
+}) => {
   const { getBookFullData, userBooksData } = useBook();
   const [bookData, setBookData] = React.useState<
     UserBookData | null | undefined
@@ -31,9 +34,23 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({ book }) => {
   const Summary = () =>
     book.description ? (
       <div className="w-full flex relative flex-col justify-start gap-1 overflow-auto">
-        <div className="text-foreground font-bold text-xl">Summary</div>
-        <div className="text-foreground overflow-auto h-full scrollbar-hide font-thin shadow-inner pb-6">
-          <ReadMoreText text={book?.description} maxLines={6} />
+        <div className="flex flex-col gap-4 text-foreground overflow-auto h-full scrollbar-hide font-thin shadow-inner pb-6">
+          <div>
+            <div className="text-foreground font-bold text-xl">Summary</div>
+            <ReadMoreText
+              text={book?.description}
+              maxLines={bookInList ? 3 : 6}
+              className={"text-xl text-mute"}
+            />
+          </div>
+          {bookInList && (
+            <div>
+              <div className="text-foreground font-bold text-xl">
+                List Creator Comment
+              </div>
+              <ReadMoreText text={bookInList.comments} maxLines={3} />
+            </div>
+          )}
         </div>
         <div className="absolute bottom-0 w-full extra-text-shadow"></div>
       </div>

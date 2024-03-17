@@ -24,6 +24,8 @@ function useSearch(): UseSearchResult {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
+  const searchCancelToken = axios.CancelToken.source();
+
   const updateSearchValue = (value: string) => {
     if (value === searchValue) {
       return;
@@ -58,11 +60,17 @@ function useSearch(): UseSearchResult {
       }
       EventTracker.track("User search new book", { query: value });
       const response = await axios.get<IResponse<Book[]>>(
-        `/api/google-books?query=${value}`
+        `/api/google-books?query=${value}`,
+        {
+          cancelToken: searchCancelToken.token,
+        }
       );
       const books: Books = response.data.result ?? [];
       setResultsToUpdate(books);
     } catch (error: any) {
+      if (axios.isCancel(error)) {
+        return;
+      }
       Logger.error("Failed to fetch books", { error, data: { query: value } });
       setError(error.message);
       return [];
@@ -83,7 +91,10 @@ function useSearch(): UseSearchResult {
     if (searchValue) {
       debouncedFetchData(searchValue);
     }
-    return () => debouncedFetchData.cancel();
+    return () => {
+      debouncedFetchData.cancel();
+      // searchCancelToken.cancel();
+    };
   }, [searchValue]);
 
   return {
