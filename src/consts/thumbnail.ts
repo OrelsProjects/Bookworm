@@ -1,4 +1,4 @@
-export type ThumbnailSize = "xs" | "sm" | "md" | "lg" | "xl";
+export type ThumbnailSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 
 const thumbnailSizes = {
   ["xs"]: { width: "w-16", height: "h-24" },
@@ -6,6 +6,7 @@ const thumbnailSizes = {
   ["md"]: { width: "w-24", height: "h-36" },
   ["lg"]: { width: "w-30", height: "h-44" },
   ["xl"]: { width: "w-36", height: "h-52" },
+  ["2xl"]: { width: "w-44", height: "h-64" },
 };
 export const getThumbnailSize = (thumbnailSize?: ThumbnailSize) => {
   const size = thumbnailSizes[thumbnailSize ?? "md"];

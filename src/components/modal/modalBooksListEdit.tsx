@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { BooksListData } from "../../models/booksList";
 import { ThumbnailSize } from "../../consts/thumbnail";
-import { Input } from "../input";
 import { Add } from "../icons/add";
 import { Cancel } from "../icons/cancel";
 import { Checkmark } from "../icons/checkmark";
@@ -326,14 +325,14 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
   const SearchResult: React.FC<BookComponentProps> = ({ book }) => (
     <BookDetails
       book={book}
-      bookThumbnailSize="md"
+      bookThumbnailSize="sm"
       Icon={
         isBookInList(book) ? (
           <Checkmark.Fill className="flex-shrink-0" iconSize="md" />
         ) : (
           <Add.Outline
             className="flex-shrink-0"
-            iconSize="md"
+            iconSize="xs"
             onClick={() => {
               handleAddNewBookClick(book);
             }}
@@ -357,6 +356,14 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
         <div className="flex flex-col w-full gap-2">
           <CommentsArea
             key={`${currentBooksList?.listId}-title`}
+            value={booksListData ? undefined : formik.values.listName}
+            onChange={
+              booksListData
+                ? undefined
+                : (e) => {
+                    formik.setFieldValue("listName", e.target.value);
+                  }
+            }
             name="listName"
             bookListData={currentBooksList}
             className="w-full"
@@ -413,6 +420,7 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
                     {Array.from(Array(5)).map((_, index) => (
                       <BookDetailsSkeleton
                         key={`book-details-skeleton-${index}`}
+                        bookThumbnailSize="sm"
                       />
                     ))}
                   </div>

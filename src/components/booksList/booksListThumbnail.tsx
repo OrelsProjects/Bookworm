@@ -60,6 +60,7 @@ const BooksListThumbnail: React.FC<Props> = ({
     const book = thumbnailBooks[0];
     return (
       <img
+        loading="lazy"
         src={book.thumbnailUrl}
         alt={`${book.title} cover`}
         className={`w-full h-full`}
@@ -75,6 +76,7 @@ const BooksListThumbnail: React.FC<Props> = ({
       <div className="flex gap-1 w-full h-full relative">
         <div className="w-full h-full absolute z-10">
           <img
+            loading="lazy"
             src={thumbnailBooks[0].thumbnailUrl}
             alt={`${thumbnailBooks[0].title} cover`}
             className={`w-full h-full`}
@@ -87,6 +89,7 @@ const BooksListThumbnail: React.FC<Props> = ({
         <div className="w-full h-full z-20 flex flex-row items-end">
           {thumbnailBooks.slice(1, booksCount).map((book) => (
             <img
+              loading="lazy"
               key={props.key || book.bookId}
               src={book.thumbnailUrl}
               alt={props.alt || `${book.title} cover`}
@@ -111,6 +114,7 @@ const BooksListThumbnail: React.FC<Props> = ({
     return thumbnailBooks.map((book) => (
       <div key={book.bookId} className={`w-1/2 h-1/2`}>
         <img
+          loading="lazy"
           src={book.thumbnailUrl}
           alt={`${book.title} cover`}
           className={`w-full h-full`}

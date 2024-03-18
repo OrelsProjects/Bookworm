@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo } from "react";
-import BooksListDefaultView from "./defaultView";
 import { ModalContent } from ".././modalContainers";
 import { SafeBooksListData } from "../../../models/booksList";
 import BooksListThumbnail from "../../booksList/booksListThumbnail";
@@ -7,11 +6,11 @@ import useBooksList from "../../../hooks/useBooksList";
 import useBook from "../../../hooks/useBook";
 import ReadMoreText from "../../readMoreText";
 import { ModalBooksListProps } from "./consts";
+import BooksListGridView from "./gridView";
 
 export const ModalBooksList = <T extends SafeBooksListData>({
   booksListData,
 }: ModalBooksListProps<T>) => {
-
   const { userBooksData } = useBook();
   const { booksLists } = useBooksList();
 
@@ -66,10 +65,12 @@ export const ModalBooksList = <T extends SafeBooksListData>({
         </div>
       }
       buttonsRow={
-        <ReadMoreText text={booksListData?.description} maxLines={2} />
+        <div className="w-full flex">
+          <ReadMoreText text={booksListData?.description} maxLines={2} />
+        </div>
       }
       bottomSection={
-        <BooksListDefaultView
+        <BooksListGridView
           booksListData={booksListData}
           booksInUsersListsCount={booksInUsersListsCount}
         />
