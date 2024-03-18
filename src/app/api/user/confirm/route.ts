@@ -10,14 +10,16 @@ export async function POST(
 ): Promise<NextResponse<IResponse<CreateUser>>> {
   let user: CreateUser | undefined = undefined;
   try {
-    const body = await req.json();
-    user = body.data as User;
+    const body = (await req.json()) as any;
+    user = body.data.user as CreateUser;
+    const fromList = body.data.fromList as string;
     if (!user) {
       throw new Error("Missing user object");
     }
     const axios = GetAxiosInstance(req);
     const response = await axios.post<CreateUser>("/user/confirm", {
       ...user,
+      fromList,
     });
     const userResponse = response.data;
     return NextResponse.json({ result: userResponse }, { status: 200 });

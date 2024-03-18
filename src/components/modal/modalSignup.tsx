@@ -25,6 +25,7 @@ export default function ModalSignup() {
         </div>
         <GoogleLogin
           onClickBefore={() => {
+            localStorage.setItem("listReferer", window.location.pathname);
             localStorage.setItem("redirect", window.location.pathname);
           }}
         />

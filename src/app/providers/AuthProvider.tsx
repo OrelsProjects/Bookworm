@@ -70,10 +70,12 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         profilePictureUrl,
         displayName,
       };
+      const fromList = localStorage.getItem("listReferer");
+      localStorage.removeItem("listReferer");
       const userResponse = await axios.post<IResponse<CreateUser>>(
         "/api/user/confirm",
         {
-          data: user,
+          data: { user, fromList },
         },
         {
           headers: {
