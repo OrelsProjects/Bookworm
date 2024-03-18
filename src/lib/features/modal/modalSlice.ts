@@ -33,6 +33,13 @@ const bottomSheetSlice = createSlice({
       state,
       action: PayloadAction<{ data?: any; type: ModalTypes }>
     ) => {
+      if (
+        state.modalStack.length > 0 &&
+        state.modalStack[state.modalStack.length - 1].type ===
+          action.payload.type
+      ) {
+        return;
+      }
       state.modalStack.push(action.payload);
       state.error = null;
     },

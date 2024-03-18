@@ -2,14 +2,21 @@ import React from "react";
 import { Button } from "./button";
 import useAuth from "../hooks/useAuth";
 
-export default function GoogleLogin() {
+interface GoogleLoginProps {
+  onClickBefore?: () => void;
+}
+
+export default function GoogleLogin({ onClickBefore }: GoogleLoginProps) {
   const { signInWithGoogle } = useAuth();
 
   const handleGoogleLogin = async () => await signInWithGoogle();
 
   return (
     <Button
-      onClick={handleGoogleLogin}
+      onClick={() => {
+        onClickBefore?.();
+        handleGoogleLogin();
+      }}
       variant="outline"
       className="rounded-full w-full"
     >

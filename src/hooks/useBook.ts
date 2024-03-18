@@ -3,10 +3,7 @@ import { useEffect, useRef } from "react";
 import { Book, GoodreadsData, User, UserBook, UserBookData } from "../models";
 import axios from "axios";
 import { Books, CreateBooksResponse } from "../models/book";
-import {
-  CreateUserBookBody,
-  UpdateUserBookBody,
-} from "../models/userBook";
+import { CreateUserBookBody, UpdateUserBookBody } from "../models/userBook";
 import { useDispatch, useSelector } from "react-redux";
 import {
   USER_BOOKS_KEY,
@@ -18,13 +15,19 @@ import {
   updateUserBookGoodreadsData,
 } from "../lib/features/userBooks/userBooksSlice";
 import { IResponse } from "../models/dto/response";
-import { setError } from "../lib/features/auth/authSlice";
+import {
+  AuthStateType,
+  selectAuth,
+  setError,
+} from "../lib/features/auth/authSlice";
 import { RootState } from "../lib/store";
 import ReadingStatus, { ReadingStatusEnum } from "../models/readingStatus";
 import { Logger } from "../logger";
 import { EventTracker } from "../eventTracker";
 import { sortByDateAdded } from "../utils/bookUtils";
 import { ErrorDeleteUserBook } from "../models/errors/userBookErrors";
+import { useModal } from "./useModal";
+import { ErrorUnauthenticated } from "../models/errors/unauthenticatedError";
 
 const getUserBooksFromLocalStorage = (): UserBookData[] => {
   return JSON.parse(
@@ -43,7 +46,17 @@ export type BookFilter = "readlist" | "status";
 const useBook = () => {
   const loading = useRef(false);
   const dispatch = useDispatch();
+  const { user, state } = useSelector(selectAuth);
   const { userBooksData } = useSelector((state: RootState) => state.userBooks);
+  const { showRegisterModal } = useModal();
+
+  const openRegisterModal = () => {
+    if (!user || state !== AuthStateType.SIGNED_IN) {
+      showRegisterModal();
+      return true;
+    }
+    return false;
+  };
 
   const deleteUserBook = async (userBook: UserBook): Promise<void> => {
     if (loading.current) {
@@ -99,6 +112,9 @@ const useBook = () => {
   }): Promise<UserBook> => {
     if (loading.current) {
       throw new Error("Cannot add book while another book is loading");
+    }
+    if (openRegisterModal()) {
+      throw new ErrorUnauthenticated("User not authenticated");
     }
     loading.current = true;
     EventTracker.track("User add book", {

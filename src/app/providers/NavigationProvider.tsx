@@ -17,22 +17,21 @@ const NavigationProvider: React.FC<NavigationProviderProps> = ({
   const { user, state } = useSelector(selectAuth);
 
   useEffect(() => {
-    console.log(
-      "window.history.state",
-      window.history.state,
-      "pathname",
-      pathname
-    );
     if (!user && state !== AuthStateType.SIGNED_IN) {
       const currentPathname = pathname;
       if (pathname !== "/login") {
         router.push("/login");
-        if (!pathname.includes("/lists/")) {
+        if (pathname.includes("/lists/")) {
           router.push(currentPathname);
         }
       }
+    } else {
+      const redirect = localStorage.getItem("redirect");
+      if (redirect) {
+        router.push(redirect);
+      }
     }
-  }, [user, window.history.state, pathname]);
+  }, [user]);
 
   return <>{children}</>;
 };

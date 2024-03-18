@@ -20,9 +20,7 @@ export const useModal = () => {
   const showBookDetailsModal = (data: {
     book?: Book;
     bookInList?: BookInList;
-  }) => showRegisterModal();
-
-  // onShowModal(data, ModalTypes.BOOK_DETAILS);
+  }) => onShowModal(data, ModalTypes.BOOK_DETAILS);
 
   const showBookInListDetailsModal = (data: SafeBooksListData) =>
     onShowModal(data, ModalTypes.BOOKS_LIST_DETAILS);
@@ -30,8 +28,10 @@ export const useModal = () => {
   const showBooksListEditModal = (data?: BooksListData) =>
     onShowModal(data, ModalTypes.BOOKS_LIST_DETAILS_EDIT);
 
-  const showBooksListModal = (data: SafeBooksListData) =>
-    onShowModal(data, ModalTypes.BOOKS_LIST_DETAILS);
+  const showBooksListModal = (data: {
+    bookList: SafeBooksListData;
+    onBack?: () => void;
+  }) => onShowModal(data, ModalTypes.BOOKS_LIST_DETAILS);
 
   const showRegisterModal = () => onShowModal(null, ModalTypes.REGISTER);
 
@@ -43,6 +43,7 @@ export const useModal = () => {
     showBookInListDetailsModal,
     showBooksListEditModal,
     showBooksListModal,
+    showRegisterModal,
     closeModal,
   };
 };

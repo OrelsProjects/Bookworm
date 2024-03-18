@@ -14,6 +14,7 @@ import { increaseLuminosity } from "../../utils/thumbnailUtils";
 import toast from "react-hot-toast";
 import { IconSize, getIconSize } from "../../consts/icon";
 import { useModal } from "../../hooks/useModal";
+import { ErrorUnauthenticated } from "../../models/errors/unauthenticatedError";
 
 type BookButtonsProps = {
   book: Book;
@@ -126,11 +127,18 @@ export const BookButtons: React.FC<BookButtonsProps> = ({
       successMessage = `${book?.title} updated to list: ${readingStatusName}`;
       errorMessage = `Failed to add ${book?.title} to list: ${readingStatusName}`;
     }
-    await toast.promise(promise, {
-      loading: loadingMessage,
-      success: successMessage,
-      error: errorMessage,
-    });
+    try {
+      await toast.promise(promise, {
+        loading: loadingMessage,
+        success: successMessage,
+        error: (e: any) => {
+          if (e instanceof ErrorUnauthenticated) {
+            return "You need to be logged in";
+          }
+          return errorMessage;
+        },
+      });
+    } catch (e) {}
   };
 
   const handleAddBookToList = () => showAddBookToListModal(book);

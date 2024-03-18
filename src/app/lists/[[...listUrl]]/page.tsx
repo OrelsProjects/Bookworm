@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useCallback, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { SearchBarComponent } from "../../../components/search/searchBarComponent";
 import useTable from "../../../hooks/useTable";
 import BookList from "../../../components/book/bookList";
@@ -17,13 +17,16 @@ import { IResponse } from "../../../models/dto/response";
 import { Logger } from "../../../logger";
 import Loading from "../../../components/loading";
 import { useModal } from "../../../hooks/useModal";
+import { selectAuth } from "../../../lib/features/auth/authSlice";
 
 const MyLists = ({ params }: { params: { listUrl?: string } }) => {
+  const { user } = useSelector(selectAuth);
   const { showBooksListModal, showBooksListEditModal } = useModal();
   const router = useRouter();
+  const pathname = usePathname();
   const { booksListsData } = useSelector(selectBooksLists);
   const { userBooks, nextPage, searchBooks } = useTable();
-  const loadingBooksList = useRef(false);
+  const [loadingBooksList, setLoadingBooksList] = useState(false);
 
   const loadBooksList = async () => {
     try {
@@ -37,7 +40,16 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
       );
       const bookList = response.data.result;
       if (bookList) {
-        showBooksListModal(bookList);
+        if (!user) {
+          showBooksListModal({
+            bookList,
+            onBack: () => {
+              router.push("/login");
+            },
+          });
+        } else {
+          showBooksListModal({ bookList });
+        }
       }
     } catch (error: any) {
       Logger.error("Error getting books lists", {
@@ -45,21 +57,22 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
       });
       router.push("/404");
     } finally {
-      loadingBooksList.current = false;
+      setLoadingBooksList(false);
+      localStorage.removeItem("redirect");
     }
   };
 
   useEffect(() => {
     if (params.listUrl) {
-      if (loadingBooksList.current || !params.listUrl) return;
-      loadingBooksList.current = true;
+      if (loadingBooksList || !params.listUrl) return;
+      setLoadingBooksList(true);
       loadBooksList();
     }
   }, []);
 
   useEffect(() => {
     if (!params.listUrl) {
-      loadingBooksList.current = false;
+      setLoadingBooksList(false);
     }
   }, [params.listUrl]);
 
@@ -143,7 +156,7 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
     </div>
   );
 
-  if (loadingBooksList.current) {
+  if (loadingBooksList) {
     return <Loading spinnerClassName="w-12 h-12" />;
   }
   return (

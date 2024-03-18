@@ -1,25 +1,15 @@
-import React, { useEffect, useMemo } from "react";
+import React from "react";
 import GoogleLogin from "../googleLogin";
 import { ExpandType, ExpandingDiv } from "../animationDivs";
 import { useModal } from "../../hooks/useModal";
-import { useSelector } from "react-redux";
-import { ModalTypes, selectModal } from "../../lib/features/modal/modalSlice";
 
 export default function ModalSignup() {
   const { closeModal } = useModal();
-  const { modalStack } = useSelector(selectModal);
-
-  const shouldShow = useMemo<boolean>(() => {
-    return modalStack
-      .map((modalData) => modalData.type)
-      .includes(ModalTypes.REGISTER);
-  }, [modalStack]);
 
   return (
     <ExpandingDiv
       expandType={ExpandType.BottomToTop}
       className="w-full h-full absolute bottom-0 left-0 overscroll-none z-50"
-      isOpen={shouldShow}
     >
       <div
         className="absolute h-screen w-screen top-0 left-0 z-10 bg-background opacity-50"
@@ -33,7 +23,11 @@ export default function ModalSignup() {
           It looks like you're not part of the club yet. <br />
           Join us with a quick login and start building you dream library!
         </div>
-        <GoogleLogin />
+        <GoogleLogin
+          onClickBefore={() => {
+            localStorage.setItem("redirect", window.location.pathname);
+          }}
+        />
       </div>
     </ExpandingDiv>
   );

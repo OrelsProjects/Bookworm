@@ -32,7 +32,7 @@ export default function BooksListView({
       );
       const bookList = response.data.result;
       if (bookList) {
-        showBooksListModal(bookList);
+        showBooksListModal({ bookList });
       }
     } catch (error: any) {
       Logger.error("Error getting books lists", {

@@ -14,6 +14,12 @@ import {
 import { Checkmark } from "../../icons/checkmark";
 import { Bookmark } from "../../icons/bookmark";
 import { UserBookData, isBookRead } from "../../../models/userBook";
+import { useSelector } from "react-redux";
+import {
+  AuthStateType,
+  selectAuth,
+} from "../../../lib/features/auth/authSlice";
+import { ErrorUnauthenticated } from "../../../models/errors/unauthenticatedError";
 
 const BookIcon = (icon: React.ReactNode, className?: string) => (
   <div className={`rounded-full bg-background p-2 ${className}`}>{icon}</div>
@@ -22,6 +28,7 @@ const BookIcon = (icon: React.ReactNode, className?: string) => (
 export default function BooksListGridView({
   booksListData,
 }: BooksListViewProps) {
+  const { user, state } = useSelector(selectAuth);
   const {
     getBookFullData,
     updateBookReadingStatus,
@@ -30,7 +37,7 @@ export default function BooksListGridView({
     userBooksData,
     deleteUserBook,
   } = useBook();
-  const { showBookDetailsModal } = useModal();
+  const { showBookDetailsModal, showRegisterModal } = useModal();
 
   const booksInUsersListsCount = useMemo(() => {
     let booksInList = 0;
@@ -90,11 +97,18 @@ export default function BooksListGridView({
       successMessage = `${book?.title} updated to list: ${readingStatusName}`;
       errorMessage = `Failed to add ${book?.title} to list: ${readingStatusName}`;
     }
-    await toast.promise(promise, {
-      loading: loadingMessage,
-      success: successMessage,
-      error: errorMessage,
-    });
+    try {
+      await toast.promise(promise, {
+        loading: loadingMessage,
+        success: successMessage,
+        error: (e: any) => {
+          if (e instanceof ErrorUnauthenticated) {
+            return "You need to be logged in";
+          }
+          return errorMessage;
+        },
+      });
+    } catch (e) {}
   };
 
   const isOddNumberOfBooks = useMemo(

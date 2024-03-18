@@ -75,8 +75,10 @@ const ModalProvider: React.FC = () => {
       case ModalTypes.BOOK_DETAILS:
         return darkenColor(data?.book?.thumbnailColor) ?? defaultColor;
       case ModalTypes.BOOKS_LIST_DETAILS_EDIT:
+        const firstBookEdit = data?.booksInList?.[0]?.book;
+        return darkenColor(firstBookEdit?.thumbnailColor) ?? defaultColor;
       case ModalTypes.BOOKS_LIST_DETAILS:
-        const firstBook = data?.booksInList?.[0]?.book;
+        const firstBook = data?.bookList.booksInList?.[0]?.book;
         return darkenColor(firstBook?.thumbnailColor) ?? defaultColor;
       case ModalTypes.ADD_BOOK_TO_LIST:
         return darkenColor(data?.thumbnailColor) ?? defaultColor;
@@ -86,10 +88,10 @@ const ModalProvider: React.FC = () => {
   }, [type, data]);
 
   const RenderBooksListDetails = useCallback(
-    (booksListData?: BooksListData) => {
+    (data?: any) => {
       return (
-        <RenderModal>
-          <ModalBooksList booksListData={booksListData} />;
+        <RenderModal onClose={data.onBack}>
+          <ModalBooksList booksListData={data.bookList} />;
         </RenderModal>
       );
     },
@@ -130,11 +132,28 @@ const ModalProvider: React.FC = () => {
     [shouldRenderAddBookToListModal]
   );
 
-  const RenderModal = ({ children }: { children: React.ReactNode }) => {
+  const RenderRegisterModal = useCallback(() => {
+    const shouldShow = modalStack
+      .map((modalData) => modalData.type)
+      .includes(ModalTypes.REGISTER);
+
+    return shouldShow && <ModalSignup />;
+  }, [modalStack]);
+
+  const RenderModal = ({
+    children,
+    onClose,
+  }: {
+    children: React.ReactNode;
+    onClose?: () => void;
+  }) => {
     return (
       <Modal
         isOpen={isOpen}
-        onClose={() => handleOnClose()}
+        onClose={() => {
+          onClose?.();
+          handleOnClose();
+        }}
         backgroundColor={modalBackgroundColor}
         // key={`${modalData.type}`}
       >
@@ -175,6 +194,7 @@ const ModalProvider: React.FC = () => {
       {modalStack.map((modalData) => (
         <RenderComponent modalData={modalData} />
       ))}
+      <RenderRegisterModal />
     </>
   );
 };
