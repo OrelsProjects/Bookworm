@@ -71,10 +71,16 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
   return (
     <ModalContent
       thumbnail={<Thumbnail />}
-      buttonsRow={<ButtonsRow />}
       thumbnailDetails={
-        bookData && <BookGeneralDetails userBookData={bookData} />
+        bookData && (
+          <BookGeneralDetails
+            title={bookData.bookData.book?.title}
+            authors={bookData.bookData.book?.authors}
+            goodreadsRating={bookData.goodreadsData?.goodreadsRating}
+          />
+        )
       }
+      buttonsRow={<ButtonsRow />}
       bottomSection={<Summary />}
     />
   );

@@ -96,7 +96,13 @@ const ModalAddBookToList: React.FC<ModalBookDetailsProps> = ({
     <ModalContent
       thumbnail={<Thumbnail />}
       thumbnailDetails={
-        bookData && <BookGeneralDetails userBookData={bookData} />
+        bookData && (
+          <BookGeneralDetails
+            title={bookData.bookData.book?.title}
+            authors={bookData.bookData.book?.authors}
+            goodreadsRating={bookData.goodreadsData?.goodreadsRating}
+          />
+        )
       }
       bottomSection={<MyReadlists />}
     />

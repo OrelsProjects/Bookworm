@@ -50,16 +50,15 @@ const BooksListList: React.FC<Props> = ({
   endElementProps,
 }) => {
   const { user } = useSelector(selectAuth);
-  const { showBookInListDetailsModal } = useModal();
+  const { showBooksListModal } = useModal();
   const { scrollableDivRef } = useScrollPosition({
     onThreshold: () => onNextPageScroll?.(),
     scrollDirection: ScrollDirection.Height,
   });
 
   const onListClick = (booksListData: BooksListData) =>
-    showBookInListDetailsModal({
-      ...booksListData,
-      curatorName: user?.displayName,
+    showBooksListModal({
+      bookList: booksListData,
     });
 
   const isBookInList = useCallback(
