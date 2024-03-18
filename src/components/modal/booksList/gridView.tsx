@@ -4,7 +4,6 @@ import { BurgerLines } from "../../icons/burgerLines";
 import { BooksListViewProps } from "./consts";
 import { useModal } from "../../../hooks/useModal";
 import { getThumbnailSize } from "../../../consts/thumbnail";
-import BookButtons from "../../book/bookButtons";
 import useBook from "../../../hooks/useBook";
 import toast from "react-hot-toast";
 import { Book } from "../../../models";
@@ -12,7 +11,9 @@ import {
   ReadingStatusEnum,
   readingStatusToName,
 } from "../../../models/readingStatus";
-import { Add } from "../../icons/add";
+import { Checkmark } from "../../icons/checkmark";
+import { Bookmark } from "../../icons/bookmark";
+import { UserBookData, isBookRead } from "../../../models/userBook";
 
 const BookIcon = (icon: React.ReactNode, className?: string) => (
   <div className={`rounded-full bg-background p-2 ${className}`}>{icon}</div>
@@ -20,7 +21,6 @@ const BookIcon = (icon: React.ReactNode, className?: string) => (
 
 export default function BooksListGridView({
   booksListData,
-  booksInUsersListsCount = 0,
 }: BooksListViewProps) {
   const {
     getBookFullData,
@@ -31,6 +31,32 @@ export default function BooksListGridView({
     deleteUserBook,
   } = useBook();
   const { showBookDetailsModal } = useModal();
+
+  const booksInUsersListsCount = useMemo(() => {
+    let booksInList = 0;
+    booksListData?.booksInList?.map((bookInList) => {
+      const bookData = getBookFullData(bookInList.book);
+      if (bookData) booksInList++;
+    });
+    return booksInList;
+  }, [userBooksData]);
+  const booksInUsersList = useMemo(() => {
+    const booksInList: Record<number, boolean> = {};
+    booksListData?.booksInList?.map((bookInList) => {
+      const bookData = getBookFullData(bookInList.book);
+      booksInList[bookInList.book.bookId] = !!bookData;
+    });
+    return booksInList;
+  }, [userBooksData]);
+
+  const isRead = useMemo(() => {
+    const booksIsRead: Record<number, boolean> = {};
+    booksListData?.booksInList?.forEach((bookInList) => {
+      const bookData = getBookFullData(bookInList.book);
+      booksIsRead[bookInList.book.bookId] = isBookRead(bookData?.userBook);
+    });
+    return booksIsRead;
+  }, [userBooksData]);
 
   const handleUpdateBookReadingStatus = async (
     book: Book,
@@ -119,12 +145,43 @@ export default function BooksListGridView({
               Icon={
                 <div className="w-full h-full z-40 absolute top-0">
                   <div className="w-full h-full flex flex-row items-end justify-center gap-6 p-2">
-                    <Add.Outline
-                      iconSize="sm"
-                      className="rounded-full !bg-background"
-                      // iconClassName="!text-primary"
+                    <div className="h-fit w-fit p-2 px-2.5 rounded-full bg-background">
+                      <Bookmark.Fill
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleUpdateBookReadingStatus(
+                            bookInList.book,
+                            ReadingStatusEnum.TO_READ
+                          );
+                        }}
+                        iconSize="xs"
+                        className={`
+                      ${
+                        booksInUsersList[bookInList.book.bookId] &&
+                        !isRead[bookInList.book.bookId]
+                          ? "!text-priamry"
+                          : "!text-foreground"
+                      }
+                      `}
+                      />
+                    </div>
+                    <Checkmark.Fill
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleUpdateBookReadingStatus(
+                          bookInList.book,
+                          ReadingStatusEnum.READ
+                        );
+                      }}
+                      iconSize="md"
+                      className={`rounded-full p-1.5
+                      ${
+                        isRead[bookInList.book.bookId]
+                          ? "!bg-primary !text-background"
+                          : "!bg-background !text-foreground"
+                      }
+                      `}
                     />
-                    <Add.Fill iconSize="sm" />
                   </div>
                 </div>
               }

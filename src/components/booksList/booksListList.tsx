@@ -105,13 +105,13 @@ const BooksListList: React.FC<Props> = ({
               {bottomElementProps && (
                 <div className="w-full flex flex-row justify-end self-end  mt-auto ml-auto gap-6">
                   <div className="flex flex-col gap-0 justify-center items-center">
-                    <Add.Outline
-                      iconSize="xs"
+                    <Add.Fill
+                      className="!text-background bg-foreground rounded-full p-1"
+                      iconSize="sm"
                       onClick={(e) => {
                         e.stopPropagation();
                         bottomElementProps.onAddBookClick(listData);
                       }}
-                      className="!text-foreground"
                     />
                     <div className="text-sm text-foreground">Add Book</div>
                   </div>

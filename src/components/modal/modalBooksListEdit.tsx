@@ -75,13 +75,13 @@ const BookInListDetails: React.FC<BookInListDetailsProps> = ({
           <div className="absolute-center overflow-hidden rounded-full">
             {bookInList?.book ? (
               <Cancel.Fill
-                className="!text-background !bg-foreground -m-1 border-none rounded-full"
+                className="!text-foreground !bg-background border-none rounded-full p-1"
                 iconSize="md"
                 key={`delete-book-${bookInList.book.bookId}`}
                 onClick={() => onDeleteBookClick(bookInList)}
               />
             ) : (
-              <Add.Fill className="!text-background" iconSize="md" />
+              <Add.Outline iconClassName="!text-foreground" iconSize="md" />
             )}
           </div>
         }
@@ -129,7 +129,7 @@ const ListBooks: React.FC<ListBookProps> = ({
         Icon={
           <div className="absolute-center">
             <Add.Fill
-              className="!text-background"
+              className="!text-foreground !bg-background border-none rounded-full p-1"
               iconSize="md"
               onClick={onAddNewBookClick}
             />

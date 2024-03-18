@@ -33,7 +33,7 @@ type ButtonImageProps = {
   onClick?: () => void;
   className?: string;
   buttonsColor?: string;
-  classNameIcon?: string;
+  iconClassName?: string;
 };
 
 const ButtonImage: React.FC<ButtonImageProps> = ({
@@ -45,19 +45,19 @@ const ButtonImage: React.FC<ButtonImageProps> = ({
   selected,
   width = 35,
   height = 35,
-  classNameIcon = "",
+  iconClassName = "",
 }) => {
   const textSize = {
     xs: "text-sm font-light",
-    sm: "text-sm",
-    md: "text-md",
+    sm: "text-lg",
+    md: "text-lg",
     lg: "text-lg",
     xl: "text-xl",
   };
 
   return (
     <div
-      className={`flex flex-col justify-center items-center gap-2 ${classNameIcon}`}
+      className={`flex flex-col justify-center items-center gap-2`}
       onClick={(e) => {
         e.stopPropagation();
         onClick?.();
@@ -70,6 +70,7 @@ const ButtonImage: React.FC<ButtonImageProps> = ({
           fill: selected ? buttonsColor : "currentColor",
         }}
         iconSize={iconSize}
+        iconClassName={iconClassName}
         className={`${selected ? "" : "!text-foreground"}`}
       />
       <div className={`text-foreground ${textSize[iconSize]}`}>{title}</div>
@@ -148,34 +149,34 @@ export const BookButtons: React.FC<BookButtonsProps> = ({
       {book &&
         ButtonImage({
           title: "Read",
-          Icon: bookRead ? Checkmark.Fill : Add.Fill,
-          iconSize,
+          Icon: bookRead ? Checkmark.Fill : Checkmark.Fill,
+          iconSize: "lg",
           selected: bookRead,
           buttonsColor,
           onClick: () => handleUpdateBookReadingStatus(ReadingStatusEnum.READ),
-          classNameIcon,
+          className: "p-1",
         })}
       {book &&
         ButtonImage({
           title: "To Read",
           Icon: Bookmark.Fill,
-          iconSize,
+          iconSize: "md",
           selected: !bookRead && !!bookData,
           width: 24,
           buttonsColor,
           onClick: () =>
             handleUpdateBookReadingStatus(ReadingStatusEnum.TO_READ),
-          classNameIcon,
+          iconClassName: classNameIcon,
         })}
       {showAddToListButton &&
         ButtonImage({
           title: "Add to list",
           Icon: Add.Outline,
-          iconSize,
+          iconSize: "sm",
           selected: false,
           buttonsColor,
           onClick: () => handleAddBookToList(),
-          classNameIcon,
+          iconClassName: classNameIcon,
         })}
     </div>
   );

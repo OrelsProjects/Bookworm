@@ -1,8 +1,8 @@
-import { IoIosCheckmarkCircle } from "react-icons/io";
+import { GrCheckmark } from "react-icons/gr";
 import { Icon, IconFill, IconOutline } from "./iconContainer";
 
 export const Checkmark: Icon = {
-    Fill: IconFill(IoIosCheckmarkCircle),
-    Outline: IconOutline(IoIosCheckmarkCircle),
+    Fill: IconFill(GrCheckmark),
+    Outline: IconOutline(GrCheckmark),
   };
   

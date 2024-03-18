@@ -118,7 +118,6 @@ export const CommentsArea: React.FC<CommentAreaProps> = ({
 
   return (
     <TextArea
-      value={comments}
       rows={props.rows ?? 3}
       onChange={(e) => {
         const value = e.target.value;
@@ -127,6 +126,7 @@ export const CommentsArea: React.FC<CommentAreaProps> = ({
       placeholder="Comment"
       loading={loading}
       {...props}
+      value={props.value ?? comments}
     />
   );
 };

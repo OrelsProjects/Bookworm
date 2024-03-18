@@ -66,9 +66,9 @@ const BookList: React.FC<BookListProps> = ({
                         onAddBookClick(book);
                       }}
                     >
-                      <Add.Outline
-                        className="!text-background !bg-foreground -m-1 border-none"
-                        iconSize="lg"
+                      <Add.Fill
+                        className="!text-foreground !bg-background rounded-full p-1.5"
+                        iconSize="sm"
                       />
                     </div>
                   </div>
@@ -83,7 +83,10 @@ const BookList: React.FC<BookListProps> = ({
                       onAddBookClick(book);
                     }}
                   >
-                    <Add.Outline className="flex-shrink-0" iconSize="md" />
+                    <Add.Fill
+                      className="!bg-foreground !text-background rounded-full p-1"
+                      iconSize="md"
+                    />
                   </div>
                 )
               }

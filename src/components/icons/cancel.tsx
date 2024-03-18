@@ -1,8 +1,9 @@
-import { MdCancel } from "react-icons/md";
+import { IoClose } from "react-icons/io5";
+
 import { Icon, IconFill, IconOutline } from "./iconContainer";
 
 export const Cancel: Icon = {
-    Fill: IconFill(MdCancel),
-    Outline: IconOutline(MdCancel),
+    Fill: IconFill(IoClose),
+    Outline: IconOutline(IoClose),
   };
   

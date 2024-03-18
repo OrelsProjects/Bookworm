@@ -2,6 +2,8 @@ import React from "react";
 import { IconBaseProps } from "react-icons";
 import { IconSize, SpecialIconSize, getIconSize } from "../../consts/icon";
 
+export type IconElement = React.ElementType<IconProps>;
+
 export type Icon = {
   Fill: React.ElementType<IconProps>;
   Outline: React.ElementType<IconProps>;
@@ -9,12 +11,14 @@ export type Icon = {
 
 interface IconProps extends IconBaseProps {
   iconSize: IconSize;
+  iconClassName?: string;
 }
 
 export const IconFill =
   (
     Icon: React.FC<IconBaseProps>,
-    specialIcon?: SpecialIconSize
+    specialIcon?: SpecialIconSize,
+    iconClassName?: string
   ): React.ElementType<IconProps> =>
   ({ iconSize, ...props }: IconProps) => {
     const { heightPx, widthPx } = getIconSize({ size: iconSize, specialIcon });
@@ -35,18 +39,24 @@ export const IconOutline =
   (
     Icon: React.FC<IconBaseProps>,
     className?: string,
-    specialIcon?: SpecialIconSize
+    specialIcon?: SpecialIconSize,
+    iconClassName?: string
   ): React.ElementType<IconProps> =>
   ({ iconSize, ...props }: IconProps) => {
     const { heightPx, widthPx } = getIconSize({ size: iconSize, specialIcon });
     return (
-      <Icon
-        {...props}
-        style={{
-          height: heightPx,
-          width: widthPx,
-        }}
-        className={`text-foreground ${className ?? ""} ${props.className}`}
-      />
+      <div
+        className={`rounded-full bg-foreground p-1 ${className}`}
+        id={`iconOutline ${Icon.displayName}`}
+      >
+        <Icon
+          {...props}
+          style={{
+            height: heightPx,
+            width: widthPx,
+          }}
+          className={`text-background ${iconClassName}`}
+        />
+      </div>
     );
   };
