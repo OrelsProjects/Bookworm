@@ -5,7 +5,7 @@ import { IconSize, SpecialIconSize, getIconSize } from "../../consts/icon";
 export type IconElement = React.ElementType<IconProps>;
 
 export type Icon = {
-  Default: React.ElementType<IconBaseProps>;
+  Default?: React.ElementType<IconBaseProps>;
   Fill: React.ElementType<IconProps>;
   Outline: React.ElementType<IconProps>;
 };

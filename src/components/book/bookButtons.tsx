@@ -151,16 +151,18 @@ export const BookButtons: React.FC<BookButtonsProps> = ({
           className="flex flex-col justify-center items-center gap-2"
           onClick={() => handleUpdateBookReadingStatus(ReadingStatusEnum.READ)}
         >
-          <Checkmark.Default
-            style={{
-              height: getIconSize({ size: "md" }).heightPx,
-              width: getIconSize({ size: "md" }).widthPx,
-              fill: bookRead ? buttonsColor : "currentColor",
-            }}
-            className={`rounded-full p-1 text-background ${
-              bookRead ? "bg-primary" : "bg-foreground"
-            }`}
-          />
+          {Checkmark.Default && (
+            <Checkmark.Default
+              style={{
+                height: getIconSize({ size: "md" }).heightPx,
+                width: getIconSize({ size: "md" }).widthPx,
+                fill: bookRead ? buttonsColor : "currentColor",
+              }}
+              className={`rounded-full p-1 text-background ${
+                bookRead ? "bg-primary" : "bg-foreground"
+              }`}
+            />
+          )}
           <div className={`text-foreground text-lg`}>Read</div>
         </div>
       )}
