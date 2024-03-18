@@ -19,7 +19,7 @@ const useTable = (readingStatus?: ReadingStatusEnum) => {
   const currentReadingStatus = useRef<ReadingStatusEnum | undefined>(readingStatus);
   const [userBooks, setUserBooks] = useState<UserBookData[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(40);
   const [totalRecords, setTotalRecords] = useState(0);
   const [readBooksCount, setReadBooksCount] = useState(0);
   const [toReadBooksCount, setToReadBooksCount] = useState(0);
@@ -86,9 +86,9 @@ const useTable = (readingStatus?: ReadingStatusEnum) => {
   };
 
   const nextPage = () => {
-    setCurrentPage((prevPage) => {
-      return prevPage + 1;
-    });
+    // setCurrentPage((prevPage) => {
+    //   return prevPage + 1;
+    // });
   };
 
   const handlePageSizeChange = (size: number) => {

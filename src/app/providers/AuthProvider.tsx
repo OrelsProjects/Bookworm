@@ -92,7 +92,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     } catch (error: any) {
       localStorage.removeItem("user");
       Logger.error("Error fetching user", { error });
-      toast.error("Error fetching user");
     } finally {
       dispatch(
         setLoading({

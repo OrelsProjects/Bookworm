@@ -105,9 +105,9 @@ const BooksListList: React.FC<Props> = ({
               {bottomElementProps && (
                 <div className="w-full flex flex-row justify-end self-end  mt-auto ml-auto gap-6">
                   <div className="flex flex-col gap-0 justify-center items-center">
-                    <Add.Fill
+                    <Add.Outline
                       className="!text-background bg-foreground rounded-full p-1"
-                      iconSize="sm"
+                      iconSize="xs"
                       onClick={(e) => {
                         e.stopPropagation();
                         bottomElementProps.onAddBookClick(listData);
@@ -138,7 +138,12 @@ const BooksListList: React.FC<Props> = ({
                 }}
               >
                 <Checkbox
-                  checkedComponent={<Checkmark.Fill iconSize="lg" />}
+                  checkedComponent={
+                    <Checkmark.Fill
+                      iconSize="lg"
+                      className="!text-background bg-primary rounded-full p-1"
+                    />
+                  }
                   uncheckedComponent={
                     <Circle.Fill iconSize="lg" className="!text-foreground" />
                   }

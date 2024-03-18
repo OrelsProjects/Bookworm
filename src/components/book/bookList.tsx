@@ -38,17 +38,17 @@ const BookList: React.FC<BookListProps> = ({
   const onAddBookClick = (book?: Book) => showAddBookToListModal(book as Book);
 
   return (
-    <li
+    <div
       className={`flex gap-3 flex-grow scrollbar-hide ${className ?? ""} ${
         direction === "row" ? "flex-row h-fit" : "flex-col h-full"
       } ${disableScroll ? "" : "overflow-auto"}`}
+      ref={scrollableDivRef}
     >
       {books.map((book) => (
         <div
           onClick={() => onBookClick(book)}
           className="h-fit"
           key={`book-in-books-list-${book?.bookId}`}
-          ref={scrollableDivRef}
         >
           {CustomBookComponent ? (
             <CustomBookComponent book={book} />
@@ -68,7 +68,7 @@ const BookList: React.FC<BookListProps> = ({
                     >
                       <Add.Fill
                         className="!text-foreground !bg-background rounded-full p-1.5"
-                        iconSize="sm"
+                        iconSize="md"
                       />
                     </div>
                   </div>
@@ -95,7 +95,7 @@ const BookList: React.FC<BookListProps> = ({
           )}
         </div>
       ))}
-    </li>
+    </div>
   );
 };
 

@@ -7,6 +7,7 @@ export enum ModalTypes {
   BOOKS_LIST_DETAILS = "BOOKS_LIST_DETAILS",
   BOOKS_LIST_DETAILS_EDIT = "BOOKS_LIST_DETAILS_EDIT",
   ADD_BOOK_TO_LIST = "ADD_BOOK_TO_LIST",
+  REGISTER = "REGISTER",
 }
 
 export interface ModalData {

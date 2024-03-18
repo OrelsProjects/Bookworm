@@ -11,6 +11,7 @@ export enum ExpandType {
   TopRight,
   Center,
   Modal,
+  BottomToTop,
 }
 
 interface AnimationDivProps extends LayoutProps {
@@ -59,13 +60,6 @@ const opacityAnimationProps: MotionProps = {
   transition: { duration: 0.3 },
 };
 
-const bottomToMidAnimationProps: MotionProps = {
-  initial: { y: 50, opacity: 0 },
-  animate: { y: 0, opacity: 1 },
-  exit: { y: 50, opacity: 0 },
-  transition: { type: "spring", stiffness: 100 },
-};
-
 const expandingTopLeftAnimationProps: MotionProps = {
   initial: { scaleX: 0, scaleY: 0, originX: 1, originY: 0 },
   animate: { scaleX: 1, scaleY: 1, originX: 1, originY: 0 },
@@ -92,7 +86,19 @@ const expandingModal: MotionProps = {
   animate: { height: "80%" },
   exit: { height: 0 },
   transition: {
-    duration: 0.4,
+    duration: 0.25,
+    ease: "easeInOut",
+    type: "tween",
+    stiffness: 70,
+  },
+};
+
+const expandingBottomToTop: MotionProps = {
+  initial: { height: 0 },
+  animate: { height: "100%" },
+  exit: { height: 0 },
+  transition: {
+    duration: 0.25,
     ease: "easeInOut",
     type: "tween",
     stiffness: 70,
@@ -118,6 +124,8 @@ const getExpandProps = (expandType?: ExpandType): MotionProps => {
       return expandingModal;
     case ExpandType.TopRight:
       return expandingTopRightAnimationProps;
+    case ExpandType.BottomToTop:
+      return expandingBottomToTop;
     default:
       return expandingTopLeftAnimationProps;
   }

@@ -92,7 +92,10 @@ const Avatar: React.FC<AvatarProps> = ({ avatarUrl, defaultText }) => {
   };
 
   return (
-    <div className="relative rounded-full h-9 w-9" onClick={toggleDropdown}>
+    <div
+      className="relative rounded-full h-9 w-9 z-50"
+      onClick={toggleDropdown}
+    >
       {!avatarImageLoaded ? (
         <img
           src={avatarUrl}
@@ -107,7 +110,7 @@ const Avatar: React.FC<AvatarProps> = ({ avatarUrl, defaultText }) => {
         </div>
       )}
       {showDropdown && (
-        <div className="absolute top-full right-0 w-36 mt-2">
+        <div className="absolute top-full right-0 w-36 mt-2 z-50">
           <Dropdown
             items={[
               {

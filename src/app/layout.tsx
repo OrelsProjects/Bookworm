@@ -13,6 +13,7 @@ import ModalProvider from "./providers/ModalProvider";
 import BottomBarProvider from "./providers/BottomBarProvider";
 import NavigationProvider from "./providers/NavigationProvider";
 import HeightProvider from "./providers/HeightProvider";
+import ModalSignup from "../components/modal/modalSignup";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,9 +29,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body
-        className={`${inter.className}`}
-      >
+      <body className={`${inter.className}`}>
         <StoreProvider>
           <AuthProvider>
             <NavigationProvider>

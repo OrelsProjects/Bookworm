@@ -78,7 +78,7 @@ export default function Home(): React.ReactNode {
       <SearchBar
         onEmpty={() => setSearchFocused(false)}
         onFocus={() => setSearchFocused(true)}
-        className="h-fit flex-shrink-0 z-20 bg-background"
+        className="h-fit flex-shrink-0 bg-background"
       />
       {searchFocused ? <></> : <Content />}
     </div>

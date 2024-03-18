@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo } from "react";
+import { useRouter } from "next/navigation";
 import { ModalContent } from ".././modalContainers";
 import { SafeBooksListData } from "../../../models/booksList";
 import BooksListThumbnail from "../../booksList/booksListThumbnail";
@@ -11,17 +12,22 @@ import BooksListGridView from "./gridView";
 export const ModalBooksList = <T extends SafeBooksListData>({
   booksListData,
 }: ModalBooksListProps<T>) => {
+  const router = useRouter();
   const { userBooksData } = useBook();
   const { booksLists } = useBooksList();
 
   useEffect(() => {
     if (!booksListData) return;
     const url = decodeURIComponent(booksListData.publicURL ?? "");
-    window.history.pushState(null, "", url);
+    window.history.pushState(window.history.state, "", url);
     return () => {
-      window.history.pushState(null, "", "/lists");
+      if (window.history.state === null) {
+        router.push("/lists");
+      } else {
+        window.history.pushState(window.history.state, "", "/lists");
+      }
     };
-  }, [booksListData]);
+  }, []);
 
   const booksInUsersListsCount: number = useMemo(() => {
     let booksInUsersLists = 0;

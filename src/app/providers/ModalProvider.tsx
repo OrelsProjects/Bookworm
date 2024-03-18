@@ -19,6 +19,7 @@ import ModalBooksListEdit from "../../components/modal/modalBooksListEdit";
 import { usePathname, useRouter } from "next/navigation";
 import { BookInList } from "../../models/bookInList";
 import { ModalBooksList } from "../../components/modal/booksList/modalBooksList";
+import ModalSignup from "../../components/modal/modalSignup";
 
 const ModalProvider: React.FC = () => {
   const router = useRouter();
@@ -169,9 +170,13 @@ const ModalProvider: React.FC = () => {
     dispatch(hideModal());
   }, [pathname, router, dispatch]);
 
-  return modalStack.map((modalData) => (
-    <RenderComponent modalData={modalData} />
-  ));
+  return (
+    <>
+      {modalStack.map((modalData) => (
+        <RenderComponent modalData={modalData} />
+      ))}
+    </>
+  );
 };
 
 export default ModalProvider;

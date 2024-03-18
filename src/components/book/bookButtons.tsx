@@ -12,7 +12,7 @@ import {
 } from "../../models/readingStatus";
 import { increaseLuminosity } from "../../utils/thumbnailUtils";
 import toast from "react-hot-toast";
-import { IconSize } from "../../consts/icon";
+import { IconSize, getIconSize } from "../../consts/icon";
 import { useModal } from "../../hooks/useModal";
 
 type BookButtonsProps = {
@@ -146,16 +146,24 @@ export const BookButtons: React.FC<BookButtonsProps> = ({
     <div
       className={`h-full w-full flex flex-row justify-evenly items-center gap-4 ${className}`}
     >
-      {book &&
-        ButtonImage({
-          title: "Read",
-          Icon: bookRead ? Checkmark.Fill : Checkmark.Fill,
-          iconSize: "lg",
-          selected: bookRead,
-          buttonsColor,
-          onClick: () => handleUpdateBookReadingStatus(ReadingStatusEnum.READ),
-          className: "p-1",
-        })}
+      {book && (
+        <div
+          className="flex flex-col justify-center items-center gap-2"
+          onClick={() => handleUpdateBookReadingStatus(ReadingStatusEnum.READ)}
+        >
+          <Checkmark.Default
+            style={{
+              height: getIconSize({ size: "md" }).heightPx,
+              width: getIconSize({ size: "md" }).widthPx,
+              fill: bookRead ? buttonsColor : "currentColor",
+            }}
+            className={`rounded-full p-1 text-background ${
+              bookRead ? "bg-primary" : "bg-foreground"
+            }`}
+          />
+          <div className={`text-foreground text-lg`}>Read</div>
+        </div>
+      )}
       {book &&
         ButtonImage({
           title: "To Read",
