@@ -9,7 +9,7 @@ export enum ModalTypes {
   ADD_BOOK_TO_LIST = "ADD_BOOK_TO_LIST",
 }
 
-interface ModalData {
+export interface ModalData {
   data?: any;
   type: ModalTypes;
 }
