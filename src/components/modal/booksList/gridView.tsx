@@ -3,11 +3,16 @@ import BookThumbnail from "../../book/bookThumbnail";
 import { BurgerLines } from "../../icons/burgerLines";
 import { BooksListViewProps } from "./consts";
 import { useModal } from "../../../hooks/useModal";
-import { Bookmark } from "../../icons/bookmark";
-import { Icon } from "../../icons/iconContainer";
-import { Checkmark } from "../../icons/checkmark";
 import { getThumbnailSize } from "../../../consts/thumbnail";
 import BookButtons from "../../book/bookButtons";
+import useBook from "../../../hooks/useBook";
+import toast from "react-hot-toast";
+import { Book } from "../../../models";
+import {
+  ReadingStatusEnum,
+  readingStatusToName,
+} from "../../../models/readingStatus";
+import { Add } from "../../icons/add";
 
 const BookIcon = (icon: React.ReactNode, className?: string) => (
   <div className={`rounded-full bg-background p-2 ${className}`}>{icon}</div>
@@ -17,7 +22,54 @@ export default function BooksListGridView({
   booksListData,
   booksInUsersListsCount = 0,
 }: BooksListViewProps) {
+  const {
+    getBookFullData,
+    updateBookReadingStatus,
+    addUserBook,
+    loading,
+    userBooksData,
+    deleteUserBook,
+  } = useBook();
   const { showBookDetailsModal } = useModal();
+
+  const handleUpdateBookReadingStatus = async (
+    book: Book,
+    status: ReadingStatusEnum
+  ) => {
+    if (loading.current) return;
+    const bookData = getBookFullData(book);
+    let promise: Promise<any> | undefined = undefined;
+    let loadingMessage = "";
+    let successMessage = "";
+    let errorMessage = "";
+    const readingStatusName = readingStatusToName(status);
+    if (
+      bookData?.userBook?.readingStatusId &&
+      bookData?.userBook?.readingStatusId === status
+    ) {
+      promise = deleteUserBook(bookData.userBook);
+      loadingMessage = `Removing ${book?.title} from list ${readingStatusName}...`;
+      successMessage = `${book?.title} removed from list ${readingStatusName}`;
+      errorMessage = `Failed to remove ${book?.title} from list ${readingStatusName}`;
+    } else {
+      if (!bookData) {
+        promise = addUserBook({
+          book,
+          readingStatusId: status as number,
+        });
+      } else {
+        promise = updateBookReadingStatus(bookData.userBook, status);
+      }
+      loadingMessage = `Adding ${book?.title} to list: ${readingStatusName}...`;
+      successMessage = `${book?.title} updated to list: ${readingStatusName}`;
+      errorMessage = `Failed to add ${book?.title} to list: ${readingStatusName}`;
+    }
+    await toast.promise(promise, {
+      loading: loadingMessage,
+      success: successMessage,
+      error: errorMessage,
+    });
+  };
 
   const isOddNumberOfBooks = useMemo(
     () => (booksListData?.booksInList?.length ?? 0) % 2 === 1,
@@ -61,28 +113,22 @@ export default function BooksListGridView({
               });
             }}
           >
-            <BookThumbnail book={bookInList.book} thumbnailSize="xl">
-              <div className="w-full h-full z-40 absolute top-0">
-                <div className="w-full h-full flex flex-row items-end justify-center gap-6 p-2">
-                  <BookButtons
-                    book={bookInList.book}
-                    iconSize="sm"
-                    variation="black"
-                    showAddToListButton={false}
-                  />
-                  {/* {BookIcon(
-                    <Bookmark.Outline iconSize="xs" onClick={() => {}} />
-                  )}
-                  {BookIcon(
-                    <Checkmark.Outline
+            <BookThumbnail
+              book={bookInList.book}
+              thumbnailSize="xl"
+              Icon={
+                <div className="w-full h-full z-40 absolute top-0">
+                  <div className="w-full h-full flex flex-row items-end justify-center gap-6 p-2">
+                    <Add.Outline
                       iconSize="sm"
-                      // className="!text-background background-foreground"
-                    />,
-                    "p-1"
-                  )} */}
+                      className="rounded-full !bg-background"
+                      // iconClassName="!text-primary"
+                    />
+                    <Add.Fill iconSize="sm" />
+                  </div>
                 </div>
-              </div>
-            </BookThumbnail>
+              }
+            />
             <div className="w-full">
               <div className="w-full text-lg leading-7 font-bold truncate">
                 {bookInList.book.title}
