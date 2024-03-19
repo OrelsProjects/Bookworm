@@ -28,7 +28,7 @@ const booksListsSlice = createSlice({
       state.loading = action.payload;
     },
     addBooksList: (state, action: PayloadAction<BooksListData>) => {
-      state.booksListsData.push(action.payload);
+      state.booksListsData.unshift(action.payload);
     },
     updateBooksList: (state, action: PayloadAction<BooksListData>) => {
       const index = state.booksListsData.findIndex(

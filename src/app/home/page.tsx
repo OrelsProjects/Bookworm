@@ -21,7 +21,7 @@ export default function Home(): React.ReactNode {
   const Books = () => (
     <>
       <div className="w-full flex flex-row justify-between">
-        <div className="text-xl font-bold">My next read</div>
+        <div className="text-2xl font-bold">My next read</div>
         <div className="text-lg font-bold underline" onClick={onSeeAllClick}>
           See all
         </div>
@@ -39,7 +39,7 @@ export default function Home(): React.ReactNode {
     recommendations &&
     recommendations.length > 0 && (
       <>
-        <div className="text-xl font-bold">Recommended for You</div>
+        <div className="text-2xl font-bold">Recommended for You</div>
         <div className="w-full flex flex-col gap-4">
           {recommendations.length > 0 &&
             recommendations.slice(0, 5).map((recommendation) => (
