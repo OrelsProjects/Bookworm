@@ -60,14 +60,14 @@ export const ModalContent: React.FC<ModalContentProps> = ({
   children,
 }) => (
   <ContentContainer>
-    <div className="w-full h-fit flex flex-col items-center overflow-visible gap-4">
+    <div className="w-full h-fit flex flex-col items-center gap-4">
       <TopSectionContainer thumbnail={thumbnail}>
         <div className="h-full w-full flex flex-col justify-center items-start gap-1">
           {thumbnailDetails}
         </div>
       </TopSectionContainer>
-      {buttonsRow}
     </div>
+      {buttonsRow}
     {bottomSection}
   </ContentContainer>
 );

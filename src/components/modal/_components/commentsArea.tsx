@@ -10,12 +10,14 @@ interface CommentAreaProps
   bookInList?: BookInListWithBook; // For book's comments
   bookListData?: BooksListData; // For list's comments
   listName?: boolean;
+  error?: string;
 }
 
 export const CommentsArea: React.FC<CommentAreaProps> = ({
   bookInList,
   bookListData,
   listName,
+  error,
   ...props
 }) => {
   const {
@@ -128,6 +130,7 @@ export const CommentsArea: React.FC<CommentAreaProps> = ({
         setComments(value);
       }}
       value={props.value ?? comments}
+      error={error}
     />
   );
 };

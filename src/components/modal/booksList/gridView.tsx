@@ -112,7 +112,7 @@ export default function BooksListGridView({
   );
 
   return (
-    <div className="h-full w-full flex flex-col gap-6 mt-8 pb-2 overflow-auto scrollbar-hide">
+    <div className="h-full w-full flex flex-col gap-6 mt-2 overflow-auto scrollbar-hide">
       <div className="w-full flex flex-row justify-between">
         <div className="w-fit flex flex-row gap-2">
           <BurgerLines.Fill iconSize="md" className="!text-foreground" />

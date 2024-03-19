@@ -152,7 +152,7 @@ export const BookButtons: React.FC<BookButtonsProps> = ({
 
   return (
     <div
-      className={`h-full w-full flex flex-row justify-evenly items-center gap-4 ${className}`}
+      className={`h-fit w-full flex flex-row justify-evenly items-center gap-4 ${className}`}
     >
       {book && (
         <div

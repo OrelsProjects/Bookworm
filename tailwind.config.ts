@@ -11,9 +11,10 @@ module.exports = {
     container: {
       center: true,
       padding: "2rem",
-      screens: {
-        "2xl": "1535px",
-      },
+    },
+    screens: {
+      xs: "400px",
+      "2xl": "1535px",
     },
     extend: {
       gridTemplateColumns: {

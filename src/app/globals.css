@@ -126,31 +126,6 @@ input[type="text"]:-moz-ui-autofill {
   }
 }
 
-@layer utilities {
-  .modal-size {
-    @apply h-modal-sm w-modal-sm;
-  }
-
-  .title {
-    @apply line-clamp-1 text-3xl;
-  }
-
-  @screen xl {
-    .modal-size {
-      @apply h-modal w-modal;
-    }
-    .title {
-      @apply text-3xl;
-    }
-  }
-
-  @screen 2xl {
-    .title {
-      @apply text-5xl;
-    }
-  }
-}
-
 .modal-background {
   @apply bg-secondary rounded-lg p-4;
 }
@@ -209,6 +184,18 @@ input[type="text"]:-moz-ui-autofill {
 }
 
 /* Animations */
+@keyframes errorFade {
+  0% {
+    background-color: rgba(var(--background), 1);
+  }
+  30% {
+    background-color: rgba(var(--error), 0.5);
+  }
+  100% {
+    background-color: rgba(var(--background), 1);
+  }
+}
+
 @keyframes shimmer {
   0% {
     transform: translateX(-100%);
@@ -216,6 +203,10 @@ input[type="text"]:-moz-ui-autofill {
   100% {
     transform: translateX(100%);
   }
+}
+
+.animation-error-fade {
+  animation: errorFade 2s;
 }
 
 .shimmer-effect {

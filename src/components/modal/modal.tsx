@@ -33,7 +33,7 @@ const Modal: React.FC<ModalProps> = ({
 
   return (
     <OpacityDiv
-      className="absolute top-0 left-0 right-0 bottom-0 w-screen h-screen overflow-y-auto overflow-x-clip z-50 overscroll-none"
+      className="absolute top-0 left-0 right-0 bottom-0 w-screen h-screen z-50 overscroll-none"
       innerRef={modalRef}
       key="modal-background"
       isOpen={isOpen}

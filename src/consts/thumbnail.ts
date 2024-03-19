@@ -5,7 +5,7 @@ const thumbnailSizes = {
   ["sm"]: { width: "w-20", height: "h-32" },
   ["md"]: { width: "w-24", height: "h-36" },
   ["lg"]: { width: "w-30", height: "h-44" },
-  ["xl"]: { width: "w-36", height: "h-52" },
+  ["xl"]: { width: "w-30 xs:w-36", height: "h-44 xs:h-52" },
   ["2xl"]: { width: "w-44", height: "h-64" },
 };
 export const getThumbnailSize = (thumbnailSize?: ThumbnailSize) => {

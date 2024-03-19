@@ -370,6 +370,7 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
             className="w-full"
             listName
             rows={1}
+            error={formik.errors.listName}
             placeholder="List name"
           />
           <CommentsArea

@@ -71,7 +71,7 @@ export const ModalBooksList = <T extends SafeBooksListData>({
         </div>
       }
       buttonsRow={
-        <div className="w-full flex">
+        <div className="h-fit w-full flex">
           <ReadMoreText text={booksListData?.description} maxLines={2} />
         </div>
       }
