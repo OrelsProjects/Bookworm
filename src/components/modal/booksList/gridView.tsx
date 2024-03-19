@@ -13,22 +13,12 @@ import {
 } from "../../../models/readingStatus";
 import { Checkmark } from "../../icons/checkmark";
 import { Bookmark } from "../../icons/bookmark";
-import { UserBookData, isBookRead } from "../../../models/userBook";
-import { useSelector } from "react-redux";
-import {
-  AuthStateType,
-  selectAuth,
-} from "../../../lib/features/auth/authSlice";
+import { isBookRead } from "../../../models/userBook";
 import { ErrorUnauthenticated } from "../../../models/errors/unauthenticatedError";
-
-const BookIcon = (icon: React.ReactNode, className?: string) => (
-  <div className={`rounded-full bg-background p-2 ${className}`}>{icon}</div>
-);
 
 export default function BooksListGridView({
   booksListData,
 }: BooksListViewProps) {
-  const { user, state } = useSelector(selectAuth);
   const {
     getBookFullData,
     updateBookReadingStatus,
@@ -37,7 +27,7 @@ export default function BooksListGridView({
     userBooksData,
     deleteUserBook,
   } = useBook();
-  const { showBookDetailsModal, showRegisterModal } = useModal();
+  const { showBookDetailsModal } = useModal();
 
   const booksInUsersListsCount = useMemo(() => {
     let booksInList = 0;
@@ -126,7 +116,17 @@ export default function BooksListGridView({
       <div className="w-full flex flex-row justify-between">
         <div className="w-fit flex flex-row gap-2">
           <BurgerLines.Fill iconSize="md" className="!text-foreground" />
-          <div className="font-bold text-2xl">Book List</div>
+          <div className="font-bold text-2xl flex flex-row gap-1 items-center justify-center">
+            Book List{" "}
+            {booksListData?.booksInList &&
+            booksListData.booksInList.length > 0 ? (
+              <div className="text-muted font-normal">
+                ({booksListData.booksInList.length})
+              </div>
+            ) : (
+              ""
+            )}
+          </div>
         </div>
         <div className="w-fit font-bold text-2xl">
           {booksInUsersListsCount}/{booksListData?.booksInList.length}
@@ -201,7 +201,7 @@ export default function BooksListGridView({
               }
             />
             <div className="w-full">
-              <div className="w-full text-lg leading-7 font-bold truncate">
+              <div className="w-full text-lg leading-7 font-bold line-clamp-1">
                 {bookInList.book.title}
               </div>
               <div className="w-full text-sm text-primary leading-5 truncate">

@@ -174,6 +174,7 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
   const formik = useFormik({
     initialValues: {
       listName: booksListData?.name ?? "",
+      newListDescription: booksListData?.description ?? "",
       newBookComments: "",
     },
     onSubmit: (values) => {},
@@ -289,7 +290,7 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
         const createBooksListResponse = await toast.promise(
           createBooksList({
             name: formik.values.listName,
-            description: "",
+            description: formik.values.newListDescription,
             booksInList: [
               {
                 bookId: bookWithId.bookId,
@@ -374,6 +375,9 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
           <CommentsArea
             key={`${currentBooksList?.listId}-description`}
             name="listComments"
+            onChange={(e) => {
+              formik.setFieldValue("newListDescription", e.target.value);
+            }}
             bookListData={currentBooksList}
             className="w-full"
           />

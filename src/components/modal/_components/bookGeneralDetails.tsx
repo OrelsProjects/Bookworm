@@ -2,8 +2,8 @@ import React from "react";
 import Rating from "../../rating";
 
 const BookGeneralDetails: React.FC<{
-  title?: string;
-  authors?: string[];
+  title?: string | null;
+  authors?: string[] | null;
   goodreadsRating?: number | null;
 }> = ({ title, authors, goodreadsRating }) => (
   <div className="h-full w-full flex flex-col gap-4">

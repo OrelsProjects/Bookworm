@@ -13,7 +13,6 @@ export interface BookComponentProps {
 }
 
 const BookSearchResult: React.FC<BookComponentProps> = ({ book }) => {
-  const dispatch = useDispatch();
   const { showBookDetailsModal } = useModal();
   return (
     <div

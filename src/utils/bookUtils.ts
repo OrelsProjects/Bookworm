@@ -50,7 +50,7 @@ const compareBooksByTitle = (book1: Book, book2: Book): boolean => {
 export const isBooksEqual = (
   book1?: Book | null,
   book2?: Book | null,
-  threshold: number = 0.8
+  threshold: number = 0.95
 ): boolean => {
   if (!book1 || !book2) {
     return false;

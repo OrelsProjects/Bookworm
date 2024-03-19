@@ -24,7 +24,7 @@ import { RootState } from "../lib/store";
 import ReadingStatus, { ReadingStatusEnum } from "../models/readingStatus";
 import { Logger } from "../logger";
 import { EventTracker } from "../eventTracker";
-import { sortByDateAdded } from "../utils/bookUtils";
+import { isBooksEqual, sortByDateAdded } from "../utils/bookUtils";
 import { ErrorDeleteUserBook } from "../models/errors/userBookErrors";
 import { useModal } from "./useModal";
 import { ErrorUnauthenticated } from "../models/errors/unauthenticatedError";
@@ -339,11 +339,8 @@ const useBook = () => {
       );
     } else {
       return (
-        userBooksData.find(
-          (userBookData) =>
-            userBookData.bookData?.book?.bookId === bookOrBookId.bookId ||
-            userBookData.bookData?.book?.isbn === bookOrBookId.isbn ||
-            userBookData.bookData?.book?.isbn10 === bookOrBookId.isbn10
+        userBooksData.find((userBookData) =>
+          isBooksEqual(userBookData.bookData?.book, bookOrBookId)
         ) ?? null
       );
     }

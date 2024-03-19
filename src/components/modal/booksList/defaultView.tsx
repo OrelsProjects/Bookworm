@@ -15,7 +15,12 @@ export default function BooksListDefaultView({
       <div className="w-full flex flex-row justify-between">
         <div className="w-fit flex flex-row gap-2">
           <BurgerLines.Fill iconSize="md" className="!text-foreground" />
-          <div className="font-bold text-2xl">Book List</div>
+          <div className="font-bold text-2xl">
+            Book List{" "}
+            {booksListData?.booksInList && booksListData.booksInList.length > 0
+              ? `(${booksListData.booksInList.length})`
+              : ""}
+          </div>
         </div>
         <div className="w-fit font-bold text-2xl">
           {booksInUsersListsCount}/{booksListData?.booksInList.length}

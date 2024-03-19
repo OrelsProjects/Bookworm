@@ -22,13 +22,19 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
   bookInList,
 }) => {
   const { getBookFullData, userBooksData } = useBook();
-  const [bookData, setBookData] = React.useState<
-    UserBookData | null | undefined
+  const [title, setTitle] = React.useState<string | null>(null);
+  const [authors, setAuthors] = React.useState<string[] | undefined | null>(
+    null
+  );
+  const [goodreadsRating, setGoodreadsRating] = React.useState<
+    number | undefined | null
   >(null);
 
   React.useEffect(() => {
     const bookFullData = getBookFullData(book);
-    setBookData(bookFullData);
+    setTitle(bookFullData?.bookData?.book?.title ?? book.title);
+    setAuthors(bookFullData?.bookData?.book?.authors ?? book.authors);
+    setGoodreadsRating(bookFullData?.goodreadsData?.goodreadsRating);
   }, [userBooksData]);
 
   const Summary = () =>
@@ -72,13 +78,11 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
     <ModalContent
       thumbnail={<Thumbnail />}
       thumbnailDetails={
-        bookData && (
-          <BookGeneralDetails
-            title={bookData.bookData.book?.title}
-            authors={bookData.bookData.book?.authors}
-            goodreadsRating={bookData.goodreadsData?.goodreadsRating}
-          />
-        )
+        <BookGeneralDetails
+          title={title}
+          authors={authors}
+          goodreadsRating={goodreadsRating}
+        />
       }
       buttonsRow={<ButtonsRow />}
       bottomSection={<Summary />}

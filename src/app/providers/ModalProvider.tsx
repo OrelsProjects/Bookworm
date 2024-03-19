@@ -38,12 +38,7 @@ const ModalProvider: React.FC = () => {
     [modalStack]
   );
 
-  /**
-   * BOOK_DETAILS = "BOOK_DETAILS",
-  BOOKS_LIST_DETAILS = "BOOKS_LIST_DETAILS",
-  BOOKS_LIST_DETAILS_EDIT = "BOOKS_LIST_DETAILS_EDIT",
-  ADD_BOOK_TO_LIST = "ADD_BOOK_TO_LIST",
-   */
+// TODO: The problem with the modal not animating on close is because I hide it here (useMemos) and then it's removed from the DOM. I need to hide it in the modalSlice, and then remove it from the DOM after the animation is done.
 
   const shouldRenderBookDetailsModal = useMemo<boolean>(() => {
     return modalStack
@@ -90,7 +85,7 @@ const ModalProvider: React.FC = () => {
   const RenderBooksListDetails = useCallback(
     (data?: any) => {
       return (
-        <RenderModal onClose={data.onBack}>
+        <RenderModal onClose={data.onBack} type={ModalTypes.BOOKS_LIST_DETAILS}>
           <ModalBooksList booksListData={data.bookList} />;
         </RenderModal>
       );
@@ -101,7 +96,7 @@ const ModalProvider: React.FC = () => {
   const RenderBooksListDetailsEdit = useCallback(
     (booksListData?: BooksListData) => {
       return (
-        <RenderModal>
+        <RenderModal type={ModalTypes.BOOKS_LIST_DETAILS_EDIT}>
           <ModalBooksListEdit booksListData={booksListData} />;
         </RenderModal>
       );
@@ -112,7 +107,7 @@ const ModalProvider: React.FC = () => {
   const RenderBookDetails = useCallback(
     (data?: { book: Book; bookInList?: BookInList }) =>
       data && (
-        <RenderModal>
+        <RenderModal type={ModalTypes.BOOK_DETAILS}>
           <ModalBookDetails book={data?.book} bookInList={data.bookInList} />
         </RenderModal>
       ),
@@ -123,7 +118,7 @@ const ModalProvider: React.FC = () => {
     (book?: Book) => {
       return (
         book && (
-          <RenderModal>
+          <RenderModal type={ModalTypes.ADD_BOOK_TO_LIST}>
             <ModalAddBookToList book={book} />;
           </RenderModal>
         )
@@ -142,11 +137,17 @@ const ModalProvider: React.FC = () => {
 
   const RenderModal = ({
     children,
+    type,
     onClose,
   }: {
     children: React.ReactNode;
+    type: ModalTypes;
     onClose?: () => void;
   }) => {
+    const isOpen = useMemo<boolean>(
+      () => modalStack.some((modal) => modal.type === type),
+      [modalStack]
+    );
     return (
       <Modal
         isOpen={isOpen}

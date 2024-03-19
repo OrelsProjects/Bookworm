@@ -30,7 +30,7 @@ export type CreateBooksListPayload = Omit<
 
 export type BooksListData = BooksList & {
   booksInList: BookInListWithBook[];
-};
+} & { curatorName?: string };
 
 export type SafeBooksListData = {
   description: string | null;

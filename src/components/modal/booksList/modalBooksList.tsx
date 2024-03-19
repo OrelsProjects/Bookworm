@@ -62,7 +62,7 @@ export const ModalBooksList = <T extends SafeBooksListData>({
       }
       thumbnailDetails={
         <div className="w-full h-full justify-start items-start">
-          <div className="line-clamp-1 text-foreground font-bold text-xl">
+          <div className="line-clamp-3 text-foreground font-bold text-xl">
             {booksListData?.name}
           </div>
           <div className="line-clamp-1 text-muted text-lg">
