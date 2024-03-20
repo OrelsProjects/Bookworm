@@ -168,7 +168,7 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
   const [currentBooksList, setCurrentBookList] = useState<
     BooksListData | undefined
   >();
-  const searchBarRef = useRef<HTMLDivElement>(null);
+     const searchBarRef = useRef<HTMLDivElement>(null);
   const buildFormikValueName = (bookId: number) => `newBookComments-${bookId}`;
 
   const formik = useFormik({

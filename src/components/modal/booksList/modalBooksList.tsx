@@ -7,6 +7,7 @@ import useBooksList from "../../../hooks/useBooksList";
 import useBook from "../../../hooks/useBook";
 import ReadMoreText from "../../readMoreText";
 import { ModalBooksListProps } from "./consts";
+import Tooltip from "../../../components/tooltip";
 import BooksListGridView from "./gridView";
 
 export const ModalBooksList = <T extends SafeBooksListData>({
@@ -62,9 +63,18 @@ export const ModalBooksList = <T extends SafeBooksListData>({
       }
       thumbnailDetails={
         <div className="w-full h-full justify-start items-start">
-          <div className="line-clamp-3 text-foreground font-bold text-xl">
-            {booksListData?.name}
-          </div>
+          <Tooltip
+            tooltipContent={
+              <div className="text-lg text-muted line-clamp-4 max-w-xs">
+                7 Books That Transformed My Career as a Software Engineer -
+                Jordan Cutler
+              </div>
+            }
+          >
+            <div className="w-full flex text-start line-clamp-3 text-foreground font-bold text-xl relative">
+              {booksListData?.name}
+            </div>
+          </Tooltip>
           <div className="line-clamp-1 text-muted text-lg">
             {booksListData?.curatorName}
           </div>
