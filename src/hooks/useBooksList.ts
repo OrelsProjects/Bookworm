@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios, { CanceledError } from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../lib/store";
@@ -99,13 +99,33 @@ const useBooksList = () => {
   const booksLists = useSelector(
     (state: RootState) => state.booksLists.booksListsData
   );
+  const [booksListsData, setBooksListsData] = useState<BooksListData[]>([]);
 
   const updateBooksListCancelToken = axios.CancelToken.source();
   const updateBookInListCancelToken = axios.CancelToken.source();
 
   useEffect(() => {
+    setBooksListsData(booksLists);
+  }, [booksLists]);
+
+  useEffect(() => {
     localStorage.removeItem("booksList");
   }, []);
+
+  const searchInBooksList = (searchTerm: string) => {
+    const newList = booksLists.filter((list) =>
+      list.booksInList?.some(
+        (bookInList) =>
+          bookInList.book.title
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          bookInList.book.authors?.some((author) =>
+            author.toLowerCase().includes(searchTerm.toLowerCase())
+          )
+      )
+    );
+    setBooksListsData(newList);
+  };
 
   const loadUserBooksLists = async (user?: User | null) => {
     if (loading.current) {
@@ -129,7 +149,9 @@ const useBooksList = () => {
         axios.defaults.headers.common["user_id"] = user.userId;
       }
 
-      const response = await axios.get<IResponse<BooksListData[]>>("/api/lists");
+      const response = await axios.get<IResponse<BooksListData[]>>(
+        "/api/lists"
+      );
       const booksListsDataResponse = response.data.result ?? [];
 
       dispatch(setBooksLists(booksListsDataResponse ?? []));
@@ -251,7 +273,7 @@ const useBooksList = () => {
   };
 
   return {
-    booksLists,
+    booksLists: booksListsData,
     loading: loading,
     loadUserBooksLists,
     createBooksList,
@@ -262,6 +284,7 @@ const useBooksList = () => {
     updateBookInList,
     cancelUpdateBookInList,
     removeBookFromList,
+    searchInBooksList,
   };
 };
 

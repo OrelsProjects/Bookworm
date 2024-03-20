@@ -111,6 +111,7 @@ module.exports = {
         modal: "40rem" /* this is in pixels: 536px */,
         "modal-md": "32rem",
         "modal-sm": "28rem",
+        "search-bar": "66.66%",
       },
       height: {
         "22": "5.5rem",

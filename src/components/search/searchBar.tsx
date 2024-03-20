@@ -73,7 +73,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   return (
     <div
-      className={`w-full flex flex-col gap-4 overflow-auto scrollbar-hide ${
+      className={`w-search-bar flex flex-col gap-4 overflow-auto scrollbar-hide ${
         className ?? ""
       }`}
     >

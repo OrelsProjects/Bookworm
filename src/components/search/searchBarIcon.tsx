@@ -13,15 +13,15 @@ export default function SearchBarIcon({
 
   return (
     <div className="w-full">
-      {!showSearch ? (
+      {/* {!showSearch ? (
         <Search.Fill
           onClick={() => setShowSearch((prev) => !prev)}
           className="!text-foreground"
           iconSize={iconSize}
         />
-      ) : (
-        children
-      )}
+      ) : ( */}
+      {children}
+      {/* )} */}
     </div>
   );
 }
