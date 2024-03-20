@@ -73,7 +73,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   return (
     <div
-      className={`w-search-bar flex flex-col gap-4 overflow-auto scrollbar-hide ${
+      className={`w-full flex flex-col gap-4 overflow-auto scrollbar-hide ${
         className ?? ""
       }`}
     >
@@ -81,7 +81,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         onBlur={onBlur}
         onSubmit={handleSubmit}
         onChange={handleOnChange}
-        className="transition-all duration-300 ease-in-out rounded-full w-4/6"
+        className="transition-all duration-300 ease-in-out rounded-full w-8/12"
         placeholder="Search all books, authors..."
         autoFocus
         {...props}

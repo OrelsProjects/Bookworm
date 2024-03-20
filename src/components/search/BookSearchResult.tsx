@@ -34,7 +34,7 @@ const BookSearchResult: React.FC<BookComponentProps> = ({ book }) => {
           <Title title={book.title} />
           <Authors authors={book.authors} prefix="by" />
         </div>
-        <BookButtons book={book} className="!justify-start" iconSize="xs" />
+        <BookButtons book={book} className="!justify-start mt-4" iconSize="sm" />
       </div>
     </div>
   );

@@ -33,9 +33,7 @@ export const SearchBarComponent: React.FC<SearchBarComponentProps> = ({
   }, [searchTerm]);
 
   return (
-    <div
-      className={`w-full flex justify-between items-center ${className ?? ""}`}
-    >
+    <div className={`flex justify-between items-center ${className ?? ""}`}>
       <form
         onSubmit={(event: any) => {
           event.preventDefault();
