@@ -66,8 +66,7 @@ export const ModalBooksList = <T extends SafeBooksListData>({
           <Tooltip
             tooltipContent={
               <div className="text-lg text-muted line-clamp-4 max-w-xs">
-                7 Books That Transformed My Career as a Software Engineer -
-                Jordan Cutler
+                {booksListData?.name}
               </div>
             }
           >
