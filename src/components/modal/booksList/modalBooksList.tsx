@@ -70,7 +70,7 @@ export const ModalBooksList = <T extends SafeBooksListData>({
               </div>
             }
           >
-            <div className="w-full flex text-start line-clamp-3 text-foreground font-bold text-xl relative">
+            <div className="text-start line-clamp-3 text-foreground font-bold text-xl relative">
               {booksListData?.name}
             </div>
           </Tooltip>
