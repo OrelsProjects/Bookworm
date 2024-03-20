@@ -53,7 +53,7 @@ export const CommentsArea: React.FC<CommentAreaProps> = ({
     }
     setLoading(true);
     try {
-      const updateObject = { ...bookListData };
+      const { curatorName, ...updateObject } = bookListData;
       if (listName) {
         updateObject.name = comments;
       } else {
