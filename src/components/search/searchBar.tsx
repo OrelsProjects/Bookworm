@@ -86,56 +86,58 @@ const SearchBar: React.FC<SearchBarProps> = ({
         autoFocus
         {...props}
       />
-      <div className="flex flex-col gap-3 overflow-auto scrollbar-hide">
-        {loading ? (
-          <>
-            <div className="font-bold text-2xl invisible pt-2">Books</div>
-            {CustomSearchItemSkeleton ? (
-              <CustomSearchItemSkeleton />
-            ) : (
-              <>
-                {Array.from(Array(TOP_RESULTS_COUNT)).map((_, index) => (
-                  <SearchItemSkeleton key={`search-item-skeleton-${index}`} />
-                ))}
-              </>
-            )}
-          </>
-        ) : (
-          books &&
-          books.length > 0 && (
-            <div className="flex flex-col gap-2 mt-2">
-              <div className="font-bold text-2xl">Books</div>
-              <div className="flex gap-6 flex-col overflow-auto scrollbar-hide">
-                {books
-                  .slice(0, TOP_RESULTS_COUNT)
-                  .map((book, i) =>
-                    CustomSearchItem ? (
-                      <CustomSearchItem
-                        key={
-                          book.title +
-                          book.isbn10 +
-                          book.datePublished +
-                          book.isbn
-                        }
-                        book={book}
-                      />
-                    ) : (
-                      <BookSearchResult
-                        key={
-                          book.title +
-                          book.isbn10 +
-                          book.datePublished +
-                          book.isbn
-                        }
-                        book={book}
-                      />
-                    )
-                  )}
+      {(loading || (books && books.length > 0)) && (
+        <div className="flex flex-col gap-3 overflow-auto scrollbar-hide">
+          {loading ? (
+            <>
+              <div className="font-bold text-2xl invisible pt-2">Books</div>
+              {CustomSearchItemSkeleton ? (
+                <CustomSearchItemSkeleton />
+              ) : (
+                <>
+                  {Array.from(Array(TOP_RESULTS_COUNT)).map((_, index) => (
+                    <SearchItemSkeleton key={`search-item-skeleton-${index}`} />
+                  ))}
+                </>
+              )}
+            </>
+          ) : (
+            books &&
+            books.length > 0 && (
+              <div className="flex flex-col gap-2 mt-2">
+                <div className="font-bold text-2xl">Books</div>
+                <div className="flex gap-6 flex-col overflow-auto scrollbar-hide">
+                  {books
+                    .slice(0, TOP_RESULTS_COUNT)
+                    .map((book, i) =>
+                      CustomSearchItem ? (
+                        <CustomSearchItem
+                          key={
+                            book.title +
+                            book.isbn10 +
+                            book.datePublished +
+                            book.isbn
+                          }
+                          book={book}
+                        />
+                      ) : (
+                        <BookSearchResult
+                          key={
+                            book.title +
+                            book.isbn10 +
+                            book.datePublished +
+                            book.isbn
+                          }
+                          book={book}
+                        />
+                      )
+                    )}
+                </div>
               </div>
-            </div>
-          )
-        )}
-      </div>
+            )
+          )}
+        </div>
+      )}
     </div>
   );
 };
