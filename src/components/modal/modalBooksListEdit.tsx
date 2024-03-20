@@ -22,6 +22,7 @@ import { BookInList, BookInListWithBook } from "../../models/bookInList";
 import BookThumbnail from "../book/bookThumbnail";
 import { CommentsArea } from "./_components/commentsArea";
 import BookDetailsSkeleton from "../skeletons/BookDetailsSkeleton";
+import SearchBarIcon from "../search/searchBarIcon";
 
 interface ModalBooksListProps {
   booksListData?: BooksListData;
@@ -168,7 +169,7 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
   const [currentBooksList, setCurrentBookList] = useState<
     BooksListData | undefined
   >();
-     const searchBarRef = useRef<HTMLDivElement>(null);
+  const searchBarRef = useRef<HTMLDivElement>(null);
   const buildFormikValueName = (bookId: number) => `newBookComments-${bookId}`;
 
   const formik = useFormik({
@@ -415,22 +416,24 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
               )}
             />
             <div ref={searchBarRef}>
-              <SearchBar
-                onSearch={() => {
-                  scrollSearchBarIntoView();
-                }}
-                CustomSearchItem={SearchResult}
-                CustomSearchItemSkeleton={() => (
-                  <div className="flex flex-col gap-2">
-                    {Array.from(Array(5)).map((_, index) => (
-                      <BookDetailsSkeleton
-                        key={`book-details-skeleton-${index}`}
-                        bookThumbnailSize="sm"
-                      />
-                    ))}
-                  </div>
-                )}
-              />
+              <SearchBarIcon>
+                <SearchBar
+                  onSearch={() => {
+                    scrollSearchBarIntoView();
+                  }}
+                  CustomSearchItem={SearchResult}
+                  CustomSearchItemSkeleton={() => (
+                    <div className="flex flex-col gap-2">
+                      {Array.from(Array(5)).map((_, index) => (
+                        <BookDetailsSkeleton
+                          key={`book-details-skeleton-${index}`}
+                          bookThumbnailSize="sm"
+                        />
+                      ))}
+                    </div>
+                  )}
+                />
+              </SearchBarIcon>
             </div>
           </div>
         </div>

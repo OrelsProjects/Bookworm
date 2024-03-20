@@ -2,11 +2,12 @@
 
 import React, { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
-import SearchBar from "../../components/search/searchBar";
 import useTable from "../../hooks/useTable";
 import BookList from "../../components/book/bookList";
 import useUserRecommendations from "../../hooks/useRecommendations";
 import { ReadingStatusEnum } from "../../models/readingStatus";
+import SearchBarIcon from "../../components/search/searchBarIcon";
+import SearchBar from "../../components/search/searchBar";
 
 export default function Home(): React.ReactNode {
   const router = useRouter();
@@ -19,11 +20,11 @@ export default function Home(): React.ReactNode {
   }, [router]);
 
   const Books = () => (
-    <>
-      <div className="w-full flex flex-row justify-between">
+    <div className="flex flex-col gap-1">
+      <div className="w-full flex flex-row justify-between items-end">
         <div className="text-2xl font-bold">My next read</div>
-        <div className="text-lg font-bold underline" onClick={onSeeAllClick}>
-          See all
+        <div className="text-sm text-muted underline" onClick={onSeeAllClick}>
+          see all
         </div>
       </div>
       <BookList
@@ -32,22 +33,22 @@ export default function Home(): React.ReactNode {
         direction="row"
         thumbnailSize="xl"
       />
-    </>
+    </div>
   );
 
   const Recommendations = () =>
     recommendations &&
     recommendations.length > 0 && (
-      <>
+      <div className="flex flex-col gap-0">
         <div className="text-2xl font-bold">Recommended for You</div>
         <div className="w-full flex flex-col gap-4">
           {recommendations.length > 0 &&
             recommendations.slice(0, 5).map((recommendation) => (
               <div
-                className="flex flex-col gap-1"
+                className="flex flex-col gap-0"
                 key={`recommendation-${recommendation.publicURL}`}
               >
-                <div className="text-lg font-extralight line-clamp-1">
+                <div className="text-lg font-extralight line-clamp-1  tracking-tighter">
                   {recommendation.name}
                 </div>
                 <BookList
@@ -63,23 +64,24 @@ export default function Home(): React.ReactNode {
               </div>
             ))}
         </div>
-      </>
+      </div>
     );
 
   const Content = () => (
-    <div className="h-fit w-full flex flex-col gap-4">
+    <div className="h-fit w-full flex flex-col gap-4 overflow-auto pr-1">
       <Books />
       <Recommendations />
     </div>
   );
 
   return (
-    <div className="h-full w-full flex flex-col relative justify-top items-start gap-4 overflow-auto">
-      <SearchBar
-        onEmpty={() => setSearchFocused(false)}
-        onFocus={() => setSearchFocused(true)}
-        className="h-fit flex-shrink-0 bg-background"
-      />
+    <div className="h-full w-full flex flex-col relative justify-top items-start gap-4">
+      <SearchBarIcon>
+        <SearchBar
+          onEmpty={() => setSearchFocused(false)}
+          onFocus={() => setSearchFocused(true)}
+        />
+      </SearchBarIcon>
       {searchFocused ? <></> : <Content />}
     </div>
   );

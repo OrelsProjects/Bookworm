@@ -18,6 +18,8 @@ import { Logger } from "../../../logger";
 import Loading from "../../../components/loading";
 import { useModal } from "../../../hooks/useModal";
 import { selectAuth } from "../../../lib/features/auth/authSlice";
+import SearchBarIcon from "../../../components/search/searchBarIcon";
+import SearchBar from "../../../components/search/searchBar";
 
 const MyLists = ({ params }: { params: { listUrl?: string } }) => {
   const { user } = useSelector(selectAuth);
@@ -87,7 +89,7 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
       <div className="w-full flex flex-row justify-between">
         <div className="text-xl font-bold">My Library</div>
         <div className="text-lg font-bold underline" onClick={onSeeAllClick}>
-          See all
+          see all
         </div>
       </div>
       <BookList
@@ -162,11 +164,13 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
   return (
     <div className="h-full w-full flex flex-col gap-4 pb-4">
       <div className="h-fit">
-        <SearchBarComponent
-          onChange={(value: string) => searchBooks(value)}
-          onSubmit={(value: string) => searchBooks(value)}
-          placeholder="Search in Your Books..."
-        />
+        <SearchBarIcon>
+          <SearchBar
+            onChange={(value: string) => searchBooks(value)}
+            onSubmit={(value: string) => searchBooks(value)}
+            placeholder="Search in Your Books..."
+          />
+        </SearchBarIcon>
       </div>
       <div className="flex gap-3 flex-grow flex-col h-full overflow-auto scrollbar-hide">
         <UserBooks />

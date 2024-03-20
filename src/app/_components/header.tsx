@@ -28,13 +28,12 @@ const Header = ({ className }: HeaderProps): React.ReactNode => {
 
   return (
     !loadingState.loading && (
-      <div className="fixed top-0 w-full">
+      <div className="fixed top-0 w-fit z-10 right-0">
         <div
-          className={`flex justify-end items-center w-full z-30 relative ${
+          className={`flex justify-end items-center w-fit z-10 relative ${
             className ?? ""
           }`}
         >
-          {/* <Sidebar /> */}
           {user ? (
             <Avatar
               avatarUrl={user?.profilePictureUrl}

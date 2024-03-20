@@ -157,10 +157,11 @@ input[type="text"]:-moz-ui-autofill {
 
 /* Size */
 ::-webkit-scrollbar {
-  width: 7px;
+  width: 4px;
   height: 0px; /* Decrease the height to make the thumb slimmer */
   background: rgb(var(--muted-foreground));
   border-radius: 999999px;
+  padding: 4px;
 }
 
 /* Track */
@@ -170,8 +171,8 @@ input[type="text"]:-moz-ui-autofill {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: rgb(var(--muted));
-  border-radius: 5px;
+  background: rgba(var(--muted), 0.4);
+  border-radius: 2px;
 }
 
 /* Handle on hover */
