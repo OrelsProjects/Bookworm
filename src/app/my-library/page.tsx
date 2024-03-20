@@ -15,6 +15,7 @@ import useBooksList from "../../hooks/useBooksList";
 import { Checkbox } from "../../components/checkbox";
 import { Filter } from "../../components/icons/filter";
 import { ExpandType } from "../../components/animationDivs";
+import SearchBarIcon from "../../components/search/searchBarIcon";
 
 export default function MyLibrary(): React.ReactNode {
   const {
@@ -126,11 +127,13 @@ export default function MyLibrary(): React.ReactNode {
 
   return (
     <div className="w-full h-full flex flex-col gap-5">
-      <SearchBarComponent
-        onChange={(value: string) => searchBooks(value)}
-        onSubmit={(value: string) => searchBooks(value)}
-        placeholder="Search in Your Books..."
-      />
+      <SearchBarIcon>
+        <SearchBarComponent
+          onChange={(value: string) => searchBooks(value)}
+          onSubmit={(value: string) => searchBooks(value)}
+          placeholder="Search in Your Books..."
+        />
+      </SearchBarIcon>
 
       <div className="h-full overflow-auto scrollbar-hide flex flex-col gap-5">
         <div className="flex flex-col gap-4">

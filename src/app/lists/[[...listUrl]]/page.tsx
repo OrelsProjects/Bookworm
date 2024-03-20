@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { SearchBarComponent } from "../../../components/search/searchBarComponent";
 import useTable from "../../../hooks/useTable";
 import BookList from "../../../components/book/bookList";
@@ -9,7 +9,6 @@ import BooksListList from "../../../components/booksList/booksListList";
 import { Add } from "../../../components/icons/add";
 import { Plus } from "../../../components/icons/plus";
 import { useSelector } from "react-redux";
-import { selectBooksLists } from "../../../lib/features/booksLists/booksListsSlice";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { SafeBooksListData } from "../../../models/booksList";
@@ -18,14 +17,15 @@ import { Logger } from "../../../logger";
 import Loading from "../../../components/loading";
 import { useModal } from "../../../hooks/useModal";
 import { selectAuth } from "../../../lib/features/auth/authSlice";
+import SearchBarIcon from "../../../components/search/searchBarIcon";
+import useBooksList from "../../../hooks/useBooksList";
 
 const MyLists = ({ params }: { params: { listUrl?: string } }) => {
-  const { user } = useSelector(selectAuth);
-  const { showBooksListModal, showBooksListEditModal } = useModal();
   const router = useRouter();
-  const pathname = usePathname();
-  const { booksListsData } = useSelector(selectBooksLists);
-  const { userBooks, nextPage, searchBooks } = useTable();
+  const { user } = useSelector(selectAuth);
+  const { booksLists, searchInBooksList } = useBooksList();
+  const { userBooks, nextPage, searchBooks, searchValue } = useTable();
+  const { showBooksListModal, showBooksListEditModal } = useModal();
   const [loadingBooksList, setLoadingBooksList] = useState(false);
 
   const loadBooksList = async () => {
@@ -87,7 +87,7 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
       <div className="w-full flex flex-row justify-between">
         <div className="text-xl font-bold">My Library</div>
         <div className="text-lg font-bold underline" onClick={onSeeAllClick}>
-          See all
+          see all
         </div>
       </div>
       <BookList
@@ -102,21 +102,24 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
   const EmptyList = () => (
     <div className="mt-3 w-fit h-fit flex flex-col gap-8">
       <div className="flex flex-col gap-2">
-        <div className="text-base font-bold">
-          You have no Readlists for now :(
-        </div>
-        <div className="text-base font-light">
-          Ready to create and share your Readlist with friends? Spread the joy
-          of reading by inviting them to join in!
-        </div>
-      </div>
-
-      <div
-        className="w-full h-fit flex flex-row gap-2 rounded-full text-background bg-foreground p-2"
-        onClick={onAddListClick}
-      >
-        <Add.Fill className="!text-background" iconSize="sm" />
-        Create your first shareable Readlist
+        {!searchValue && (
+          <>
+            <div className="text-base font-bold">
+              You have no Readlists for now :(
+            </div>
+            <div className="text-base font-light">
+              Ready to create and share your Readlist with friends? Spread the
+              joy of reading by inviting them to join in!
+            </div>
+            <div
+              className="w-full h-fit flex flex-row gap-2 rounded-full text-background bg-foreground p-2"
+              onClick={onAddListClick}
+            >
+              <Add.Fill className="!text-background" iconSize="sm" />
+              Create your first shareable Readlist
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
@@ -133,13 +136,13 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
           />
         </div>
       </div>
-      {booksListsData.length === 0 ? (
+      {booksLists.length === 0 ? (
         <EmptyList />
       ) : (
         <BooksListList
           direction="column"
           disableScroll
-          booksListsData={booksListsData}
+          booksListsData={booksLists}
           bookThumbnailSize="md"
           bottomElementProps={{
             onAddBookClick: (list) => showBooksListEditModal(list),
@@ -162,11 +165,20 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
   return (
     <div className="h-full w-full flex flex-col gap-4 pb-4">
       <div className="h-fit">
-        <SearchBarComponent
-          onChange={(value: string) => searchBooks(value)}
-          onSubmit={(value: string) => searchBooks(value)}
-          placeholder="Search in Your Books..."
-        />
+        <SearchBarIcon>
+          <SearchBarComponent
+            onChange={(value: string) => {
+              searchInBooksList(value);
+              searchBooks(value);
+            }}
+            onSubmit={(value: string) => {
+              searchInBooksList(value);
+              searchBooks(value);
+            }}
+            placeholder="Search in Your Books..."
+            className="w-search-bar"
+          />
+        </SearchBarIcon>
       </div>
       <div className="flex gap-3 flex-grow flex-col h-full overflow-auto scrollbar-hide">
         <UserBooks />

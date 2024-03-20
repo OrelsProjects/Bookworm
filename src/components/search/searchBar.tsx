@@ -4,20 +4,25 @@ import React, { useEffect } from "react";
 import useSearch, { UseSearchResult } from "../../hooks/useSearch";
 import BookSearchResult, { SearchItemSkeleton } from "./BookSearchResult";
 import toast from "react-hot-toast";
-import { SearchBarComponent } from "./searchBarComponent";
+import {
+  SearchBarComponent,
+  SearchBarComponentProps,
+} from "./searchBarComponent";
 
 const TOP_RESULTS_COUNT = 10;
 
-type SearchBarProps = {
+export type SearchBarProps = {
   CustomSearchItem?: typeof BookSearchResult;
   CustomSearchItemSkeleton?: React.FC;
   className?: string;
   autoFocus?: boolean;
   onChange?: (text: string, previous?: string) => void;
+  onSubmit?: (text: string) => void;
   onSearch?: (text: string) => void;
   onFocus?: () => any;
   onEmpty?: () => any;
-}
+  onBlur?: (value: string) => any;
+} & SearchBarComponentProps;
 
 const SearchBar: React.FC<SearchBarProps> = ({
   CustomSearchItemSkeleton,
@@ -25,8 +30,11 @@ const SearchBar: React.FC<SearchBarProps> = ({
   className,
   onChange,
   onSearch,
+  onSubmit,
   onFocus,
   onEmpty,
+  onBlur,
+  ...props
 }: SearchBarProps) => {
   const {
     loading,
@@ -48,7 +56,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
     }
   }, [loading]);
 
-  const onSubmit = (value: string) => updateSearchValue(value);
+  const handleSubmit = (value: string) => {
+    onSubmit?.(value);
+    updateSearchValue(value);
+  };
 
   const handleOnChange = (value: string) => {
     if (!value) {
@@ -62,16 +73,18 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   return (
     <div
-      className={`w-full flex flex-col gap-4 overflow-auto scrollbar-hide ${
+      className={`w-search-bar flex flex-col gap-4 overflow-auto scrollbar-hide ${
         className ?? ""
       }`}
     >
       <SearchBarComponent
-        onSubmit={onSubmit}
+        onBlur={onBlur}
+        onSubmit={handleSubmit}
         onChange={handleOnChange}
-        className="transition-all duration-300 ease-in-out rounded-full"
+        className="transition-all duration-300 ease-in-out rounded-full w-4/6"
         placeholder="Search all books, authors..."
         autoFocus
+        {...props}
       />
       <div className="flex flex-col gap-3 overflow-auto scrollbar-hide">
         {loading ? (

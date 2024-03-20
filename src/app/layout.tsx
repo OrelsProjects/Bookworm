@@ -35,12 +35,10 @@ export default function RootLayout({
             <NavigationProvider>
               <APIProvider>
                 <DataProvider>
-                  <AnimationProvider>
-                    <HeightProvider className="p-4 pt-16 flex flex-col">
-                      {children}
-                    </HeightProvider>
-                  </AnimationProvider>
-                  <Header className="h-9 w-full p-4 pt-8" />
+                  <HeightProvider className="p-2 pt-4 flex flex-col z-20">
+                    <AnimationProvider>{children}</AnimationProvider>
+                  </HeightProvider>
+                  <Header className="h-9 w-fit p-4 pt-8" />
                   <ModalProvider />
                   <BottomBarProvider />
                   <Toaster />
