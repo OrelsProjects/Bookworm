@@ -97,7 +97,7 @@ const ModalProvider: React.FC = () => {
     (booksListData?: BooksListData) => {
       return (
         <RenderModal type={ModalTypes.BOOKS_LIST_DETAILS_EDIT}>
-          <ModalBooksListEdit booksListData={booksListData} />;
+          <ModalBooksListEdit booksListData={booksListData} />
         </RenderModal>
       );
     },
@@ -119,7 +119,7 @@ const ModalProvider: React.FC = () => {
       return (
         book && (
           <RenderModal type={ModalTypes.ADD_BOOK_TO_LIST}>
-            <ModalAddBookToList book={book} />;
+            <ModalAddBookToList book={book} />
           </RenderModal>
         )
       );
