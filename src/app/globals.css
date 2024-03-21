@@ -26,7 +26,7 @@ input[type="text"]:-moz-ui-autofill {
   :root {
     /* Selected button (Primary/Default) */
     /* --primary: 193, 89, 89; */
-    --primary: 252, 130, 69;
+    --primary: 255, 148, 38;
     /* Primary/Medium */
     --primary-foreground: 9, 72, 123;
     /* Primary/weak */
