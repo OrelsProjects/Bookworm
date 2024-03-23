@@ -75,7 +75,11 @@ export default function Home(): React.ReactNode {
   );
 
   return (
-    <div className="h-full w-full flex flex-col relative justify-top items-start gap-4">
+    <div
+      className={`h-full w-full flex flex-col relative justify-top items-start gap-4
+    ${searchFocused ? "overflow-auto" : ""}
+    `}
+    >
       <SearchBarIcon>
         <SearchBar
           onEmpty={() => setSearchFocused(false)}

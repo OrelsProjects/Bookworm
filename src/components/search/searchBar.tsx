@@ -74,7 +74,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   return (
     <div
-      className={`w-search-bar flex flex-coloverflow-auto scrollbar-hide
+      className={`w-search-bar flex flex-col scrollbar-hide
       ${(loading || books?.length) ?? 0 > 0 ? " gap-4 " : ""}
        ${className ?? ""}`}
     >
@@ -87,7 +87,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         autoFocus={autoFocus}
         {...props}
       />
-      <div className="flex flex-col gap-3 overflow-auto scrollbar-hide">
+      <div className="flex flex-col gap-3 scrollbar-hide">
         {loading ? (
           <>
             <div className="font-bold text-2xl invisible pt-2">Books</div>
@@ -106,7 +106,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
           books.length > 0 && (
             <div className="flex flex-col gap-2 mt-2">
               <div className="font-bold text-2xl">Books</div>
-              <div className="flex gap-6 flex-col overflow-auto scrollbar-hide">
+              <div className="flex gap-6 flex-col scrollbar-hide">
                 {books
                   .slice(0, TOP_RESULTS_COUNT)
                   .map((book, i) =>

@@ -106,13 +106,15 @@ const expandingBottomToTop: MotionProps = {
 };
 
 // Opacity Animation Wrapper
-const OpacityDiv = ({ innerRef, ...props }: AnimationDivProps) => (
-  <GeneralDiv
-    innerRef={innerRef}
-    {...props}
-    animationProps={opacityAnimationProps}
-  />
-);
+const OpacityDiv = ({ innerRef, ...props }: AnimationDivProps) =>
+  props.children;
+// (
+//   <GeneralDiv
+//     innerRef={innerRef}
+//     {...props}
+//     animationProps={opacityAnimationProps}
+//   />
+// );
 
 const getExpandProps = (expandType?: ExpandType): MotionProps => {
   switch (expandType) {

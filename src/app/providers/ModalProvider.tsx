@@ -146,7 +146,9 @@ const ModalProvider: React.FC = () => {
         thumbnail = <></>;
     }
     return (
-      <div className="w-full h-14 bg-background flex justify-between items-center gap-3 px-4">
+      <div className="w-full h-14 bg-background flex justify-between items-center gap-3 px-4"
+      style={{ backgroundColor: modalBackgroundColor }}
+      >
         <div className="ml-8 text-lg text-foreground max-w-xs line-clamp-1">
           {title}
         </div>
