@@ -180,7 +180,7 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
           />
         </SearchBarIcon>
       </div>
-      <div className="flex gap-3 flex-grow flex-col h-full overflow-auto scrollbar-hide">
+      <div className="flex gap-3 flex-grow flex-col h-full overflow-auto">
         <UserBooks />
         <UserBooksLists />
       </div>

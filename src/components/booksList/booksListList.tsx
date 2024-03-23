@@ -70,7 +70,7 @@ const BooksListList: React.FC<Props> = ({
 
   return (
     <div
-      className={`flex gap-6 h-fit flex-col scrollbar-hide ${className ?? ""}
+      className={`flex gap-6 h-fit flex-col ${className ?? ""}
       ${disableScroll ? "" : "overflow-auto"} relative`}
       ref={scrollableDivRef}
     >

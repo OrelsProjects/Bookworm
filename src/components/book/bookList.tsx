@@ -38,7 +38,7 @@ const BookList: React.FC<BookListProps> = ({
 
   return (
     <div
-      className={`flex gap-3 flex-grow scrollbar-hide ${className ?? ""} ${
+      className={`flex gap-3 flex-grow ${className ?? ""} ${
         direction === "row" ? "flex-row h-fit" : "flex-col h-full"
       } ${disableScroll ? "" : "overflow-auto"}`}
       ref={scrollableDivRef}

@@ -192,12 +192,21 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
   }, [booksListData]);
 
   const scrollSearchBarIntoView = () => {
-    searchBarRef.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
+    const searchBarElement = searchBarRef.current;
+    if (searchBarElement) {
+      const rect = searchBarElement.getBoundingClientRect();
+      const scrollOptions = {
+        behavior: "smooth",
+        block: "start",
+      };
 
-    searchBarRef.current?.querySelector("input")?.focus();
+      // Adjust the scroll position by adding extra 10px padding to the top
+      const topPadding = 10; // Adjust this value to change the top padding
+      const scrollY = window.scrollY + rect.top - topPadding;
+
+      window.scrollTo({ top: scrollY, behavior: "smooth" });
+      searchBarElement.querySelector("input")?.focus();
+    }
   };
 
   const isBookInList = (book: Book) =>
@@ -387,7 +396,7 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
       }
       bottomSection={
         <div
-          className="w-full h-full flex flex-col gap-2 scrollbar-hide pb-4"
+          className="w-full h-full flex flex-col gap-2 pb-4"
           key="modal-books-list"
         >
           <div className="flex flex-col gap-2">
@@ -418,6 +427,8 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
             <div ref={searchBarRef}>
               <SearchBarIcon>
                 <SearchBar
+                  formClassName="w-full"
+                  className="!w-full"
                   onSearch={() => {
                     scrollSearchBarIntoView();
                   }}

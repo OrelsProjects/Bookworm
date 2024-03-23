@@ -149,7 +149,7 @@ const ModalProvider: React.FC = () => {
       <div className="w-full h-14 bg-background flex justify-between items-center gap-3 px-4"
       style={{ backgroundColor: modalBackgroundColor }}
       >
-        <div className="ml-8 text-lg text-foreground max-w-xs line-clamp-1">
+        <div className="ml-10 text-lg text-foreground max-w-xs line-clamp-1">
           {title}
         </div>
         <div>{thumbnail}</div>

@@ -8,6 +8,7 @@ export interface SearchBarComponentProps {
   onChange?: (value: string) => any;
   placeholder?: string;
   className?: string;
+  formClassName?: string;
   autoFocus?: boolean;
   onFocus?: () => any;
   onBlur?: (value: string) => any;
@@ -17,6 +18,7 @@ export const SearchBarComponent: React.FC<SearchBarComponentProps> = ({
   onSubmit,
   onChange,
   className,
+  formClassName,
   placeholder,
   onFocus,
   onBlur,
@@ -45,7 +47,7 @@ export const SearchBarComponent: React.FC<SearchBarComponentProps> = ({
         }}
         onFocus={onFocus}
         onBlur={() => onBlur?.(searchTerm)}
-        className={`w-full`}
+        className={formClassName}
       >
         <label
           htmlFor="search-bar"

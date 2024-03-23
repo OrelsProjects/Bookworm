@@ -82,7 +82,7 @@ const Modal: React.FC<ModalProps> = ({
 
   return (
     <div
-      className="absolute top-0 left-0 right-0 bottom-0 w-screen h-screen max-h-fit z-50 overscroll-none overflow-auto scrollbar-hide bg-background"
+      className="absolute top-0 left-0 right-0 bottom-0 w-screen h-screen max-h-fit z-50 overscroll-none overflow-auto bg-background"
       ref={scrollableDivRef}
     >
       <OpacityDiv innerRef={modalRef} key="modal-background" isOpen={isOpen}>

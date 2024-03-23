@@ -41,7 +41,7 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
   const Summary = () =>
     book.description ? (
       <div className="w-full flex relative flex-col justify-start gap-1">
-        <div className="flex flex-col gap-4 text-foreground h-full scrollbar-hide font-thin shadow-inner pb-6">
+        <div className="flex flex-col gap-4 text-foreground h-full font-thin shadow-inner pb-6">
           <div>
             <div className="text-foreground font-bold text-xl">Summary</div>
             <ReadMoreText
