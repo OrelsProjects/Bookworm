@@ -23,6 +23,7 @@ import BookThumbnail from "../book/bookThumbnail";
 import { CommentsArea } from "./_components/commentsArea";
 import BookDetailsSkeleton from "../skeletons/BookDetailsSkeleton";
 import SearchBarIcon from "../search/searchBarIcon";
+import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
 
 interface ModalBooksListProps {
   booksListData?: BooksListData;
@@ -109,21 +110,48 @@ const ListBooks: React.FC<ListBookProps> = ({
   onAddNewBookClick,
   onDeleteBookClick,
   name,
-  key,
   booksInList,
 }) => (
   <div className="w-full flex flex-col gap-2 justify-center items-start">
-    {booksInList?.map((bookInList, index) => (
-      <BookInListDetails
-        key={`${key}-book-in-modal-books-list-${index}`}
-        bookInList={bookInList}
-        onAddNewBookClick={onAddNewBookClick}
-        onDeleteBookClick={onDeleteBookClick}
-        onChange={onChange}
-        value={value}
-        name={`${name}-${bookInList.bookId}`}
-      />
-    ))}
+    <DragDropContext onDragEnd={(result) => {}}>
+      <Droppable
+        droppableId="droppable-books-in-list"
+        type="COLUMN"
+        direction="vertical"
+      >
+        {(provided) => (
+          <ul
+            className="w-full flex flex-col justify-center items-start gap-2"
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+          >
+            {booksInList?.map((bookInList, index) => (
+              <Draggable
+                draggableId={`draggable-id-book-in-modal-books-list-${bookInList.bookId}`}
+                index={index}
+              >
+                {(provided) => (
+                  <li
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                  >
+                    <BookInListDetails
+                      bookInList={bookInList}
+                      onAddNewBookClick={onAddNewBookClick}
+                      onDeleteBookClick={onDeleteBookClick}
+                      onChange={onChange}
+                      value={value}
+                      name={`${name}-${bookInList.bookId}`}
+                    />
+                  </li>
+                )}
+              </Draggable>
+            ))}
+          </ul>
+        )}
+      </Droppable>
+    </DragDropContext>
     <div className="w-full flex flex-row gap-2">
       <BooksListThumbnail
         className="flex-shrink-0"
@@ -149,7 +177,7 @@ const ListBooks: React.FC<ListBookProps> = ({
             onChange(null, e.target.value);
           }}
           placeholder="Comment"
-          key={key}
+          key={`books-in-list-book-name`}
         />
       </div>
     </div>
