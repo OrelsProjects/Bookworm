@@ -11,7 +11,7 @@ import {
 import { fetchAuthSession } from "aws-amplify/auth";
 import { Hub } from "aws-amplify/utils";
 import "../../amplifyconfiguration";
-import Loading from "../../components/loading";
+import Loading from "../../components/ui/loading";
 import { initEventTracker, setUserEventTracker } from "../../eventTracker";
 
 import { Logger, initLogger, setUserLogger } from "@/src/logger";

@@ -1,6 +1,7 @@
-export type ThumbnailSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
+export type ThumbnailSize = "3xs" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 
 const thumbnailSizes = {
+  ["3xs"]: { width: "w-9", height: "h-11" },
   ["xs"]: { width: "w-16", height: "h-24" },
   ["sm"]: { width: "w-20", height: "h-32" },
   ["md"]: { width: "w-24", height: "h-36" },

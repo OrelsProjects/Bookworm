@@ -28,6 +28,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   CustomSearchItemSkeleton,
   CustomSearchItem,
   className,
+  autoFocus,
   onChange,
   onSearch,
   onSubmit,
@@ -73,9 +74,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   return (
     <div
-      className={`w-search-bar flex flex-col gap-4 overflow-auto scrollbar-hide ${
-        className ?? ""
-      }`}
+      className={`w-search-bar flex flex-coloverflow-auto scrollbar-hide
+      ${(loading || books?.length) ?? 0 > 0 ? " gap-4 " : ""}
+       ${className ?? ""}`}
     >
       <SearchBarComponent
         onBlur={onBlur}
@@ -83,7 +84,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         onChange={handleOnChange}
         className="transition-all duration-300 ease-in-out rounded-full w-4/6"
         placeholder="Search all books, authors..."
-        autoFocus
+        autoFocus={autoFocus}
         {...props}
       />
       <div className="flex flex-col gap-3 overflow-auto scrollbar-hide">

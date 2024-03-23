@@ -21,6 +21,7 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
   book,
   bookInList,
 }) => {
+  const { Buttons } = BookButtons();
   const { getBookFullData, userBooksData } = useBook();
   const [title, setTitle] = React.useState<string | null>(null);
   const [authors, setAuthors] = React.useState<string[] | undefined | null>(
@@ -39,14 +40,14 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
 
   const Summary = () =>
     book.description ? (
-      <div className="w-full flex relative flex-col justify-start gap-1 overflow-auto">
-        <div className="flex flex-col gap-4 text-foreground overflow-auto h-full scrollbar-hide font-thin shadow-inner pb-6">
+      <div className="w-full flex relative flex-col justify-start gap-1">
+        <div className="flex flex-col gap-4 text-foreground h-full scrollbar-hide font-thin shadow-inner pb-6">
           <div>
             <div className="text-foreground font-bold text-xl">Summary</div>
             <ReadMoreText
               text={book?.description}
               maxLines={bookInList ? 3 : 6}
-              className={"text-xl text-mute"}
+              className={"text-xl text-mute !overflow-none"}
             />
           </div>
           {bookInList && (
@@ -72,7 +73,7 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
     />
   );
 
-  const ButtonsRow = () => <BookButtons book={book} iconSize="lg" />;
+  const ButtonsRow = () => <Buttons book={book} iconSize="lg" />;
 
   return (
     <ModalContent

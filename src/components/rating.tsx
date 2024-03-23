@@ -1,8 +1,8 @@
 // use client
 import * as React from "react";
 // Next.js Image component for optimized image serving
-import { Button } from "./button"; // Adjust the import path as necessary
-import Loading from "./loading";
+import { Button } from "./ui/button"; // Adjust the import path as necessary
+import Loading from "./ui/loading";
 
 type StarProps = {
   filled?: boolean;
@@ -62,9 +62,9 @@ const Rating: React.FC<RatingProps> = ({
   loading,
   className,
 }) => {
-  const fullStars = clamp(rating ? Math.ceil(rating) : 0, 0, 5);
+  const fullStars = clamp(rating ? Math.round(rating) : 0, 0, 5);
   const emptyStars = clamp(5 - fullStars, 0, 5);
-  const fullStarsUser = clamp(userRating ? Math.ceil(userRating) : 0, 0, 5);
+  const fullStarsUser = clamp(userRating ? Math.round(userRating) : 0, 0, 5);
   const emptyStarsUser = clamp(5 - fullStarsUser, 0, 5);
 
   const RatingLoading = () => (

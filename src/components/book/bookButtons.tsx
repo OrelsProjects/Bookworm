@@ -79,13 +79,7 @@ const ButtonImage: React.FC<ButtonImageProps> = ({
   );
 };
 
-export const BookButtons: React.FC<BookButtonsProps> = ({
-  book,
-  iconSize,
-  className,
-  showAddToListButton = true,
-  classNameIcon = "",
-}) => {
+export const BookButtons = () => {
   const {
     getBookFullData,
     updateBookReadingStatus,
@@ -95,11 +89,12 @@ export const BookButtons: React.FC<BookButtonsProps> = ({
     deleteUserBook,
   } = useBook();
   const { showAddBookToListModal } = useModal();
-  const [bookData, setBookData] = React.useState<UserBookData | undefined>();
-  const [bookRead, setBookRead] = React.useState(false);
-  const buttonsColor = increaseLuminosity(book?.thumbnailColor);
 
-  const handleUpdateBookReadingStatus = async (status: ReadingStatusEnum) => {
+  const handleUpdateBookReadingStatus = async (
+    status: ReadingStatusEnum,
+    book: Book,
+    userBookData?: UserBookData | null
+  ) => {
     if (loading.current) return;
     let promise: Promise<any> | undefined = undefined;
     let loadingMessage = "";
@@ -107,21 +102,21 @@ export const BookButtons: React.FC<BookButtonsProps> = ({
     let errorMessage = "";
     const readingStatusName = readingStatusToName(status);
     if (
-      bookData?.userBook?.readingStatusId &&
-      bookData?.userBook?.readingStatusId === status
+      userBookData?.userBook?.readingStatusId &&
+      userBookData?.userBook?.readingStatusId === status
     ) {
-      promise = deleteUserBook(bookData.userBook);
+      promise = deleteUserBook(userBookData.userBook);
       loadingMessage = `Removing ${book?.title} from list ${readingStatusName}...`;
       successMessage = `${book?.title} removed from list ${readingStatusName}`;
       errorMessage = `Failed to remove ${book?.title} from list ${readingStatusName}`;
     } else {
-      if (!bookData) {
+      if (!userBookData) {
         promise = addUserBook({
           book,
           readingStatusId: status as number,
         });
       } else {
-        promise = updateBookReadingStatus(bookData.userBook, status);
+        promise = updateBookReadingStatus(userBookData.userBook, status);
       }
       loadingMessage = `Adding ${book?.title} to list: ${readingStatusName}...`;
       successMessage = `${book?.title} updated to list: ${readingStatusName}`;
@@ -141,63 +136,109 @@ export const BookButtons: React.FC<BookButtonsProps> = ({
     } catch (e) {}
   };
 
-  const handleAddBookToList = () => showAddBookToListModal(book);
+  const updateBookStatusToRead = async (
+    book: Book,
+    userBookData?: UserBookData | null
+  ) =>
+    handleUpdateBookReadingStatus(ReadingStatusEnum.READ, book, userBookData);
 
-  useEffect(() => {
-    if (!book) return;
-    const userBookData = getBookFullData(book) ?? undefined;
-    setBookData(userBookData);
-    setBookRead(isBookRead(userBookData?.userBook));
-  }, [book, userBooksData]);
+  const updateBookStatusToToRead = async (
+    book: Book,
+    userBookData?: UserBookData | null
+  ) =>
+    handleUpdateBookReadingStatus(
+      ReadingStatusEnum.TO_READ,
+      book,
+      userBookData
+    );
 
-  return (
-    <div
-      className={`h-fit w-full flex flex-row justify-evenly items-center gap-4 ${className}`}
-    >
-      {book && (
-        <div
-          className="flex flex-col justify-center items-center gap-2"
-          onClick={() => handleUpdateBookReadingStatus(ReadingStatusEnum.READ)}
-        >
-          {Checkmark.Default && (
-            <Checkmark.Default
-              style={{
-                height: getIconSize({ size: "md" }).heightPx,
-                width: getIconSize({ size: "md" }).widthPx,
-                fill: bookRead ? buttonsColor : "currentColor",
-              }}
-              className={`rounded-full p-1 text-background ${
-                bookRead ? "bg-primary" : "bg-foreground"
-              }`}
-            />
-          )}
-          <div className={`text-foreground text-lg`}>Read</div>
-        </div>
-      )}
-      {book &&
-        ButtonImage({
-          title: "To Read",
-          Icon: Bookmark.Fill,
-          iconSize: "md",
-          selected: !bookRead && !!bookData,
-          width: 24,
-          buttonsColor,
-          onClick: () =>
-            handleUpdateBookReadingStatus(ReadingStatusEnum.TO_READ),
-          iconClassName: classNameIcon,
-        })}
-      {showAddToListButton &&
-        ButtonImage({
-          title: "Add to list",
-          Icon: Add.Outline,
-          iconSize: "sm",
-          selected: false,
-          buttonsColor,
-          onClick: () => handleAddBookToList(),
-          iconClassName: classNameIcon,
-        })}
-    </div>
-  );
+  const handleAddBookToList = (book: Book) => showAddBookToListModal(book);
+
+  const Buttons: React.FC<BookButtonsProps> = ({
+    book,
+    iconSize,
+    className,
+    showAddToListButton = true,
+    classNameIcon = "",
+  }) => {
+    const buttonsColor = increaseLuminosity(book?.thumbnailColor);
+    const [userBookData, setUserBookData] = React.useState<
+      UserBookData | undefined
+    >();
+    const [bookRead, setBookRead] = React.useState(false);
+
+    useEffect(() => {
+      if (!book) return;
+      const userBookData = getBookFullData(book) ?? undefined;
+      setUserBookData(userBookData);
+      setBookRead(isBookRead(userBookData?.userBook));
+    }, [book, userBooksData]);
+
+    return (
+      <div
+        className={`h-fit w-full flex flex-row justify-evenly items-center gap-4 ${className}`}
+      >
+        {book && (
+          <div
+            className="flex flex-col justify-center items-center gap-2"
+            onClick={() =>
+              handleUpdateBookReadingStatus(
+                ReadingStatusEnum.READ,
+                book,
+                userBookData
+              )
+            }
+          >
+            {Checkmark.Default && (
+              <Checkmark.Default
+                style={{
+                  height: getIconSize({ size: "md" }).heightPx,
+                  width: getIconSize({ size: "md" }).widthPx,
+                  fill: bookRead ? "primary" : "currentColor",
+                }}
+                className={`rounded-full p-1 text-background ${
+                  bookRead ? buttonsColor : "bg-foreground"
+                }`}
+              />
+            )}
+            <div className={`text-foreground text-lg`}>Read</div>
+          </div>
+        )}
+        {book &&
+          ButtonImage({
+            title: "To Read",
+            Icon: Bookmark.Fill,
+            iconSize: "md",
+            selected: !bookRead && !!userBookData,
+            width: 24,
+            buttonsColor,
+            onClick: () =>
+              handleUpdateBookReadingStatus(
+                ReadingStatusEnum.TO_READ,
+                book,
+                userBookData
+              ),
+            iconClassName: classNameIcon,
+          })}
+        {showAddToListButton &&
+          ButtonImage({
+            title: "Add to list",
+            Icon: Add.Outline,
+            iconSize: "sm",
+            selected: false,
+            buttonsColor,
+            onClick: () => handleAddBookToList(book),
+            iconClassName: classNameIcon,
+          })}
+      </div>
+    );
+  };
+  return {
+    Buttons,
+    handleAddBookToList,
+    updateBookStatusToRead,
+    updateBookStatusToToRead,
+  };
 };
 
 export default BookButtons;

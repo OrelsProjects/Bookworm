@@ -30,8 +30,7 @@ const BookList: React.FC<BookListProps> = ({
   const { showBookDetailsModal, showAddBookToListModal } = useModal();
   const { scrollableDivRef } = useScrollPosition({
     onThreshold: () => onNextPageScroll?.(), // TODO: Buggy scrolling. Once fixed, reduce the page size in useTable.ts
-    scrollDirection:
-      direction === "row" ? ScrollDirection.Width : ScrollDirection.Height,
+    scrollDirection: direction === "row" ? "width" : "height",
   });
 
   const onBookClick = (book?: Book) => showBookDetailsModal({ book: book });

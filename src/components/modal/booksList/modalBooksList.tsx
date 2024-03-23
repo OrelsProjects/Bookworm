@@ -7,7 +7,7 @@ import useBooksList from "../../../hooks/useBooksList";
 import useBook from "../../../hooks/useBook";
 import ReadMoreText from "../../readMoreText";
 import { ModalBooksListProps } from "./consts";
-import Tooltip from "../../../components/tooltip";
+import Tooltip from "../../ui/tooltip";
 import BooksListGridView from "./gridView";
 
 export const ModalBooksList = <T extends SafeBooksListData>({
@@ -65,7 +65,7 @@ export const ModalBooksList = <T extends SafeBooksListData>({
         <div className="w-full h-full justify-start items-start">
           <Tooltip
             tooltipContent={
-              <div className="text-lg text-muted line-clamp-4 max-w-xs">
+              <div className="text-sm text-muted line-clamp-4 tracking-tighter max-w-xs">
                 {booksListData?.name}
               </div>
             }

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { ExpandType } from "./animationDivs";
+import { ExpandType } from "../animationDivs";
 
 interface DropdownItem {
   label: string;

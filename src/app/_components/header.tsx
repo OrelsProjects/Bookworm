@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@/src/components/button";
+import { Button } from "@/src/components/ui/button";
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { selectAuth } from "@/src/lib/features/auth/authSlice";

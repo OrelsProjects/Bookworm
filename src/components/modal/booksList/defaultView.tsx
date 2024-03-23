@@ -9,6 +9,7 @@ export default function BooksListDefaultView({
   booksListData,
   booksInUsersListsCount = 0,
 }: BooksListViewProps) {
+  const { Buttons } = BookButtons();
   const { showBookDetailsModal } = useModal();
   return (
     <div className="h-full w-full flex flex-col gap-6 mt-8 pb-2 overflow-auto scrollbar-hide">
@@ -47,7 +48,7 @@ export default function BooksListDefaultView({
           </div>
           <div className="h-full w-fit flex-shrink-0 ml-auto" id="buttons">
             <div className="w-full h-full flex flex-col justify-evenly">
-              <BookButtons
+              <Buttons
                 book={bookInList.book}
                 iconSize="sm"
                 className="h-full !flex-col !gap-0"

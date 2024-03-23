@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Input } from "../input";
+import { Input } from "../ui/input";
 import { Search } from "../icons/search";
 import { Clear } from "../icons/clear";
 

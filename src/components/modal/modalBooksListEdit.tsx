@@ -15,7 +15,7 @@ import { BookComponentProps } from "../search/BookSearchResult";
 import { Logger } from "../../logger";
 import { useFormik } from "formik";
 import { Books } from "../../models/book";
-import { TextArea } from "../textarea";
+import { TextArea } from "../ui/textarea";
 import SearchBar from "../search/searchBar";
 import { ModalContent } from "./modalContainers";
 import { BookInList, BookInListWithBook } from "../../models/bookInList";
@@ -387,7 +387,7 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
       }
       bottomSection={
         <div
-          className="w-full h-full flex flex-col gap-2 overflow-auto scrollbar-hide pb-4"
+          className="w-full h-full flex flex-col gap-2 scrollbar-hide pb-4"
           key="modal-books-list"
         >
           <div className="flex flex-col gap-2">

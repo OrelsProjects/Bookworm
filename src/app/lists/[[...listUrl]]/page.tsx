@@ -14,7 +14,7 @@ import axios from "axios";
 import { SafeBooksListData } from "../../../models/booksList";
 import { IResponse } from "../../../models/dto/response";
 import { Logger } from "../../../logger";
-import Loading from "../../../components/loading";
+import Loading from "../../../components/ui/loading";
 import { useModal } from "../../../hooks/useModal";
 import { selectAuth } from "../../../lib/features/auth/authSlice";
 import SearchBarIcon from "../../../components/search/searchBarIcon";
@@ -84,9 +84,9 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
 
   const UserBooks = () => (
     <div className="w-full h-fit flex flex-col gap-2">
-      <div className="w-full flex flex-row justify-between">
+      <div className="w-full flex flex-row justify-between items-end">
         <div className="text-xl font-bold">My Library</div>
-        <div className="text-lg font-bold underline" onClick={onSeeAllClick}>
+        <div className="text-sm text-muted underline" onClick={onSeeAllClick}>
           see all
         </div>
       </div>

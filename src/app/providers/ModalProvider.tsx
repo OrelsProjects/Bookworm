@@ -17,9 +17,13 @@ import { darkenColor } from "../../utils/thumbnailUtils";
 import ModalAddBookToList from "../../components/modal/modalAddBookToList";
 import ModalBooksListEdit from "../../components/modal/modalBooksListEdit";
 import { usePathname, useRouter } from "next/navigation";
-import { BookInList } from "../../models/bookInList";
+import { BookInList, BookInListWithBook } from "../../models/bookInList";
 import { ModalBooksList } from "../../components/modal/booksList/modalBooksList";
 import ModalSignup from "../../components/modal/modalSignup";
+import BookThumbnail from "../../components/book/bookThumbnail";
+import BooksListThumbnail from "../../components/booksList/booksListThumbnail";
+import Tooltip from "../../components/ui/tooltip";
+import { Books } from "../../models/book";
 
 const ModalProvider: React.FC = () => {
   const router = useRouter();
@@ -38,7 +42,7 @@ const ModalProvider: React.FC = () => {
     [modalStack]
   );
 
-// TODO: The problem with the modal not animating on close is because I hide it here (useMemos) and then it's removed from the DOM. I need to hide it in the modalSlice, and then remove it from the DOM after the animation is done.
+  // TODO: The problem with the modal not animating on close is because I hide it here (useMemos) and then it's removed from the DOM. I need to hide it in the modalSlice, and then remove it from the DOM after the animation is done.
 
   const shouldRenderBookDetailsModal = useMemo<boolean>(() => {
     return modalStack
@@ -82,6 +86,75 @@ const ModalProvider: React.FC = () => {
     }
   }, [type, data]);
 
+  const topBarCollapsed = useMemo<React.ReactNode>(() => {
+    const thumbnailSize = "3xs";
+    const rounded = "!rounded-md";
+    let thumbnail: React.ReactNode;
+    let title: string = "";
+    let books: Books = [];
+    console.log(data);
+    switch (type) {
+      case ModalTypes.BOOK_DETAILS:
+        thumbnail = (
+          <BookThumbnail
+            src={data?.book?.thumbnailUrl}
+            thumbnailSize={thumbnailSize}
+            className={rounded}
+          />
+        );
+        title = data?.book?.title ?? "";
+        break;
+      case ModalTypes.ADD_BOOK_TO_LIST:
+        thumbnail = (
+          <BookThumbnail
+            src={data?.thumbnailUrl}
+            thumbnailSize={thumbnailSize}
+            className={rounded}
+          />
+        );
+        title = data?.title ?? "";
+        break;
+      case ModalTypes.BOOKS_LIST_DETAILS_EDIT:
+        books =
+          data?.booksInList?.map(
+            (bookInList: BookInListWithBook) => bookInList.book
+          ) ?? [];
+        title = data?.name ?? "";
+        thumbnail = (
+          <BooksListThumbnail
+            books={books}
+            thumbnailSize={thumbnailSize}
+            className={rounded}
+          />
+        );
+        break;
+      case ModalTypes.BOOKS_LIST_DETAILS:
+        books =
+          data?.bookList?.booksInList?.map(
+            (bookInList: BookInListWithBook) => bookInList.book
+          ) ?? [];
+        thumbnail = (
+          <BooksListThumbnail
+            books={books}
+            thumbnailSize={thumbnailSize}
+            className={rounded}
+          />
+        );
+        title = data?.bookList?.name ?? "";
+        break;
+      default:
+        thumbnail = <></>;
+    }
+    return (
+      <div className="w-full h-14 bg-background flex justify-between items-center gap-3 px-4">
+        <div className="ml-8 text-lg text-foreground max-w-xs line-clamp-1">
+          {title}
+        </div>
+        <div>{thumbnail}</div>
+      </div>
+    );
+  }, [type, data]);
+
   const RenderBooksListDetails = useCallback(
     (data?: any) => {
       return (
@@ -97,7 +170,7 @@ const ModalProvider: React.FC = () => {
     (booksListData?: BooksListData) => {
       return (
         <RenderModal type={ModalTypes.BOOKS_LIST_DETAILS_EDIT}>
-          <ModalBooksListEdit booksListData={booksListData} />;
+          <ModalBooksListEdit booksListData={booksListData} />
         </RenderModal>
       );
     },
@@ -119,7 +192,7 @@ const ModalProvider: React.FC = () => {
       return (
         book && (
           <RenderModal type={ModalTypes.ADD_BOOK_TO_LIST}>
-            <ModalAddBookToList book={book} />;
+            <ModalAddBookToList book={book} />
           </RenderModal>
         )
       );
@@ -155,8 +228,8 @@ const ModalProvider: React.FC = () => {
           onClose?.();
           handleOnClose();
         }}
+        topBarCollapsed={topBarCollapsed}
         backgroundColor={modalBackgroundColor}
-        // key={`${modalData.type}`}
       >
         {children}
       </Modal>
