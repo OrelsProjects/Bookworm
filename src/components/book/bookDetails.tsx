@@ -38,7 +38,7 @@ const BookDetails: React.FC<BookDetailsProps> = ({
         Icon={ThumbnailIcon}
         thumbnailSize={bookThumbnailSize}
       />
-      <div className={`flex flex-col  gap-2 overflow-visible flex-grow self-start`}>
+      <div className={`flex flex-col  gap-2 flex-grow self-start`}>
         <div className={`flex flex-col -gap-1`}>
           <Title title={book?.title ?? ""} className="font-sm" />
           <Authors authors={book?.authors} className="text-primary" />

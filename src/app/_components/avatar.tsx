@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Dropdown from "@/src/components/dropdown";
+import Dropdown from "@/src/components/ui/dropdown";
 import useAuth from "@/src/hooks/useAuth";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";

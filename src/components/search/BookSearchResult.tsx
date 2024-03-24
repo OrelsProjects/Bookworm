@@ -1,12 +1,17 @@
 import React from "react";
-import { Skeleton } from "../skeleton";
+import { Skeleton } from "../ui/skeleton";
 import { Book } from "../../models";
+import { CiCirclePlus as Plus } from "react-icons/ci";
+import { CiBookmark as Bookmark } from "react-icons/ci";
+import { IoCheckmarkCircleOutline as Checkmark } from "react-icons/io5";
+import { IoCheckmarkCircle as CheckmarkFill } from "react-icons/io5";
+
 import BookThumbnail from "../book/bookThumbnail";
 import Title from "../book/bookTitle";
 import Authors from "../book/authors";
 import BookButtons from "../book/bookButtons";
-import { useDispatch } from "react-redux";
 import { useModal } from "../../hooks/useModal";
+import useBook from "../../hooks/useBook";
 
 export interface BookComponentProps {
   book: Book;
@@ -14,6 +19,12 @@ export interface BookComponentProps {
 
 const BookSearchResult: React.FC<BookComponentProps> = ({ book }) => {
   const { showBookDetailsModal } = useModal();
+  const { getBookFullData } = useBook();
+  const {
+    handleAddBookToList,
+    updateBookStatusToRead,
+    updateBookStatusToToRead,
+  } = BookButtons();
   return (
     <div
       className="flex flex-row justify-start items-start gap-2 h-full"
@@ -34,7 +45,15 @@ const BookSearchResult: React.FC<BookComponentProps> = ({ book }) => {
           <Title title={book.title} />
           <Authors authors={book.authors} prefix="by" />
         </div>
-        <BookButtons book={book} className="!justify-start mt-4" iconSize="sm" />
+        <div className="w-full h-full flex justify-end items-end">
+          <CheckmarkFill
+            className="text-2xl !text-primary"
+            onClick={(e) => {
+              e.stopPropagation();
+              updateBookStatusToRead(book, getBookFullData(book));
+            }}
+          />
+        </div>
       </div>
     </div>
   );
@@ -49,10 +68,7 @@ export const SearchItemSkeleton: React.FC<SearchItemSkeletonProps> = ({
 }) => {
   return (
     <div className={`flex rounded-lg shadow space-x-4 ${className ?? ""}`}>
-      {/* Thumbnail Skeleton */}
       <Skeleton className="w-16 h-24 rounded-xl" />
-
-      {/* Text and Buttons Skeletons */}
       <div className="flex flex-col flex-grow justify-start items-start gap-2 mt-2">
         <Skeleton className="h-2 rounded w-1/2" />
         <Skeleton className="h-2 rounded w-1/3" />

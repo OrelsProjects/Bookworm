@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Input } from "../input";
+import { Input } from "../ui/input";
 import { Search } from "../icons/search";
 import { Clear } from "../icons/clear";
 
@@ -8,6 +8,7 @@ export interface SearchBarComponentProps {
   onChange?: (value: string) => any;
   placeholder?: string;
   className?: string;
+  formClassName?: string;
   autoFocus?: boolean;
   onFocus?: () => any;
   onBlur?: (value: string) => any;
@@ -17,6 +18,7 @@ export const SearchBarComponent: React.FC<SearchBarComponentProps> = ({
   onSubmit,
   onChange,
   className,
+  formClassName,
   placeholder,
   onFocus,
   onBlur,
@@ -43,7 +45,7 @@ export const SearchBarComponent: React.FC<SearchBarComponentProps> = ({
         }}
         onFocus={onFocus}
         onBlur={() => onBlur?.(searchTerm)}
-        className={`w-full`}
+        className={formClassName}
       >
         <label
           htmlFor="search-bar"

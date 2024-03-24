@@ -43,14 +43,6 @@ const ContentContainer: React.FC<ModalContentContainer> = ({
   </div>
 );
 
-const BottomSectionContainer: React.FC<ModalContentContainer> = ({
-  children,
-  className,
-}) => (
-  <div className={`flex gap-2 w-full h-full flex-col ${className ?? ""}`}>
-    {children}
-  </div>
-);
 
 export const ModalContent: React.FC<ModalContentProps> = ({
   thumbnail,

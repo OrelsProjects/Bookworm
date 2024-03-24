@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import useBooksList from "../../../hooks/useBooksList";
 import { BookInListWithBook } from "../../../models/bookInList";
-import { TextArea } from "../../textarea";
+import { TextArea } from "../../ui/textarea";
 import { BooksListData } from "../../../models/booksList";
 
 interface CommentAreaProps

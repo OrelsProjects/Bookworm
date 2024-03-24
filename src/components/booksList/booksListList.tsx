@@ -6,7 +6,7 @@ import useScrollPosition, {
 import BooksListThumbnail from "./booksListThumbnail";
 import { BooksListData } from "../../models/booksList";
 import { ThumbnailSize } from "../../consts/thumbnail";
-import { Checkbox } from "../checkbox";
+import { Checkbox } from "../ui/checkbox";
 import { Checkmark } from "../icons/checkmark";
 import { Circle } from "../icons/circle";
 import { Add } from "../icons/add";
@@ -49,11 +49,10 @@ const BooksListList: React.FC<Props> = ({
   bottomElementProps,
   endElementProps,
 }) => {
-  const { user } = useSelector(selectAuth);
   const { showBooksListModal } = useModal();
   const { scrollableDivRef } = useScrollPosition({
     onThreshold: () => onNextPageScroll?.(),
-    scrollDirection: ScrollDirection.Height,
+    scrollDirection: "height",
   });
 
   const onListClick = (booksListData: BooksListData) =>
@@ -71,7 +70,7 @@ const BooksListList: React.FC<Props> = ({
 
   return (
     <div
-      className={`flex gap-6 h-fit flex-col scrollbar-hide ${className ?? ""}
+      className={`flex gap-6 h-fit flex-col ${className ?? ""}
       ${disableScroll ? "" : "overflow-auto"} relative`}
       ref={scrollableDivRef}
     >

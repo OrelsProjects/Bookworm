@@ -116,7 +116,7 @@ input[type="text"]:-moz-ui-autofill {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground min-h-screen h-screen;
+    @apply bg-background text-foreground;
   }
   body,
   input,

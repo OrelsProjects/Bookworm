@@ -114,6 +114,7 @@ module.exports = {
         "search-bar": "66.66%",
       },
       height: {
+        "13": "3.25rem",
         "22": "5.5rem",
         "30": "7.5rem",
         "136": "34rem",

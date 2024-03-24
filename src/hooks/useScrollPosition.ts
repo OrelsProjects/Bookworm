@@ -1,9 +1,6 @@
 import { useEffect, useRef } from "react";
 
-export enum ScrollDirection {
-  Width = "Width",
-  Height = "Height",
-}
+export type ScrollDirection = "height" | "width";
 
 interface AdditionalOptions {
   scrollDirection?: ScrollDirection;
@@ -22,11 +19,11 @@ function useScrollPosition(options?: AdditionalOptions) {
     if (!scrollableDivRef.current) return;
     const scrollbar: HTMLDivElement = scrollableDivRef.current;
     const scrollPosition =
-      options?.scrollDirection === ScrollDirection.Width
+      options?.scrollDirection === "width"
         ? scrollbar.scrollLeft + scrollbar.clientWidth
         : scrollbar.scrollTop + scrollbar.clientHeight;
     const totalSize =
-      options?.scrollDirection === ScrollDirection.Width
+      options?.scrollDirection === "width"
         ? scrollbar.scrollWidth
         : scrollbar.scrollHeight;
     const scrollPercentage = (scrollPosition / totalSize) * 100;

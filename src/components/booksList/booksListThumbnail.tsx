@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Book } from "../../models";
-import { Skeleton } from "../skeleton";
+import { Skeleton } from "../ui/skeleton";
 import { ThumbnailSize, getThumbnailSize } from "../../consts/thumbnail";
 
 interface BooksListThumbnailProps {

@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { cn } from "../lib/utils";
+import { cn } from "../../lib/utils";
 import { LoadingSvg } from "./loading";
 
 interface TextAreaProps
@@ -16,7 +16,7 @@ const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
       <div className="h-full w-full relative">
         <textarea
           className={cn(
-            "flex h-full w-full relative rounded-lg bg-background px-3 py-2 text-md focus:border-primary placeholder:text-muted focus-visible:none border-1 !scrollbar-hide",
+            "flex h-full w-full relative rounded-lg bg-background px-3 py-2 text-md focus:border-primary placeholder:text-muted focus-visible:none border-1",
             resize ? "resize" : "resize-none",
             error ? "border-error" : "border-muted",
             // animate background error that fades out

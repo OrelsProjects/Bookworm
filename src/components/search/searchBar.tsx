@@ -28,6 +28,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   CustomSearchItemSkeleton,
   CustomSearchItem,
   className,
+  autoFocus,
   onChange,
   onSearch,
   onSubmit,
@@ -73,9 +74,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   return (
     <div
-      className={`w-full flex flex-col gap-4 overflow-auto scrollbar-hide ${
-        className ?? ""
-      }`}
+      className={`w-search-bar flex flex-col
+      ${(loading || books?.length) ?? 0 > 0 ? " gap-4 " : ""}
+       ${className ?? ""}`}
     >
       <SearchBarComponent
         onBlur={onBlur}
@@ -83,61 +84,59 @@ const SearchBar: React.FC<SearchBarProps> = ({
         onChange={handleOnChange}
         className="transition-all duration-300 ease-in-out rounded-full w-8/12"
         placeholder="Search all books, authors..."
-        autoFocus
+        autoFocus={autoFocus}
         {...props}
       />
-      {(loading || (books && books.length > 0)) && (
-        <div className="flex flex-col gap-3 overflow-auto scrollbar-hide">
-          {loading ? (
-            <>
-              <div className="font-bold text-2xl invisible pt-2">Books</div>
-              {CustomSearchItemSkeleton ? (
-                <CustomSearchItemSkeleton />
-              ) : (
-                <>
-                  {Array.from(Array(TOP_RESULTS_COUNT)).map((_, index) => (
-                    <SearchItemSkeleton key={`search-item-skeleton-${index}`} />
-                  ))}
-                </>
-              )}
-            </>
-          ) : (
-            books &&
-            books.length > 0 && (
-              <div className="flex flex-col gap-2 mt-2">
-                <div className="font-bold text-2xl">Books</div>
-                <div className="flex gap-6 flex-col overflow-auto scrollbar-hide">
-                  {books
-                    .slice(0, TOP_RESULTS_COUNT)
-                    .map((book, i) =>
-                      CustomSearchItem ? (
-                        <CustomSearchItem
-                          key={
-                            book.title +
-                            book.isbn10 +
-                            book.datePublished +
-                            book.isbn
-                          }
-                          book={book}
-                        />
-                      ) : (
-                        <BookSearchResult
-                          key={
-                            book.title +
-                            book.isbn10 +
-                            book.datePublished +
-                            book.isbn
-                          }
-                          book={book}
-                        />
-                      )
-                    )}
-                </div>
+      <div className="flex flex-col gap-3">
+        {loading ? (
+          <>
+            <div className="font-bold text-2xl invisible pt-2">Books</div>
+            {CustomSearchItemSkeleton ? (
+              <CustomSearchItemSkeleton />
+            ) : (
+              <>
+                {Array.from(Array(TOP_RESULTS_COUNT)).map((_, index) => (
+                  <SearchItemSkeleton key={`search-item-skeleton-${index}`} />
+                ))}
+              </>
+            )}
+          </>
+        ) : (
+          books &&
+          books.length > 0 && (
+            <div className="flex flex-col gap-2 mt-2">
+              <div className="font-bold text-2xl">Books</div>
+              <div className="flex gap-6 flex-col">
+                {books
+                  .slice(0, TOP_RESULTS_COUNT)
+                  .map((book, i) =>
+                    CustomSearchItem ? (
+                      <CustomSearchItem
+                        key={
+                          book.title +
+                          book.isbn10 +
+                          book.datePublished +
+                          book.isbn
+                        }
+                        book={book}
+                      />
+                    ) : (
+                      <BookSearchResult
+                        key={
+                          book.title +
+                          book.isbn10 +
+                          book.datePublished +
+                          book.isbn
+                        }
+                        book={book}
+                      />
+                    )
+                  )}
               </div>
-            )
-          )}
-        </div>
-      )}
+            </div>
+          )
+        )}
+      </div>
     </div>
   );
 };

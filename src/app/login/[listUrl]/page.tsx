@@ -5,7 +5,7 @@ import axios from "axios";
 import { Logger } from "../../../logger";
 import { IResponse } from "../../../models/dto/response";
 import { SafeBooksListData } from "../../../models/booksList";
-import Loading from "../../../components/loading";
+import Loading from "../../../components/ui/loading";
 import { useRouter } from "next/navigation";
 import { useModal } from "../../../hooks/useModal";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { Skeleton } from "../skeleton";
+import { Skeleton } from "../ui/skeleton";
 import { BookDetailsProps } from "../book/bookDetails";
 import { getThumbnailSize } from "../../consts/thumbnail";
 import { getIconSize } from "../../consts/icon";

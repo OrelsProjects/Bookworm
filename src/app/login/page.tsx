@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import useAuth from "../../hooks/useAuth";
-import { Button } from "../../components/button";
+import { Button } from "../../components/ui/button";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { selectAuth } from "../../lib/features/auth/authSlice";

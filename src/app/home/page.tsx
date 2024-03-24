@@ -20,7 +20,7 @@ export default function Home(): React.ReactNode {
   }, [router]);
 
   const Books = () => (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-2">
       <div className="w-full flex flex-row justify-between items-end">
         <div className="text-2xl font-bold">My next read</div>
         <div className="text-sm text-muted underline" onClick={onSeeAllClick}>
@@ -68,14 +68,18 @@ export default function Home(): React.ReactNode {
     );
 
   const Content = () => (
-    <div className="h-fit w-full flex flex-col gap-4 overflow-auto pr-1">
+    <div className="h-fit w-full flex flex-col gap-4 pr-1 overflow-auto">
       <Books />
       <Recommendations />
     </div>
   );
 
   return (
-    <div className="h-full w-full flex flex-col relative justify-top items-start gap-4">
+    <div
+      className={`h-full w-full flex flex-col relative justify-top items-start gap-4
+    ${searchFocused ? "overflow-auto" : ""}
+    `}
+    >
       <SearchBarIcon>
         <SearchBar
           onEmpty={() => setSearchFocused(false)}
