@@ -13,11 +13,7 @@ import {
   removeBookFromList as removeBookFromListAction,
   updateBookInList as updateBookInListAction,
 } from "../lib/features/booksLists/booksListsSlice";
-import {
-  BooksList,
-  BooksListData,
-  CreateBooksListPayload,
-} from "../models/booksList";
+import { BooksListData, CreateBooksListPayload } from "../models/booksList";
 import { Book, User } from "../models";
 import { IResponse } from "../models/dto/response";
 import { DuplicateError } from "../models/errors/duplicateError";
@@ -45,6 +41,7 @@ const addBookToListInLocalStorage = (book: Book, listId: string) => {
         book,
         listId,
         bookId: book.bookId,
+        position: list.booksInList?.length,
       });
     }
   });
@@ -105,7 +102,14 @@ const useBooksList = () => {
   const updateBookInListCancelToken = axios.CancelToken.source();
 
   useEffect(() => {
-    setBooksListsData(booksLists);
+    const sortedBooksInList = booksLists.map((list) => {
+      const booksInList = [...(list.booksInList ?? [])];
+      const sortedBooksInList = booksInList?.sort((a, b) => {
+        return (a.position ?? 0) - (b.position ?? 0);
+      });
+      return { ...list, booksInList: sortedBooksInList };
+    });
+    setBooksListsData(sortedBooksInList);
   }, [booksLists]);
 
   useEffect(() => {
@@ -208,6 +212,23 @@ const useBooksList = () => {
     }
   };
 
+  const updateBooksInList = async (booksListData: BooksListData) => {
+    try {
+      await axios.patch(
+        `/api/book-in-list/`,
+        { booksInList: [...booksListData.booksInList] },
+        {
+          cancelToken: updateBooksListCancelToken.token,
+        }
+      );
+      dispatch(updateBooksListAction(booksListData));
+      updateListInLocalStorage(booksListData);
+    } catch (error: any) {
+      Logger.error("Failed to update books list", error);
+      throw error;
+    }
+  };
+
   const deleteBooksList = async (listId: string) => {
     try {
       await axios.delete(`/api/list/${listId}`);
@@ -285,6 +306,7 @@ const useBooksList = () => {
     cancelUpdateBookInList,
     removeBookFromList,
     searchInBooksList,
+    updateBooksInList,
   };
 };
 

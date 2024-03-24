@@ -23,7 +23,13 @@ import BookThumbnail from "../book/bookThumbnail";
 import { CommentsArea } from "./_components/commentsArea";
 import BookDetailsSkeleton from "../skeletons/BookDetailsSkeleton";
 import SearchBarIcon from "../search/searchBarIcon";
-import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
+import {
+  DragDropContext,
+  Draggable,
+  DropResult,
+  Droppable,
+} from "@hello-pangea/dnd";
+import GripLines from "../icons/gripLines";
 
 interface ModalBooksListProps {
   booksListData?: BooksListData;
@@ -43,10 +49,12 @@ interface ListBookAndBookDetailsProps {
 
 interface ListBookProps extends ListBookAndBookDetailsProps {
   booksInList?: BookInListWithBook[];
+  onPositionChange: (booksInListWithBook: BookInListWithBook[]) => void;
 }
 
 interface BookInListDetailsProps extends ListBookAndBookDetailsProps {
   bookInList?: BookInListWithBook;
+  position: number;
 }
 
 const Thumbnail: React.FC<{
@@ -67,9 +75,14 @@ const BookInListDetails: React.FC<BookInListDetailsProps> = ({
   value,
   name,
   key,
+  position,
 }) => {
   return (
-    <div className="w-full flex flex-row gap-2">
+    <div className="w-full flex flex-row gap-2 justify-start items-center">
+      <div className="flex flex-col justify-center items-center">
+        <div>#{position}</div>
+        <GripLines className="!text-foreground" />
+      </div>
       <BookThumbnail
         book={bookInList?.book}
         className="flex-shrink-0"
@@ -107,82 +120,107 @@ const BookInListDetails: React.FC<BookInListDetailsProps> = ({
 const ListBooks: React.FC<ListBookProps> = ({
   value,
   onChange,
+  onPositionChange,
   onAddNewBookClick,
   onDeleteBookClick,
   name,
   booksInList,
-}) => (
-  <div className="w-full flex flex-col gap-2 justify-center items-start">
-    <DragDropContext onDragEnd={(result) => {}}>
-      <Droppable
-        droppableId="droppable-books-in-list"
-        type="COLUMN"
-        direction="vertical"
-      >
-        {(provided) => (
-          <ul
-            className="w-full flex flex-col justify-center items-start gap-2"
-            {...provided.droppableProps}
-            ref={provided.innerRef}
-          >
-            {booksInList?.map((bookInList, index) => (
-              <Draggable
-                draggableId={`draggable-id-book-in-modal-books-list-${bookInList.bookId}`}
-                index={index}
-              >
-                {(provided) => (
-                  <li
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                  >
-                    <BookInListDetails
-                      bookInList={bookInList}
-                      onAddNewBookClick={onAddNewBookClick}
-                      onDeleteBookClick={onDeleteBookClick}
-                      onChange={onChange}
-                      value={value}
-                      name={`${name}-${bookInList.bookId}`}
-                    />
-                  </li>
-                )}
-              </Draggable>
-            ))}
-          </ul>
-        )}
-      </Droppable>
-    </DragDropContext>
-    <div className="w-full flex flex-row gap-2">
-      <BooksListThumbnail
-        className="flex-shrink-0"
-        Icon={
-          <div className="absolute-center">
-            <Add.Fill
-              className="!text-foreground !bg-background border-none rounded-full p-1"
-              iconSize="md"
-              onClick={onAddNewBookClick}
-            />
-          </div>
-        }
-        thumbnailSize="sm"
-      />
+}) => {
+  console.log("render", booksInList);
+  return (
+    <div className="w-full flex flex-col gap-2 justify-center items-start">
+      <DragDropContext
+        onDragEnd={(result: DropResult) => {
+          const draggedBookInList = booksInList?.[result.source.index];
+          const destinationIndex = result.destination?.index;
+          if (!draggedBookInList) return;
+          if (destinationIndex === undefined) return;
+          if (destinationIndex === result.source.index) return;
 
-      <div className="w-full h-full flex flex-col justify-start items-start gap-2">
-        <div className={`text-muted h-fit`}>Book Name</div>
-        <TextArea
-          value={value}
-          rows={3}
-          name={name}
-          onChange={(e) => {
-            onChange(null, e.target.value);
-          }}
-          placeholder="Comment"
-          key={`books-in-list-book-name`}
+          // Set the new position of the dragged book and all the books after it
+          const newBooksInList = [...booksInList];
+          // Remove the dragged book from the list
+          newBooksInList.splice(result.source.index, 1);
+          // Add the dragged book to the new position
+          newBooksInList.splice(destinationIndex, 0, draggedBookInList);
+          const booksListWithUpdatedIndexes = newBooksInList.map(
+            (bookInList, index) => ({
+              ...bookInList,
+              position: index,
+            })
+          );
+          onPositionChange(booksListWithUpdatedIndexes);
+        }}
+      >
+        <Droppable droppableId="droppable-books-in-list">
+          {(provided) => (
+            <ul
+              className="w-full flex flex-col justify-center items-start gap-2"
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
+              {booksInList?.map((bookInList, index) => (
+                <Draggable
+                  key={`draggable-id-book-in-modal-books-list-${bookInList.bookId}`}
+                  draggableId={`draggable-id-book-in-modal-books-list-${bookInList.bookId}`}
+                  index={index}
+                >
+                  {(provided) => (
+                    <li
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                    >
+                      <BookInListDetails
+                        bookInList={bookInList}
+                        onAddNewBookClick={onAddNewBookClick}
+                        onDeleteBookClick={onDeleteBookClick}
+                        onChange={onChange}
+                        value={value}
+                        name={`${name}-${bookInList.bookId}`}
+                        position={index + 1}
+                      />
+                    </li>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </ul>
+          )}
+        </Droppable>
+      </DragDropContext>
+      <div className="w-full flex flex-row gap-2">
+        <BooksListThumbnail
+          className="flex-shrink-0"
+          Icon={
+            <div className="absolute-center">
+              <Add.Fill
+                className="!text-foreground !bg-background border-none rounded-full p-1"
+                iconSize="md"
+                onClick={onAddNewBookClick}
+              />
+            </div>
+          }
+          thumbnailSize="sm"
         />
+
+        <div className="w-full h-full flex flex-col justify-start items-start gap-2">
+          <div className={`text-muted h-fit`}>Book Name</div>
+          <TextArea
+            value={value}
+            rows={3}
+            name={name}
+            onChange={(e) => {
+              onChange(null, e.target.value);
+            }}
+            placeholder="Comment"
+            key={`books-in-list-book-name`}
+          />
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
   booksListData,
@@ -191,6 +229,7 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
     createBooksList,
     addBookToList,
     removeBookFromList,
+    updateBooksInList,
     loading: loadingList,
   } = useBooksList();
   const { addUserBook, getBookFullData, loading: loadingBook } = useBook();
@@ -308,6 +347,7 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
           listId: currentBooksList.listId,
           comments: newBooksComments,
           book: bookWithId,
+          position: currentBooksList.booksInList?.length - 1 ?? 0,
         };
         const newBooksInList = [...(currentBooksList.booksInList ?? [])];
         newBooksInList.push(bookInList);
@@ -324,6 +364,7 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
               {
                 bookId: bookWithId.bookId,
                 comments: formik.values.newBookComments,
+                position: 0,
               },
             ],
           }),
@@ -350,6 +391,28 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
         error: e,
       });
     }
+  };
+
+  const handlePositionChange = async (
+    booksInListWithBook: BookInListWithBook[]
+  ) => {
+    if (!currentBooksList) return;
+    const booksListData: BooksListData = {
+      ...currentBooksList,
+      booksInList: booksInListWithBook,
+    };
+    const previousList = { ...currentBooksList };
+    setCurrentBookList(booksListData);
+    try {
+      await toast.promise(updateBooksInList(booksListData), {
+        loading: "Updating list...",
+        success: "List updated successfully!",
+        error: () => {
+          setCurrentBookList(previousList);
+          return "Failed to update list.";
+        },
+      });
+    } catch (e: any) {}
   };
 
   const SearchResult: React.FC<BookComponentProps> = ({ book }) => (
@@ -424,6 +487,7 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
               onDeleteBookClick={(bookInList) => {
                 handleDeleteBookClick(bookInList);
               }}
+              onPositionChange={handlePositionChange}
               onChange={(bookInList, comment) => {
                 if (!bookInList) {
                   formik.setFieldValue("newBookComments", comment);

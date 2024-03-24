@@ -4,6 +4,7 @@ import GoodreadsData from "./goodreadsData";
 export interface BookInList {
   listId: string;
   bookId: number;
+  position: number;
   comments?: string | null;
 }
 
