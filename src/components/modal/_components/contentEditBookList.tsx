@@ -1,6 +1,12 @@
 "use client";
 import { useFormik } from "formik";
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import toast from "react-hot-toast";
 import { BookInList, BookInListWithBook } from "../../../models/bookInList";
 import { BooksListData } from "../../../models/booksList";
@@ -51,6 +57,7 @@ interface ListBookProps extends ListBookAndBookDetailsProps {
 interface BookInListDetailsProps extends ListBookAndBookDetailsProps {
   bookInList?: BookInListWithBook;
   position: number;
+  titleRef?: React.RefObject<HTMLDivElement>;
 }
 
 const BookInListDetails: React.FC<BookInListDetailsProps> = ({
@@ -58,6 +65,7 @@ const BookInListDetails: React.FC<BookInListDetailsProps> = ({
   onDeleteBookClick,
   name,
   key,
+  titleRef,
   position,
 }) => {
   return (
@@ -86,7 +94,10 @@ const BookInListDetails: React.FC<BookInListDetailsProps> = ({
         thumbnailSize="sm"
       />
 
-      <div className="w-full h-full flex flex-col justify-start items-start gap-2">
+      <div
+        className="w-full h-full flex flex-col justify-start items-start gap-2"
+        ref={titleRef}
+      >
         <div
           className={`${
             bookInList ? "text-foreground" : "text-muted"
@@ -226,6 +237,7 @@ const ContentEditBookList = ({
   const [isSearchBarScrolledIntoView, setIsSearchBarScrolledIntoView] =
     useState(false);
   const searchBarRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLDivElement>(null);
   const formik = useFormik({
     initialValues: {
       newBookComments: "",
@@ -258,17 +270,27 @@ const ContentEditBookList = ({
     };
   }, []);
 
-  const isBookInList = (book: Book) =>
-    currentBooksList?.booksInList?.some(
-      (bookInList) => bookInList.bookId === book.bookId
-    );
+  const isNewList = useMemo(() => !currentBooksList, [currentBooksList]);
+
+  const isBookInList = useCallback(
+    (book: Book) =>
+      currentBooksList?.booksInList?.some(
+        (bookInList) => bookInList.bookId === book.bookId
+      ),
+    [currentBooksList]
+  );
 
   const handleAddNewBookClick = async (book: Book) => {
     try {
       if (loadingList.current || loadingBook.current) return;
 
-      if (!formik.values.listName) {
+      if (!formik.values.listName && isNewList) {
         formik.setFieldError("listName", "List name is required");
+        // Scroll to the top + 30px to show the error message
+        titleRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
         return;
       }
       const newBooksComments = formik.values.newBookComments;
