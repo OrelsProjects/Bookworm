@@ -1,8 +1,5 @@
 import React, { useCallback } from "react";
-import { useSelector } from "react-redux";
-import useScrollPosition, {
-  ScrollDirection,
-} from "../../hooks/useScrollPosition";
+import useScrollPosition from "../../hooks/useScrollPosition";
 import BooksListThumbnail from "./booksListThumbnail";
 import { BooksListData } from "../../models/booksList";
 import { ThumbnailSize } from "../../consts/thumbnail";
@@ -14,7 +11,6 @@ import { Share } from "../icons/share";
 import { Book } from "../../models";
 import { isBooksEqual } from "../../utils/bookUtils";
 import { CommentsArea } from "../modal/_components/commentsArea";
-import { selectAuth } from "../../lib/features/auth/authSlice";
 import { useModal } from "../../hooks/useModal";
 
 interface EndElementProps {

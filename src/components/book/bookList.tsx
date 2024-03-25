@@ -55,24 +55,24 @@ const BookList: React.FC<BookListProps> = ({
             <BookDetails
               book={book}
               bookThumbnailSize={thumbnailSize}
-              ThumbnailIcon={
-                direction === "row" && (
-                  <div className="relative">
-                    <div
-                      className="absolute bottom-2 left-2 w-fit h-fit rounded-full overflow-hidden flex items-center justify-center shadow-sm shadow-black"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onAddBookClick(book);
-                      }}
-                    >
-                      <Add.Fill
-                        className="!text-foreground !bg-background rounded-full p-1.5"
-                        iconSize="md"
-                      />
-                    </div>
-                  </div>
-                )
-              }
+              // ThumbnailIcon={
+              //   direction === "row" && (
+              //     <div className="relative">
+              //       <div
+              //         className="absolute bottom-2 left-2 w-fit h-fit rounded-full overflow-hidden flex items-center justify-center shadow-sm shadow-black"
+              //         onClick={(e) => {
+              //           e.stopPropagation();
+              //           onAddBookClick(book);
+              //         }}
+              //       >
+              //         <Add.Fill
+              //           className="!text-foreground !bg-background rounded-full p-1.5"
+              //           iconSize="md"
+              //         />
+              //       </div>
+              //     </div>
+              //   )
+              // }
               Icon={
                 direction === "column" && (
                   <div

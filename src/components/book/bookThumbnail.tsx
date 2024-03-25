@@ -1,5 +1,4 @@
 import { PlaceholderValue } from "next/dist/shared/lib/get-img-props";
-
 import React from "react";
 import { Book } from "../../models";
 import { ThumbnailSize, getThumbnailSize } from "../../consts/thumbnail";
