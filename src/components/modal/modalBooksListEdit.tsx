@@ -79,9 +79,9 @@ const BookInListDetails: React.FC<BookInListDetailsProps> = ({
 }) => {
   return (
     <div className="w-full flex flex-row gap-2 justify-start items-center">
-      <div className="flex flex-col justify-center items-center">
-        <div>#{position}</div>
-        <GripLines className="!text-foreground" />
+      <div className="flex flex-col justify-center items-center text-sm">
+        <div className="">#{position}</div>
+        <GripLines className="!text-foreground w-4 h-4" />
       </div>
       <BookThumbnail
         book={bookInList?.book}

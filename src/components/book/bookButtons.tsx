@@ -1,7 +1,9 @@
-import React, { useEffect } from "react";
-import { Add } from "../icons/add";
-import { Bookmark } from "../icons/bookmark";
-import { Checkmark } from "../icons/checkmark";
+import React, { useEffect, useMemo } from "react";
+import { CiCirclePlus as Plus } from "react-icons/ci";
+import { CiBookmark as Bookmark } from "react-icons/ci";
+import { IoBookmark as BookmarkFill } from "react-icons/io5";
+import { IoCheckmarkCircleOutline as Checkmark } from "react-icons/io5";
+import { IoCheckmarkCircle as CheckmarkFill } from "react-icons/io5";
 
 import { Book, UserBookData } from "../../models";
 import useBook from "../../hooks/useBook";
@@ -68,11 +70,10 @@ const ButtonImage: React.FC<ButtonImageProps> = ({
         style={{
           height,
           width,
-          fill: selected ? buttonsColor : "currentColor",
         }}
         iconSize={iconSize}
         iconClassName={iconClassName}
-        className={`${selected ? "" : "!text-foreground"}`}
+        className={`${selected ? "!text-primary" : "!text-foreground"}`}
       />
       <div className={`text-foreground ${textSize[iconSize]}`}>{title}</div>
     </div>
@@ -162,25 +163,32 @@ export const BookButtons = () => {
     classNameIcon = "",
   }) => {
     const buttonsColor = increaseLuminosity(book?.thumbnailColor);
-    const [userBookData, setUserBookData] = React.useState<
-      UserBookData | undefined
-    >();
-    const [bookRead, setBookRead] = React.useState(false);
 
-    useEffect(() => {
-      if (!book) return;
-      const userBookData = getBookFullData(book) ?? undefined;
-      setUserBookData(userBookData);
-      setBookRead(isBookRead(userBookData?.userBook));
-    }, [book, userBooksData]);
+    const isBookRead = useMemo(() => {
+      const bookData = getBookFullData(book);
+      return bookData?.userBook.readingStatusId === ReadingStatusEnum.READ;
+    }, [book, getBookFullData]);
+
+    const isBookToRead = useMemo(() => {
+      const bookData = getBookFullData(book);
+      return bookData?.userBook.readingStatusId === ReadingStatusEnum.TO_READ;
+    }, [book, getBookFullData]);
+
+    const userBookData = useMemo(
+      () => getBookFullData(book),
+      [book, getBookFullData]
+    );
 
     return (
       <div
         className={`h-fit w-full flex flex-row justify-evenly items-center gap-4 ${className}`}
       >
         {book && (
-          <div
-            className="flex flex-col justify-center items-center gap-2"
+          <ButtonImage
+            title="Read"
+            Icon={isBookRead ? CheckmarkFill : Checkmark}
+            iconSize={iconSize}
+            selected={isBookRead}
             onClick={() =>
               handleUpdateBookReadingStatus(
                 ReadingStatusEnum.READ,
@@ -188,42 +196,28 @@ export const BookButtons = () => {
                 userBookData
               )
             }
-          >
-            {Checkmark.Default && (
-              <Checkmark.Default
-                style={{
-                  height: getIconSize({ size: "md" }).heightPx,
-                  width: getIconSize({ size: "md" }).widthPx,
-                  fill: bookRead ? "primary" : "currentColor",
-                }}
-                className={`rounded-full p-1 text-background ${
-                  bookRead ? buttonsColor : "bg-foreground"
-                }`}
-              />
-            )}
-            <div className={`text-foreground text-lg`}>Read</div>
-          </div>
+          />
         )}
-        {book &&
-          ButtonImage({
-            title: "To Read",
-            Icon: Bookmark.Fill,
-            iconSize: "md",
-            selected: !bookRead && !!userBookData,
-            width: 24,
-            buttonsColor,
-            onClick: () =>
+
+        {book && (
+          <ButtonImage
+            title="To Read"
+            Icon={isBookToRead ? BookmarkFill : Bookmark}
+            iconSize="lg"
+            selected={isBookToRead}
+            onClick={() =>
               handleUpdateBookReadingStatus(
                 ReadingStatusEnum.TO_READ,
                 book,
                 userBookData
-              ),
-            iconClassName: classNameIcon,
-          })}
+              )
+            }
+          />
+        )}
         {showAddToListButton &&
           ButtonImage({
             title: "Add to list",
-            Icon: Add.Outline,
+            Icon: Plus,
             iconSize: "sm",
             selected: false,
             buttonsColor,
