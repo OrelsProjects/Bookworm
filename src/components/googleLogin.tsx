@@ -4,9 +4,15 @@ import useAuth from "../hooks/useAuth";
 
 interface GoogleLoginProps {
   onClickBefore?: () => void;
+  text?: string;
+  className?: string;
 }
 
-export default function GoogleLogin({ onClickBefore }: GoogleLoginProps) {
+export default function GoogleLogin({
+  onClickBefore,
+  text,
+  className,
+}: GoogleLoginProps) {
   const { signInWithGoogle } = useAuth();
 
   const handleGoogleLogin = async () => await signInWithGoogle();
@@ -18,11 +24,13 @@ export default function GoogleLogin({ onClickBefore }: GoogleLoginProps) {
         handleGoogleLogin();
       }}
       variant="outline"
-      className="rounded-full w-full"
+      className={`rounded-full w-full ${className}`}
     >
       <div className="h-full w-full flex flex-row gap-2">
         <img src="/google.png" alt="Google Logo" width={22} height={24} />
-        <div className="font-normal text-base">Continue with Google</div>
+        <div className="font-normal text-base">
+          {text || "Continue with Google"}
+        </div>
       </div>
     </Button>
   );

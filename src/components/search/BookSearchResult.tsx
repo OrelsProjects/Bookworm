@@ -15,12 +15,15 @@ import { useModal } from "../../hooks/useModal";
 import useBook from "../../hooks/useBook";
 import { getThumbnailSize } from "../../consts/thumbnail";
 import { ReadingStatusEnum } from "../../models/readingStatus";
+import { useSelector } from "react-redux";
+import { selectAuth } from "../../lib/features/auth/authSlice";
 
 export interface BookComponentProps {
   book: Book;
 }
 
 const BookSearchResult: React.FC<BookComponentProps> = ({ book }) => {
+  const { user } = useSelector(selectAuth);
   const { showBookDetailsModal } = useModal();
   const { getBookFullData } = useBook();
   const {
@@ -98,16 +101,18 @@ const BookSearchResult: React.FC<BookComponentProps> = ({ book }) => {
             />
             <div className="leading-4">To Read</div>
           </div>
-          <div
-            className="flex flex-col gap-0 text-sm justify-center items-center flex-shrink-0"
-            onClick={(e) => {
-              e.stopPropagation();
-              handleAddBookToList(book);
-            }}
-          >
-            <Plus className="text-2xl w-4 h-4" />
-            <div className="leading-4">Readlist</div>
-          </div>
+          {user && (
+            <div
+              className="flex flex-col gap-0 text-sm justify-center items-center flex-shrink-0"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleAddBookToList(book);
+              }}
+            >
+              <Plus className="text-2xl w-4 h-4" />
+              <div className="leading-4">Readlist</div>
+            </div>
+          )}
         </div>
       </div>
     </div>

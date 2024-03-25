@@ -11,6 +11,9 @@ import { ModalContent } from "./modalContainers";
 import BookGeneralDetails from "./_components/bookGeneralDetails";
 import ReadMoreText from "../readMoreText";
 import { BookInList } from "../../models/bookInList";
+import useAuth from "../../hooks/useAuth";
+import { useSelector } from "react-redux";
+import { selectAuth } from "../../lib/features/auth/authSlice";
 
 type ModalBookDetailsProps = {
   book: Book;
@@ -21,6 +24,7 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
   book,
   bookInList,
 }) => {
+  const { user } = useSelector(selectAuth);
   const { Buttons } = BookButtons();
   const { getBookFullData, userBooksData } = useBook();
   const [title, setTitle] = React.useState<string | null>(null);
@@ -73,7 +77,9 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
     />
   );
 
-  const ButtonsRow = () => <Buttons book={book} iconSize="lg" />;
+  const ButtonsRow = () => (
+    <Buttons book={book} iconSize="lg" showAddToListButton={!!user} />
+  );
 
   return (
     <ModalContent

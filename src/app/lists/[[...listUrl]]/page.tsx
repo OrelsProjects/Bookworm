@@ -44,7 +44,7 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
           showBooksListModal({
             bookList,
             onBack: () => {
-              router.push("/login");
+              router.push("/home");
             },
           });
         } else {

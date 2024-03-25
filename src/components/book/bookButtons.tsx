@@ -7,14 +7,13 @@ import { IoCheckmarkCircle as CheckmarkFill } from "react-icons/io5";
 
 import { Book, UserBookData } from "../../models";
 import useBook from "../../hooks/useBook";
-import { isBookRead } from "../../models/userBook";
 import {
   ReadingStatusEnum,
   readingStatusToName,
 } from "../../models/readingStatus";
 import { increaseLuminosity } from "../../utils/thumbnailUtils";
 import toast from "react-hot-toast";
-import { IconSize, getIconSize } from "../../consts/icon";
+import { IconSize } from "../../consts/icon";
 import { useModal } from "../../hooks/useModal";
 import { ErrorUnauthenticated } from "../../models/errors/unauthenticatedError";
 
@@ -123,18 +122,17 @@ export const BookButtons = () => {
       successMessage = `${book?.title} updated to list: ${readingStatusName}`;
       errorMessage = `Failed to add ${book?.title} to list: ${readingStatusName}`;
     }
+    let toastId = toast.loading(loadingMessage);
     try {
-      await toast.promise(promise, {
-        loading: loadingMessage,
-        success: successMessage,
-        error: (e: any) => {
-          if (e instanceof ErrorUnauthenticated) {
-            return "You need to be logged in";
-          }
-          return errorMessage;
-        },
-      });
-    } catch (e) {}
+      await promise;
+      toast.success(successMessage);
+    } catch (e) {
+      if (!(e instanceof ErrorUnauthenticated)) {
+        toast.error(errorMessage);
+      }
+    } finally {
+      toast.dismiss(toastId);
+    }
   };
 
   const updateBookStatusToRead = async (

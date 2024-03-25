@@ -20,22 +20,24 @@ export default function Home(): React.ReactNode {
     router.push("/my-library");
   }, [router]);
 
-  const Books = () => (
-    <div className="flex flex-col gap-2">
-      <div className="w-full flex flex-row justify-between items-end">
-        <div className="text-2xl font-bold">My next read</div>
-        <div className="text-sm text-muted underline" onClick={onSeeAllClick}>
-          see all
+  const Books = () =>
+    userBooks &&
+    userBooks.length > 0 && (
+      <div className="flex flex-col gap-2">
+        <div className="w-full flex flex-row justify-between items-end">
+          <div className="text-2xl font-bold">My next read</div>
+          <div className="text-sm text-muted underline" onClick={onSeeAllClick}>
+            see all
+          </div>
         </div>
+        <BookList
+          books={userBooks.map((ubd) => ubd.bookData.book)}
+          onNextPageScroll={nextPage}
+          direction="row"
+          thumbnailSize="xl"
+        />
       </div>
-      <BookList
-        books={userBooks.map((ubd) => ubd.bookData.book)}
-        onNextPageScroll={nextPage}
-        direction="row"
-        thumbnailSize="xl"
-      />
-    </div>
-  );
+    );
 
   const Recommendations = () =>
     recommendations &&

@@ -88,18 +88,17 @@ export default function BooksListGridView({
       successMessage = `${book?.title} updated to list: ${readingStatusName}`;
       errorMessage = `Failed to add ${book?.title} to list: ${readingStatusName}`;
     }
+    let loadingToast = toast.loading(loadingMessage);
     try {
-      await toast.promise(promise, {
-        loading: loadingMessage,
-        success: successMessage,
-        error: (e: any) => {
-          if (e instanceof ErrorUnauthenticated) {
-            return "You need to be logged in";
-          }
-          return errorMessage;
-        },
-      });
-    } catch (e) {}
+      await promise;
+      toast.success(successMessage);
+    } catch (e) {
+      if (!(e instanceof ErrorUnauthenticated)) {
+        toast.error(errorMessage);
+      }
+    } finally {
+      toast.dismiss(loadingToast);
+    }
   };
 
   const isOddNumberOfBooks = useMemo(
