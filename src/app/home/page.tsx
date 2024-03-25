@@ -27,7 +27,9 @@ export default function Home(): React.ReactNode {
     userBooks.length > 0 && (
       <div className="flex flex-col gap-2">
         <div className="w-full flex flex-row justify-between items-end">
-          <div className="text-2xl font-bold">My next read</div>
+          <div className="text-2xl tracking-tight font-bold">
+            My next read
+          </div>
           <div className="text-sm text-muted underline" onClick={onSeeAllClick}>
             see all
           </div>
@@ -43,7 +45,10 @@ export default function Home(): React.ReactNode {
   console.log(loading);
   const Recommendations = () =>
     recommendations && recommendations.length > 0 ? (
-      <div className="flex flex-col gap-0">
+      <div className="flex flex-col gap-2">
+        <div className="text-2xl tracking-tight font-bold">
+          Recommended for You
+        </div>
         <div className="w-full flex flex-col gap-4">
           {recommendations.length > 0 &&
             recommendations.slice(0, 5).map((recommendation) => (
@@ -53,12 +58,12 @@ export default function Home(): React.ReactNode {
               >
                 <Tooltip
                   tooltipContent={
-                    <div className="text-sm text-muted line-clamp-4 tracking-tighter max-w-xs">
+                    <div className="text-sm text-foreground line-clamp-4 tracking-tighter max-w-xs">
                       {recommendation.name}
                     </div>
                   }
                 >
-                  <div className="text-2xl font-semibold line-clamp-1 tracking-tight text-left">
+                  <div className="text-xl font-extralight line-clamp-1 tracking-tighter text-left">
                     {recommendation.name}
                   </div>
                 </Tooltip>
