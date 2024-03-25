@@ -146,8 +146,9 @@ const ModalProvider: React.FC = () => {
         thumbnail = <></>;
     }
     return (
-      <div className="w-full h-14 bg-background flex justify-between items-center gap-3 px-4"
-      style={{ backgroundColor: modalBackgroundColor }}
+      <div
+        className="w-full h-14 bg-background flex justify-between items-center gap-3 px-4"
+        style={{ backgroundColor: modalBackgroundColor }}
       >
         <div className="ml-10 text-lg text-foreground max-w-xs line-clamp-1">
           {title}
@@ -183,7 +184,10 @@ const ModalProvider: React.FC = () => {
     (data?: { book: Book; bookInList?: BookInList }) =>
       data && (
         <RenderModal type={ModalTypes.BOOK_DETAILS}>
-          <ModalBookDetails book={data?.book} bookInList={data.bookInList} />
+          <ModalBookDetails
+          bookData={data?.book}
+            bookInList={data.bookInList}
+          />
         </RenderModal>
       ),
     [shouldRenderBookDetailsModal]

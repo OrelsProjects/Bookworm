@@ -1,5 +1,7 @@
 export type Books = Book[];
 
+export type TypeOfBook = Book;
+
 export interface Book {
   title: string;
   mainGenreId?: number;

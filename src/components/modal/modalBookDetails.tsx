@@ -1,27 +1,26 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 
 import Book from "../../models/book";
 import useBook from "../../hooks/useBook";
-import { UserBookData } from "../../models/userBook";
 import BookButtons from "../book/bookButtons";
 import BookThumbnail from "../book/bookThumbnail";
 import { ModalContent } from "./modalContainers";
 import BookGeneralDetails from "./_components/bookGeneralDetails";
 import ReadMoreText from "../readMoreText";
 import { BookInList } from "../../models/bookInList";
-import useAuth from "../../hooks/useAuth";
 import { useSelector } from "react-redux";
 import { selectAuth } from "../../lib/features/auth/authSlice";
+import { UserBookData } from "../../models/userBook";
 
 type ModalBookDetailsProps = {
-  book: Book;
+  bookData: Book | UserBookData;
   bookInList?: BookInList;
 };
 
 const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
-  book,
+  bookData,
   bookInList,
 }) => {
   const { user } = useSelector(selectAuth);
@@ -35,15 +34,36 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
     number | undefined | null
   >(null);
 
+  const book: Book | null = useMemo(() => {
+    console.log(bookData);
+    const x = bookData as Book;
+    debugger;
+    return bookData as Book;
+  }, [bookData]);
+
+  const userBookData: UserBookData | null = useMemo(() => {
+    try {
+      return bookData as UserBookData;
+    } catch (e) {
+      return null;
+    }
+  }, [bookData]);
+
+  const bookFullData = useMemo(() => {
+    return getBookFullData(book);
+  }, [userBooksData]);
+
   React.useEffect(() => {
-    const bookFullData = getBookFullData(book);
-    setTitle(bookFullData?.bookData?.book?.title ?? book.title);
-    setAuthors(bookFullData?.bookData?.book?.authors ?? book.authors);
-    setGoodreadsRating(bookFullData?.goodreadsData?.goodreadsRating);
+    setTitle(bookFullData?.bookData?.book?.title ?? book?.title);
+    setAuthors(bookFullData?.bookData?.book?.authors ?? book?.authors);
+    setGoodreadsRating(
+      bookFullData?.goodreadsData?.goodreadsRating ??
+        userBookData?.goodreadsData?.goodreadsRating
+    );
   }, [userBooksData]);
 
   const Summary = () =>
-    book.description ? (
+    book?.description ? (
       <div className="w-full flex relative flex-col justify-start gap-1">
         <div className="flex flex-col gap-4 text-foreground h-full font-thin shadow-inner pb-6">
           <div>
@@ -71,7 +91,7 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
 
   const Thumbnail = () => (
     <BookThumbnail
-      src={book.thumbnailUrl ?? "/thumbnailPlaceholder.png"}
+      src={book?.thumbnailUrl ?? "/thumbnailPlaceholder.png"}
       book={book}
       thumbnailSize="lg"
     />
