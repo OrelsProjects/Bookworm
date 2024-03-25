@@ -8,11 +8,12 @@ import useUserRecommendations from "../../hooks/useRecommendations";
 import { ReadingStatusEnum } from "../../models/readingStatus";
 import SearchBarIcon from "../../components/search/searchBarIcon";
 import SearchBar from "../../components/search/searchBar";
+import Loading from "../../components/ui/loading";
 
 export default function Home(): React.ReactNode {
   const router = useRouter();
   const { userBooks, nextPage } = useTable(ReadingStatusEnum.TO_READ);
-  const { recommendations } = useUserRecommendations();
+  const { recommendations, loading } = useUserRecommendations();
   const [searchFocused, setSearchFocused] = useState(false);
   const [searchEmpty, setSearchEmpty] = useState(true);
 
@@ -38,10 +39,9 @@ export default function Home(): React.ReactNode {
         />
       </div>
     );
-
+  console.log(loading);
   const Recommendations = () =>
-    recommendations &&
-    recommendations.length > 0 && (
+    recommendations && recommendations.length > 0 ? (
       <div className="flex flex-col gap-0">
         <div className="text-2xl font-bold">Recommended for You</div>
         <div className="w-full flex flex-col gap-4">
@@ -68,6 +68,15 @@ export default function Home(): React.ReactNode {
             ))}
         </div>
       </div>
+    ) : (
+      loading && (
+        <div className="h-full w-full flex justify-center items-center absolute">
+          <Loading
+            spinnerClassName="w-20 h-20"
+            text="Looking for some recommendations..🤖"
+          />
+        </div>
+      )
     );
 
   const Content = () => (

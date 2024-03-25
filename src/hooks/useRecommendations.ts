@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../lib/store";
@@ -6,6 +6,7 @@ import { Logger } from "../logger";
 import {
   setRecommendationsLoading,
   setRecommendations,
+  selectRecommendations,
 } from "../lib/features/recommendations/recommendationsSlice";
 import { User } from "../models";
 import { IResponse } from "../models/dto/response";
@@ -19,7 +20,9 @@ const getRecommendationsFromLocalStorage = (): SafeBooksListData[] => {
   ) as SafeBooksListData[];
 };
 
-const setRecommendationsInLocalStorage = (recommendations: SafeBooksListData[]) => {
+const setRecommendationsInLocalStorage = (
+  recommendations: SafeBooksListData[]
+) => {
   localStorage.setItem(
     RECOMMENDATIONS_DATA_KEY,
     JSON.stringify(recommendations)
@@ -27,11 +30,8 @@ const setRecommendationsInLocalStorage = (recommendations: SafeBooksListData[]) 
 };
 
 const useUserRecommendations = () => {
-  const loading = useRef(false);
   const dispatch = useDispatch();
-  const recommendations = useSelector(
-    (state: RootState) => state.recommendations.recommendationsData
-  );
+  const { recommendationsData, loading } = useSelector(selectRecommendations);
 
   useEffect(() => {
     const storedRecommendations = getRecommendationsFromLocalStorage();
@@ -41,14 +41,12 @@ const useUserRecommendations = () => {
   }, [dispatch]);
 
   const loadUserRecommendations = async (user?: User | null) => {
-    if (loading.current) {
+    if (loading) {
       throw new Error(
         "Operation in progress. Please wait until the current operation completes."
       );
     }
-
     dispatch(setRecommendationsLoading(true));
-    loading.current = true;
 
     try {
       if (user) {
@@ -66,14 +64,13 @@ const useUserRecommendations = () => {
     } catch (error: any) {
       Logger.error("Failed to fetch user recommendations", error);
     } finally {
-      loading.current = false;
       dispatch(setRecommendationsLoading(false));
     }
   };
 
   return {
-    recommendations,
-    loading: loading.current,
+    recommendations: recommendationsData,
+    loading,
     loadUserRecommendations,
   };
 };
