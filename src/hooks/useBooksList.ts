@@ -285,7 +285,6 @@ const useBooksList = () => {
     } catch (error: any) {
       Logger.error("Failed to update book in list", error);
       if (error instanceof CanceledError) {
-        console.log("Operation cancelled by user");
         return;
       }
       throw error;

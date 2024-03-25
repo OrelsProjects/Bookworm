@@ -92,7 +92,6 @@ const ModalProvider: React.FC = () => {
     let thumbnail: React.ReactNode;
     let title: string = "";
     let books: Books = [];
-    console.log(data);
     switch (type) {
       case ModalTypes.BOOK_DETAILS:
         thumbnail = (

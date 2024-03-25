@@ -344,9 +344,6 @@ const useBook = () => {
             userBookData.bookData?.book,
             bookOrBookId
           );
-          if (isEqual) {
-            console.log("equals!", userBookData);
-          }
           return isEqual;
         }) ?? null
       );

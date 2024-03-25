@@ -42,8 +42,8 @@ export default function Home(): React.ReactNode {
         />
       </div>
     );
-  console.log(loading);
-  const Recommendations = () =>
+
+    const Recommendations = () =>
     recommendations && recommendations.length > 0 ? (
       <div className="flex flex-col gap-2">
         <div className="text-2xl tracking-tight font-bold">
