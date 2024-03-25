@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Skeleton } from "../ui/skeleton";
 import { Book } from "../../models";
 import { CiCirclePlus as Plus } from "react-icons/ci";
 import { CiBookmark as Bookmark } from "react-icons/ci";
+import { IoBookmark as BookmarkFill } from "react-icons/io5";
 import { IoCheckmarkCircleOutline as Checkmark } from "react-icons/io5";
 import { IoCheckmarkCircle as CheckmarkFill } from "react-icons/io5";
 
@@ -12,6 +13,8 @@ import Authors from "../book/authors";
 import BookButtons from "../book/bookButtons";
 import { useModal } from "../../hooks/useModal";
 import useBook from "../../hooks/useBook";
+import { getThumbnailSize } from "../../consts/thumbnail";
+import { ReadingStatusEnum } from "../../models/readingStatus";
 
 export interface BookComponentProps {
   book: Book;
@@ -25,9 +28,30 @@ const BookSearchResult: React.FC<BookComponentProps> = ({ book }) => {
     updateBookStatusToRead,
     updateBookStatusToToRead,
   } = BookButtons();
+
+  const bookFullData = useMemo(
+    () => getBookFullData(book),
+    [book, getBookFullData]
+  );
+
+  const isBookRead = useMemo(() => {
+    const bookData = getBookFullData(book);
+    return bookData?.userBook.readingStatusId === ReadingStatusEnum.READ;
+  }, [book, getBookFullData]);
+
+  const isBookToRead = useMemo(() => {
+    const bookData = getBookFullData(book);
+    return bookData?.userBook.readingStatusId === ReadingStatusEnum.TO_READ;
+  }, [book, getBookFullData]);
+
+  const CheckmarkIcon = isBookRead ? CheckmarkFill : Checkmark;
+  const BookmarkIcon = isBookToRead ? BookmarkFill : Bookmark;
+
   return (
     <div
-      className="flex flex-row justify-start items-start gap-2 h-full"
+      className={`flex flex-row justify-start items-start gap-2 w-full ${
+        getThumbnailSize("xs").height
+      }`}
       onClick={(e) => {
         e.stopPropagation();
         showBookDetailsModal({ book });
@@ -37,7 +61,7 @@ const BookSearchResult: React.FC<BookComponentProps> = ({ book }) => {
         <BookThumbnail
           src={book.thumbnailUrl}
           className="rounded-xl !relative"
-          thumbnailSize="sm"
+          thumbnailSize="xs"
         />
       </div>
       <div className="h-full flex flex-col justify-between items-start">
@@ -45,14 +69,45 @@ const BookSearchResult: React.FC<BookComponentProps> = ({ book }) => {
           <Title title={book.title} />
           <Authors authors={book.authors} prefix="by" />
         </div>
-        <div className="w-full h-full flex justify-end items-end">
-          <CheckmarkFill
-            className="text-2xl !text-primary"
+        <div className="w-full h-full flex justify-start items-end gap-6">
+          <div
+            className="flex flex-col gap-0 text-sm justify-center items-center flex-shrink-0"
             onClick={(e) => {
               e.stopPropagation();
-              updateBookStatusToRead(book, getBookFullData(book));
+              updateBookStatusToRead(book, bookFullData);
             }}
-          />
+          >
+            <CheckmarkIcon
+              className={`text-2xl w-4 h-4 ${
+                isBookRead ? "!text-primary" : ""
+              }`}
+            />
+            <div className="leading-4">Read?</div>
+          </div>
+          <div
+            className="flex flex-col gap-0 text-sm justify-center items-center flex-shrink-0"
+            onClick={(e) => {
+              e.stopPropagation();
+              updateBookStatusToToRead(book, bookFullData);
+            }}
+          >
+            <BookmarkIcon
+              className={`text-2xl w-4 h-4 ml-1 ${
+                isBookToRead ? "!text-primary" : ""
+              }`}
+            />
+            <div className="leading-4">To Read</div>
+          </div>
+          <div
+            className="flex flex-col gap-0 text-sm justify-center items-center flex-shrink-0"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleAddBookToList(book);
+            }}
+          >
+            <Plus className="text-2xl w-4 h-4" />
+            <div className="leading-4">Readlist</div>
+          </div>
         </div>
       </div>
     </div>

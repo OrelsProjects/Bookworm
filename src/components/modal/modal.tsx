@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
 import { IoArrowBack } from "react-icons/io5";
 import { ExpandType, ExpandingDiv, OpacityDiv } from "../animationDivs";
-import useScrollPosition from "../../hooks/useScrollPosition";
 
 export interface ModalProps {
   isOpen: boolean;
@@ -39,8 +38,13 @@ const TopBarCollapsed = ({
   const [currentScrollPosition, setScrollPosition] = useState<number>(0);
 
   const handleScroll = () => {
-    const scrolled = (scrollRef?.current?.scrollTop ?? 0) / 240;
-    setScrollPosition(scrolled);
+    const scrollTop = scrollRef?.current?.scrollTop ?? 0;
+    if (scrollTop > 120) {
+      const scrolled = (scrollRef?.current?.scrollTop ?? 0) / 240;
+      setScrollPosition(scrolled);
+    } else {
+      setScrollPosition(0);
+    }
   };
 
   useEffect(() => {
@@ -107,6 +111,7 @@ const Modal: React.FC<ModalProps> = ({
                 className="h-4/5 max-h-fit w-full bg-background rounded-t-5xl"
                 expandType={ExpandType.Modal}
                 isOpen={isOpen}
+                onClick={(e) => e.stopPropagation()}
               >
                 {children}
               </ExpandingDiv>

@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../../store"; // Adjust the import path as necessary
 import { BooksListData } from "../../../models/booksList";
 import { Book } from "../../../models";
-import { BookInList } from "../../../models/bookInList";
+import { BookInList, BookInListWithBook } from "../../../models/bookInList";
 
 interface UserListsState {
   booksListsData: BooksListData[];
@@ -46,19 +46,12 @@ const booksListsSlice = createSlice({
         state.booksListsData.splice(index, 1);
       }
     },
-    addBookToList: (
-      state,
-      action: PayloadAction<{ listId: string; book: Book }>
-    ) => {
+    addBookToList: (state, action: PayloadAction<BookInListWithBook>) => {
       const listIndex = state.booksListsData.findIndex(
         (list) => list.listId === action.payload.listId
       );
       if (listIndex !== -1) {
-        state.booksListsData[listIndex].booksInList?.push({
-          book: { ...action.payload.book },
-          listId: action.payload.listId,
-          bookId: action.payload.book.bookId,
-        });
+        state.booksListsData[listIndex].booksInList?.push(action.payload);
       }
     },
     updateBookInList: (

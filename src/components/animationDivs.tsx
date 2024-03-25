@@ -26,6 +26,7 @@ interface AnimationDivProps extends LayoutProps {
 
 interface ExpandDivProps extends AnimationDivProps {
   expandType?: ExpandType;
+  onClick?: (e: any) => void;
 }
 
 const GeneralDiv = ({

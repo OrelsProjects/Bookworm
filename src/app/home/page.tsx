@@ -14,6 +14,7 @@ export default function Home(): React.ReactNode {
   const { userBooks, nextPage } = useTable(ReadingStatusEnum.TO_READ);
   const { recommendations } = useUserRecommendations();
   const [searchFocused, setSearchFocused] = useState(false);
+  const [searchEmpty, setSearchEmpty] = useState(true);
 
   const onSeeAllClick = useCallback(() => {
     router.push("/my-library");
@@ -83,7 +84,16 @@ export default function Home(): React.ReactNode {
       <SearchBarIcon>
         <SearchBar
           onEmpty={() => setSearchFocused(false)}
-          onFocus={() => setSearchFocused(true)}
+          onChange={(value: string) => {
+            if (value) {
+              setSearchFocused(true);
+            }
+          }}
+          onBlur={() => {
+            if (searchEmpty) {
+              setSearchFocused(false);
+            }
+          }}
         />
       </SearchBarIcon>
       {searchFocused ? <></> : <Content />}

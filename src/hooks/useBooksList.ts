@@ -17,7 +17,7 @@ import { BooksListData, CreateBooksListPayload } from "../models/booksList";
 import { Book, User } from "../models";
 import { IResponse } from "../models/dto/response";
 import { DuplicateError } from "../models/errors/duplicateError";
-import { BookInList } from "../models/bookInList";
+import { BookInList, BookInListWithBook } from "../models/bookInList";
 import { LoadingError } from "../models/errors/loadingError";
 
 const BOOK_LIST_DATA_KEY = "booksListData";
@@ -33,16 +33,11 @@ const setListInLocalStorage = (booksList: BooksListData[]) => {
   localStorage.setItem(BOOK_LIST_DATA_KEY, JSON.stringify(booksList));
 };
 
-const addBookToListInLocalStorage = (book: Book, listId: string) => {
+const addBookToListInLocalStorage = (bookInList: BookInListWithBook) => {
   const booksListData: BooksListData[] = getBooksListFromLocalStorage();
   booksListData?.forEach((list) => {
-    if (list.listId === listId) {
-      list.booksInList?.push({
-        book,
-        listId,
-        bookId: book.bookId,
-        position: list.booksInList?.length,
-      });
+    if (list.listId === bookInList.listId) {
+      list.booksInList?.push(bookInList);
     }
   });
   setListInLocalStorage(booksListData);
@@ -242,12 +237,16 @@ const useBooksList = () => {
 
   const addBookToList = async (listId: string, book: Book) => {
     try {
-      await axios.post(`/api/list/book`, {
+      const response = await axios.post<BookInList>(`/api/list/book`, {
         listId,
         bookId: book.bookId,
       });
-      dispatch(addBookToListAction({ listId, book }));
-      addBookToListInLocalStorage(book, listId);
+      debugger;
+      const bookInList = response.data;
+      const bookInListWithBook = { ...bookInList, book };
+
+      dispatch(addBookToListAction(bookInListWithBook));
+      addBookToListInLocalStorage(bookInListWithBook);
     } catch (error: any) {
       Logger.error("Failed to add book to list", error);
       throw error;

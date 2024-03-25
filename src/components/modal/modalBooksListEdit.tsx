@@ -235,6 +235,8 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
   const [currentBooksList, setCurrentBookList] = useState<
     BooksListData | undefined
   >();
+  const [isSearchBarScrolledIntoView, setIsSearchBarScrolledIntoView] =
+    useState(false);
   const searchBarRef = useRef<HTMLDivElement>(null);
   const buildFormikValueName = (bookId: number) => `newBookComments-${bookId}`;
 
@@ -258,20 +260,14 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
   }, [booksListData]);
 
   const scrollSearchBarIntoView = () => {
+    if (isSearchBarScrolledIntoView) return;
     const searchBarElement = searchBarRef.current;
     if (searchBarElement) {
-      const rect = searchBarElement.getBoundingClientRect();
-      const scrollOptions = {
+      searchBarRef.current?.scrollIntoView({
         behavior: "smooth",
         block: "start",
-      };
-
-      // Adjust the scroll position by adding extra 10px padding to the top
-      const topPadding = 10; // Adjust this value to change the top padding
-      const scrollY = window.scrollY + rect.top - topPadding;
-
-      window.scrollTo({ top: scrollY, behavior: "smooth" });
-      searchBarElement.querySelector("input")?.focus();
+      });
+      setIsSearchBarScrolledIntoView(true);
     }
   };
 

@@ -12,13 +12,13 @@ export async function POST(req: NextRequest) {
   try {
     createBookInList = await req.json();
     const axios = GetAxiosInstance(req);
-    const response = await axios.post<BooksList>(URL, createBookInList);
+    const response = await axios.post<BookInList>(URL, createBookInList);
 
-    const userBook = response.data;
+    const bookInList = response.data;
 
     return NextResponse.json(
       {
-        result: userBook,
+        result: bookInList,
       },
       { status: 200 }
     );

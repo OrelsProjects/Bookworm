@@ -76,15 +76,17 @@ const SearchBar: React.FC<SearchBarProps> = ({
     <div
       className={`w-search-bar flex flex-col
       ${(loading || books?.length) ?? 0 > 0 ? " gap-4 " : ""}
+
        ${className ?? ""}`}
     >
       <SearchBarComponent
         onBlur={onBlur}
         onSubmit={handleSubmit}
         onChange={handleOnChange}
-        className="transition-all duration-300 ease-in-out rounded-full w-8/12"
+        className="transition-all duration-300 ease-in-out rounded-full"
         placeholder="Search all books, authors..."
         autoFocus={autoFocus}
+        onFocus={onFocus}
         {...props}
       />
       <div className="flex flex-col gap-3">

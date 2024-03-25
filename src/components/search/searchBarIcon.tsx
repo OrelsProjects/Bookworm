@@ -9,7 +9,7 @@ export default function SearchBarIcon({
   children?: React.ReactNode;
   iconSize?: IconSize;
 }): React.ReactElement {
-  const [showSearch, setShowSearch] = useState<boolean>(false);
+  // const [showSearch, setShowSearch] = useState<boolean>(false);
 
   return (
     <div className="w-full">
