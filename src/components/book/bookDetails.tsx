@@ -5,6 +5,7 @@ import { Add } from "../icons/add";
 import Authors from "./authors";
 import Title from "./bookTitle";
 import { ThumbnailSize, getThumbnailSize } from "../../consts/thumbnail";
+import { useModal } from "../../hooks/useModal";
 
 export type BookDetailsProps = {
   book?: Book;
@@ -23,6 +24,7 @@ const BookDetails: React.FC<BookDetailsProps> = ({
   className,
   direction,
 }) => {
+  // const { showBookDetailsModal } = useModal();
   const thumbnailSize = getThumbnailSize(bookThumbnailSize);
   const flexDirection = direction === "row" ? "flex-col" : "flex-row";
   const sizeClass = direction === "row" ? thumbnailSize.width : "w-full";
@@ -31,6 +33,10 @@ const BookDetails: React.FC<BookDetailsProps> = ({
       className={`h-fit flex ${flexDirection} flex-shrink-0 justify-start items-center gap-2 ${sizeClass} ${
         className ?? ""
       }`}
+      onClick={(e) => {
+        // e.stopPropagation();
+        // showBookDetailsModal({ book });
+      }}
     >
       <BookThumbnail
         book={book}

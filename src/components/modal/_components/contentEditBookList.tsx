@@ -57,7 +57,6 @@ interface ListBookProps extends ListBookAndBookDetailsProps {
 interface BookInListDetailsProps extends ListBookAndBookDetailsProps {
   bookInList?: BookInListWithBook;
   position: number;
-  titleRef?: React.RefObject<HTMLDivElement>;
 }
 
 const BookInListDetails: React.FC<BookInListDetailsProps> = ({
@@ -65,7 +64,6 @@ const BookInListDetails: React.FC<BookInListDetailsProps> = ({
   onDeleteBookClick,
   name,
   key,
-  titleRef,
   position,
 }) => {
   return (
@@ -94,10 +92,7 @@ const BookInListDetails: React.FC<BookInListDetailsProps> = ({
         thumbnailSize="sm"
       />
 
-      <div
-        className="w-full h-full flex flex-col justify-start items-start gap-2"
-        ref={titleRef}
-      >
+      <div className="w-full h-full flex flex-col justify-start items-start gap-2">
         <div
           className={`${
             bookInList ? "text-foreground" : "text-muted"
@@ -228,16 +223,14 @@ const ContentEditBookList = ({
     updateBooksInList,
     loading: loadingList,
   } = useBooksList();
-  const { userBooksData } = useBook();
-  const { booksLists } = useBooksList();
   const { addUserBook, getBookFullData, loading: loadingBook } = useBook();
   const [currentBooksList, setCurrentBookList] = useState<
     BooksListData | undefined
   >();
   const [isSearchBarScrolledIntoView, setIsSearchBarScrolledIntoView] =
     useState(false);
+  const [showSearchBar, setShowSearchBar] = useState(false);
   const searchBarRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLDivElement>(null);
   const formik = useFormik({
     initialValues: {
       newBookComments: "",
@@ -286,11 +279,7 @@ const ContentEditBookList = ({
 
       if (!formik.values.listName && isNewList) {
         formik.setFieldError("listName", "List name is required");
-        // Scroll to the top + 30px to show the error message
-        titleRef.current?.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
+        toast.error("List name is required");
         return;
       }
       const newBooksComments = formik.values.newBookComments;
@@ -429,7 +418,8 @@ const ContentEditBookList = ({
           <Add.Outline
             className="flex-shrink-0"
             iconSize="xs"
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               handleAddNewBookClick(book);
             }}
           />
@@ -484,7 +474,7 @@ const ContentEditBookList = ({
           }}
           key={currentBooksList?.listId}
           onAddNewBookClick={() => {
-            scrollSearchBarIntoView();
+            setShowSearchBar(true);
           }}
           name="newBookComments"
           booksInList={currentBooksList?.booksInList?.map(
@@ -496,6 +486,9 @@ const ContentEditBookList = ({
             <SearchBar
               formClassName="w-full"
               className="!w-full"
+              onEmpty={() => {
+                setIsSearchBarScrolledIntoView(false);
+              }}
               onSearch={() => {
                 scrollSearchBarIntoView();
               }}
