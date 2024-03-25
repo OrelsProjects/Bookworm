@@ -14,6 +14,6 @@ export {
   BookSubGenre,
   GoodreadsData,
   UserBook,
-  UserBookData,
+  type UserBookData,
   ImportStatus,
 };
