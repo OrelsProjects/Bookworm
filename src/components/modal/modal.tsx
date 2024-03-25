@@ -100,6 +100,7 @@ const Modal: React.FC<ModalProps> = ({
                 className ?? ""
               } z-10`}
               style={{ backgroundColor: backgroundColor ?? "rgb(12, 12, 12)" }}
+              onClick={onClose}
             >
               <ExpandingDiv
                 key="modal"
