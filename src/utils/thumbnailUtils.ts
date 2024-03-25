@@ -14,7 +14,7 @@ const extractRGBFromString = (
 
 export function darkenColor(
   rgb?: string,
-  darkenPercent: number = 20
+  darkenPercent: number = 10
 ): string | undefined {
   if (!rgb) return rgb;
 

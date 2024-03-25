@@ -71,8 +71,9 @@ const ButtonImage: React.FC<ButtonImageProps> = ({
           width,
         }}
         iconSize={iconSize}
-        iconClassName={iconClassName}
-        className={`${selected ? "!text-primary" : "!text-foreground"}`}
+        className={`${
+          selected ? "!text-primary" : "!text-foreground"
+        } ${iconClassName}`}
       />
       <div className={`text-foreground ${textSize[iconSize]}`}>{title}</div>
     </div>
@@ -210,6 +211,7 @@ export const BookButtons = () => {
                 userBookData
               )
             }
+            iconClassName="ml-2"
           />
         )}
         {showAddToListButton &&

@@ -51,12 +51,12 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
             <ReadMoreText
               text={book?.description}
               maxLines={bookInList ? 3 : 6}
-              className={"text-xl text-mute !overflow-none"}
+              className={"text-xl text-foreground font-thin !overflow-none"}
             />
           </div>
           {bookInList && (
             <div>
-              <div className="text-foreground font-bold text-xl">
+              <div className="text-xl text-foreground font-extralight">
                 List Creator Comment
               </div>
               <ReadMoreText text={bookInList.comments} maxLines={3} />
