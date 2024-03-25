@@ -31,7 +31,7 @@ const bottomSheetSlice = createSlice({
   reducers: {
     showModal: (
       state,
-      action: PayloadAction<{ data?: any; type: ModalTypes }>
+      action: PayloadAction<{ data?: any; type: ModalTypes; popLast?: boolean }>
     ) => {
       if (
         state.modalStack.length > 0 &&
@@ -39,6 +39,9 @@ const bottomSheetSlice = createSlice({
           action.payload.type
       ) {
         return;
+      }
+      if (action.payload.popLast) {
+        state.modalStack.pop();
       }
       state.modalStack.push(action.payload);
       state.error = null;

@@ -6,8 +6,7 @@ import { BooksListViewProps } from "./consts";
 import { useModal } from "../../../hooks/useModal";
 
 export default function BooksListDefaultView({
-  booksListData,
-  booksInUsersListsCount = 0,
+  safeBooksListData: booksListData,
 }: BooksListViewProps) {
   const { Buttons } = BookButtons();
   const { showBookDetailsModal } = useModal();
@@ -22,9 +21,6 @@ export default function BooksListDefaultView({
               ? `(${booksListData.booksInList.length})`
               : ""}
           </div>
-        </div>
-        <div className="w-fit font-bold text-2xl">
-          {booksInUsersListsCount}/{booksListData?.booksInList.length}
         </div>
       </div>
       {booksListData?.booksInList.map((bookInList, index) => (

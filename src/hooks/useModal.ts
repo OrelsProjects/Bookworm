@@ -11,8 +11,8 @@ import { BookInList } from "../models/bookInList";
 export const useModal = () => {
   const dispatch = useDispatch();
 
-  const onShowModal = (data: any, type: ModalTypes) =>
-    dispatch(showModal({ data, type }));
+  const onShowModal = (data: any, type: ModalTypes, popLast?: boolean) =>
+    dispatch(showModal({ data, type, popLast }));
 
   const showAddBookToListModal = (data: Book) =>
     onShowModal(data, ModalTypes.ADD_BOOK_TO_LIST);
@@ -25,13 +25,16 @@ export const useModal = () => {
   const showBookInListDetailsModal = (data: SafeBooksListData) =>
     onShowModal(data, ModalTypes.BOOKS_LIST_DETAILS);
 
-  const showBooksListEditModal = (data?: BooksListData) =>
-    onShowModal(data, ModalTypes.BOOKS_LIST_DETAILS_EDIT);
+  const showBooksListEditModal = (data?: BooksListData, popLast?: boolean) =>
+    onShowModal(data, ModalTypes.BOOKS_LIST_DETAILS_EDIT, popLast);
 
-  const showBooksListModal = (data: {
-    bookList: SafeBooksListData;
-    onBack?: () => void;
-  }) => onShowModal(data, ModalTypes.BOOKS_LIST_DETAILS);
+  const showBooksListModal = (
+    data: {
+      bookList: SafeBooksListData;
+      onBack?: () => void;
+    },
+    popLast?: boolean
+  ) => onShowModal(data, ModalTypes.BOOKS_LIST_DETAILS, popLast);
 
   const showRegisterModal = () => onShowModal(null, ModalTypes.REGISTER);
 

@@ -37,3 +37,20 @@ export type SafeBooksListData = {
   publicURL: string | null;
   name: string;
 } & { booksInList: BookInListWithBook[] } & { curatorName?: string };
+
+export const booksListDataToSafeBooksListData = (
+  booksListData?: BooksListData
+): SafeBooksListData | undefined => {
+  if (!booksListData) {
+    return undefined;
+  }
+  const {
+    isVisible,
+    createdAt,
+    updatedAt,
+    publishedAt,
+    expiresAt,
+    ...safeData
+  } = booksListData;
+  return safeData;
+};

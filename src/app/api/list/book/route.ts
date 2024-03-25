@@ -53,27 +53,23 @@ export async function DELETE(
     });
     return NextResponse.json(response.data, { status: 200 });
   } catch (error: any) {
-    Logger.error(
-      "Error deleting book from list",
-      getUserIdFromRequest(req),
-      {
-        data: {
-          listId,
-          bookId,
-        },
-        error,
-      }
-    );
+    Logger.error("Error deleting book from list", getUserIdFromRequest(req), {
+      data: {
+        listId,
+        bookId,
+      },
+      error,
+    });
     return NextResponse.json({}, { status: 500 });
   }
 }
 
 export async function PATCH(req: NextRequest) {
-  let bookInList: BookInList | null = null;
+  let bookInList: BookInList | null = null; 
   try {
     bookInList = await req.json();
     const axios = GetAxiosInstance(req);
-    await axios.patch(URL, bookInList);
+    await axios.patch(URL, { booksInList: [bookInList] });
     return NextResponse.json(bookInList, { status: 200 });
   } catch (error: any) {
     Logger.error("Error updating books list", getUserIdFromRequest(req), {

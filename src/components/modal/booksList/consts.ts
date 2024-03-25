@@ -1,9 +1,7 @@
 import { BooksListData, SafeBooksListData } from "../../../models/booksList";
 
 export interface ModalBooksListProps<T extends SafeBooksListData> {
-  booksListData?: T;
+  safeBooksListData?: T;
 }
 
-export type BooksListViewProps = {
-  booksInUsersListsCount?: number;
-} & ModalBooksListProps<SafeBooksListData>;
+export type BooksListViewProps = ModalBooksListProps<SafeBooksListData>;

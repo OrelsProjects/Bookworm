@@ -15,9 +15,10 @@ import { Checkmark } from "../../icons/checkmark";
 import { Bookmark } from "../../icons/bookmark";
 import { isBookRead } from "../../../models/userBook";
 import { ErrorUnauthenticated } from "../../../models/errors/unauthenticatedError";
+import SwitchEditMode from "../_components/switchEditMode";
 
 export default function BooksListGridView({
-  booksListData,
+  safeBooksListData: booksListData,
 }: BooksListViewProps) {
   const {
     getBookFullData,
@@ -114,9 +115,9 @@ export default function BooksListGridView({
   return (
     <div className="h-full w-full flex flex-col gap-6 mt-2">
       <div className="w-full flex flex-row justify-between">
-        <div className="w-fit flex flex-row gap-2">
-          <BurgerLines.Fill iconSize="md" className="!text-foreground" />
-          <div className="font-bold text-2xl flex flex-row gap-1 items-center justify-center">
+        <div className="w-fit flex flex-row gap-2 items-center">
+          <BurgerLines.Fill iconSize="sm" className="!text-foreground" />
+          <div className="font-bold text-xl flex flex-row gap-1 items-center justify-center">
             Book List{" "}
             {booksListData?.booksInList &&
             booksListData.booksInList.length > 0 ? (
@@ -127,9 +128,6 @@ export default function BooksListGridView({
               ""
             )}
           </div>
-        </div>
-        <div className="w-fit font-bold text-2xl">
-          {booksInUsersListsCount}/{booksListData?.booksInList.length}
         </div>
       </div>
       <div className={`flex flex-wrap justify-around gap-4`}>

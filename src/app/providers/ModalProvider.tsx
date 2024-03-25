@@ -161,7 +161,7 @@ const ModalProvider: React.FC = () => {
     (data?: any) => {
       return (
         <RenderModal onClose={data.onBack} type={ModalTypes.BOOKS_LIST_DETAILS}>
-          <ModalBooksList booksListData={data.bookList} />
+          <ModalBooksList safeBooksListData={data.bookList} />
         </RenderModal>
       );
     },
