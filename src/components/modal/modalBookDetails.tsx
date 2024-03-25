@@ -35,9 +35,6 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
   >(null);
 
   const book: Book | null = useMemo(() => {
-    console.log(bookData);
-    const x = bookData as Book;
-    debugger;
     return bookData as Book;
   }, [bookData]);
 
