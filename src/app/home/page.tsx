@@ -9,6 +9,7 @@ import { ReadingStatusEnum } from "../../models/readingStatus";
 import SearchBarIcon from "../../components/search/searchBarIcon";
 import SearchBar from "../../components/search/searchBar";
 import Loading from "../../components/ui/loading";
+import Tooltip from "../../components/ui/tooltip";
 
 export default function Home(): React.ReactNode {
   const router = useRouter();
@@ -43,17 +44,24 @@ export default function Home(): React.ReactNode {
   const Recommendations = () =>
     recommendations && recommendations.length > 0 ? (
       <div className="flex flex-col gap-0">
-        <div className="text-2xl font-bold">Recommended for You</div>
         <div className="w-full flex flex-col gap-4">
           {recommendations.length > 0 &&
             recommendations.slice(0, 5).map((recommendation) => (
               <div
-                className="flex flex-col gap-0"
+                className="flex flex-col gap-2"
                 key={`recommendation-${recommendation.publicURL}`}
               >
-                <div className="text-lg font-extralight line-clamp-1  tracking-tighter">
-                  {recommendation.name}
-                </div>
+                <Tooltip
+                  tooltipContent={
+                    <div className="text-sm text-muted line-clamp-4 tracking-tighter max-w-xs">
+                      {recommendation.name}
+                    </div>
+                  }
+                >
+                  <div className="text-2xl font-semibold line-clamp-1 tracking-tight text-left">
+                    {recommendation.name}
+                  </div>
+                </Tooltip>
                 <BookList
                   books={
                     recommendation.booksInList.map(
@@ -80,7 +88,7 @@ export default function Home(): React.ReactNode {
     );
 
   const Content = () => (
-    <div className="h-fit w-full flex flex-col gap-4 pr-1 overflow-auto">
+    <div className="h-fit w-full flex flex-col gap-10 pr-1 overflow-auto">
       <Books />
       <Recommendations />
     </div>
