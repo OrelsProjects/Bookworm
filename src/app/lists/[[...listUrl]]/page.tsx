@@ -126,7 +126,7 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
 
   const UserBooksLists = () => (
     <div className="w-full h-full flex flex-col gap-2">
-      <div className="w-full flex flex-row justify-between">
+      <div className="w-full flex flex-row justify-between items-center">
         <div className="text-xl font-bold leading-8">My Readlists</div>
         <div>
           <Plus.Fill
