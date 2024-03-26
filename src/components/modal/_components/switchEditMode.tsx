@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { FaGlasses, FaPencilAlt } from "react-icons/fa";
+import { FaGlasses } from "react-icons/fa";
 import { BiSolidPencil } from "react-icons/bi";
 import { useSelector } from "react-redux";
 import { ModalTypes, selectModal } from "../../../lib/features/modal/modalSlice";
