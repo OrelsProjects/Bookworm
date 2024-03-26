@@ -241,7 +241,6 @@ const useBooksList = () => {
         listId,
         bookId: book.bookId,
       });
-      debugger;
       const bookInList = response.data;
       const bookInListWithBook = { ...bookInList, book };
 
