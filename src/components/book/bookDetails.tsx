@@ -46,8 +46,8 @@ const BookDetails: React.FC<BookDetailsProps> = ({
       />
       <div className={`flex flex-col  gap-2 flex-grow self-start`}>
         <div className={`flex flex-col -gap-1`}>
-          <Title title={book?.title ?? ""} className="font-sm" />
-          <Authors authors={book?.authors} className="text-primary" />
+          <Title title={book?.title ?? ""} className="font-sm leading-7" />
+          <Authors authors={book?.authors} className="text-primary leading-5" />
         </div>
         {direction === "column" && (
           <div className="flex-grow">

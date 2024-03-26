@@ -90,7 +90,7 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
     <BookThumbnail
       src={book?.thumbnailUrl ?? "/thumbnailPlaceholder.png"}
       book={book}
-      thumbnailSize="lg"
+      thumbnailSize="xl"
     />
   );
 

@@ -59,7 +59,7 @@ input[type="text"]:-moz-ui-autofill {
     --error: 255, 69, 58;
 
     /* Border Radius */
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
     --tw-shadow-color: var(--background);
   }

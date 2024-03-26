@@ -17,7 +17,7 @@ const TopSectionContainer: React.FC<
   ModalContentContainer & { thumbnail: React.ReactNode }
 > = ({ children, className, thumbnail }) => (
   <div
-    className={`w-full flex flex-row justify-start gap-2 relative pt-4 ${
+    className={`w-full flex flex-row justify-start gap-2 relative pt-1 ${
       className ?? ""
     }`}
   >
@@ -35,14 +35,13 @@ const ContentContainer: React.FC<ModalContentContainer> = ({
   className,
 }) => (
   <div
-    className={`h-full w-full flex flex-col justify-start items-center gap-4 px-8 ${
+    className={`h-full w-full flex flex-col justify-start items-center gap-4 px-8 pb-4 ${
       className ?? ""
     }`}
   >
     {children}
   </div>
 );
-
 
 export const ModalContent: React.FC<ModalContentProps> = ({
   thumbnail,
@@ -59,7 +58,7 @@ export const ModalContent: React.FC<ModalContentProps> = ({
         </div>
       </TopSectionContainer>
     </div>
-      {buttonsRow}
+    {buttonsRow}
     {bottomSection}
   </ContentContainer>
 );

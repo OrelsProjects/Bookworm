@@ -52,9 +52,7 @@ const BookSearchResult: React.FC<BookComponentProps> = ({ book }) => {
 
   return (
     <div
-      className={`flex flex-row justify-start items-start gap-2 w-full ${
-        getThumbnailSize("xs").height
-      }`}
+      className={`flex flex-row justify-start items-start gap-2 w-full`}
       onClick={(e) => {
         e.stopPropagation();
         showBookDetailsModal({ book });
@@ -64,7 +62,7 @@ const BookSearchResult: React.FC<BookComponentProps> = ({ book }) => {
         <BookThumbnail
           src={book.thumbnailUrl}
           className="rounded-xl !relative"
-          thumbnailSize="xs"
+          thumbnailSize="sm"
         />
       </div>
       <div className="h-full flex flex-col justify-between items-start">
@@ -72,7 +70,7 @@ const BookSearchResult: React.FC<BookComponentProps> = ({ book }) => {
           <Title title={book.title} />
           <Authors authors={book.authors} prefix="by" />
         </div>
-        <div className="w-full h-full flex justify-start items-end gap-6">
+        <div className="w-full h-full flex justify-start items-end gap-6 mt-6">
           <div
             className="flex flex-col gap-0 text-sm justify-center items-center flex-shrink-0"
             onClick={(e) => {

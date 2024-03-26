@@ -13,7 +13,7 @@ module.exports = {
       padding: "2rem",
     },
     screens: {
-      xs: "400px",
+      xs: "376px",
       "2xl": "1535px",
     },
     extend: {
@@ -102,6 +102,7 @@ module.exports = {
       },
       lineHeight: {
         "16": "4rem",
+        "7.5": "1.875rem",
       },
       width: {
         "22": "5.5rem",
@@ -113,6 +114,17 @@ module.exports = {
         "modal-md": "32rem",
         "modal-sm": "28rem",
         "search-bar": "66.66%",
+        "thumbnail-2xs": "36px",
+        "thumbnail-xs": "40px",
+        "thumbnail-sm": "66.67px",
+        "thumbnail-md": "80px",
+        "thumbnail-lg": "92px",
+        "thumbnail-xl": "120px",
+        "thumbnail-2xl": "140px",
+        "thumbnail-3xl": "170px",
+      },
+      letterSpacing: {
+        "semiwide": "0.15px",
       },
       height: {
         "13": "3.25rem",
@@ -126,6 +138,14 @@ module.exports = {
         "modal-sm": "28rem",
         "screen-fill": "100vh", // Fallback
         screen: "-webkit-fill-available", // For Safari
+        "thumbnail-2xs": "44px",
+        "thumbnail-xs": "60px",
+        "thumbnail-sm": "100px",
+        "thumbnail-md": "120px",
+        "thumbnail-lg": "140px",
+        "thumbnail-xl": "180px",
+        "thumbnail-2xl": "210px",
+        "thumbnail-3xl": "240px",
       },
       minHeight: {
         "screen-fill": "100vh", // Fallback

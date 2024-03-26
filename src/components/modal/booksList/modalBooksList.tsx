@@ -49,7 +49,7 @@ export const ModalBooksList = <T extends SafeBooksListData>({
           books={safeBooksListData?.booksInList.map(
             (booksListData) => booksListData.book
           )}
-          thumbnailSize="lg"
+          thumbnailSize="xl"
         />
       }
       thumbnailDetails={ThumbnailDetails}

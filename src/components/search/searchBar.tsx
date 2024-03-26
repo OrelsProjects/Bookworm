@@ -74,16 +74,16 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   return (
     <div
-      className={`w-search-bar flex flex-col
-      ${(loading || books?.length) ?? 0 > 0 ? " gap-4 " : ""}
-
-       ${className ?? ""}`}
+      className={`w-full flex flex-col
+      ${(loading || books?.length) ?? 0 > 0 ? " gap-4 " : ""}`}
     >
       <SearchBarComponent
         onBlur={onBlur}
         onSubmit={handleSubmit}
         onChange={handleOnChange}
-        className="transition-all duration-300 ease-in-out rounded-full"
+        className={`w-search-bar transition-all duration-300 ease-in-out rounded-full ${
+          className ?? ""
+        }`}
         placeholder="Search all books, authors..."
         autoFocus={autoFocus}
         onFocus={onFocus}
@@ -108,7 +108,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
           books.length > 0 && (
             <div className="flex flex-col gap-2 mt-2">
               <div className="font-bold text-2xl">Books</div>
-              <div className="flex gap-6 flex-col">
+              <div className="flex 3 flex-col gap-6">
                 {books
                   .slice(0, TOP_RESULTS_COUNT)
                   .map((book, i) =>

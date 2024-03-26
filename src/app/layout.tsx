@@ -35,7 +35,7 @@ export default function RootLayout({
             <NavigationProvider>
               <APIProvider>
                 <DataProvider>
-                  <HeightProvider className="p-2 pt-4 flex flex-col z-20">
+                  <HeightProvider className="p-2 pt-4 flex flex-col z-20 tracking-semiwide">
                     <AnimationProvider>{children}</AnimationProvider>
                   </HeightProvider>
                   <Header className="h-9 w-fit p-4 pt-8" />

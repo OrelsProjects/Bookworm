@@ -149,6 +149,7 @@ const Modal: React.FC<ModalProps> = ({
     <div
       className="absolute top-0 left-0 right-0 bottom-0 w-screen h-screen max-h-fit z-50 overscroll-none overflow-auto bg-background"
       ref={scrollableDivRef}
+      id="modal"
     >
       <OpacityDiv innerRef={modalRef} key="modal-background" isOpen={isOpen}>
         <div
@@ -159,7 +160,7 @@ const Modal: React.FC<ModalProps> = ({
             {topBarCollapsed}
           </TopBarCollapsed>
           <BackButton onClick={onClose} />
-          <div className="flex justify-center items-center relative w-full h-full z-20">
+          <div className="flex justify-center items-center relative w-full h-full z-20 pb-4">
             <div
               className={`relative z-50 w-full h-full flex items-end justify-start ${
                 className ?? ""

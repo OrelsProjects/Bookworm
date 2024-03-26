@@ -47,7 +47,9 @@ const BookThumbnail: React.FC<BookThumbnailProps> = ({
         width={width}
         loading="lazy"
         onClick={onClick && book ? () => onClick(book) : undefined}
-        className={`rounded-xl ${className ?? ""} w-full h-full`}
+        className={`${thumbnailSize === "xs" ? "rounded-[6px]" : "rounded-2xl"} ${
+          className ?? ""
+        } w-full h-full`}
       />
 
       {Icon}

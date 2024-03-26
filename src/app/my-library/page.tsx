@@ -135,14 +135,14 @@ export default function MyLibrary(): React.ReactNode {
         />
       </SearchBarIcon>
 
-      <div className="h-full overflow-auto flex flex-col gap-5 pr-2">
-        <div className="flex flex-col gap-4 ">
+      <div className="h-full overflow-auto flex flex-col gap-10 pr-2">
+        <div className="flex flex-col gap-4">
           <Tabs
             Title={() => <div className="font-bold text-xl">Sort by</div>}
             items={sorterTabItems}
             onClick={onSortClick}
           />
-          <div className="flex flex-col gap-2 relative">
+          <div className="flex flex-col gap-1 relative">
             <div className="font-bold text-xl">Filter by</div>
             <ListFilter filter="readlist" />
           </div>
@@ -151,7 +151,7 @@ export default function MyLibrary(): React.ReactNode {
           books={userBookDataSorted.map((ubd) => ubd.bookData.book)}
           onNextPageScroll={nextPage}
           direction="column"
-          thumbnailSize="sm"
+          thumbnailSize="md"
           disableScroll
         />
       </div>

@@ -65,11 +65,11 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
           books={currentBooksList?.booksInList?.map(
             (bookInList) => bookInList.book
           )}
-          thumbnailSize="lg"
+          thumbnailSize="xl"
         />
       }
       thumbnailDetails={
-        <div className="flex flex-col w-full gap-2">
+        <div className="flex flex-col w-full gap-2 -mb-2">
           <CommentsArea
             key={`${currentBooksList?.listId}-title`}
             value={booksListData ? undefined : formik.values.listName}
@@ -96,6 +96,7 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
             }}
             bookListData={currentBooksList}
             className="w-full"
+            rows={2}
           />
         </div>
       }

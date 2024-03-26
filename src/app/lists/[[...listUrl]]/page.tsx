@@ -94,7 +94,7 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
         books={userBooks.map((ubd) => ubd.bookData.book)}
         onNextPageScroll={nextPage}
         direction="row"
-        thumbnailSize="lg"
+        thumbnailSize="xl"
       />
     </div>
   );
@@ -127,7 +127,7 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
   const UserBooksLists = () => (
     <div className="w-full h-full flex flex-col gap-2">
       <div className="w-full flex flex-row justify-between">
-        <div className="text-xl font-bold">My Readlists</div>
+        <div className="text-xl font-bold leading-8">My Readlists</div>
         <div>
           <Plus.Fill
             className="!text-foreground"
@@ -143,7 +143,7 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
           direction="column"
           disableScroll
           booksListsData={booksLists}
-          bookThumbnailSize="md"
+          bookThumbnailSize="lg"
           bottomElementProps={{
             onAddBookClick: (list) => showBooksListEditModal(list),
             onShareClick: (list) => {

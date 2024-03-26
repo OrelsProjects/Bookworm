@@ -38,7 +38,7 @@ export default function Home(): React.ReactNode {
           books={userBooks.map((ubd) => ubd.bookData.book)}
           onNextPageScroll={nextPage}
           direction="row"
-          thumbnailSize="xl"
+          thumbnailSize="2xl"
         />
       </div>
     );
@@ -75,7 +75,7 @@ export default function Home(): React.ReactNode {
                   }
                   onNextPageScroll={nextPage}
                   direction="row"
-                  thumbnailSize="xl"
+                  thumbnailSize="2xl"
                 />
               </div>
             ))}

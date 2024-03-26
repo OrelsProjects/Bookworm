@@ -39,7 +39,7 @@ export const useModal = () => {
       bookList: SafeBooksListData;
       onBack?: () => void;
     },
-    options: ShowModalOptions
+    options?: ShowModalOptions
   ) => onShowModal(data, ModalTypes.BOOKS_LIST_DETAILS, options);
 
   const showRegisterModal = () => onShowModal(null, ModalTypes.REGISTER);

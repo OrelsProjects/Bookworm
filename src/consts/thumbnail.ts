@@ -1,13 +1,31 @@
-export type ThumbnailSize = "3xs" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
+export type ThumbnailSize =
+  | "2xs"
+  | "xs"
+  | "sm"
+  | "md"
+  | "lg"
+  | "xl"
+  | "2xl"
+  | "3xl";
 
 const thumbnailSizes = {
-  ["3xs"]: { width: "w-9", height: "h-11" },
-  ["xs"]: { width: "w-16", height: "h-24" },
-  ["sm"]: { width: "w-20", height: "h-32" },
-  ["md"]: { width: "w-24", height: "h-36" },
-  ["lg"]: { width: "w-30", height: "h-44" },
-  ["xl"]: { width: "w-30 xs:w-36", height: "h-44 xs:h-52" },
-  ["2xl"]: { width: "w-44", height: "h-64" },
+  ["2xs"]: { width: "w-thumbnail-2xs", height: "h-thumbnail-2xs" },
+  ["xs"]: { width: "w-thumbnail-xs", height: "h-thumbnail-xs" },
+  ["sm"]: { width: "w-thumbnail-sm", height: "h-thumbnail-sm" },
+  ["md"]: { width: "w-thumbnail-md", height: "h-thumbnail-md" },
+  ["lg"]: { width: "w-thumbnail-lg", height: "h-thumbnail-lg" },
+  ["xl"]: {
+    width: "w-thumbnail-xl",
+    height: "h-thumbnail-xl",
+  },
+  ["2xl"]: {
+    width: "w-thumbnail-xl xs:w-thumbnail-2xl",
+    height: "h-thumbnail-xl xs:h-thumbnail-2xl",
+  },
+  ["3xl"]: {
+    width: "w-thumbnail-2xl xs:w-thumbnail-3xl",
+    height: "h-thumbnail-2xl xs:h-thumbnail-3xl",
+  },
 };
 export const getThumbnailSize = (thumbnailSize?: ThumbnailSize) => {
   const size = thumbnailSizes[thumbnailSize ?? "md"];

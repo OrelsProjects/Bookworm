@@ -38,7 +38,7 @@ import { CommentsArea } from "./commentsArea";
 import { buildFormikValueName } from "../modalBooksListEdit";
 
 interface ListBookAndBookDetailsProps {
-  onAddNewBookClick: () => void;
+  onAddNewBookClick?: () => void;
   onDeleteBookClick: (bookInList: BookInList) => void;
   onChange: (
     bookInListWithBook: BookInListWithBook | null | undefined,
@@ -67,8 +67,8 @@ const BookInListDetails: React.FC<BookInListDetailsProps> = ({
   position,
 }) => {
   return (
-    <div className="w-full flex flex-row gap-2 justify-start items-center">
-      <div className="flex flex-col justify-center items-center text-sm">
+    <div className="w-full flex flex-row gap-2 justify-start items-start relative">
+      <div className="flex flex-col justify-center items-center text-sm absolute -left-6 top-1/3">
         <div className="">#{position}</div>
         <GripLines className="!text-foreground w-4 h-4" />
       </div>
@@ -89,7 +89,7 @@ const BookInListDetails: React.FC<BookInListDetailsProps> = ({
             )}
           </div>
         }
-        thumbnailSize="sm"
+        thumbnailSize="md"
       />
 
       <div className="w-full h-full flex flex-col justify-start items-start gap-2">
@@ -189,7 +189,7 @@ const ListBooks: React.FC<ListBookProps> = ({
               />
             </div>
           }
-          thumbnailSize="sm"
+          thumbnailSize="md"
         />
 
         <div className="w-full h-full flex flex-col justify-start items-start gap-2">
@@ -229,7 +229,6 @@ const ContentEditBookList = ({
   >();
   const [isSearchBarScrolledIntoView, setIsSearchBarScrolledIntoView] =
     useState(false);
-  const [showSearchBar, setShowSearchBar] = useState(false);
   const searchBarRef = useRef<HTMLDivElement>(null);
   const formik = useFormik({
     initialValues: {
@@ -410,7 +409,7 @@ const ContentEditBookList = ({
   const SearchResult: React.FC<BookComponentProps> = ({ book }) => (
     <BookDetails
       book={book}
-      bookThumbnailSize="sm"
+      bookThumbnailSize="xs"
       Icon={
         isBookInList(book) ? (
           <Checkmark.Fill className="flex-shrink-0" iconSize="md" />
@@ -473,9 +472,6 @@ const ContentEditBookList = ({
             }
           }}
           key={currentBooksList?.listId}
-          onAddNewBookClick={() => {
-            setShowSearchBar(true);
-          }}
           name="newBookComments"
           booksInList={currentBooksList?.booksInList?.map(
             (bookInList) => bookInList
@@ -485,7 +481,7 @@ const ContentEditBookList = ({
           <SearchBarIcon>
             <SearchBar
               formClassName="w-full"
-              className="!w-full"
+              className="!w-full gap-3 "
               onEmpty={() => {
                 setIsSearchBarScrolledIntoView(false);
               }}
@@ -494,11 +490,11 @@ const ContentEditBookList = ({
               }}
               CustomSearchItem={SearchResult}
               CustomSearchItemSkeleton={() => (
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-3">
                   {Array.from(Array(5)).map((_, index) => (
                     <BookDetailsSkeleton
                       key={`book-details-skeleton-${index}`}
-                      bookThumbnailSize="sm"
+                      bookThumbnailSize="xs"
                     />
                   ))}
                 </div>

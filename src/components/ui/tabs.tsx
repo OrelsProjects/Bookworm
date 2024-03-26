@@ -33,7 +33,7 @@ const Tabs = ({ items, Title, onClick }: TabsProps) => {
   };
 
   return (
-    <div className="flex flex-col gap-2 w-full">
+    <div className="flex flex-col gap-1 w-full">
       {Title && <Title />}
       <div className="rounded-full overflow-x-auto w-full flex items-center gap-2">
         {items.map((item) => (

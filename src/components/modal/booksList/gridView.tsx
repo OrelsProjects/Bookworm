@@ -152,7 +152,7 @@ export default function BooksListGridView({
           >
             <BookThumbnail
               book={bookInList.book}
-              thumbnailSize="xl"
+              thumbnailSize="3xl"
               Icon={
                 <div className="w-full h-full z-40 absolute top-0">
                   <div className="w-full h-full flex flex-row items-end justify-center gap-6 p-2">

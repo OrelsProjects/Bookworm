@@ -90,16 +90,16 @@ const BooksListList: React.FC<Props> = ({
               thumbnailSize={bookThumbnailSize}
             />
             <div className="flex flex-col w-full flex-shrink">
-              <div className="text-lg font-semibold line-clamp-1">
+              <div className="text-lg font-semibold line-clamp-1 leading-7">
                 {listData.name}
               </div>
-              <div className="text-sm font-light line-clamp-3">
+              <div className="text-sm font-light line-clamp-3 leading-5">
                 {listData.description}
               </div>
               {bottomElementProps && (
                 <div className="w-full flex flex-row justify-end self-end  mt-auto ml-auto gap-6">
-                  <div className="flex flex-col gap-0 justify-center items-center">
-                    <Add.Outline
+                  <div className="flex flex-col gap-1 justify-center items-center">
+                    <Add.Fill
                       className="!text-background bg-foreground rounded-full p-1"
                       iconSize="xs"
                       onClick={(e) => {
@@ -109,9 +109,9 @@ const BooksListList: React.FC<Props> = ({
                     />
                     <div className="text-sm text-foreground">Add Book</div>
                   </div>
-                  <div className="flex flex-col gap-0 justify-center items-center">
+                  <div className="flex flex-col gap-1 justify-center items-center">
                     <Share.Fill
-                      iconSize="sm"
+                      iconSize="xs"
                       onClick={(e) => {
                         e.stopPropagation();
                         bottomElementProps.onShareClick(listData);

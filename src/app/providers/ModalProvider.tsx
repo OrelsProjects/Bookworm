@@ -88,7 +88,7 @@ const ModalProvider: React.FC = () => {
   }, [type, data]);
 
   const topBarCollapsed = useMemo<React.ReactNode>(() => {
-    const thumbnailSize = "3xs";
+    const thumbnailSize = "2xs";
     const rounded = "!rounded-md";
     let thumbnail: React.ReactNode;
     let title: string = "";
