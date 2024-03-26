@@ -45,7 +45,7 @@ export const SearchBarComponent: React.FC<SearchBarComponentProps> = ({
         }}
         onFocus={onFocus}
         onBlur={() => onBlur?.(searchTerm)}
-        className={formClassName}
+        className={`w-full ${formClassName}`}
       >
         <label
           htmlFor="search-bar"

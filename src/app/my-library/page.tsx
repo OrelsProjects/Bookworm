@@ -132,6 +132,7 @@ export default function MyLibrary(): React.ReactNode {
           onChange={(value: string) => searchBooks(value)}
           onSubmit={(value: string) => searchBooks(value)}
           placeholder="Search in Your Books..."
+          className="!w-search-bar"
         />
       </SearchBarIcon>
 

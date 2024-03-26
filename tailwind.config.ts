@@ -113,7 +113,7 @@ module.exports = {
         modal: "40rem" /* this is in pixels: 536px */,
         "modal-md": "32rem",
         "modal-sm": "28rem",
-        "search-bar": "66.66%",
+        "search-bar": "80vw",
         "thumbnail-2xs": "36px",
         "thumbnail-xs": "40px",
         "thumbnail-sm": "66.67px",

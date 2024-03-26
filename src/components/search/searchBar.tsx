@@ -84,6 +84,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         className={`w-search-bar transition-all duration-300 ease-in-out rounded-full ${
           className ?? ""
         }`}
+        formClassName="w-full"
         placeholder="Search all books, authors..."
         autoFocus={autoFocus}
         onFocus={onFocus}
