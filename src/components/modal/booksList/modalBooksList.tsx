@@ -7,16 +7,21 @@ import { ModalBooksListProps } from "./consts";
 import Tooltip from "../../ui/tooltip";
 import BooksListGridView from "./gridView";
 import SwitchEditMode from "../_components/switchEditMode";
-import ContentEditBookList from "../_components/contentEditBookList";
+import { useModal } from "../../../hooks/useModal";
 
 export const ModalBooksList = <T extends SafeBooksListData>({
   safeBooksListData,
 }: ModalBooksListProps<T>) => {
-  const [showEdit, setShowEdit] = React.useState(false);
+  const { showBooksListEditModal } = useModal();
 
   const isBooksListDataNotSafe = useMemo(() => {
     return (safeBooksListData as any).userId !== undefined;
   }, [safeBooksListData]);
+
+  const booksListData: BooksListData = useMemo(
+    () => safeBooksListData as any as BooksListData,
+    [safeBooksListData]
+  );
 
   const ThumbnailDetails = (
     <div className="w-full h-full justify-start items-start">
@@ -50,27 +55,26 @@ export const ModalBooksList = <T extends SafeBooksListData>({
       thumbnailDetails={ThumbnailDetails}
       buttonsRow={
         <div className="h-fit w-full flex flex-row justify-between">
-          {!showEdit && (
-            <ReadMoreText text={safeBooksListData?.description} maxLines={2} />
-          )}
+          <ReadMoreText text={safeBooksListData?.description} maxLines={2} />
           <div className="flex flex-row gap-1 w-fit font-bold text-base">
-            {/* {isBooksListDataNotSafe && (
+            {isBooksListDataNotSafe && (
               <SwitchEditMode
                 safeBooksListData={safeBooksListData}
-                onCheckedChange={(checked) => setShowEdit(checked)}
+                onCheckedChange={(checked) => {
+                  if (!checked) return;
+                  showBooksListEditModal(booksListData, {
+                    popLast: true,
+                    shouldAnimate: false,
+                  });
+                }}
+                
               />
-            )} */}
+            )}
           </div>
         </div>
       }
       bottomSection={
-        // showEdit && isBooksListDataNotSafe ? (
-        //   ContentEditBookList({
-        //     bookslistData: safeBooksListData as BooksListData,
-        //   })
-        // ) : (
         <BooksListGridView safeBooksListData={safeBooksListData} />
-        // )
       }
     />
   );

@@ -4,6 +4,7 @@ import {
   ModalData,
   ModalState,
   ModalTypes,
+  ShowModalOptions,
   hideModal,
 } from "@/src/lib/features/modal/modalSlice";
 import { RootState } from "@/src/lib/store";
@@ -158,9 +159,13 @@ const ModalProvider: React.FC = () => {
   }, [type, data]);
 
   const RenderBooksListDetails = useCallback(
-    (data?: any) => {
+    (data?: any, options?: ShowModalOptions) => {
       return (
-        <RenderModal onClose={data.onBack} type={ModalTypes.BOOKS_LIST_DETAILS}>
+        <RenderModal
+          onClose={data.onBack}
+          type={ModalTypes.BOOKS_LIST_DETAILS}
+          shouldAnimate={options?.shouldAnimate ?? true}
+        >
           <ModalBooksList safeBooksListData={data.bookList} />
         </RenderModal>
       );
@@ -169,9 +174,12 @@ const ModalProvider: React.FC = () => {
   );
 
   const RenderBooksListDetailsEdit = useCallback(
-    (booksListData?: BooksListData) => {
+    (booksListData?: BooksListData, options?: ShowModalOptions) => {
       return (
-        <RenderModal type={ModalTypes.BOOKS_LIST_DETAILS_EDIT}>
+        <RenderModal
+          type={ModalTypes.BOOKS_LIST_DETAILS_EDIT}
+          shouldAnimate={options?.shouldAnimate ?? true}
+        >
           <ModalBooksListEdit booksListData={booksListData} />
         </RenderModal>
       );
@@ -184,7 +192,7 @@ const ModalProvider: React.FC = () => {
       data && (
         <RenderModal type={ModalTypes.BOOK_DETAILS}>
           <ModalBookDetails
-          bookData={data?.book}
+            bookData={data?.book}
             bookInList={data.bookInList}
           />
         </RenderModal>
@@ -217,10 +225,12 @@ const ModalProvider: React.FC = () => {
     children,
     type,
     onClose,
+    shouldAnimate = true,
   }: {
     children: React.ReactNode;
     type: ModalTypes;
     onClose?: () => void;
+    shouldAnimate?: boolean;
   }) => {
     const isOpen = useMemo<boolean>(
       () => modalStack.some((modal) => modal.type === type),
@@ -235,6 +245,7 @@ const ModalProvider: React.FC = () => {
         }}
         topBarCollapsed={topBarCollapsed}
         backgroundColor={modalBackgroundColor}
+        shouldAnimate={shouldAnimate}
       >
         {children}
       </Modal>
@@ -247,9 +258,9 @@ const ModalProvider: React.FC = () => {
         case ModalTypes.BOOK_DETAILS:
           return RenderBookDetails(modalData.data);
         case ModalTypes.BOOKS_LIST_DETAILS:
-          return RenderBooksListDetails(modalData.data);
+          return RenderBooksListDetails(modalData.data, modalData.options);
         case ModalTypes.BOOKS_LIST_DETAILS_EDIT:
-          return RenderBooksListDetailsEdit(modalData.data);
+          return RenderBooksListDetailsEdit(modalData.data, modalData.options);
         case ModalTypes.ADD_BOOK_TO_LIST:
           return RenderAddBookToList(modalData.data);
         default:

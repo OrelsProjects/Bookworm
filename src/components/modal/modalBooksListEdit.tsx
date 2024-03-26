@@ -11,6 +11,7 @@ import { ModalContent } from "./modalContainers";
 import { CommentsArea } from "./_components/commentsArea";
 import SwitchEditMode from "./_components/switchEditMode";
 import ContentEditBookList from "./_components/contentEditBookList";
+import { useModal } from "../../hooks/useModal";
 
 interface ModalBooksListProps {
   booksListData?: BooksListData;
@@ -34,7 +35,7 @@ export const buildFormikValueName = (bookId: number) =>
 const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
   booksListData,
 }) => {
-  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const { showBooksListModal } = useModal();
   const [currentBooksList, setCurrentBookList] = useState<
     BooksListData | undefined
   >();
@@ -98,16 +99,30 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
           />
         </div>
       }
-      // buttonsRow={
-      //   <div className="w-full flex items-center justify-end">
-      //     <SwitchEditMode
-      //       safeBooksListData={booksListDataToSafeBooksListData(booksListData)}
-      //       onCheckedChange={(checked) => setShowDetailsModal(!checked)}
-      //     />
-      //   </div>
-      // }
-      bottomSection={
-        ContentEditBookList({ booksListData })}
+      buttonsRow={
+        <div className="w-full flex items-center justify-end">
+          <SwitchEditMode
+            safeBooksListData={booksListDataToSafeBooksListData(booksListData)}
+            onCheckedChange={(checked) => {
+              if (!checked) {
+                const bookList =
+                  booksListDataToSafeBooksListData(currentBooksList);
+                if (!bookList) return;
+                showBooksListModal(
+                  {
+                    bookList,
+                  },
+                  {
+                    popLast: true,
+                    shouldAnimate: false,
+                  }
+                );
+              }
+            }}
+          />
+        </div>
+      }
+      bottomSection={ContentEditBookList({ booksListData })}
     ></ModalContent>
   );
 };

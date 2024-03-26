@@ -97,6 +97,7 @@ module.exports = {
         "pulse-slow": "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
       },
       fontSize: {
+        "2xs": "0.625rem",
         "6.5xl": "4rem",
       },
       lineHeight: {

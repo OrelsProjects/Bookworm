@@ -1,9 +1,21 @@
 "use client";
 
 import { motion } from "framer-motion";
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  HTMLAttributes,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { IoArrowBack } from "react-icons/io5";
 import { ExpandType, ExpandingDiv, OpacityDiv } from "../animationDivs";
+
+interface ContentDivProps extends HTMLAttributes<HTMLDivElement> {
+  isOpen: boolean;
+  innerRef?: React.RefObject<HTMLDivElement>;
+  children: React.ReactNode;
+}
 
 export interface ModalProps {
   isOpen: boolean;
@@ -11,6 +23,7 @@ export interface ModalProps {
   topBarCollapsed: React.ReactNode;
   onClose?: () => void;
   className?: string;
+  shouldAnimate?: boolean;
   children?: React.ReactNode;
 }
 
@@ -71,6 +84,7 @@ const Modal: React.FC<ModalProps> = ({
   onClose,
   className,
   children,
+  shouldAnimate = true,
 }) => {
   const scrollableDivRef = useRef<HTMLDivElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -83,6 +97,53 @@ const Modal: React.FC<ModalProps> = ({
 
     return () => window.removeEventListener("popstate", handleBackButtonClick);
   }, []);
+
+  // const BackgroundDiv = ({
+  //   isOpen,
+  //   innerRef,
+  //   children,
+  //   ...props
+  // }: {
+  //   isOpen: boolean;
+  //   innerRef?: React.RefObject<HTMLDivElement>;
+  //   children: React.ReactNode;
+  //   className?: string;
+  //   props?: any;
+  // }) =>
+  //   useMemo(
+  //     () =>
+  //       shouldAnimate ? (
+  //         <OpacityDiv isOpen={isOpen} innerRef={innerRef} {...props}>
+  //           {children}
+  //         </OpacityDiv>
+  //       ) : (
+  //         <div {...props}>{children}</div>
+  //       ),
+  //     [isOpen, innerRef, children, props]
+  //   );
+
+  const ContentDiv: React.FC<ContentDivProps> = ({}) =>
+    useMemo(() => {
+      const key = "modal";
+      const className = "h-4/5 max-h-fit w-full bg-background rounded-t-5xl";
+      const onClick = (e: any) => e.stopPropagation();
+
+      return shouldAnimate ? (
+        <ExpandingDiv
+          key={key}
+          className={className}
+          onClick={onClick}
+          isOpen={isOpen}
+          expandType={ExpandType.Modal}
+        >
+          {children}
+        </ExpandingDiv>
+      ) : (
+        <div key={key} className={className} onClick={onClick}>
+          {children}
+        </div>
+      );
+    }, [isOpen, children]);
 
   return (
     <div
@@ -106,15 +167,14 @@ const Modal: React.FC<ModalProps> = ({
               style={{ backgroundColor: backgroundColor ?? "rgb(12, 12, 12)" }}
               onClick={onClose}
             >
-              <ExpandingDiv
+              <ContentDiv
                 key="modal"
                 className="h-4/5 max-h-fit w-full bg-background rounded-t-5xl"
-                expandType={ExpandType.Modal}
                 isOpen={isOpen}
                 onClick={(e) => e.stopPropagation()}
               >
                 {children}
-              </ExpandingDiv>
+              </ContentDiv>
             </div>
           </div>
         </div>

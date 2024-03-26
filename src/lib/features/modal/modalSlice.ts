@@ -2,6 +2,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../../store";
 
+export interface ShowModalOptions {
+  popLast?: boolean;
+  shouldAnimate?: boolean;
+}
+
 export enum ModalTypes {
   BOOK_DETAILS = "BOOK_DETAILS",
   BOOKS_LIST_DETAILS = "BOOKS_LIST_DETAILS",
@@ -13,6 +18,7 @@ export enum ModalTypes {
 export interface ModalData {
   data?: any;
   type: ModalTypes;
+  options?: ShowModalOptions;
 }
 
 export interface ModalState {
@@ -31,16 +37,20 @@ const bottomSheetSlice = createSlice({
   reducers: {
     showModal: (
       state,
-      action: PayloadAction<{ data?: any; type: ModalTypes; popLast?: boolean }>
+      action: PayloadAction<{
+        type: ModalTypes;
+        data?: any;
+        options?: ShowModalOptions;
+      }>
     ) => {
-      if (
+      const isModalOnTop =
         state.modalStack.length > 0 &&
         state.modalStack[state.modalStack.length - 1].type ===
-          action.payload.type
-      ) {
+          action.payload.type;
+      if (isModalOnTop) {
         return;
       }
-      if (action.payload.popLast) {
+      if (action.payload.options?.popLast) {
         state.modalStack.pop();
       }
       state.modalStack.push(action.payload);
