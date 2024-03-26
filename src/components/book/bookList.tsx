@@ -45,7 +45,7 @@ const BookList: React.FC<BookListProps> = ({
     >
       {books.map((book) => (
         <div
-          onClick={() => onBookClick(book)}
+          onClick={() => {onBookClick(book)}}
           className="h-fit"
           key={`book-in-books-list-${book?.bookId}`}
         >
