@@ -1,7 +1,6 @@
 import { IResponse } from "@/src/models/dto/response";
 import { GetAxiosInstance, getUserIdFromRequest } from "@/src/utils/apiUtils";
 import { NextRequest, NextResponse } from "next/server";
-import { BooksList } from "../../../../models/booksList";
 import { BookInList } from "../../../../models/bookInList";
 import Logger from "../../../../utils/loggerServer";
 
@@ -16,12 +15,7 @@ export async function POST(req: NextRequest) {
 
     const bookInList = response.data;
 
-    return NextResponse.json(
-      {
-        result: bookInList,
-      },
-      { status: 200 }
-    );
+    return NextResponse.json({ ...bookInList }, { status: 200 });
   } catch (error: any) {
     Logger.error("Error creating user book", getUserIdFromRequest(req), {
       data: {
@@ -65,7 +59,7 @@ export async function DELETE(
 }
 
 export async function PATCH(req: NextRequest) {
-  let bookInList: BookInList | null = null; 
+  let bookInList: BookInList | null = null;
   try {
     bookInList = await req.json();
     const axios = GetAxiosInstance(req);
