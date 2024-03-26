@@ -14,15 +14,6 @@ export const ModalBooksList = <T extends SafeBooksListData>({
 }: ModalBooksListProps<T>) => {
   const { showBooksListEditModal } = useModal();
 
-  const isBooksListDataNotSafe = useMemo(() => {
-    return (safeBooksListData as any).userId !== undefined;
-  }, [safeBooksListData]);
-
-  const booksListData: BooksListData = useMemo(
-    () => safeBooksListData as any as BooksListData,
-    [safeBooksListData]
-  );
-
   const ThumbnailDetails = (
     <div className="w-full h-full justify-start items-start">
       <Tooltip
@@ -54,23 +45,9 @@ export const ModalBooksList = <T extends SafeBooksListData>({
       }
       thumbnailDetails={ThumbnailDetails}
       buttonsRow={
-        <div className="h-fit w-full flex flex-row justify-between">
+        <div className="h-fit w-full flex flex-col justify-between">
           <ReadMoreText text={safeBooksListData?.description} maxLines={2} />
-          <div className="flex flex-row gap-1 w-fit font-bold text-base">
-            {isBooksListDataNotSafe && (
-              <SwitchEditMode
-                safeBooksListData={safeBooksListData}
-                onCheckedChange={(checked) => {
-                  if (!checked) return;
-                  showBooksListEditModal(booksListData, {
-                    popLast: true,
-                    shouldAnimate: false,
-                  });
-                }}
-                
-              />
-            )}
-          </div>
+          <div className="flex flex-row gap-1 w-fit font-bold text-base"></div>
         </div>
       }
       bottomSection={

@@ -158,6 +158,7 @@ const ListBooks: React.FC<ListBookProps> = ({
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
+                      className="w-full"
                     >
                       <BookInListDetails
                         bookInList={bookInList}

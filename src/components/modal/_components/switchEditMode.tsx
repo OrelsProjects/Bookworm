@@ -54,7 +54,7 @@ export default function SwitchEditMode({
   return (
     isOwner &&
     safeBooksListData && (
-      <div className="flex items-center justify-center gap-1">
+      <div className="flex items-center justify-center gap-2">
         <span
           className={`text-base font-extralight ${
             isEdit ? "text-foreground font-light" : "text-muted"

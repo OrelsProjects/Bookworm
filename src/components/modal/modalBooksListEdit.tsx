@@ -12,6 +12,7 @@ import { CommentsArea } from "./_components/commentsArea";
 import SwitchEditMode from "./_components/switchEditMode";
 import ContentEditBookList from "./_components/contentEditBookList";
 import { useModal } from "../../hooks/useModal";
+import { BurgerLines } from "../icons/burgerLines";
 
 interface ModalBooksListProps {
   booksListData?: BooksListData;
@@ -101,7 +102,21 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
         </div>
       }
       buttonsRow={
-        <div className="w-full flex items-center justify-end">
+        <div className="w-full flex items-center justify-between mt-6">
+          <div className="w-fit flex flex-row items-center gap-2">
+            <BurgerLines.Fill iconSize="sm" className="!text-foreground" />
+            <div className="font-bold text-xl flex flex-row gap-1 items-center justify-center">
+              Book List{" "}
+              {booksListData?.booksInList &&
+              booksListData.booksInList.length > 0 ? (
+                <div className="text-muted font-normal">
+                  ({booksListData.booksInList.length})
+                </div>
+              ) : (
+                ""
+              )}
+            </div>
+          </div>
           <SwitchEditMode
             safeBooksListData={booksListDataToSafeBooksListData(booksListData)}
             onCheckedChange={(checked) => {

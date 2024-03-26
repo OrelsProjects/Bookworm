@@ -16,10 +16,12 @@ import { Bookmark } from "../../icons/bookmark";
 import { isBookRead } from "../../../models/userBook";
 import { ErrorUnauthenticated } from "../../../models/errors/unauthenticatedError";
 import SwitchEditMode from "../_components/switchEditMode";
+import { BooksListData } from "../../../models/booksList";
 
 export default function BooksListGridView({
-  safeBooksListData: booksListData,
+  safeBooksListData,
 }: BooksListViewProps) {
+  const thumbnailSize = "3xl";
   const {
     getBookFullData,
     updateBookReadingStatus,
@@ -28,19 +30,11 @@ export default function BooksListGridView({
     userBooksData,
     deleteUserBook,
   } = useBook();
-  const { showBookDetailsModal } = useModal();
+  const { showBookDetailsModal, showBooksListEditModal } = useModal();
 
-  const booksInUsersListsCount = useMemo(() => {
-    let booksInList = 0;
-    booksListData?.booksInList?.map((bookInList) => {
-      const bookData = getBookFullData(bookInList.book);
-      if (bookData) booksInList++;
-    });
-    return booksInList;
-  }, [userBooksData]);
   const booksInUsersList = useMemo(() => {
     const booksInList: Record<number, boolean> = {};
-    booksListData?.booksInList?.map((bookInList) => {
+    safeBooksListData?.booksInList?.map((bookInList) => {
       const bookData = getBookFullData(bookInList.book);
       booksInList[bookInList.book.bookId] = !!bookData;
     });
@@ -49,7 +43,7 @@ export default function BooksListGridView({
 
   const isRead = useMemo(() => {
     const booksIsRead: Record<number, boolean> = {};
-    booksListData?.booksInList?.forEach((bookInList) => {
+    safeBooksListData?.booksInList?.forEach((bookInList) => {
       const bookData = getBookFullData(bookInList.book);
       booksIsRead[bookInList.book.bookId] = isBookRead(bookData?.userBook);
     });
@@ -101,41 +95,63 @@ export default function BooksListGridView({
     }
   };
 
+  const isBooksListDataNotSafe = useMemo(() => {
+    return (safeBooksListData as any).userId !== undefined;
+  }, [safeBooksListData]);
+
+  const booksListData: BooksListData = useMemo(
+    () => safeBooksListData as any as BooksListData,
+    [safeBooksListData]
+  );
+
   const isOddNumberOfBooks = useMemo(
-    () => (booksListData?.booksInList?.length ?? 0) % 2 === 1,
-    [booksListData?.booksInList.length]
+    () => (safeBooksListData?.booksInList?.length ?? 0) % 2 === 1,
+    [safeBooksListData?.booksInList.length]
   );
 
   const lastIndexOfBooksInList = useMemo(
-    () => (booksListData?.booksInList?.length ?? 1) - 1,
-    [booksListData?.booksInList.length]
+    () => (safeBooksListData?.booksInList?.length ?? 1) - 1,
+    [safeBooksListData?.booksInList.length]
   );
 
   return (
     <div className="h-full w-full flex flex-col gap-6 mt-2">
       <div className="w-full flex flex-row justify-between">
-        <div className="w-fit flex flex-row gap-2 items-center">
-          <BurgerLines.Fill iconSize="sm" className="!text-foreground" />
-          <div className="font-bold text-xl flex flex-row gap-1 items-center justify-center">
-            Book List{" "}
-            {booksListData?.booksInList &&
-            booksListData.booksInList.length > 0 ? (
-              <div className="text-muted font-normal">
-                ({booksListData.booksInList.length})
-              </div>
-            ) : (
-              ""
-            )}
+        <div className="w-full flex flex-row items-center justify-between">
+          <div className="w-fit flex flex-row items-center gap-2">
+            <BurgerLines.Fill iconSize="sm" className="!text-foreground" />
+            <div className="font-bold text-xl flex flex-row gap-1 items-center justify-center">
+              Book List{" "}
+              {safeBooksListData?.booksInList &&
+              safeBooksListData.booksInList.length > 0 ? (
+                <div className="text-muted font-normal">
+                  ({safeBooksListData.booksInList.length})
+                </div>
+              ) : (
+                ""
+              )}
+            </div>
           </div>
+          {isBooksListDataNotSafe && (
+            <SwitchEditMode
+              safeBooksListData={safeBooksListData}
+              onCheckedChange={(checked) => {
+                if (!checked) return;
+                showBooksListEditModal(booksListData, {
+                  popLast: true,
+                  shouldAnimate: false,
+                });
+              }}
+            />
+          )}
         </div>
       </div>
-      <div className={`flex flex-wrap justify-around gap-4`}>
-        {booksListData?.booksInList.map((bookInList, index) => (
+      <div className={`flex flex-wrap justify-between gap-4`}>
+        {safeBooksListData?.booksInList.map((bookInList, index) => (
           <div
             key={`book-in-list-${index}`}
-            className={`flex flex-col justify-start items-center gap-2 ${
-              getThumbnailSize("xl").width
-            }
+            className={`flex flex-col justify-start items-start gap-2 
+            ${getThumbnailSize(thumbnailSize).width}
             ${
               isOddNumberOfBooks &&
               index === lastIndexOfBooksInList &&
@@ -152,7 +168,7 @@ export default function BooksListGridView({
           >
             <BookThumbnail
               book={bookInList.book}
-              thumbnailSize="3xl"
+              thumbnailSize={thumbnailSize}
               Icon={
                 <div className="w-full h-full z-40 absolute top-0">
                   <div className="w-full h-full flex flex-row items-end justify-center gap-6 p-2">
