@@ -47,7 +47,7 @@ export default function Home(): React.ReactNode {
     recommendations && recommendations.length > 0 ? (
       <div className="flex flex-col gap-2">
         <div className="text-2xl tracking-tight font-bold">
-          Recommended for You
+          Our favorites
         </div>
         <div className="w-full flex flex-col gap-4">
           {recommendations.length > 0 &&
