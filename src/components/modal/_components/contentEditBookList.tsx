@@ -482,7 +482,7 @@ const ContentEditBookList = ({
           <SearchBarIcon>
             <SearchBar
               formClassName="w-full"
-              className="!w-full gap-3 "
+              className="!w-full gap-3 !pr-0"
               onEmpty={() => {
                 setIsSearchBarScrolledIntoView(false);
               }}
