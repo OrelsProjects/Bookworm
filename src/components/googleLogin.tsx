@@ -28,9 +28,9 @@ export default function GoogleLogin({
     >
       <div className="h-full w-full flex flex-row gap-2">
         <img src="/google.png" alt="Google Logo" width={22} height={24} />
-        <div className="font-normal text-base">
+        {/* <div className="font-normal text-base">
           {text || "Continue with Google"}
-        </div>
+        </div> */}
       </div>
     </Button>
   );

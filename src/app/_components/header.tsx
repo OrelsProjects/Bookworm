@@ -1,12 +1,9 @@
 "use client";
-import { Button } from "@/src/components/ui/button";
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { selectAuth } from "@/src/lib/features/auth/authSlice";
-import useAuth from "@/src/hooks/useAuth";
 import Avatar from "./avatar";
 import { Logger } from "@/src/logger";
-import Sidebar from "./sidebar";
 import GoogleLogin from "../../components/googleLogin";
 
 export interface HeaderProps {
