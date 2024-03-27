@@ -225,6 +225,12 @@ const useBooksList = () => {
   };
 
   const deleteBooksList = async (listId: string) => {
+    if (loading.current) {
+      throw new LoadingError(
+        "Operation in progress. Please wait until the current operation completes."
+      );
+    }
+    loading.current = true;
     try {
       await axios.delete(`/api/list/${listId}`);
       dispatch(deleteBooksListAction(listId));
@@ -232,10 +238,18 @@ const useBooksList = () => {
     } catch (error: any) {
       Logger.error("Failed to delete books list", error);
       throw error;
+    } finally {
+      loading.current = false;
     }
   };
 
   const addBookToList = async (listId: string, book: Book) => {
+    if (loading.current) {
+      throw new LoadingError(
+        "Operation in progress. Please wait until the current operation completes."
+      );
+    }
+    loading.current = true;
     try {
       const response = await axios.post<BookInList>(`/api/list/book`, {
         listId,
@@ -249,6 +263,8 @@ const useBooksList = () => {
     } catch (error: any) {
       Logger.error("Failed to add book to list", error);
       throw error;
+    } finally {
+      loading.current = false;
     }
   };
 
