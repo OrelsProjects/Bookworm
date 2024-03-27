@@ -114,7 +114,7 @@ export default function Home(): React.ReactNode {
   };
 
   const Content = () => (
-    <div className="h-fit w-full flex flex-col gap-10 pr-1">
+    <div className="h-fit w-full flex flex-col gap-10">
       <Books />
       <Recommendations />
     </div>

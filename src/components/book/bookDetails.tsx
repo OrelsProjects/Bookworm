@@ -1,11 +1,9 @@
 import React from "react";
 import { Book } from "../../models";
 import BookThumbnail from "./bookThumbnail";
-import { Add } from "../icons/add";
 import Authors from "./authors";
 import Title from "./bookTitle";
 import { ThumbnailSize, getThumbnailSize } from "../../consts/thumbnail";
-import { useModal } from "../../hooks/useModal";
 
 export type BookDetailsProps = {
   book?: Book;
@@ -30,7 +28,7 @@ const BookDetails: React.FC<BookDetailsProps> = ({
   const sizeClass = direction === "row" ? thumbnailSize.width : "w-full";
   return (
     <div
-      className={`h-fit flex ${flexDirection} flex-shrink-0 justify-start items-center gap-2.5 ${sizeClass} ${
+      className={`h-fit flex flex-row ${flexDirection} flex-shrink-0 justify-start items-center gap-2.5 ${sizeClass} ${
         className ?? ""
       }`}
     >
@@ -40,20 +38,18 @@ const BookDetails: React.FC<BookDetailsProps> = ({
         Icon={ThumbnailIcon}
         thumbnailSize={bookThumbnailSize}
       />
-      <div className={`flex flex-col  gap-1.5 flex-grow self-start`}>
+      <div className={`grid gap-1.5 h-full justify-start`}>
         <div className={`flex flex-col`}>
           <Title title={book?.title ?? ""} className="text-sm" />
           <Authors authors={book?.authors} className="text-sm text-primary" />
         </div>
         {direction === "column" && (
-          <div className="flex-grow">
-            <div className="line-clamp-3 text-sm font-light">
-              {book?.description}
-            </div>
+          <div className="line-clamp-3 text-sm font-light">
+            {book?.description}
           </div>
         )}
       </div>
-      <div className="h-full flex justify-center items-center z-20">{Icon}</div>
+      <div className="h-full flex justify-center items-center self-center ml-auto z-20 flex-shrink-0">{Icon}</div>
     </div>
   );
 };

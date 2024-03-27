@@ -136,7 +136,7 @@ export default function MyLibrary(): React.ReactNode {
         />
       </SearchBarIcon>
 
-      <div className="h-full overflow-auto flex flex-col gap-10 pr-2">
+      <div className="h-full flex flex-col gap-10">
         <div className="flex flex-col gap-4">
           <Tabs
             Title={() => <div className="font-bold text-xl">Sort by</div>}

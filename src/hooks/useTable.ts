@@ -86,9 +86,9 @@ const useTable = (readingStatus?: ReadingStatusEnum) => {
   };
 
   const nextPage = () => {
-    // setCurrentPage((prevPage) => {
-    //   return prevPage + 1;
-    // });
+    setCurrentPage((prevPage) => {
+      return prevPage + 1;
+    });
   };
 
   const handlePageSizeChange = (size: number) => {

@@ -90,9 +90,9 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
   const onAddListClick = () => showBooksListEditModal();
 
   const UserBooks = () => (
-    <div className="w-full h-fit flex flex-col gap-2">
+    <div className="w-full h-fit flex flex-col gap-5">
       <div className="w-full flex flex-row justify-between items-end">
-        <div className="text-xl font-bold">My Library</div>
+        <div className="text-list-title">My Library</div>
         <h2 className="text-see-all" onClick={onSeeAllClick}>
           See all
         </h2>
@@ -132,9 +132,9 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
   );
 
   const UserBooksLists = () => (
-    <div className="w-full h-full flex flex-col gap-2">
+    <div className="w-full h-full flex flex-col gap-5">
       <div className="w-full flex flex-row justify-between items-center">
-        <div className="text-xl font-bold leading-8">My Readlists</div>
+        <div className="text-list-title">My Readlists</div>
         <div>
           <Plus.Fill
             className="!text-foreground"
@@ -170,24 +170,22 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
     return <Loading spinnerClassName="w-12 h-12" />;
   }
   return (
-    <div className="h-full w-full flex flex-col gap-4 pb-4">
-      <div className="h-fit">
-        <SearchBarIcon>
-          <SearchBarComponent
-            onChange={(value: string) => {
-              searchInBooksList(value);
-              searchBooks(value);
-            }}
-            onSubmit={(value: string) => {
-              searchInBooksList(value);
-              searchBooks(value);
-            }}
-            placeholder="Search in Your Books..."
-            className="w-search-bar"
-          />
-        </SearchBarIcon>
-      </div>
-      <div className="flex gap-3 flex-grow flex-col h-full overflow-auto">
+    <div className="h-full w-full flex flex-col gap-10 pb-4">
+      <SearchBarIcon>
+        <SearchBarComponent
+          onChange={(value: string) => {
+            searchInBooksList(value);
+            searchBooks(value);
+          }}
+          onSubmit={(value: string) => {
+            searchInBooksList(value);
+            searchBooks(value);
+          }}
+          placeholder="Search in Your Books..."
+          className="w-search-bar"
+        />
+      </SearchBarIcon>
+      <div className="flex gap-10 flex-grow flex-col h-full">
         <UserBooks />
         <UserBooksLists />
       </div>
