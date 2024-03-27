@@ -54,7 +54,8 @@ const userBooksSlice = createSlice({
         )
       );
       if (!bookExists) {
-        state.userBooksData.push(...action.payload);
+        // add book to the beginning of the list
+        state.userBooksData = [...action.payload, ...state.userBooksData];
       }
       setUserBooksDataInLocalStorage(state.userBooksData);
     },
