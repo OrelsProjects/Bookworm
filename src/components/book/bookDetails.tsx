@@ -30,13 +30,9 @@ const BookDetails: React.FC<BookDetailsProps> = ({
   const sizeClass = direction === "row" ? thumbnailSize.width : "w-full";
   return (
     <div
-      className={`h-fit flex ${flexDirection} flex-shrink-0 justify-start items-center gap-2 ${sizeClass} ${
+      className={`h-fit flex ${flexDirection} flex-shrink-0 justify-start items-center gap-2.5 ${sizeClass} ${
         className ?? ""
       }`}
-      onClick={(e) => {
-        // e.stopPropagation();
-        // showBookDetailsModal({ book });
-      }}
     >
       <BookThumbnail
         book={book}
@@ -44,10 +40,10 @@ const BookDetails: React.FC<BookDetailsProps> = ({
         Icon={ThumbnailIcon}
         thumbnailSize={bookThumbnailSize}
       />
-      <div className={`flex flex-col  gap-2 flex-grow self-start`}>
-        <div className={`flex flex-col -gap-1`}>
-          <Title title={book?.title ?? ""} className="font-sm leading-7" />
-          <Authors authors={book?.authors} className="text-primary leading-5" />
+      <div className={`flex flex-col  gap-1.5 flex-grow self-start`}>
+        <div className={`flex flex-col`}>
+          <Title title={book?.title ?? ""} className="text-sm" />
+          <Authors authors={book?.authors} className="text-sm text-primary" />
         </div>
         {direction === "column" && (
           <div className="flex-grow">

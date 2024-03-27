@@ -141,7 +141,7 @@ module.exports = {
         "modal-md": "32rem",
         "modal-sm": "28rem",
         "screen-fill": "100vh", // Fallback
-screen: "-webkit-fill-available", // For Safari
+        screen: "-webkit-fill-available", // For Safari
         "thumbnail-2xs": "44px",
         "thumbnail-xs": "60px",
         "thumbnail-sm": "100px",

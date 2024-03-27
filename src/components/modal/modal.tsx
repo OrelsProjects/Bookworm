@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import React, {
   HTMLAttributes,
+  useContext,
   useEffect,
   useMemo,
   useRef,
@@ -10,6 +11,7 @@ import React, {
 } from "react";
 import { IoArrowBack } from "react-icons/io5";
 import { ExpandType, ExpandingDiv, OpacityDiv } from "../animationDivs";
+import SizeContext from "../../lib/context/sizeContext";
 
 interface ContentDivProps extends HTMLAttributes<HTMLDivElement> {
   isOpen: boolean;
@@ -86,6 +88,7 @@ const Modal: React.FC<ModalProps> = ({
   children,
   shouldAnimate = true,
 }) => {
+  const { width, height } = useContext(SizeContext);
   const scrollableDivRef = useRef<HTMLDivElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -147,7 +150,7 @@ const Modal: React.FC<ModalProps> = ({
 
   return (
     <div
-      className="absolute top-0 left-0 right-0 bottom-0 w-screen h-screen z-50 overscroll-none overflow-auto bg-background"
+      className="absolute top-0 left-0 right-0 bottom-0 w-full h-full z-50 overscroll-none overflow-auto bg-background"
       ref={scrollableDivRef}
       id="modal"
     >

@@ -14,7 +14,7 @@ import Tooltip from "../../components/ui/tooltip";
 export default function Home(): React.ReactNode {
   const router = useRouter();
   const { userBooks, nextPage } = useTable(ReadingStatusEnum.TO_READ);
-  const { recommendations, loading } = useUserRecommendations();
+  const { recommendations: recommendationsLists, loading } = useUserRecommendations();
   const [searchFocused, setSearchFocused] = useState(false);
   const [searchEmpty, setSearchEmpty] = useState(true);
 
@@ -25,7 +25,7 @@ export default function Home(): React.ReactNode {
   const Books = () =>
     userBooks &&
     userBooks.length > 0 && (
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-5">
         <div className="w-full flex flex-row justify-between items-end">
           <div className="text-list-title">
             My next read
@@ -38,41 +38,41 @@ export default function Home(): React.ReactNode {
           books={userBooks.map((ubd) => ubd.bookData.book)}
           onNextPageScroll={nextPage}
           direction="row"
-          thumbnailSize="2xl"
+          thumbnailSize="3xl"
         />
       </div>
     );
 
   const Recommendations = () =>
-    recommendations && recommendations.length > 0 ? (
+    recommendationsLists && recommendationsLists.length > 0 ? (
       <div className="flex flex-col gap-2">
         <div className="w-full flex flex-col gap-4">
-          {recommendations.length > 0 &&
-            recommendations.slice(0, 5).map((recommendation) => (
+          {recommendationsLists.length > 0 &&
+            recommendationsLists.slice(0, 5).map((recommendationList) => (
               <div
                 className="flex flex-col gap-2"
-                key={`recommendation-${recommendation.publicURL}`}
+                key={`recommendation-${recommendationList.publicURL}`}
               >
                 <Tooltip
                   tooltipContent={
                     <div className="text-sm text-foreground line-clamp-4 tracking-tighter max-w-xs">
-                      {recommendation.name}
+                      {recommendationList.name}
                     </div>
                   }
                 >
-                  <div className="text-2xl tracking-tight font-bold line-clamp-1 text-left">
-                    {recommendation.name}
+                  <div className="text-list-title">
+                    {recommendationList.name}
                   </div>
                 </Tooltip>
                 <BookList
                   books={
-                    recommendation.booksInList.map(
+                    recommendationList.booksInList.map(
                       (bookInList) => bookInList.book
                     ) ?? []
                   }
                   onNextPageScroll={nextPage}
                   direction="row"
-                  thumbnailSize="2xl"
+                  thumbnailSize="3xl"
                 />
               </div>
             ))}
@@ -98,7 +98,7 @@ export default function Home(): React.ReactNode {
 
   return (
     <div
-      className={`h-full w-full flex flex-col relative justify-top items-start gap-4
+      className={`h-full w-full flex flex-col relative justify-top items-start gap-10
     ${searchFocused ? "overflow-auto" : ""}
     `}
     >

@@ -14,6 +14,7 @@ import BottomBarProvider from "./providers/BottomBarProvider";
 import NavigationProvider from "./providers/NavigationProvider";
 import HeightProvider from "./providers/HeightProvider";
 import ModalSignup from "../components/modal/modalSignup";
+import BrowserDetector from "./providers/BrowserDetector";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -35,11 +36,13 @@ export default function RootLayout({
             <NavigationProvider>
               <APIProvider>
                 <DataProvider>
-                  <HeightProvider className=" py-10 px-7.5 flex flex-col z-20 tracking-semiwide">
+                  <BrowserDetector>
+                    <HeightProvider className=" py-10 px-7.5 flex flex-col z-20 tracking-semiwide">
+                      <Header className="h-9 w-fit p-4 pt-8" />
+                      <AnimationProvider>{children}</AnimationProvider>
+                    </HeightProvider>
                     <Header className="h-9 w-fit p-4 pt-8" />
-                    <AnimationProvider>{children}</AnimationProvider>
-                                      </HeightProvider>
-<Header className="h-9 w-fit p-4 pt-8" />
+                  </BrowserDetector>
                   <ModalProvider />
                   <BottomBarProvider />
                   <Toaster />

@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import SizeContext from "../../lib/context/sizeContext";
+import BrowserContext from "../../lib/context/browserContext";
 
 // this one calculates the height of the screen and sets it as max height
 // for the children
@@ -12,6 +13,7 @@ export default function HeightProvider({
   children: React.ReactNode;
   className?: string;
 }) {
+  const browser = useContext(BrowserContext);
   const [height, setHeight] = React.useState<number>(0);
   const [width, setWidth] = React.useState<number>(0);
 
@@ -28,7 +30,9 @@ export default function HeightProvider({
   return (
     <SizeContext.Provider value={{ height, width }}>
       <div
-        className={`w-full h-full ${className}`}
+        className={`w-full h-full ${className}
+        ${browser === "safari" ? "h-screen" : ""}
+        `}
         style={{ height: `${height}px` }}
       >
         {children}
