@@ -52,18 +52,23 @@ export async function setThumbnailColorsToBooks(
 ): Promise<Book[]> {
   try {
     let booksWithColors: Book[] = [];
+    const colorPromises: Promise<Book>[] = [];
     for (const book of books) {
       if (!book.thumbnailUrl || book.thumbnailColor) {
         booksWithColors.push(book);
       } else {
-        const thumbnailColor = await getAverageColor(book.thumbnailUrl);
-        booksWithColors.push({
-          ...book,
-          thumbnailColor,
-        });
+        colorPromises.push(
+          getAverageColor(book.thumbnailUrl).then((thumbnailColor) => {
+            return {
+              ...book,
+              thumbnailColor,
+            };
+          })
+        );
       }
     }
-    return booksWithColors;
+    const newBooksWithColors = await Promise.all(colorPromises);
+    return newBooksWithColors.concat(booksWithColors);
   } catch (error: any) {
     return books;
   }

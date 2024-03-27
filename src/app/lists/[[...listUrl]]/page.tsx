@@ -30,6 +30,13 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
 
   const loadBooksList = async () => {
     try {
+      const userBooksList = booksLists.find(
+        (list) => list.publicURL === params.listUrl
+      );
+      if (userBooksList) {
+        showBooksListModal({ bookList: userBooksList });
+        return;
+      }
       const urlParams = new URLSearchParams();
       urlParams.append("url", params.listUrl ?? "");
       const response = await axios.get<IResponse<SafeBooksListData>>(
