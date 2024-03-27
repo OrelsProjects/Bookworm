@@ -245,5 +245,5 @@ input[type="text"]:-moz-ui-autofill {
 }
 
 .text-list-title {
-  @apply text-xl leading-5.5 tracking-tight font-normal;
+  @apply text-xl leading-5.5 font-normal line-clamp-1 text-start;
 }

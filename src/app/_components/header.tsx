@@ -24,7 +24,7 @@ const Header = ({ className }: HeaderProps): React.ReactNode => {
 
   return (
     !loadingState.loading && (
-      <div className="fixed top-8 w-fit z-10 right-0">
+      <div className="relative h-0 w-full flex items-start justify-end">
         <div
           className={`flex justify-end items-center w-fit z-10 relative ${
             className ?? ""
@@ -36,7 +36,6 @@ const Header = ({ className }: HeaderProps): React.ReactNode => {
                 avatarUrl={user?.profilePictureUrl}
                 defaultText={user?.displayName ?? user.email}
               />
-              
             </div>
           ) : (
             <div className="pt-1.5">

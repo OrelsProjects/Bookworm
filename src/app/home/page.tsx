@@ -10,11 +10,13 @@ import SearchBarIcon from "../../components/search/searchBarIcon";
 import SearchBar from "../../components/search/searchBar";
 import Loading from "../../components/ui/loading";
 import Tooltip from "../../components/ui/tooltip";
+import { useModal } from "../../hooks/useModal";
 
 export default function Home(): React.ReactNode {
   const router = useRouter();
   const { userBooks, nextPage } = useTable(ReadingStatusEnum.TO_READ);
-  const { recommendations: recommendationsLists, loading } = useUserRecommendations();
+  const { recommendations: recommendationsLists, loading } =
+    useUserRecommendations();
   const [searchFocused, setSearchFocused] = useState(false);
   const [searchEmpty, setSearchEmpty] = useState(true);
 
@@ -27,9 +29,7 @@ export default function Home(): React.ReactNode {
     userBooks.length > 0 && (
       <div className="flex flex-col gap-5">
         <div className="w-full flex flex-row justify-between items-end">
-          <div className="text-list-title">
-            My next read
-          </div>
+          <div className="text-list-title">My Next Read</div>
           <div className="text-see-all" onClick={onSeeAllClick}>
             See all
           </div>
@@ -43,27 +43,44 @@ export default function Home(): React.ReactNode {
       </div>
     );
 
-  const Recommendations = () =>
-    recommendationsLists && recommendationsLists.length > 0 ? (
+  const Recommendations = () => {
+    const router = useRouter();
+    const { showBooksListModal } = useModal();
+    return recommendationsLists && recommendationsLists.length > 0 ? (
       <div className="flex flex-col gap-2">
-        <div className="w-full flex flex-col gap-4">
+        <div className="w-full flex flex-col gap-10">
           {recommendationsLists.length > 0 &&
             recommendationsLists.slice(0, 5).map((recommendationList) => (
               <div
-                className="flex flex-col gap-2"
+                className="flex flex-col gap-5"
                 key={`recommendation-${recommendationList.publicURL}`}
               >
-                <Tooltip
-                  tooltipContent={
-                    <div className="text-sm text-foreground line-clamp-4 tracking-tighter max-w-xs">
+                <div className="w-full flex flex-row justify-between items-end">
+                  <Tooltip
+                    tooltipContent={
+                      <div className="text-sm text-foreground line-clamp-4 tracking-tighter max-w-xs">
+                        {recommendationList.name}
+                      </div>
+                    }
+                  >
+                    <div className="text-list-title">
                       {recommendationList.name}
                     </div>
-                  }
-                >
-                  <div className="text-list-title">
-                    {recommendationList.name}
+                  </Tooltip>
+                  <div
+                    className="text-see-all"
+                    onClick={() => {
+                      showBooksListModal({
+                        bookList: recommendationList,
+                        onBack: () => {
+                          router.back();
+                        },
+                      });
+                    }}
+                  >
+                    See all
                   </div>
-                </Tooltip>
+                </div>
                 <BookList
                   books={
                     recommendationList.booksInList.map(
@@ -88,9 +105,10 @@ export default function Home(): React.ReactNode {
         </div>
       )
     );
+  };
 
   const Content = () => (
-    <div className="h-fit w-full flex flex-col gap-10 pr-1 overflow-auto">
+    <div className="h-fit w-full flex flex-col gap-10 pr-1">
       <Books />
       <Recommendations />
     </div>
