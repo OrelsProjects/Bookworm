@@ -5,7 +5,7 @@ export interface BooksList {
   listId: string;
   userId: string;
   description: string | null;
-  publicURL: string | null;
+  publicURL: string;
   createdAt: Date;
   updatedAt: Date;
   name: string;
@@ -34,7 +34,7 @@ export type BooksListData = BooksList & {
 
 export type SafeBooksListData = {
   description: string | null;
-  publicURL: string | null;
+  publicURL: string;
   name: string;
 } & { booksInList: BookInListWithBook[] } & { curatorName?: string };
 

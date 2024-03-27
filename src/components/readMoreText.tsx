@@ -47,7 +47,7 @@ const ReadMoreText: React.FC<ReadMoreTextProps> = ({
           {text}{" "}
         </p>
         <p
-          className=" text-xl font-bold leading-7.5 underline"
+          className="font-normal leading-7.5 underline"
           onClick={toggleCollapse}
         >
           {isCollapsed ? "Read more" : "Read less"}

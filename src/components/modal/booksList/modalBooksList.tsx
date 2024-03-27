@@ -12,7 +12,6 @@ import { useModal } from "../../../hooks/useModal";
 export const ModalBooksList = <T extends SafeBooksListData>({
   safeBooksListData,
 }: ModalBooksListProps<T>) => {
-  const { showBooksListEditModal } = useModal();
 
   const ThumbnailDetails = (
     <div className="w-full h-full justify-start items-start">
@@ -23,7 +22,7 @@ export const ModalBooksList = <T extends SafeBooksListData>({
           </div>
         }
       >
-        <div className="text-start line-clamp-1 text-foreground font-bold text-lg relative tracking-tight">
+        <div className="text-start line-clamp-1 text-foreground font-bold text-xl relative">
           {safeBooksListData?.name}
         </div>
       </Tooltip>
@@ -46,7 +45,7 @@ export const ModalBooksList = <T extends SafeBooksListData>({
       thumbnailDetails={ThumbnailDetails}
       buttonsRow={
         <div className="h-fit w-full flex flex-col justify-between">
-          <ReadMoreText text={safeBooksListData?.description} maxLines={2} />
+          <ReadMoreText className="text-lg font-light leading-[30px]" text={safeBooksListData?.description} maxLines={2} />
           <div className="flex flex-row gap-1 w-fit font-bold text-base"></div>
         </div>
       }

@@ -70,9 +70,17 @@ export default function Home(): React.ReactNode {
                   <div
                     className="text-see-all"
                     onClick={() => {
+                      // add publicurl to route without changing the page
+                      window.history.pushState(
+                        {},
+                        "",
+                        `${recommendationList.publicURL}`
+                      );
                       showBooksListModal({
                         bookList: recommendationList,
-                        onBack: () => {},
+                        onBack: () => {
+                          router.push("/home");
+                        },
                       });
                     }}
                   >
