@@ -37,11 +37,10 @@ export default function RootLayout({
               <APIProvider>
                 <DataProvider>
                   <BrowserDetector>
-                    <HeightProvider className=" py-10 px-7.5 flex flex-col z-20 tracking-semiwide">
-                      <Header className="h-9 w-fit p-4 pt-8" />
+                    <HeightProvider className=" py-10 px-7.5 flex flex-col z-20 tracking-semiwide relative">
+                      <Header className="h-9 w-fit px-7.5 pt-8" />
                       <AnimationProvider>{children}</AnimationProvider>
                     </HeightProvider>
-                    <Header className="h-9 w-fit p-4 pt-8" />
                   </BrowserDetector>
                   <ModalProvider />
                   <BottomBarProvider />

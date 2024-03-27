@@ -9,7 +9,7 @@ type TitleProps = {
 const Title: React.FC<TitleProps> = ({ title, className, style }) => (
   <div className="flex flex-grow w-full">
     <div
-      className={`text-base text-foreground line-clamp-1 font-bold flex-1 ${className ?? ""}`}
+      className={`text-sm text-foreground line-clamp-1 flex-1 ${className ?? ""}`}
       style={style}
     >
       {title}

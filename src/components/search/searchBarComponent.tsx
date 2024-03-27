@@ -49,13 +49,13 @@ export const SearchBarComponent: React.FC<SearchBarComponentProps> = ({
       >
         <label
           htmlFor="search-bar"
-          className="relative flex flex-row justify-center items-center w-full bg-background rounded-full border-2 px-4"
+          className="relative flex flex-row justify-center items-center w-full bg-background rounded-full border-2 border-foreground px-4"
         >
           <Search.Fill iconSize="sm" className="!text-foreground" />
           <Input
             type="text"
             id="search-bar"
-            className="py-2 w-full h-full rounded-full bg-background  text-foreground text-base placeholder:text-sm placeholder-gray-300 focus:outline-none border-none"
+            className="py-2 h-[46px] w-full rounded-full bg-background  text-foreground text-base placeholder:text-sm placeholder-gray-300 focus:outline-none border-none"
             placeholder={placeholder ?? "Search..."}
             value={searchTerm}
             autoFocus={autoFocus}

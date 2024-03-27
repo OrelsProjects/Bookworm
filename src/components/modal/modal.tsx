@@ -150,7 +150,7 @@ const Modal: React.FC<ModalProps> = ({
 
   return (
     <div
-      className="absolute top-0 left-0 right-0 bottom-0 w-full h-full z-50 overscroll-none overflow-auto bg-background"
+      className="absolute top-0 left-0 right-0 bottom-0 w-full h-full z-40 overscroll-none overflow-auto bg-background"
       ref={scrollableDivRef}
       id="modal"
     >
@@ -165,7 +165,7 @@ const Modal: React.FC<ModalProps> = ({
           <BackButton onClick={onClose} />
           <div className="flex justify-center items-center relative w-full h-full z-20 pb-4">
             <div
-              className={`relative z-50 w-full h-full flex items-end justify-start ${
+              className={`relative z-40 w-full h-full flex items-end justify-start ${
                 className ?? ""
               } z-10`}
               style={{ backgroundColor: backgroundColor ?? "rgb(12, 12, 12)" }}

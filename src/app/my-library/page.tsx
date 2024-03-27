@@ -95,7 +95,7 @@ export default function MyLibrary(): React.ReactNode {
         </div>
       </Button>
       {showFilterDropdown && (
-        <div className="absolute top-full left-0 mt-1 z-50">
+        <div className="absolute top-full left-0 mt-1 z-40">
           <Dropdown
             className="!w-fit max-w-[70%]"
             expandType={ExpandType.TopRight}

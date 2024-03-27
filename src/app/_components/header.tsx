@@ -24,17 +24,20 @@ const Header = ({ className }: HeaderProps): React.ReactNode => {
 
   return (
     !loadingState.loading && (
-      <div className="fixed top-0.5 w-fit z-10 right-0">
+      <div className="fixed top-8 w-fit z-10 right-0">
         <div
           className={`flex justify-end items-center w-fit z-10 relative ${
             className ?? ""
           }`}
         >
           {user ? (
-            <Avatar
-              avatarUrl={user?.profilePictureUrl}
-              defaultText={user?.displayName ?? user.email}
-            />
+            <div>
+              <Avatar
+                avatarUrl={user?.profilePictureUrl}
+                defaultText={user?.displayName ?? user.email}
+              />
+              
+            </div>
           ) : (
             <div className="pt-1.5">
               <GoogleLogin text="Login" />
