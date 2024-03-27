@@ -18,7 +18,16 @@ export async function GET(req: NextRequest) {
     const axios = GetAxiosInstance(req);
     const response = await axios.get<Book[]>(`/google-books?query=${query}`);
     const books = response.data ?? [];
-    console.log("Books: ", books);
+    Logger.info(
+      "Successfully fetched google books",
+      getUserIdFromRequest(req),
+      {
+        data: {
+          query,
+          books,
+        },
+      }
+    );
     const booksWithColors = await setThumbnailColorsToBooks(books);
     return NextResponse.json({ result: booksWithColors }, { status: 200 });
   } catch (error: any) {
