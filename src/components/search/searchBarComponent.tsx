@@ -55,11 +55,12 @@ export const SearchBarComponent: React.FC<SearchBarComponentProps> = ({
           <Input
             type="text"
             id="search-bar"
-            className="py-2 h-[46px] w-full rounded-full bg-background  text-foreground text-base placeholder:text-sm placeholder-gray-300 focus:outline-none border-none"
+            className="py-2 h-[46px] w-full rounded-full bg-background  text-foreground text-base placeholder:text-sm placeholder-gray-300 focus:outline-none border-none lowercase"
             placeholder={placeholder ?? "Search..."}
             value={searchTerm}
             autoFocus={autoFocus}
             onChange={(e) => setSearchTerm(e.target.value)}
+            pattern="[a-z0-9]+" // This is a pattern for only allowing lowercase letters and numbers
           />
           {searchTerm && (
             <Clear.Fill
