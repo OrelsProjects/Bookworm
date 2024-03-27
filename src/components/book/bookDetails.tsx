@@ -40,8 +40,8 @@ const BookDetails: React.FC<BookDetailsProps> = ({
       />
       <div className={`grid gap-1.5 h-full justify-start`}>
         <div className={`flex flex-col`}>
-          <Title title={book?.title ?? ""} className="text-sm" />
-          <Authors authors={book?.authors} className="text-sm text-primary" />
+          <Title title={book?.title ?? ""} className="text-sm text-start" />
+          <Authors authors={book?.authors} className="text-sm text-primary text-start" />
         </div>
         {direction === "column" && (
           <div className="line-clamp-3 text-sm font-light">
@@ -49,7 +49,9 @@ const BookDetails: React.FC<BookDetailsProps> = ({
           </div>
         )}
       </div>
-      <div className="h-full flex justify-center items-center self-center ml-auto z-20 flex-shrink-0">{Icon}</div>
+      <div className="h-full flex justify-center items-center self-center ml-auto z-20 flex-shrink-0">
+        {Icon}
+      </div>
     </div>
   );
 };
