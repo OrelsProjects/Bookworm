@@ -60,7 +60,6 @@ export const SearchBarComponent: React.FC<SearchBarComponentProps> = ({
             value={searchTerm}
             autoFocus={autoFocus}
             onChange={(e) => setSearchTerm(e.target.value)}
-            pattern="[a-z0-9]+" // This is a pattern for only allowing lowercase letters and numbers
           />
           {searchTerm && (
             <Clear.Fill
