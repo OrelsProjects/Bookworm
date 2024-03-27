@@ -72,9 +72,7 @@ export default function Home(): React.ReactNode {
                     onClick={() => {
                       showBooksListModal({
                         bookList: recommendationList,
-                        onBack: () => {
-                          router.back();
-                        },
+                        onBack: () => {},
                       });
                     }}
                   >
