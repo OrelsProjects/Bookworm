@@ -1,11 +1,13 @@
+import React from "react";
 import { IconSize } from "../../consts/icon";
-import { Icon } from "../icons/iconContainer";
-import { NavigationHome } from "../icons/navigationHome";
-import { NavigationLists } from "../icons/navigationLists";
+import { FaBookMedical } from "react-icons/fa";
+import { FaHouse } from "react-icons/fa6";
+import { IconBaseProps } from "react-icons";
 
 export type BottomBarItem = {
   name: string;
-  icon: Icon;
+  icon: (props: IconBaseProps) => JSX.Element;
+  iconSelected: (props: IconBaseProps) => JSX.Element;
   path: string;
   size: IconSize;
   className?: string;
@@ -14,15 +16,17 @@ export type BottomBarItem = {
 export const bottomBarItems: BottomBarItem[] = [
   {
     name: "Home",
-    icon: NavigationHome,
+    icon: FaHouse,
+    iconSelected: FaHouse,
     path: "/home",
     size: "sm",
   },
   {
     name: "Lists",
-    icon: NavigationLists,
+    icon: FaBookMedical,
+    iconSelected: FaBookMedical,
     path: "/lists",
-    className: "p-0.5 mt-0.5",
+    className: "p-[1px] mt-0.5",
     size: "sm",
   },
 ];

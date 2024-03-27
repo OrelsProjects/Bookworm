@@ -15,19 +15,19 @@ export async function GET(
       "/lists/recommendation"
     );
     let safeBooksListData = response.data;
-    for (const bookListData of safeBooksListData) {
-      let books = bookListData.booksInList.map((book) => book.book);
-      books = await setThumbnailColorsToBooks(books);
+    // for (const bookListData of safeBooksListData) {
+    //   let books = bookListData.booksInList.map((book) => book.book);
+    //   books = await setThumbnailColorsToBooks(books);
 
-      bookListData.booksInList = bookListData.booksInList.map(
-        (bookInList, index) => {
-          return {
-            ...bookInList,
-            book: books[index],
-          };
-        }
-      );
-    }
+    //   bookListData.booksInList = bookListData.booksInList.map(
+    //     (bookInList, index) => {
+    //       return {
+    //         ...bookInList,
+    //         book: books[index],
+    //       };
+    //     }
+    //   );
+    // }
 
     const result = {
       result: safeBooksListData,

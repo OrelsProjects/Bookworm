@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { BottomBarItem, bottomBarItems } from "./bottomBarItems";
+import { getIconSize } from "../../consts/icon";
 
 const BottomBar = () => {
   const router = useRouter();
@@ -32,14 +33,20 @@ const BottomBar = () => {
               }}
             >
               {selected?.path === item.path ? (
-                <item.icon.Fill
-                  className={item.className}
-                  iconSize={item.size}
+                <item.iconSelected
+                  className={`${item.className} ${
+                    getIconSize({
+                      size: item.size,
+                    }).className
+                  } !text-primary`}
                 />
               ) : (
-                <item.icon.Outline
-                  className={`${item.className} !text-background`}
-                  iconSize={item.size}
+                <item.icon
+                  className={`${item.className} ${
+                    getIconSize({
+                      size: item.size,
+                    }).className
+                  } !text-background`}
                 />
               )}
             </div>

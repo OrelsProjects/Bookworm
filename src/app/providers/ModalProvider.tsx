@@ -36,8 +36,6 @@ const ModalProvider: React.FC = () => {
 
   useEffect(() => {}, [window.location.href]);
 
-  const isOpen = useMemo<boolean>(() => modalStack.length > 0, [modalStack]);
-
   const { data, type } = useMemo(
     () => modalStack[modalStack.length - 1] ?? {},
     [modalStack]
@@ -70,7 +68,7 @@ const ModalProvider: React.FC = () => {
   }, [modalStack]);
 
   const modalBackgroundColor = useMemo<string>((): string => {
-    const defaultColor = "rgb(255,255,255)";
+    const defaultColor = "rgb(180,180,180)";
     switch (type) {
       case ModalTypes.BOOK_DETAILS:
         return darkenColor(data?.book?.thumbnailColor) ?? defaultColor;

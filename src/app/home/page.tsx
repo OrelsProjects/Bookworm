@@ -28,7 +28,7 @@ export default function Home(): React.ReactNode {
     userBooks &&
     userBooks.length > 0 && (
       <div className="flex flex-col gap-5">
-        <div className="w-full flex flex-row justify-between items-end">
+        <div className="w-full flex flex-row justify-between items-start">
           <div className="text-list-title">My Next Read</div>
           <div className="text-see-all" onClick={onSeeAllClick}>
             See all
@@ -55,7 +55,7 @@ export default function Home(): React.ReactNode {
                 className="flex flex-col gap-5"
                 key={`recommendation-${recommendationList.publicURL}`}
               >
-                <div className="w-full flex flex-row justify-between items-end">
+                <div className="w-full flex flex-row justify-between items-start">
                   <Tooltip
                     tooltipContent={
                       <div className="text-sm text-foreground line-clamp-4 tracking-tighter max-w-xs">
