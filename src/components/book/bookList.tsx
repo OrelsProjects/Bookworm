@@ -40,12 +40,14 @@ const BookList: React.FC<BookListProps> = ({
     <div
       className={`flex gap-[15px] flex-grow ${className ?? ""} ${
         direction === "row" ? "flex-row h-fit" : "flex-col h-full"
-      } ${disableScroll ? "" : "overflow-auto"}`}
+      } ${disableScroll ? "" : direction === "row" && "overflow-auto"}`}
       ref={scrollableDivRef}
     >
       {books.map((book) => (
         <div
-          onClick={() => {onBookClick(book)}}
+          onClick={() => {
+            onBookClick(book);
+          }}
           className="h-fit"
           key={`book-in-books-list-${book?.bookId}`}
         >
