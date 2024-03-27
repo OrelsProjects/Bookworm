@@ -90,6 +90,9 @@ module.exports = {
           to: { height: 0 },
         },
       },
+      padding: {
+        "7.5": "1.875rem",
+      },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
@@ -102,6 +105,7 @@ module.exports = {
       },
       lineHeight: {
         "16": "4rem",
+        "5.5": "1.375rem",
         "7.5": "1.875rem",
       },
       width: {
@@ -124,7 +128,7 @@ module.exports = {
         "thumbnail-3xl": "170px",
       },
       letterSpacing: {
-        "semiwide": "0.15px",
+        semiwide: "0.15px",
       },
       height: {
         "13": "3.25rem",
@@ -137,7 +141,7 @@ module.exports = {
         "modal-md": "32rem",
         "modal-sm": "28rem",
         "screen-fill": "100vh", // Fallback
-        screen: "-webkit-fill-available", // For Safari
+screen: "-webkit-fill-available", // For Safari
         "thumbnail-2xs": "44px",
         "thumbnail-xs": "60px",
         "thumbnail-sm": "100px",

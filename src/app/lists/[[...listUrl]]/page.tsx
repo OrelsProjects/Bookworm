@@ -86,9 +86,9 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
     <div className="w-full h-fit flex flex-col gap-2">
       <div className="w-full flex flex-row justify-between items-end">
         <div className="text-xl font-bold">My Library</div>
-        <div className="text-sm text-muted underline" onClick={onSeeAllClick}>
-          see all
-        </div>
+        <h2 className="text-see-all" onClick={onSeeAllClick}>
+          See all
+        </h2>
       </div>
       <BookList
         books={userBooks.map((ubd) => ubd.bookData.book)}

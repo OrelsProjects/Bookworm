@@ -27,9 +27,11 @@ export default function Home(): React.ReactNode {
     userBooks.length > 0 && (
       <div className="flex flex-col gap-2">
         <div className="w-full flex flex-row justify-between items-end">
-          <div className="text-2xl tracking-tight font-bold">My next read</div>
-          <div className="text-sm text-muted underline" onClick={onSeeAllClick}>
-            see all
+          <div className="text-list-title">
+            My next read
+          </div>
+          <div className="text-see-all" onClick={onSeeAllClick}>
+            See all
           </div>
         </div>
         <BookList

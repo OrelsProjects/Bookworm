@@ -239,3 +239,11 @@ input[type="text"]:-moz-ui-autofill {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+.text-see-all {
+  @apply text-xl text-foreground underline leading-5.5;
+}
+
+.text-list-title {
+  @apply text-xl leading-5.5 tracking-tight font-normal;
+}
