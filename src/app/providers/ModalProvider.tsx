@@ -171,19 +171,19 @@ const ModalProvider: React.FC = () => {
     [shouldRenderBooksListDetailsModal]
   );
 
-  const RenderBooksListDetailsEdit = useCallback(
-    (booksListData?: BooksListData, options?: ShowModalOptions) => {
-      return (
-        <RenderModal
-          type={ModalTypes.BOOKS_LIST_DETAILS_EDIT}
-          shouldAnimate={options?.shouldAnimate ?? true}
-        >
-          <ModalBooksListEdit booksListData={booksListData} />
-        </RenderModal>
-      );
-    },
-    [shouldRenderBooksListDetailsEditModal]
-  );
+  const RenderBooksListDetailsEdit = (
+    booksListData?: BooksListData,
+    options?: ShowModalOptions
+  ) => {
+    return (
+      <RenderModal
+        type={ModalTypes.BOOKS_LIST_DETAILS_EDIT}
+        shouldAnimate={options?.shouldAnimate ?? true}
+      >
+        <ModalBooksListEdit booksListData={booksListData} />
+      </RenderModal>
+    );
+  };
 
   const RenderBookDetails = useCallback(
     (data?: { book: Book; bookInList?: BookInList }) =>

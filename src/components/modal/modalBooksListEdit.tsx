@@ -13,22 +13,37 @@ import SwitchEditMode from "./_components/switchEditMode";
 import ContentEditBookList from "./_components/contentEditBookList";
 import { useModal } from "../../hooks/useModal";
 import { BurgerLines } from "../icons/burgerLines";
+import useBooksList from "../../hooks/useBooksList";
 
 interface ModalBooksListProps {
   booksListData?: BooksListData;
 }
 
 const Thumbnail: React.FC<{
-  books?: Books;
+  booksListId: string;
   thumbnailSize: ThumbnailSize;
   loading?: boolean;
-}> = ({ books, thumbnailSize, loading }) => (
-  <BooksListThumbnail
-    books={books}
-    thumbnailSize={thumbnailSize}
-    loading={loading}
-  />
-);
+}> = ({ booksListId, thumbnailSize, loading }) => {
+  const { booksLists } = useBooksList();
+  const [books, setBooks] = useState<Books | undefined>();
+
+  useEffect(() => {
+    const booksList = booksLists.find(
+      (booksList) => booksList.listId === booksListId
+    );
+    if (booksList) {
+      setBooks(booksList.booksInList.map((bookInList) => bookInList.book));
+    }
+  }, [booksListId, booksLists]);
+
+  return (
+    <BooksListThumbnail
+      books={books}
+      thumbnailSize={thumbnailSize}
+      loading={loading}
+    />
+  );
+};
 
 export const buildFormikValueName = (bookId: number) =>
   `newBookComments-${bookId}`;
@@ -63,9 +78,7 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
     <ModalContent
       thumbnail={
         <Thumbnail
-          books={currentBooksList?.booksInList?.map(
-            (bookInList) => bookInList.book
-          )}
+          booksListId={currentBooksList?.listId ?? ""}
           thumbnailSize="xl"
         />
       }
