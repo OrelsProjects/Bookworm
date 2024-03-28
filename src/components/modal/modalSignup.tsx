@@ -29,6 +29,7 @@ export default function ModalSignup() {
             Join us with a quick login and start building you dream library!
           </div>
           <GoogleLogin
+            text="Continue with Google"
             onClickBefore={() => {
               localStorage.setItem("listReferer", window.location.pathname);
               localStorage.setItem("redirect", window.location.pathname);

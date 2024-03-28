@@ -36,7 +36,7 @@ const Header = ({ className }: HeaderProps): React.ReactNode => {
             </div>
           ) : (
             <div className="pt-1.5">
-              <GoogleLogin text="Login" />
+              <GoogleLogin />
             </div>
           )}
         </div>
