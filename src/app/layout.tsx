@@ -30,7 +30,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} overscroll-none`}>
+      <body className={`${inter.className} overflow-clip`}>
         <StoreProvider>
           <AuthProvider>
             <NavigationProvider>
