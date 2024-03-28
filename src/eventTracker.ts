@@ -13,8 +13,10 @@ interface Dict {
 }
 export const initEventTracker = () => {
   // mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_API_KEY ?? "");
+  const env = process.env.NODE_ENV;
   posthog.init(process.env.NEXT_PUBLIC_POSTHOG_API_KEY ?? "", {
     api_host: "https://app.posthog.com",
+    disable_session_recording: env !== "production",
   });
 };
 

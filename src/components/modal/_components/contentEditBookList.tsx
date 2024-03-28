@@ -213,8 +213,12 @@ const ListBooks: React.FC<ListBookProps> = ({
 
 const ContentEditBookList = ({
   booksListData,
+  listName,
+  newListDescription,
 }: {
   booksListData?: BooksListData;
+  listName: string;
+  newListDescription: string;
 }) => {
   const router = useRouter();
   const {
@@ -234,8 +238,6 @@ const ContentEditBookList = ({
   const formik = useFormik({
     initialValues: {
       newBookComments: "",
-      listName: "",
-      newListDescription: "",
     },
     onSubmit: (values) => {},
   });
@@ -277,7 +279,7 @@ const ContentEditBookList = ({
     try {
       if (loadingList.current || loadingBook.current) return;
 
-      if (!formik.values.listName && isNewList) {
+      if (!listName && isNewList) {
         formik.setFieldError("listName", "List name is required");
         toast.error("List name is required");
         return;
@@ -329,8 +331,8 @@ const ContentEditBookList = ({
       } else {
         const createBooksListResponse = await toast.promise(
           createBooksList({
-            name: formik.values.listName,
-            description: formik.values.newListDescription,
+            name: listName,
+            description: newListDescription,
             booksInList: [
               {
                 bookId: bookWithId.bookId,
