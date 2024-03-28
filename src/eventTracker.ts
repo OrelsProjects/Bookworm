@@ -1,4 +1,4 @@
-import mixpanel from "mixpanel-browser";
+import posthog from "posthog-js";
 import { User } from "./models";
 import { Logger } from "./logger";
 
@@ -12,12 +12,16 @@ interface Dict {
   [key: string]: any;
 }
 export const initEventTracker = () => {
-  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_API_KEY ?? "");
+  // mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_API_KEY ?? "");
+  posthog.init(process.env.NEXT_PUBLIC_POSTHOG_API_KEY ?? "", {
+    api_host: "https://app.posthog.com",
+  });
 };
 
 export const setUserEventTracker = (user?: User | null) => {
   try {
-    mixpanel.identify(user?.userId);
+    posthog.identify(user?.userId);
+    // mixpanel.identify(user?.userId);
   } catch (error: any) {
     Logger.error("Error setting user for event tracker", {
       data: {
@@ -54,7 +58,7 @@ export class EventTracker {
         console.log("Tracking event", eventName, props ?? "");
         return;
       }
-      mixpanel.track(eventName, props);
+      posthog.capture(eventName, props);
     } catch (error: any) {
       Logger.error("Error tracking event", {
         data: {
