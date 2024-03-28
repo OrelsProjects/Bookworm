@@ -17,7 +17,7 @@ function PrivacyPolicy() {
             Introduction
           </h2>
           <p className="text-muted dark:text-muted">
-            This Privacy Policy describes how BookWizard ("we", "us", or "our")
+            This Privacy Policy describes how BookWiz ("we", "us", or "our")
             collects, uses, and discloses your personal information when you use
             our website and services (the "Services").
           </p>

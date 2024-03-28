@@ -13,14 +13,13 @@ import ModalProvider from "./providers/ModalProvider";
 import BottomBarProvider from "./providers/BottomBarProvider";
 import NavigationProvider from "./providers/NavigationProvider";
 import HeightProvider from "./providers/HeightProvider";
-import ModalSignup from "../components/modal/modalSignup";
 import BrowserDetector from "./providers/BrowserDetector";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   // manifest: "/manifest.json",
-  title: "BookWizard",
+  title: "BookWiz",
 };
 
 export default function RootLayout({
