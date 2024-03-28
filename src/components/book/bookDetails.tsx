@@ -39,9 +39,9 @@ const BookDetails: React.FC<BookDetailsProps> = ({
         thumbnailSize={bookThumbnailSize}
       />
       <div className={`grid gap-1.5 h-full justify-start`}>
-        <div className={`flex flex-col`}>
-          <Title title={book?.title ?? ""} className="text-sm text-start" />
-          <Authors authors={book?.authors} className="text-sm text-primary text-start" />
+        <div className={`flex flex-col h-fit`}>
+          <Title title={book?.title ?? ""} className="text-sm text-start line-clamp-1" />
+          <Authors authors={book?.authors} className="text-sm text-primary text-start line-clamp-1" />
         </div>
         {direction === "column" && (
           <div className="line-clamp-3 text-sm font-light">
