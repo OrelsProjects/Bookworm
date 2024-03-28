@@ -40,7 +40,13 @@ const BookList: React.FC<BookListProps> = ({
     <div
       className={`flex gap-[15px] flex-grow ${className ?? ""} ${
         direction === "row" ? "flex-row h-fit" : "flex-col h-full"
-      } ${disableScroll ? "" : direction === "row" && "overflow-auto"}`}
+      } ${
+        disableScroll
+          ? ""
+          : direction === "row"
+          ? "overflow-x-auto overflow-y-clip"
+          : "overflow-y-auto overflow-x-clip"
+      }`}
       ref={scrollableDivRef}
     >
       {books.map((book) => (
