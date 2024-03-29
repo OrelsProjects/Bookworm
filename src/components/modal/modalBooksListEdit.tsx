@@ -30,7 +30,9 @@ const Thumbnail: React.FC<{
   useEffect(() => {
     const booksList = booksLists.find(
       (booksList) => booksList.listId === booksListId
-    );
+      );
+      const x = booksList;
+      debugger;
     if (booksList) {
       setBooks(booksList.booksInList.map((bookInList) => bookInList.book));
     }

@@ -35,7 +35,27 @@ const booksListsSlice = createSlice({
         (list) => list.listId === action.payload.listId
       );
       if (index !== -1) {
-        state.booksListsData[index] = action.payload;
+        const newListsData = [...state.booksListsData];
+        const booksInList = newListsData[index].booksInList;
+        newListsData[index] = action.payload;
+        newListsData[index].booksInList = booksInList;
+        state.booksListsData = newListsData;
+      }
+    },
+    updateBooksInListPositions: (
+      state,
+      action: PayloadAction<{
+        listId: string;
+        booksInList: BookInListWithBook[];
+      }>
+    ) => {
+      const index = state.booksListsData.findIndex(
+        (list) => list.listId === action.payload.listId
+      );
+      if (index !== -1) {
+        const newListsData = [...state.booksListsData];
+        newListsData[index].booksInList = action.payload.booksInList;
+        state.booksListsData = newListsData;
       }
     },
     deleteBooksList: (state, action: PayloadAction<string>) => {
@@ -51,7 +71,9 @@ const booksListsSlice = createSlice({
         (list) => list.listId === action.payload.listId
       );
       if (listIndex !== -1) {
-        state.booksListsData[listIndex].booksInList?.push(action.payload);
+        const newBooksListData = [...state.booksListsData];
+        newBooksListData[listIndex].booksInList?.push(action.payload);
+        state.booksListsData = newBooksListData;
       }
     },
     updateBookInList: (
@@ -96,6 +118,7 @@ export const {
   setBooksListsLoading,
   addBooksList,
   updateBooksList,
+  updateBooksInListPositions,
   deleteBooksList,
   addBookToList,
   updateBookInList,

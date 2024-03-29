@@ -12,6 +12,7 @@ import {
   addBookToList as addBookToListAction,
   removeBookFromList as removeBookFromListAction,
   updateBookInList as updateBookInListAction,
+  updateBooksInListPositions as updateBooksInListPositionsAction,
 } from "../lib/features/booksLists/booksListsSlice";
 import { BooksListData, CreateBooksListPayload } from "../models/booksList";
 import { Book, User } from "../models";
@@ -207,6 +208,28 @@ const useBooksList = () => {
     }
   };
 
+  const updateBooksInListPositions = async (booksListData: BooksListData) => {
+    try {
+      await axios.patch(
+        `/api/book-in-list/`,
+        { booksInList: [...booksListData.booksInList] },
+        {
+          cancelToken: updateBooksListCancelToken.token,
+        }
+      );
+      dispatch(
+        updateBooksInListPositionsAction({
+          booksInList: booksListData.booksInList,
+          listId: booksListData.listId,
+        })
+      );
+      updateListInLocalStorage(booksListData);
+    } catch (error: any) {
+      Logger.error("Failed to update books list", error);
+      throw error;
+    }
+  };
+
   const updateBooksInList = async (booksListData: BooksListData) => {
     try {
       await axios.patch(
@@ -216,7 +239,7 @@ const useBooksList = () => {
           cancelToken: updateBooksListCancelToken.token,
         }
       );
-      dispatch(updateBooksListAction(booksListData));
+      dispatch(updateBooksInListPositionsAction(booksListData));
       updateListInLocalStorage(booksListData);
     } catch (error: any) {
       Logger.error("Failed to update books list", error);
@@ -320,6 +343,7 @@ const useBooksList = () => {
     removeBookFromList,
     searchInBooksList,
     updateBooksInList,
+    updateBooksInListPositions,
   };
 };
 
