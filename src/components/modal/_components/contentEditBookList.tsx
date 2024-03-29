@@ -231,7 +231,12 @@ const ContentEditBookList = ({
     updateBooksInList,
     loading: loadingList,
   } = useBooksList();
-  const { addUserBook, getBookFullData, loading: loadingBook } = useBook();
+  const {
+    addUserBook,
+    addBook,
+    getBookFullData,
+    loading: loadingBook,
+  } = useBook();
   const [currentBooksList, setCurrentBookList] = useState<
     BooksListData | undefined
   >();
@@ -298,11 +303,11 @@ const ContentEditBookList = ({
       if (!book.bookId) {
         bookWithId = await toast.promise(
           (async () => {
-            const userBook = await addUserBook({ book });
+            const bookWithId = await addBook(book);
             return (
-              getBookFullData(userBook.bookId)?.bookData.book ?? {
+              getBookFullData(bookWithId.bookId)?.bookData.book ?? {
                 ...book,
-                bookId: userBook.bookId,
+                bookId: bookWithId.bookId,
               }
             );
           })(),

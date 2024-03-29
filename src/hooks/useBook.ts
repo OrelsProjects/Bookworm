@@ -90,6 +90,22 @@ const useBook = () => {
     }
   };
 
+  const addBook = async (book: Book): Promise<Book> => {
+    const responseAddBooks = await axios.post<IResponse<CreateBooksResponse>>(
+      "/api/books",
+      book
+    );
+    const createBookResponse = responseAddBooks.data.result ?? {};
+    const books: Books =
+      createBookResponse.success?.concat(createBookResponse.duplicates ?? []) ??
+      [];
+
+    if (books.length === 0) {
+      throw new Error("No books returned from backend");
+    }
+    return books[0];
+  };
+
   const addUserBook = async ({
     book,
     suggestionSource,
@@ -141,20 +157,10 @@ const useBook = () => {
         readingStatusId: readingStatusId,
       };
       if (!bookToAdd.bookId) {
-        const responseAddBooks = await axios.post<
-          IResponse<CreateBooksResponse>
-        >("/api/books", book);
-        const createBookResponse = responseAddBooks.data.result ?? {};
-        const books: Books =
-          createBookResponse.success?.concat(
-            createBookResponse.duplicates ?? []
-          ) ?? [];
-        if (books.length === 0) {
-          throw new Error("No books returned from backend");
-        }
+        const newBook = await addBook(book);
         createUserBookBody = {
           ...createUserBookBody,
-          bookId: books[0].bookId,
+          bookId: newBook.bookId,
         };
       }
       const responseAddUserBooks = await axios.post<IResponse<UserBook>>(
@@ -356,6 +362,7 @@ const useBook = () => {
     updateBookReadingStatus,
     loadUserBooks,
     addUserBook,
+    addBook,
     deleteUserBook,
     getBookFullData,
     userBooksData,
