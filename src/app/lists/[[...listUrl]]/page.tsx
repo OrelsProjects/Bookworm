@@ -34,7 +34,12 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
         (list) => list.publicURL === params.listUrl
       );
       if (userBooksList) {
-        showBooksListModal({ bookList: userBooksList });
+        showBooksListModal({
+          bookList: userBooksList,
+          onBack: () => {
+            router.push("/home");
+          },
+        });
         return;
       }
       const urlParams = new URLSearchParams();

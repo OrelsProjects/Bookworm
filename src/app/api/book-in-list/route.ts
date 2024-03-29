@@ -13,7 +13,7 @@ export async function PATCH(req: NextRequest) {
     const body = await req.json();
     booksInList = body.booksInList;
     const axios = GetAxiosInstance(req);
-    await axios.patch(`/list/book`, {booksInList});
+    await axios.patch(`/list/books/position`, {booksInList});
   } catch (error: any) {
     Logger.error("Error updating books list", getUserIdFromRequest(req), {
       data: {

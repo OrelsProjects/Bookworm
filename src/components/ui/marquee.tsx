@@ -1,26 +1,34 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Marquee from "react-fast-marquee";
+import useIsOverflow from "../../hooks/useIsOverflow";
 
 export default function MarqueeText({
-  children,
-  withSpace = false,
+  text,
+  className,
 }: {
-  children: React.ReactNode;
-  withSpace?: boolean;
+  text: string;
+  className?: string;
 }) {
-  const [isFinished, setIsFinished] = useState(false);
+  const divRef = useRef<HTMLDivElement>(null);
+  const isOverflow = useIsOverflow({
+    ref: divRef,
+    isVerticalOverflow: false,
+    delay: 100,
+  });
+  const [key, setKey] = useState(0); // Add a key state to force re-render
 
-  return (
-    <Marquee
-      autoFill
-      speed={35}
-      loop={1}
-      pauseOnClick
-      onFinish={() => setTimeout(() => setIsFinished(true), 500)}
-    >
-      {children}
-      {isFinished && <div className="w-full invisible">{children}</div>}
-      {isFinished && <div className="w-full invisible">{children}</div>}
+
+  const TextDiv = ({ marquee }: { marquee?: boolean }) => (
+    <p ref={divRef} className={className}>
+      {marquee ? text + " • " : `${text}`}
+    </p>
+  );
+
+  return isOverflow ? (
+    <Marquee autoFill speed={35} loop={3} pauseOnClick>
+      <TextDiv marquee />
     </Marquee>
+  ) : (
+    <TextDiv />
   );
 }

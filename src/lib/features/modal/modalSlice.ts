@@ -56,6 +56,10 @@ const bottomSheetSlice = createSlice({
       state.modalStack.push(action.payload);
       state.error = null;
     },
+    clearStack: (state) => {
+      state.modalStack = [];
+      state.error = null;
+    },
     hideModal: (state) => {
       state.modalStack.pop();
       state.error = null;
@@ -63,7 +67,7 @@ const bottomSheetSlice = createSlice({
   },
 });
 
-export const { showModal, hideModal } = bottomSheetSlice.actions;
+export const { showModal, clearStack, hideModal } = bottomSheetSlice.actions;
 export const selectModal = (state: RootState) => state.modal;
 
 export default bottomSheetSlice.reducer;

@@ -69,7 +69,9 @@ const booksListsSlice = createSlice({
             ? { ...book, ...action.payload.bookInList }
             : book
         );
-        state.booksListsData[listIndex].booksInList = updatedBooksList;
+        const newBooksListData = [...state.booksListsData];
+        newBooksListData[listIndex].booksInList = updatedBooksList;
+        state.booksListsData = newBooksListData;
       }
     },
     removeBookFromList: (

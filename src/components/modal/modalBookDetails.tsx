@@ -73,10 +73,14 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
           </div>
           {bookInList && (
             <div>
-              <div className="text-xl text-foreground font-extralight">
+              <div className="text-foreground font-bold text-xl">
                 List Creator Comment
               </div>
-              <ReadMoreText text={bookInList.comments} maxLines={3} />
+              {bookInList.comments ? (
+                <ReadMoreText text={bookInList.comments} maxLines={3} />
+              ) : (
+                <div>The List Creator Didn't Add His Comment Yet</div>
+              )}
             </div>
           )}
         </div>

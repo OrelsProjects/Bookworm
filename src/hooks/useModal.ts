@@ -4,6 +4,7 @@ import {
   ModalTypes,
   hideModal,
   ShowModalOptions,
+  clearStack as clearStackAction,
 } from "../lib/features/modal/modalSlice";
 import { Book } from "../models";
 import { BooksListData, SafeBooksListData } from "../models/booksList";
@@ -17,6 +18,8 @@ export const useModal = () => {
     type: ModalTypes,
     options?: ShowModalOptions
   ) => dispatch(showModal({ data, type, options }));
+
+  const clearStack = () => dispatch(clearStackAction());
 
   const showAddBookToListModal = (data: Book) =>
     onShowModal(data, ModalTypes.ADD_BOOK_TO_LIST);
@@ -54,5 +57,6 @@ export const useModal = () => {
     showBooksListModal,
     showRegisterModal,
     closeModal,
+    clearStack,
   };
 };

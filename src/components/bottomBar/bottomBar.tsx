@@ -5,10 +5,12 @@ import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { BottomBarItem, bottomBarItems } from "./bottomBarItems";
 import { getIconSize } from "../../consts/icon";
+import { useModal } from "../../hooks/useModal";
 
 const BottomBar = () => {
   const router = useRouter();
   const pathname = usePathname();
+  const { clearStack } = useModal();
   const [selected, setSelected] = React.useState<BottomBarItem>();
 
   useEffect(() => {
@@ -25,7 +27,7 @@ const BottomBar = () => {
           return (
             <div
               key={item.name}
-              className="flex items-center justify-center w-full h-full"
+              className="flex items-center justify-center w-full h-full cursor-pointer"
               onClick={() => {
                 if (pathname.includes(item.path)) return;
                 router.push(item.path);

@@ -105,7 +105,7 @@ const Avatar: React.FC<AvatarProps> = ({ avatarUrl, defaultText }) => {
           className="cursor-pointer rounded-full"
         />
       ) : (
-        <div className="w-full h-full text-sm rounded-full bg-background border-2 border-foreground flex justify-center items-center">
+        <div className="w-full h-full text-sm rounded-full bg-background border-2 border-foreground flex justify-center items-center cursor-pointer">
           {defaultText && (defaultText.substring(0, 2) || "").toUpperCase()}
         </div>
       )}

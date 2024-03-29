@@ -211,7 +211,6 @@ export const BookButtons = () => {
                 userBookData
               )
             }
-            iconClassName="ml-2"
           />
         )}
         {showAddToListButton &&

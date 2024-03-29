@@ -1,4 +1,5 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useRef } from "react";
+import useIsOverflow from "../hooks/useIsOverflow";
 
 interface ReadMoreTextProps {
   text?: string | null;
@@ -13,6 +14,11 @@ const ReadMoreText: React.FC<ReadMoreTextProps> = ({
   collapseDefault = true,
   className,
 }) => {
+  const overflowRef = useRef<HTMLDivElement>(null);
+  const isOverflow = useIsOverflow({
+    ref: overflowRef,
+    isVerticalOverflow: true,
+  });
   const [isCollapsed, setIsCollapsed] = React.useState(collapseDefault);
 
   const toggleCollapse = () => {
@@ -40,18 +46,21 @@ const ReadMoreText: React.FC<ReadMoreTextProps> = ({
     text && (
       <div className="text-foreground font-thin leading-7.5 text-xl flex flex-col items-start">
         <p
+          ref={overflowRef}
           className={` ${className} ${
             isCollapsed ? `${maxLinesClass} !h-full` : ""
           } `}
         >
-          {text}{" "}
+          {text}
         </p>
-        <p
-          className="font-normal leading-7.5 underline"
-          onClick={toggleCollapse}
-        >
-          {isCollapsed ? "Read more" : "Read less"}
-        </p>
+        {(isOverflow || !isCollapsed) && (
+          <p
+            className="leading-7.5 underline cursor-pointer"
+            onClick={toggleCollapse}
+          >
+            {isCollapsed ? "Read more" : "Read less"}
+          </p>
+        )}
       </div>
     )
   );

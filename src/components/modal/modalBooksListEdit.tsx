@@ -152,7 +152,7 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
         </div>
       }
       bottomSection={ContentEditBookList({
-        booksListData,
+        booksListId: currentBooksList?.listId ?? "",
         listName: formik.values.listName,
         newListDescription: formik.values.newListDescription,
       })}

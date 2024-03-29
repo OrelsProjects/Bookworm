@@ -1,6 +1,5 @@
 import React from "react";
 import Rating from "../../rating";
-import Marquee from "react-fast-marquee";
 import MarqueeText from "../../ui/marquee";
 import Tooltip from "../../ui/tooltip";
 
@@ -13,14 +12,13 @@ const BookGeneralDetails: React.FC<{
     <div>
       <Tooltip
         tooltipContent={
-          <div className="w-fullfont text-foreground line-clamp-4">
-            {title}
-          </div>
+          <div className="w-fullfont text-foreground line-clamp-4">{title}</div>
         }
       >
-        <div className="w-full text-left text-foreground line-clamp-1 font-bold text-xl">
-          {title}
-        </div>
+        <MarqueeText
+          text={title ?? ""}
+          className="w-full text-left text-foreground line-clamp-1 font-bold text-xl"
+        />
       </Tooltip>
       <div className="text-lg text-muted line-clamp-2">
         {authors?.join(", ")}

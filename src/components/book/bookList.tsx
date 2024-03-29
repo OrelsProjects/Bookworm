@@ -1,12 +1,12 @@
 import React from "react";
 import { Book } from "../../models";
 import BookDetails from "./bookDetails";
-import useScrollPosition, {
-  ScrollDirection,
-} from "../../hooks/useScrollPosition";
+import useScrollPosition from "../../hooks/useScrollPosition";
 import { Add } from "../icons/add";
 import { ThumbnailSize } from "../../consts/thumbnail";
 import { useModal } from "../../hooks/useModal";
+import { AiFillPlusCircle } from "react-icons/ai";
+import { getIconSize } from "../../consts/icon";
 
 type BookListProps = {
   books: (Book | undefined)[];
@@ -73,10 +73,9 @@ const BookList: React.FC<BookListProps> = ({
                         onAddBookClick(book);
                       }}
                     >
-                      <Add.Fill
-                        className="!text-foreground !bg-background rounded-full p-1.5"
-                        iconSize="md"
-                      />
+                      <div className="w-10 h-10 bg-black rounded-full text-2xl flex justify-center items-center">
+                        +
+                      </div>
                     </div>
                   </div>
                 )

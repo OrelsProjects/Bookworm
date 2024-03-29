@@ -1,13 +1,11 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { ModalContent } from ".././modalContainers";
-import { BooksListData, SafeBooksListData } from "../../../models/booksList";
+import { SafeBooksListData } from "../../../models/booksList";
 import BooksListThumbnail from "../../booksList/booksListThumbnail";
 import ReadMoreText from "../../readMoreText";
 import { ModalBooksListProps } from "./consts";
 import Tooltip from "../../ui/tooltip";
 import BooksListGridView from "./gridView";
-import SwitchEditMode from "../_components/switchEditMode";
-import { useModal } from "../../../hooks/useModal";
 
 export const ModalBooksList = <T extends SafeBooksListData>({
   safeBooksListData,

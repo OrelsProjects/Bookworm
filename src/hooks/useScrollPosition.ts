@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 
 export type ScrollDirection = "height" | "width";
 
@@ -41,7 +41,7 @@ function useScrollPosition(options?: AdditionalOptions) {
     }
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const scrollbar = scrollableDivRef.current;
     if (!scrollbar) return;
 

@@ -36,6 +36,8 @@ import { Cancel } from "../../icons/cancel";
 import GripLines from "../../icons/gripLines";
 import { CommentsArea } from "./commentsArea";
 import { buildFormikValueName } from "../modalBooksListEdit";
+import { useSelector } from "react-redux";
+import { selectBooksLists } from "../../../lib/features/booksLists/booksListsSlice";
 
 interface ListBookAndBookDetailsProps {
   onAddNewBookClick?: () => void;
@@ -212,15 +214,16 @@ const ListBooks: React.FC<ListBookProps> = ({
 };
 
 const ContentEditBookList = ({
-  booksListData,
   listName,
+  booksListId,
   newListDescription,
 }: {
-  booksListData?: BooksListData;
   listName: string;
+  booksListId: string;
   newListDescription: string;
 }) => {
   const router = useRouter();
+  const { booksListsData } = useSelector(selectBooksLists);
   const {
     createBooksList,
     addBookToList,
@@ -243,6 +246,10 @@ const ContentEditBookList = ({
   });
 
   useEffect(() => {
+    debugger;
+    const booksListData = booksListsData.find(
+      (booksList) => booksList.listId === booksListId
+    );
     setCurrentBookList(booksListData);
     booksListData?.booksInList?.forEach((bookInList) => {
       formik.setFieldValue(
@@ -250,9 +257,12 @@ const ContentEditBookList = ({
         bookInList.comments
       );
     });
-  }, [booksListData]);
+  }, [booksListId, booksListsData]);
 
   useEffect(() => {
+    const booksListData = booksListsData.find(
+      (booksList) => booksList.listId === booksListId
+    );
     if (!booksListData) return;
     const url = decodeURIComponent(booksListData.publicURL ?? "");
     window.history.pushState(window.history.state, "", url);

@@ -244,6 +244,7 @@ const ModalProvider: React.FC = () => {
         topBarCollapsed={topBarCollapsed}
         backgroundColor={modalBackgroundColor}
         shouldAnimate={shouldAnimate}
+        key={`modal-${type}`}
       >
         {children}
       </Modal>
