@@ -2,8 +2,8 @@ import React, { useMemo } from "react";
 import { CiCirclePlus as Plus } from "react-icons/ci";
 import { CiBookmark as Bookmark } from "react-icons/ci";
 import { IoBookmark as BookmarkFill } from "react-icons/io5";
-import { IoCheckmarkCircleOutline as Checkmark } from "react-icons/io5";
 import { IoCheckmarkCircle as CheckmarkFill } from "react-icons/io5";
+import { FaCheck } from "react-icons/fa6";
 
 import { Book, UserBookData } from "../../models";
 import useBook from "../../hooks/useBook";
@@ -13,9 +13,10 @@ import {
 } from "../../models/readingStatus";
 import { increaseLuminosity } from "../../utils/thumbnailUtils";
 import toast from "react-hot-toast";
-import { IconSize } from "../../consts/icon";
+import { IconSize, getIconSize } from "../../consts/icon";
 import { useModal } from "../../hooks/useModal";
 import { ErrorUnauthenticated } from "../../models/errors/unauthenticatedError";
+import { IconType } from "react-icons";
 
 type BookButtonsProps = {
   book: Book;
@@ -27,7 +28,7 @@ type BookButtonsProps = {
 
 type ButtonImageProps = {
   title: string;
-  Icon: React.ElementType;
+  Icon: IconType;
   iconSize?: IconSize;
   selected: boolean;
   width?: number;
@@ -35,19 +36,15 @@ type ButtonImageProps = {
   onClick?: () => void;
   className?: string;
   buttonsColor?: string;
-  iconClassName?: string;
 };
 
 const ButtonImage: React.FC<ButtonImageProps> = ({
   title,
   Icon,
   onClick,
-  buttonsColor,
   iconSize = "sm",
   selected,
-  width = 35,
-  height = 35,
-  iconClassName = "",
+  className = "",
 }) => {
   const textSize = {
     xs: "text-sm font-light",
@@ -59,7 +56,7 @@ const ButtonImage: React.FC<ButtonImageProps> = ({
 
   return (
     <div
-      className={`flex flex-col justify-center items-center gap-2`}
+      className={`flex flex-col justify-center items-center gap-2 ${className}`}
       onClick={(e) => {
         e.stopPropagation();
         onClick?.();
@@ -67,15 +64,13 @@ const ButtonImage: React.FC<ButtonImageProps> = ({
     >
       <Icon
         style={{
-          height,
-          width,
+          height: getIconSize({ size: iconSize }).heightPx,
+          width: getIconSize({ size: iconSize }).widthPx,
         }}
-        iconSize={iconSize}
-        className={`${
-          selected ? "!text-primary" : "!text-foreground"
-        } ${iconClassName}`}
+        className={`${selected ? "!text-primary" : "!text-foreground"}
+          `}
       />
-      <div className={`text-foreground ${textSize[iconSize]}`}>{title}</div>
+      <div className={`text-foreground text-lg`}>{title}</div>
     </div>
   );
 };
@@ -86,7 +81,6 @@ export const BookButtons = () => {
     updateBookReadingStatus,
     addUserBook,
     loading,
-    userBooksData,
     deleteUserBook,
   } = useBook();
   const { showAddBookToListModal } = useModal();
@@ -159,7 +153,6 @@ export const BookButtons = () => {
     iconSize,
     className,
     showAddToListButton = true,
-    classNameIcon = "",
   }) => {
     const buttonsColor = increaseLuminosity(book?.thumbnailColor);
 
@@ -183,11 +176,8 @@ export const BookButtons = () => {
         className={`h-fit w-full flex flex-row justify-evenly items-center gap-4 ${className}`}
       >
         {book && (
-          <ButtonImage
-            title="Read"
-            Icon={isBookRead ? CheckmarkFill : Checkmark}
-            iconSize={iconSize}
-            selected={isBookRead}
+          <div
+            className={`flex flex-col justify-center items-center gap-2 w-1/3 ${className}`}
             onClick={() =>
               handleUpdateBookReadingStatus(
                 ReadingStatusEnum.READ,
@@ -195,15 +185,50 @@ export const BookButtons = () => {
                 userBookData
               )
             }
-          />
+          >
+            <div
+              className={`rounded-full ${
+                getIconSize({ size: iconSize }).className
+              } ${isBookRead ? "bg-primary" : "border-1"}
+              flex justify-center items-center"
+              `}
+            >
+              <FaCheck
+                style={{
+                  height: getIconSize({ size: iconSize }).heightPx,
+                  width: getIconSize({ size: iconSize }).widthPx,
+                  padding: 5,
+                }}
+                className={`!text-primary ${
+                  isBookRead ? "fill-background" : "fill-foreground"
+                } `}
+              />
+            </div>
+            <div className={`text-foreground text-lg`}>Read</div>
+          </div>
+          // <ButtonImage
+          //   title="Read"
+          //   Icon={isBookRead ? CheckmarkFill : FaCheck}
+          //   iconSize={iconSize}
+          //   selected={isBookRead}
+          //   className="w-1/3"
+          //   onClick={() =>
+          //     handleUpdateBookReadingStatus(
+          //       ReadingStatusEnum.READ,
+          //       book,
+          //       userBookData
+          //     )
+          //   }
+          // />
         )}
 
         {book && (
           <ButtonImage
             title="To Read"
             Icon={isBookToRead ? BookmarkFill : Bookmark}
-            iconSize="lg"
+            iconSize={iconSize}
             selected={isBookToRead}
+            className="w-1/3"
             onClick={() =>
               handleUpdateBookReadingStatus(
                 ReadingStatusEnum.TO_READ,
@@ -213,16 +238,17 @@ export const BookButtons = () => {
             }
           />
         )}
-        {showAddToListButton &&
-          ButtonImage({
-            title: "Add to list",
-            Icon: Plus,
-            iconSize: "sm",
-            selected: false,
-            buttonsColor,
-            onClick: () => handleAddBookToList(book),
-            iconClassName: classNameIcon,
-          })}
+        {showAddToListButton && (
+          <ButtonImage
+            title={"Add to list"}
+            Icon={Plus}
+            iconSize={iconSize}
+            className={"w-1/3"}
+            selected={false}
+            buttonsColor={buttonsColor}
+            onClick={() => handleAddBookToList(book)}
+          />
+        )}
       </div>
     );
   };

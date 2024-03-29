@@ -31,6 +31,7 @@ const BottomBar = () => {
               onClick={() => {
                 if (pathname.includes(item.path)) return;
                 router.push(item.path);
+                clearStack();
                 setSelected(item);
               }}
             >

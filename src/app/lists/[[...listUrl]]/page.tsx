@@ -106,7 +106,7 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
         books={userBooks.map((ubd) => ubd.bookData.book)}
         onNextPageScroll={nextPage}
         direction="row"
-        thumbnailSize="xl"
+        thumbnailSize="2xl"
       />
     </div>
   );
@@ -187,7 +187,7 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
             searchBooks(value);
           }}
           placeholder="Search in Your Books..."
-          className="w-search-bar"
+          className="pr-16"
         />
       </SearchBarIcon>
       <div className="flex gap-10 flex-grow flex-col h-full">

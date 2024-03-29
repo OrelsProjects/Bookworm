@@ -8,7 +8,7 @@ const BookGeneralDetails: React.FC<{
   authors?: string[] | null;
   goodreadsRating?: number | null;
 }> = ({ title, authors, goodreadsRating }) => (
-  <div className="h-full w-full flex flex-col gap-4">
+  <div className="h-full w-full flex flex-col gap-4 mt-2.5">
     <div>
       <Tooltip
         tooltipContent={

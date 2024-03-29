@@ -13,7 +13,6 @@ import Authors from "../book/authors";
 import BookButtons from "../book/bookButtons";
 import { useModal } from "../../hooks/useModal";
 import useBook from "../../hooks/useBook";
-import { getThumbnailSize } from "../../consts/thumbnail";
 import { ReadingStatusEnum } from "../../models/readingStatus";
 import { useSelector } from "react-redux";
 import { selectAuth } from "../../lib/features/auth/authSlice";

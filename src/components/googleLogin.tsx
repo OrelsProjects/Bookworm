@@ -24,12 +24,16 @@ export default function GoogleLogin({
         handleGoogleLogin();
       }}
       variant="outline"
-      className={`rounded-full w-full ${className}`}
+      className={`rounded-full w-max-full h-[50px] w-[50px] border-2 p-0 ${className}`}
     >
-      <div className="h-full w-full flex flex-row gap-2">
-        <img src="/google.png" alt="Google Logo" width={22} height={24} />
-        {text && <div className="font-normal text-base">{text}</div>}
-      </div>
+      <img
+        src="/google.png"
+        alt="Google Logo"
+        width={24}
+        height={26}
+        className="flex flex-shrink-0"
+      />
+      {text && <div className="font-normal text-base">{text}</div>}
     </Button>
   );
 }

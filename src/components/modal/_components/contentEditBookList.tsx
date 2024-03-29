@@ -246,7 +246,6 @@ const ContentEditBookList = ({
   });
 
   useEffect(() => {
-    debugger;
     const booksListData = booksListsData.find(
       (booksList) => booksList.listId === booksListId
     );
@@ -503,7 +502,7 @@ const ContentEditBookList = ({
               }}
               CustomSearchItem={SearchResult}
               CustomSearchItemSkeleton={() => (
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-6">
                   {Array.from(Array(5)).map((_, index) => (
                     <BookDetailsSkeleton
                       key={`book-details-skeleton-${index}`}

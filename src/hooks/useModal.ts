@@ -9,8 +9,16 @@ import {
 import { Book } from "../models";
 import { BooksListData, SafeBooksListData } from "../models/booksList";
 import { BookInList } from "../models/bookInList";
+import { useSelector } from "react-redux";
+import { AuthStateType, selectAuth } from "../lib/features/auth/authSlice";
+
+const modalsThatRequireAuth = [
+  ModalTypes.ADD_BOOK_TO_LIST,
+  ModalTypes.BOOKS_LIST_DETAILS_EDIT,
+];
 
 export const useModal = () => {
+  const { state } = useSelector(selectAuth);
   const dispatch = useDispatch();
 
   const onShowModal = (
@@ -21,21 +29,36 @@ export const useModal = () => {
 
   const clearStack = () => dispatch(clearStackAction());
 
+  const handleShowModal = (
+    data: any,
+    type: ModalTypes,
+    options?: ShowModalOptions
+  ) => {
+    if (
+      state !== AuthStateType.SIGNED_IN &&
+      modalsThatRequireAuth.includes(type)
+    ) {
+      showRegisterModal();
+      return;
+    }
+    onShowModal(data, type, options);
+  };
+
   const showAddBookToListModal = (data: Book) =>
-    onShowModal(data, ModalTypes.ADD_BOOK_TO_LIST);
+    handleShowModal(data, ModalTypes.ADD_BOOK_TO_LIST);
 
   const showBookDetailsModal = (data: {
     book?: Book;
     bookInList?: BookInList;
-  }) => onShowModal(data, ModalTypes.BOOK_DETAILS);
+  }) => handleShowModal(data, ModalTypes.BOOK_DETAILS);
 
   const showBookInListDetailsModal = (data: SafeBooksListData) =>
-    onShowModal(data, ModalTypes.BOOKS_LIST_DETAILS);
+    handleShowModal(data, ModalTypes.BOOKS_LIST_DETAILS);
 
   const showBooksListEditModal = (
     data?: BooksListData,
     options?: ShowModalOptions
-  ) => onShowModal(data, ModalTypes.BOOKS_LIST_DETAILS_EDIT, options);
+  ) => handleShowModal(data, ModalTypes.BOOKS_LIST_DETAILS_EDIT, options);
 
   const showBooksListModal = (
     data: {
@@ -43,7 +66,7 @@ export const useModal = () => {
       onBack?: () => void;
     },
     options?: ShowModalOptions
-  ) => onShowModal(data, ModalTypes.BOOKS_LIST_DETAILS, options);
+  ) => handleShowModal(data, ModalTypes.BOOKS_LIST_DETAILS, options);
 
   const showRegisterModal = () => onShowModal(null, ModalTypes.REGISTER);
 

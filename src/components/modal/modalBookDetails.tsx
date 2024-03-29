@@ -99,7 +99,7 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
   );
 
   const ButtonsRow = () => (
-    <Buttons book={book} iconSize="lg" showAddToListButton={!!user} />
+    <Buttons book={book} iconSize="sm" showAddToListButton={!!user} />
   );
 
   return (

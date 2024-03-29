@@ -27,14 +27,9 @@ const BookDetailsSkeleton: React.FC<BookDetailsProps> = ({
         }
         `}
       />
-      <div className="w-auto flex flex-col gap-1 overflow-visible flex-grow self-start pr-4">
-        <Skeleton className="w-full h-3 rounded-full flex-shrink" />
-        <div className="w-full flex flex-col gap-3">
-          <Skeleton className="w-full h-2 rounded-full invisible" />
-          <Skeleton className="w-full h-2 rounded-full flex-shrink" />
-          <Skeleton className="w-full h-2 rounded-full flex-shrink" />
-          <Skeleton className="w-full h-2 rounded-full flex-shrink" />
-        </div>
+      <div className="w-auto flex flex-col gap-2 overflow-visible flex-grow self-center pr-4">
+        <Skeleton className="w-3/4 h-2.5 rounded-full flex-shrink" />
+        <Skeleton className="w-2/4 h-2.5 rounded-full flex-shrink" />
       </div>
       <Skeleton className={`w-8 h-8 rounded-full`} /> {/* Icon Placeholder */}
     </div>

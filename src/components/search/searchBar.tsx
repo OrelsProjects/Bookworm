@@ -8,6 +8,7 @@ import {
   SearchBarComponent,
   SearchBarComponentProps,
 } from "./searchBarComponent";
+import { Skeleton } from "../ui/skeleton";
 
 const TOP_RESULTS_COUNT = 10;
 
@@ -93,7 +94,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
       <div className="flex flex-col gap-3">
         {loading ? (
           <>
-            <div className="font-bold text-2xl invisible pt-2">Books</div>
+            <Skeleton className="w-14 h-5 mt-5 rounded-full" />
             {CustomSearchItemSkeleton ? (
               <CustomSearchItemSkeleton />
             ) : (

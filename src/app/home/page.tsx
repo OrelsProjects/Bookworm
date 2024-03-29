@@ -38,7 +38,7 @@ export default function Home(): React.ReactNode {
           books={userBooks.map((ubd) => ubd.bookData.book)}
           onNextPageScroll={nextPage}
           direction="row"
-          thumbnailSize="3xl"
+          thumbnailSize="2xl"
         />
       </div>
     );
@@ -95,7 +95,7 @@ export default function Home(): React.ReactNode {
                   }
                   onNextPageScroll={nextPage}
                   direction="row"
-                  thumbnailSize="3xl"
+                  thumbnailSize="2xl"
                 />
               </div>
             ))}
@@ -123,7 +123,7 @@ export default function Home(): React.ReactNode {
   return (
     <div
       className={`h-full w-full flex flex-col relative justify-top items-start gap-10
-    ${searchFocused ? "overflow-auto" : ""}
+    ${searchFocused ? "" : ""}
     `}
     >
       <SearchBarIcon>

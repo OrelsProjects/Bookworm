@@ -48,7 +48,6 @@ export default function BooksListDefaultView({
                 book={bookInList.book}
                 iconSize="sm"
                 className="h-full !flex-col !gap-0"
-                classNameIcon="!gap-1"
                 showAddToListButton={false}
               />
             </div>

@@ -68,7 +68,7 @@ const ModalAddBookToList: React.FC<ModalBookDetailsProps> = ({
   };
 
   const MyReadlists = () => (
-    <div className="w-full flex flex-col gap-4">
+    <div className="w-full flex flex-col gap-4 pb-4">
       <div className="w-full flex flex-row gap-1 justify-start items-center">
         <BurgerLines.Fill iconSize="sm" className="!text-foreground" />
         <div className="text-xl font-bold leading-8">My Readlists</div>

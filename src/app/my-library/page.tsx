@@ -97,7 +97,7 @@ export default function MyLibrary(): React.ReactNode {
       {showFilterDropdown && (
         <div className="absolute top-full left-0 mt-1 z-40">
           <Dropdown
-            className="!w-fit min-w-[50%] max-w-[70%] max-h-56 overflow-auto"
+            className="!w-fit min-w-[30%] max-w-[50%] max-h-56 overflow-auto"
             expandType={ExpandType.TopRight}
             closeOnSelection={false}
             items={booksLists.map((list) => {
@@ -132,7 +132,7 @@ export default function MyLibrary(): React.ReactNode {
           onChange={(value: string) => searchBooks(value)}
           onSubmit={(value: string) => searchBooks(value)}
           placeholder="Search in Your Books..."
-          className="!w-search-bar"
+          className="pr-16"
         />
       </SearchBarIcon>
 

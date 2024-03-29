@@ -35,9 +35,7 @@ const Header = ({ className }: HeaderProps): React.ReactNode => {
               />
             </div>
           ) : (
-            <div className="pt-1.5">
               <GoogleLogin />
-            </div>
           )}
         </div>
       </div>

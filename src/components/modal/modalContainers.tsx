@@ -17,7 +17,7 @@ const TopSectionContainer: React.FC<
   ModalContentContainer & { thumbnail: React.ReactNode }
 > = ({ children, className, thumbnail }) => (
   <div
-    className={`w-full flex flex-row justify-start gap-2 relative pt-1 ${
+    className={`w-full flex flex-row justify-start gap-[5px] relative pt-1 ${
       className ?? ""
     }`}
   >
