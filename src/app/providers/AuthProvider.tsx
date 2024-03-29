@@ -47,7 +47,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         dispatch(
           setLoading({
             loading: true,
-            message: "Welcome back! Just a moment, we're grabbing your user :)",
+            message: "Hi there!\n Just a moment, we're grabbing your user :)",
           })
         );
         isLoadingUserFetch.current = true;
