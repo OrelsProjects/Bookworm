@@ -4,6 +4,7 @@ import useBooksList from "../../../hooks/useBooksList";
 import { BookInListWithBook } from "../../../models/bookInList";
 import { TextArea } from "../../ui/textarea";
 import { BooksListData } from "../../../models/booksList";
+import { CanceledError } from "axios";
 
 interface CommentAreaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -62,6 +63,9 @@ export const CommentsArea: React.FC<CommentAreaProps> = ({
       await updateBooksList({ ...updateObject });
       setLoading(false);
     } catch (e: any) {
+      if (e instanceof CanceledError) {
+        return;
+      }
       toast.error("Failed to update.. We are on it 🛠️");
     } finally {
       setLoading(false);

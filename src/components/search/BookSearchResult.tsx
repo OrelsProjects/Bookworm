@@ -78,7 +78,7 @@ const BookSearchResult: React.FC<BookComponentProps> = ({ book }) => {
             }}
           >
             <CheckmarkIcon
-              className={`text-2xl w-4 h-4 ${
+              className={`text-2xl w-5 h-5 ${
                 isBookRead ? "!text-primary" : ""
               }`}
             />
@@ -92,7 +92,7 @@ const BookSearchResult: React.FC<BookComponentProps> = ({ book }) => {
             }}
           >
             <BookmarkIcon
-              className={`text-2xl w-4 h-4 ml-1 ${
+              className={`text-2xl w-5 h-5 ml-1 ${
                 isBookToRead ? "!text-primary" : ""
               }`}
             />
@@ -106,7 +106,7 @@ const BookSearchResult: React.FC<BookComponentProps> = ({ book }) => {
                 handleAddBookToList(book);
               }}
             >
-              <Plus className="text-2xl w-4 h-4" />
+              <Plus className="text-2xl w-5 h-5" />
               <div className="leading-4">Readlist</div>
             </div>
           )}

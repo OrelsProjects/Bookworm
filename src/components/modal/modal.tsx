@@ -29,24 +29,12 @@ export interface ModalProps {
   children?: React.ReactNode;
 }
 
-const BackButton = ({ onClick }: { onClick?: () => void }) => (
-  <motion.div
-    className="h-6 w-6 fixed top-2 left-2 z-30"
-    whileHover={{ scale: 1.2 }}
-  >
-    <div
-      className="bg-background h-10 w-10 rounded-full shadow-sm shadow-background flex justify-center items-center"
-      onClick={onClick}
-    >
-      <IoArrowBack className="!text-foreground !w-6 !h-6" />
-    </div>
-  </motion.div>
-);
-
 const TopBarCollapsed = ({
   children,
   scrollRef,
+  onClose,
 }: {
+  onClose?: () => void;
   children: React.ReactNode;
   scrollRef?: React.RefObject<HTMLDivElement>;
 }) => {
@@ -74,10 +62,31 @@ const TopBarCollapsed = ({
       className="w-full h-fit bg-background fixed top-0 left-0 z-30 flex justify-start items-center flex-shrink-0"
       style={{ opacity: currentScrollPosition }}
     >
+      <BackButton onClick={onClose} className="!top-2 !left-2 fixed" />
       {children}
     </div>
   );
 };
+
+const BackButton = ({
+  onClick,
+  className,
+}: {
+  onClick?: () => void;
+  className?: string;
+}) => (
+  <motion.div
+    className={`h-6 w-6 absolute top-[25px] left-[31px] z-30 ${className}`}
+    whileHover={{ scale: 1.2 }}
+  >
+    <div
+      className="bg-background h-10 w-10 rounded-full shadow-sm shadow-background flex justify-center items-center"
+      onClick={onClick}
+    >
+      <IoArrowBack className="!text-foreground !w-6 !h-6" />
+    </div>
+  </motion.div>
+);
 
 const Modal: React.FC<ModalProps> = ({
   isOpen,
@@ -100,30 +109,6 @@ const Modal: React.FC<ModalProps> = ({
 
     return () => window.removeEventListener("popstate", handleBackButtonClick);
   }, []);
-
-  // const BackgroundDiv = ({
-  //   isOpen,
-  //   innerRef,
-  //   children,
-  //   ...props
-  // }: {
-  //   isOpen: boolean;
-  //   innerRef?: React.RefObject<HTMLDivElement>;
-  //   children: React.ReactNode;
-  //   className?: string;
-  //   props?: any;
-  // }) =>
-  //   useMemo(
-  //     () =>
-  //       shouldAnimate ? (
-  //         <OpacityDiv isOpen={isOpen} innerRef={innerRef} {...props}>
-  //           {children}
-  //         </OpacityDiv>
-  //       ) : (
-  //         <div {...props}>{children}</div>
-  //       ),
-  //     [isOpen, innerRef, children, props]
-  //   );
 
   const ContentDiv: React.FC<ContentDivProps> = ({}) =>
     useMemo(() => {
@@ -151,17 +136,18 @@ const Modal: React.FC<ModalProps> = ({
   return (
     <div
       className="absolute top-0 left-0 right-0 bottom-0 w-full h-full z-40 overscroll-none overflow-auto bg-background"
+      style={{ height, width }}
       ref={scrollableDivRef}
       id="modal"
     >
+      <TopBarCollapsed scrollRef={scrollableDivRef} onClose={onClose}>
+        {topBarCollapsed}
+      </TopBarCollapsed>
       <OpacityDiv innerRef={modalRef} key="modal-background" isOpen={isOpen}>
         <div
           className="w-full h-full overscroll-none bg-background relative"
           ref={scrollableDivRef}
         >
-          <TopBarCollapsed scrollRef={scrollableDivRef}>
-            {topBarCollapsed}
-          </TopBarCollapsed>
           <BackButton onClick={onClose} />
           <div className="flex justify-center items-center relative w-full h-full z-20 pb-4">
             <div

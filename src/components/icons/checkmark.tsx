@@ -1,8 +1,8 @@
-import { GrCheckmark } from "react-icons/gr";
+import { FaCheck } from "react-icons/fa6";
 import { Icon, IconFill, IconOutline } from "./iconContainer";
 
 export const Checkmark: Icon = {
-  Default: GrCheckmark,
-  Fill: IconFill(GrCheckmark),
-  Outline: IconOutline(GrCheckmark),
+  Default: FaCheck,
+  Fill: IconFill(FaCheck),
+  Outline: IconOutline(FaCheck),
 };

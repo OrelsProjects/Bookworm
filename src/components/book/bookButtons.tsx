@@ -2,7 +2,6 @@ import React, { useMemo } from "react";
 import { CiCirclePlus as Plus } from "react-icons/ci";
 import { CiBookmark as Bookmark } from "react-icons/ci";
 import { IoBookmark as BookmarkFill } from "react-icons/io5";
-import { IoCheckmarkCircle as CheckmarkFill } from "react-icons/io5";
 import { FaCheck } from "react-icons/fa6";
 
 import { Book, UserBookData } from "../../models";

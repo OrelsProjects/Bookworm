@@ -28,7 +28,11 @@ export async function GET(req: NextRequest) {
         },
       }
     );
-    const booksWithColors = await setThumbnailColorsToBooks(books);
+    let top3BooksWithColors = books.slice(0, 3);
+    const restOfBooks = books.slice(3);
+    top3BooksWithColors = await setThumbnailColorsToBooks(top3BooksWithColors);
+    const booksWithColors = top3BooksWithColors.concat(restOfBooks);
+
     return NextResponse.json({ result: booksWithColors }, { status: 200 });
   } catch (error: any) {
     Logger.error("Error getting google books", getUserIdFromRequest(req), {

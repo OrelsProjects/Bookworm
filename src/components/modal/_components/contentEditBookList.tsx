@@ -250,8 +250,6 @@ const ContentEditBookList = ({
     const booksListData = booksListsData.find(
       (booksList) => booksList.listId === booksListId
     );
-    const x = booksListData;
-    debugger;
     setCurrentBookList(booksListData);
     booksListData?.booksInList?.forEach((bookInList) => {
       formik.setFieldValue(
@@ -265,8 +263,6 @@ const ContentEditBookList = ({
     const booksListData = booksListsData.find(
       (booksList) => booksList.listId === booksListId
     );
-    const x = booksListData;
-    debugger;
     if (!booksListData) return;
     const url = decodeURIComponent(booksListData.publicURL ?? "");
     window.history.pushState(window.history.state, "", url);

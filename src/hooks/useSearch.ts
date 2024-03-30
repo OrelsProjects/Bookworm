@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { debounce } from "lodash";
 import { Book } from "../models";
@@ -19,10 +19,12 @@ export interface UseSearchResult {
 
 function useSearch(): UseSearchResult {
   const [searchValue, setSearchValue] = useState<string>("");
+  const searchValueRef = useRef<string>("");
   const [results, setResults] = useState<Book[] | null>(null);
   const [resultsToUpdate, setResultsToUpdate] = useState<Book[] | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [lastSearchTime, setLastSearchTime] = useState<number>(0);
 
   const searchCancelToken = axios.CancelToken.source();
 
@@ -31,6 +33,7 @@ function useSearch(): UseSearchResult {
       return;
     }
     setSearchValue(value);
+    searchValueRef.current = value;
   };
 
   const updateResults = (value: Book[] | null) => {
@@ -55,9 +58,6 @@ function useSearch(): UseSearchResult {
       if (!value) {
         return [];
       }
-      if (!slugify(value)) {
-        return [];
-      }
       EventTracker.track("User search new book", { query: value });
       const response = await axios.get<IResponse<Book[]>>(
         `/api/google-books?query=${value}`,
@@ -65,16 +65,23 @@ function useSearch(): UseSearchResult {
           cancelToken: searchCancelToken.token,
         }
       );
+      if (value !== searchValueRef.current) {
+        return;
+      }
       const books: Books = response.data.result ?? [];
       setResultsToUpdate(books);
     } catch (error: any) {
       if (axios.isCancel(error)) {
         return;
       }
+      debugger;
       Logger.error("Failed to fetch books", { error, data: { query: value } });
       setError(error.message);
       return [];
     } finally {
+      if (searchValueRef.current && searchValueRef.current !== value) {
+        return;
+      }
       setLoading(false);
     }
   };
