@@ -12,7 +12,7 @@ import { Book } from "../../models";
 import { isBooksEqual } from "../../utils/bookUtils";
 import { CommentsArea } from "../modal/_components/commentsArea";
 import { useModal } from "../../hooks/useModal";
-import { EmptyList } from "../../app/lists/[[...listUrl]]/page";
+import { EmptyList } from "../emptyList";
 
 interface EndElementProps {
   onEndElementClick: (booksList: BooksListData) => void;
