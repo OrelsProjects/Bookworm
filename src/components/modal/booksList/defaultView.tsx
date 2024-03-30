@@ -30,7 +30,7 @@ export default function BooksListDefaultView({
           onClick={(e) => {
             e.stopPropagation();
             showBookDetailsModal({
-              book: bookInList.book,
+              bookData: bookInList.book,
               bookInList,
             });
           }}
