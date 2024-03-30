@@ -95,14 +95,15 @@ const ModalProvider: React.FC = () => {
     let books: Books = [];
     switch (type) {
       case ModalTypes.BOOK_DETAILS:
+        const bookData = (data as ModalBookDetailsProps).bookData;
         thumbnail = (
           <BookThumbnail
-            src={data?.book?.thumbnailUrl}
+            src={bookData?.thumbnailUrl}
             thumbnailSize={thumbnailSize}
             className={rounded}
           />
         );
-        title = data?.book?.title ?? "";
+        title = bookData.title ?? "";
         break;
       case ModalTypes.ADD_BOOK_TO_LIST:
         thumbnail = (

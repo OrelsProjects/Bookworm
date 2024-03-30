@@ -15,7 +15,7 @@ import { selectAuth } from "../../lib/features/auth/authSlice";
 import { UserBookData } from "../../models/userBook";
 
 export interface ModalBookDetailsProps {
-  bookData: Book | UserBookData;
+  bookData: Book;
   bookInList?: BookInList;
   curator?: string;
 }
@@ -45,14 +45,6 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
     return bookData as Book;
   }, [bookData]);
 
-  const userBookData: UserBookData | null = useMemo(() => {
-    try {
-      return bookData as UserBookData;
-    } catch (e) {
-      return null;
-    }
-  }, [bookData]);
-
   const bookFullData = useMemo(() => {
     return getBookFullData(book);
   }, [userBooksData]);
@@ -61,8 +53,7 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
     setTitle(bookFullData?.bookData?.book?.title ?? book?.title);
     setAuthors(bookFullData?.bookData?.book?.authors ?? book?.authors);
     setGoodreadsRating(
-      bookFullData?.goodreadsData?.goodreadsRating ??
-        userBookData?.goodreadsData?.goodreadsRating
+      bookFullData?.goodreadsData?.goodreadsRating
     );
   }, [userBooksData]);
 
