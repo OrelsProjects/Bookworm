@@ -5,6 +5,7 @@ import { CreateBookBody, CreateBooksResponse } from "@/src/models/book";
 import { IResponse } from "@/src/models/dto/response";
 
 import { NextRequest, NextResponse } from "next/server";
+import { getAverageColor } from "../_utils/thumbnailUtils";
 
 export async function POST(
   req: NextRequest
@@ -15,10 +16,12 @@ export async function POST(
     if (book === null) {
       throw new Error("Missing book object");
     }
+    book.thumbnailColor = await getAverageColor(book.thumbnailUrl);
     const { bookId, ...bookNoId } = book;
     const createBookBody: CreateBookBody = {
       books: [bookNoId],
     };
+
     const axios = GetAxiosInstance(req);
     const response = await axios.post<CreateBooksResponse>(
       "/books",
