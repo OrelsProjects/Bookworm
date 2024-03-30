@@ -20,7 +20,8 @@ import { BooksListData } from "../../../models/booksList";
 
 export default function BooksListGridView({
   safeBooksListData,
-}: BooksListViewProps) {
+  curator,
+}: BooksListViewProps & { curator?: string }) {
   const thumbnailSize = "3xl";
   const {
     getBookFullData,
@@ -161,8 +162,9 @@ export default function BooksListGridView({
             onClick={(e) => {
               e.stopPropagation();
               showBookDetailsModal({
-                book: bookInList.book,
+                bookData: bookInList.book,
                 bookInList,
+                curator,
               });
             }}
           >

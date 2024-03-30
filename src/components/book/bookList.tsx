@@ -33,7 +33,7 @@ const BookList: React.FC<BookListProps> = ({
     scrollDirection: direction === "row" ? "width" : "height",
   });
 
-  const onBookClick = (book?: Book) => showBookDetailsModal({ book: book });
+  const onBookClick = (book: Book) => showBookDetailsModal({ bookData: book });
   const onAddBookClick = (book?: Book) => showAddBookToListModal(book as Book);
 
   return (
@@ -52,7 +52,9 @@ const BookList: React.FC<BookListProps> = ({
       {books.map((book) => (
         <div
           onClick={() => {
-            onBookClick(book);
+            if (book) {
+              onBookClick(book);
+            }
           }}
           className="h-fit"
           key={`book-in-books-list-${book?.bookId}`}

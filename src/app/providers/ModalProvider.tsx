@@ -11,7 +11,9 @@ import { RootState } from "@/src/lib/store";
 import { Book } from "@/src/models";
 import React, { useCallback, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import ModalBookDetails from "../../components/modal/modalBookDetails";
+import ModalBookDetails, {
+  ModalBookDetailsProps,
+} from "../../components/modal/modalBookDetails";
 import Modal from "../../components/modal/modal";
 import { BooksListData } from "../../models/booksList";
 import { darkenColor } from "../../utils/thumbnailUtils";
@@ -186,13 +188,10 @@ const ModalProvider: React.FC = () => {
   };
 
   const RenderBookDetails = useCallback(
-    (data?: { book: Book; bookInList?: BookInList }) =>
+    (data?: ModalBookDetailsProps) =>
       data && (
         <RenderModal type={ModalTypes.BOOK_DETAILS}>
-          <ModalBookDetails
-            bookData={data?.book}
-            bookInList={data.bookInList}
-          />
+          <ModalBookDetails {...data} />
         </RenderModal>
       ),
     [shouldRenderBookDetailsModal]

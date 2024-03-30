@@ -1,7 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../lib/store";
 import { Logger } from "../logger";
 import {
   setRecommendationsLoading,

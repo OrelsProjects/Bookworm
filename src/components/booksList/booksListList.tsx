@@ -12,6 +12,7 @@ import { Book } from "../../models";
 import { isBooksEqual } from "../../utils/bookUtils";
 import { CommentsArea } from "../modal/_components/commentsArea";
 import { useModal } from "../../hooks/useModal";
+import { EmptyList } from "../../app/lists/[[...listUrl]]/page";
 
 interface EndElementProps {
   onEndElementClick: (booksList: BooksListData) => void;
@@ -70,93 +71,97 @@ const BooksListList: React.FC<Props> = ({
       ${disableScroll ? "" : "overflow-auto"} relative`}
       ref={scrollableDivRef}
     >
-      {booksListsData?.map((listData) => (
-        <div
-          className="h-full w-full flex flex-col gap-2"
-          key={`books-list-${listData.listId}`}
-        >
+      {booksListsData?.length ?? 0 > 0 ? (
+        booksListsData?.map((listData) => (
           <div
-            className="w-full h-full flex flex-row gap-2"
-            onClick={() => onListClick(listData)}
+            className="h-full w-full flex flex-col gap-2"
             key={`books-list-${listData.listId}`}
           >
-            <BooksListThumbnail
-              books={
-                listData?.booksInList?.map((bookInList) => bookInList.book) ??
-                []
-              }
-              alt={`${listData.name} list thumbnail`}
-              className="flex-shrink-0"
-              thumbnailSize={bookThumbnailSize}
-            />
-            <div className="flex flex-col w-full flex-shrink">
-              <div className="text-lg font-semibold line-clamp-1 leading-7">
-                {listData.name}
-              </div>
-              <div className="text-sm font-light line-clamp-3 leading-5">
-                {listData.description}
-              </div>
-              {bottomElementProps && (
-                <div className="w-full flex flex-row justify-end self-end  mt-auto ml-auto gap-6">
-                  <div className="flex flex-col gap-1 justify-center items-center">
-                    <Add.Fill
-                      className="!text-background bg-foreground rounded-full p-1"
-                      iconSize="xs"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        bottomElementProps.onAddBookClick(listData);
-                      }}
-                    />
-                    <div className="text-sm text-foreground">Add Book</div>
+            <div
+              className="w-full h-full flex flex-row gap-2"
+              onClick={() => onListClick(listData)}
+              key={`books-list-${listData.listId}`}
+            >
+              <BooksListThumbnail
+                books={
+                  listData?.booksInList?.map((bookInList) => bookInList.book) ??
+                  []
+                }
+                alt={`${listData.name} list thumbnail`}
+                className="flex-shrink-0"
+                thumbnailSize={bookThumbnailSize}
+              />
+              <div className="flex flex-col w-full flex-shrink">
+                <div className="text-lg font-semibold line-clamp-1 leading-7">
+                  {listData.name}
+                </div>
+                <div className="text-sm font-light line-clamp-3 leading-5">
+                  {listData.description}
+                </div>
+                {bottomElementProps && (
+                  <div className="w-full flex flex-row justify-end self-end  mt-auto ml-auto gap-6">
+                    <div className="flex flex-col gap-1 justify-center items-center">
+                      <Add.Fill
+                        className="!text-background bg-foreground rounded-full p-1"
+                        iconSize="xs"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          bottomElementProps.onAddBookClick(listData);
+                        }}
+                      />
+                      <div className="text-sm text-foreground">Add Book</div>
+                    </div>
+                    <div className="flex flex-col gap-1 justify-center items-center">
+                      <Share.Fill
+                        iconSize="xs"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          bottomElementProps.onShareClick(listData);
+                        }}
+                        className="!text-foreground"
+                      />
+                      <div className="text-sm text-foreground">Share Link</div>
+                    </div>
                   </div>
-                  <div className="flex flex-col gap-1 justify-center items-center">
-                    <Share.Fill
-                      iconSize="xs"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        bottomElementProps.onShareClick(listData);
-                      }}
-                      className="!text-foreground"
-                    />
-                    <div className="text-sm text-foreground">Share Link</div>
-                  </div>
+                )}
+              </div>
+              {endElementProps && (
+                <div
+                  className="flex flex-col justify-center items-center ml-auto"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    endElementProps.onEndElementClick(listData);
+                  }}
+                >
+                  <Checkbox
+                    checkedComponent={
+                      <Checkmark.Fill
+                        iconSize="lg"
+                        className="!text-background bg-primary rounded-full p-1"
+                      />
+                    }
+                    uncheckedComponent={
+                      <Circle.Fill iconSize="lg" className="!text-foreground" />
+                    }
+                    checked={isBookInList(listData)}
+                  />
                 </div>
               )}
             </div>
-            {endElementProps && (
-              <div
-                className="flex flex-col justify-center items-center ml-auto"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  endElementProps.onEndElementClick(listData);
-                }}
-              >
-                <Checkbox
-                  checkedComponent={
-                    <Checkmark.Fill
-                      iconSize="lg"
-                      className="!text-background bg-primary rounded-full p-1"
-                    />
-                  }
-                  uncheckedComponent={
-                    <Circle.Fill iconSize="lg" className="!text-foreground" />
-                  }
-                  checked={isBookInList(listData)}
-                />
-              </div>
+            {isBookInList(listData) && (
+              <CommentsArea
+                className="w-full"
+                bookInList={listData.booksInList?.find((bookInList) =>
+                  isBooksEqual(bookInList.book, endElementProps?.book)
+                )}
+                placeholder="Leave your comment here..."
+              />
             )}
           </div>
-          {isBookInList(listData) && (
-            <CommentsArea
-              className="w-full"
-              bookInList={listData.booksInList?.find((bookInList) =>
-                isBooksEqual(bookInList.book, endElementProps?.book)
-              )}
-              placeholder="Leave your comment here..."
-            />
-          )}
-        </div>
-      ))}
+        ))
+      ) : (
+        <EmptyList classNameButton="mt-4" />
+      )}
     </div>
   );
 };

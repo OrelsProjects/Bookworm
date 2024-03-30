@@ -10,7 +10,6 @@ import BooksListGridView from "./gridView";
 export const ModalBooksList = <T extends SafeBooksListData>({
   safeBooksListData,
 }: ModalBooksListProps<T>) => {
-
   const ThumbnailDetails = (
     <div className="w-full h-full justify-start items-start">
       <Tooltip
@@ -43,12 +42,19 @@ export const ModalBooksList = <T extends SafeBooksListData>({
       thumbnailDetails={ThumbnailDetails}
       buttonsRow={
         <div className="h-fit w-full flex flex-col justify-between">
-          <ReadMoreText className="text-lg font-light leading-[30px]" text={safeBooksListData?.description} maxLines={2} />
+          <ReadMoreText
+            className="text-lg font-light leading-[30px]"
+            text={safeBooksListData?.description}
+            maxLines={2}
+          />
           <div className="flex flex-row gap-1 w-fit font-bold text-base"></div>
         </div>
       }
       bottomSection={
-        <BooksListGridView safeBooksListData={safeBooksListData} />
+        <BooksListGridView
+          safeBooksListData={safeBooksListData}
+          curator={safeBooksListData?.curatorName}
+        />
       }
     />
   );

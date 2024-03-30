@@ -14,18 +14,21 @@ import { useSelector } from "react-redux";
 import { selectAuth } from "../../lib/features/auth/authSlice";
 import { UserBookData } from "../../models/userBook";
 
-type ModalBookDetailsProps = {
+export interface ModalBookDetailsProps {
   bookData: Book | UserBookData;
   bookInList?: BookInList;
-};
+  curator?: string;
+}
 
 const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
   bookData,
   bookInList,
+  curator,
 }) => {
   const { user } = useSelector(selectAuth);
   const { Buttons } = BookButtons();
   const { getBookFullData, userBooksData } = useBook();
+
   const [title, setTitle] = React.useState<string | null>(null);
   const [authors, setAuthors] = React.useState<string[] | undefined | null>(
     null
@@ -33,6 +36,10 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
   const [goodreadsRating, setGoodreadsRating] = React.useState<
     number | undefined | null
   >(null);
+
+  const curatorsFirstNames = useMemo(() => {
+    return curator?.split(" ")[0];
+  }, [curator]);
 
   const book: Book | null = useMemo(() => {
     return bookData as Book;
@@ -59,10 +66,24 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
     );
   }, [userBooksData]);
 
-  const Summary = () =>
-    book?.description ? (
-      <div className="w-full flex relative flex-col justify-start gap-1">
-        <div className="flex flex-col gap-4 text-foreground h-full font-thin shadow-inner pb-6">
+  const Summary = () => (
+    <div className="w-full flex relative flex-col justify-start gap-1">
+      <div className="flex flex-col gap-4 text-foreground h-full font-thin shadow-inner pb-6">
+        {bookInList && bookInList.comments && (
+          <div>
+            <div className="text-foreground font-bold text-xl">
+              {curatorsFirstNames + "'s" ?? "List Creator"} Comment
+            </div>
+            {bookInList.comments ? (
+              <ReadMoreText text={bookInList.comments} maxLines={3} />
+            ) : (
+              <div>
+                {curator ?? "The List Creator"} Didn't Add His Comment Yet
+              </div>
+            )}
+          </div>
+        )}
+        {book?.description && (
           <div>
             <div className="text-foreground font-bold text-xl">Summary</div>
             <ReadMoreText
@@ -71,24 +92,11 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
               className={"text-xl text-foreground font-thin !overflow-none"}
             />
           </div>
-          {bookInList && (
-            <div>
-              <div className="text-foreground font-bold text-xl">
-                List Creator Comment
-              </div>
-              {bookInList.comments ? (
-                <ReadMoreText text={bookInList.comments} maxLines={3} />
-              ) : (
-                <div>The List Creator Didn't Add His Comment Yet</div>
-              )}
-            </div>
-          )}
-        </div>
-        <div className="absolute bottom-0 w-full extra-text-shadow"></div>
+        )}
       </div>
-    ) : (
-      <></>
-    );
+      <div className="absolute bottom-0 w-full extra-text-shadow"></div>
+    </div>
+  );
 
   const Thumbnail = () => (
     <BookThumbnail

@@ -54,7 +54,7 @@ const BookSearchResult: React.FC<BookComponentProps> = ({ book }) => {
       className={`flex flex-row justify-start items-start gap-2 w-full`}
       onClick={(e) => {
         e.stopPropagation();
-        showBookDetailsModal({ book });
+        showBookDetailsModal({ bookData: book });
       }}
     >
       <div className="flex-shrink-0">

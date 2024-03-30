@@ -8,9 +8,9 @@ import {
 } from "../lib/features/modal/modalSlice";
 import { Book } from "../models";
 import { BooksListData, SafeBooksListData } from "../models/booksList";
-import { BookInList } from "../models/bookInList";
 import { useSelector } from "react-redux";
 import { AuthStateType, selectAuth } from "../lib/features/auth/authSlice";
+import { ModalBookDetailsProps } from "../components/modal/modalBookDetails";
 
 const modalsThatRequireAuth = [
   ModalTypes.ADD_BOOK_TO_LIST,
@@ -47,10 +47,8 @@ export const useModal = () => {
   const showAddBookToListModal = (data: Book) =>
     handleShowModal(data, ModalTypes.ADD_BOOK_TO_LIST);
 
-  const showBookDetailsModal = (data: {
-    book?: Book;
-    bookInList?: BookInList;
-  }) => handleShowModal(data, ModalTypes.BOOK_DETAILS);
+  const showBookDetailsModal = (data: ModalBookDetailsProps) =>
+    handleShowModal(data, ModalTypes.BOOK_DETAILS);
 
   const showBookInListDetailsModal = (data: SafeBooksListData) =>
     handleShowModal(data, ModalTypes.BOOKS_LIST_DETAILS);
