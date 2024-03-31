@@ -20,6 +20,22 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   // manifest: "/manifest.json",
   title: "BookWiz",
+  openGraph: {
+    title: "BookWiz",
+    description: "BookWiz",
+    type: "website",
+    locale: "en_US",
+    url: "https://www.bookwiz.app",
+    siteName: "BookWiz",
+    images: [
+      {
+        url: "https://bookwiz.app/favicon.ico",
+        width: 800,
+        height: 600,
+        alt: "BookWiz",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({

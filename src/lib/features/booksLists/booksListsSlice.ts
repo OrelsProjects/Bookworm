@@ -63,7 +63,7 @@ const booksListsSlice = createSlice({
         (list) => list.listId === action.payload
       );
       if (index !== -1) {
-        state.booksListsData.splice(index, 1);
+        state.booksListsData = state.booksListsData.splice(index, 1);
       }
     },
     addBookToList: (state, action: PayloadAction<BookInListWithBook>) => {
