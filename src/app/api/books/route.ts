@@ -16,7 +16,6 @@ export async function POST(
     if (book === null) {
       throw new Error("Missing book object");
     }
-    book.thumbnailColor = await getAverageColor(book.thumbnailUrl);
     const { bookId, ...bookNoId } = book;
     const createBookBody: CreateBookBody = {
       books: [bookNoId],
