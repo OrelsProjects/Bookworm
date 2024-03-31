@@ -20,6 +20,7 @@ import { IResponse } from "../models/dto/response";
 import { DuplicateError } from "../models/errors/duplicateError";
 import { BookInList, BookInListWithBook } from "../models/bookInList";
 import { LoadingError } from "../models/errors/loadingError";
+import useBook from "./useBook";
 
 const BOOK_LIST_DATA_KEY = "booksListData";
 
@@ -93,7 +94,7 @@ const useBooksList = () => {
     (state: RootState) => state.booksLists.booksListsData
   );
   const [booksListsData, setBooksListsData] = useState<BooksListData[]>([]);
-
+  const { addBook } = useBook();
   const updateBooksListCancelToken = axios.CancelToken.source();
   const updateBookInListCancelToken = axios.CancelToken.source();
 
@@ -274,9 +275,14 @@ const useBooksList = () => {
     }
     loading.current = true;
     try {
+      let newBook = { ...book };
+      debugger
+      if (!book.bookId) {
+        newBook = await addBook(book);
+      }
       const response = await axios.post<BookInList>(`/api/list/book`, {
         listId,
-        bookId: book.bookId,
+        bookId: newBook.bookId,
       });
       const bookInList = response.data;
       const bookInListWithBook = { ...bookInList, book };
@@ -313,7 +319,6 @@ const useBooksList = () => {
   };
 
   const updateBookInList = async (bookInList: BookInList) => {
-
     try {
       await axios.patch(`/api/list/book`, bookInList, {
         cancelToken: updateBookInListCancelToken.token,
