@@ -73,7 +73,11 @@ const ModalProvider: React.FC = () => {
     const defaultColor = "rgb(180,180,180)";
     switch (type) {
       case ModalTypes.BOOK_DETAILS:
-        return darkenColor(data?.book?.thumbnailColor) ?? defaultColor;
+        return (
+          darkenColor(
+            (data as ModalBookDetailsProps)?.bookData?.thumbnailColor
+          ) ?? defaultColor
+        );
       case ModalTypes.BOOKS_LIST_DETAILS_EDIT:
         const firstBookEdit = data?.booksInList?.[0]?.book;
         return darkenColor(firstBookEdit?.thumbnailColor) ?? defaultColor;
