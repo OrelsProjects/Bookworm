@@ -17,8 +17,8 @@ import ModalBookDetails, {
 import Modal from "../../components/modal/modal";
 import { BooksListData } from "../../models/booksList";
 import { darkenColor } from "../../utils/thumbnailUtils";
-import ModalAddBookToList from "../../components/modal/modalAddBookToList";
-import ModalBooksListEdit from "../../components/modal/modalBooksListEdit";
+import ModalAddBookToList from "../../components/modal/addBookToList/modalAddBookToList";
+import ModalBooksListEdit from "../../components/modal/booksListEdit/modalBooksListEdit";
 import { usePathname, useRouter } from "next/navigation";
 import { BookInList, BookInListWithBook } from "../../models/bookInList";
 import { ModalBooksList } from "../../components/modal/booksList/modalBooksList";
