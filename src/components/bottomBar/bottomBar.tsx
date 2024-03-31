@@ -21,7 +21,7 @@ const BottomBar = () => {
   }, [pathname]);
 
   return (
-    <div className="w-full h-fit flex flex-row justify-center z-50 absolute">
+    <div className="w-full h-fit flex flex-row justify-center z-40 absolute">
       <div className="flex items-center justify-between gap-4 w-max bg-foreground rounded-xl fixed bottom-8 py-3 px-7">
         {bottomBarItems.map((item) => {
           return (

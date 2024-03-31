@@ -47,17 +47,17 @@ export default function RootLayout({
             <NavigationProvider>
               <APIProvider>
                 <DataProvider>
-                  <BrowserDetector>
-                    <HeightProvider className=" py-10 px-7.5 flex flex-col z-20 tracking-semiwide relative overflow-clip">
+                  <HeightProvider className=" py-10 px-7.5 flex flex-col z-20 tracking-semiwide relative overflow-clip">
+                    <BrowserDetector>
                       <div className="w-full h-full overflow-auto scrollbar-hide font-roboto">
                         <Header className="h-fit w-fit" />
                         <AnimationProvider>{children}</AnimationProvider>
                       </div>
-                      <ModalProvider />
-                    </HeightProvider>
-                  </BrowserDetector>
-                  <BottomBarProvider />
-                  <Toaster />
+                    </BrowserDetector>
+                    <ModalProvider />
+                    <BottomBarProvider />
+                    <Toaster />
+                  </HeightProvider>
                 </DataProvider>
               </APIProvider>
             </NavigationProvider>

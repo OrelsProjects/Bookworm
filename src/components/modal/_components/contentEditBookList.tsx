@@ -228,7 +228,6 @@ const ContentEditBookList = ({
     createBooksList,
     addBookToList,
     removeBookFromList,
-    updateBooksInList,
     updateBooksInListPositions,
     loading: loadingList,
   } = useBooksList();
