@@ -34,12 +34,13 @@ import { TextArea } from "../../ui/textarea";
 import BookThumbnail from "../../book/bookThumbnail";
 import { Cancel } from "../../icons/cancel";
 import GripLines from "../../icons/gripLines";
-import { CommentsArea } from "./commentsArea";
-import { buildFormikValueName } from "../modalBooksListEdit";
+import { CommentsArea } from "../_components/commentsArea";
+import { buildFormikValueName } from "./modalBooksListEdit";
 import { useSelector } from "react-redux";
 import { selectBooksLists } from "../../../lib/features/booksLists/booksListsSlice";
+import ListBooks from "./dragAndDropBooksInList";
 
-interface ListBookAndBookDetailsProps {
+export interface ListBookAndBookDetailsProps {
   onAddNewBookClick?: () => void;
   onDeleteBookClick: (bookInList: BookInList) => void;
   onChange: (
@@ -51,176 +52,16 @@ interface ListBookAndBookDetailsProps {
   key?: string;
 }
 
-interface ListBookProps extends ListBookAndBookDetailsProps {
-  booksInList?: BookInListWithBook[];
-  onPositionChange: (booksInListWithBook: BookInListWithBook[]) => void;
-}
-
-interface BookInListDetailsProps extends ListBookAndBookDetailsProps {
-  bookInList?: BookInListWithBook;
-  position: number;
-}
-
-const BookInListDetails: React.FC<BookInListDetailsProps> = ({
-  bookInList,
-  onDeleteBookClick,
-  name,
-  key,
-  position,
-}) => {
-  return (
-    <div className="w-full flex flex-row gap-2 justify-start items-start relative">
-      <div className="flex flex-col justify-center items-center text-sm absolute -left-6 top-1/3">
-        <div className="">#{position}</div>
-        <GripLines className="!text-foreground w-4 h-4" />
-      </div>
-      <BookThumbnail
-        book={bookInList?.book}
-        className="flex-shrink-0"
-        Icon={
-          <div className="absolute-center overflow-hidden rounded-full">
-            {bookInList?.book ? (
-              <Cancel.Fill
-                className="!text-foreground !bg-background border-none rounded-full p-1"
-                iconSize="md"
-                key={`delete-book-${bookInList.book.bookId}`}
-                onClick={() => onDeleteBookClick(bookInList)}
-              />
-            ) : (
-              <Add.Outline iconClassName="!text-foreground" iconSize="md" />
-            )}
-          </div>
-        }
-        thumbnailSize="md"
-      />
-
-      <div className="w-full h-full flex flex-col justify-start items-start gap-2">
-        <div
-          className={`${
-            bookInList ? "text-foreground" : "text-muted"
-          } h-fit line-clamp-1`}
-        >
-          {bookInList?.book?.title ?? "Book Name"}
-        </div>
-        <CommentsArea key={key} name={name} bookInList={bookInList} />
-      </div>
-    </div>
-  );
-};
-
-const ListBooks: React.FC<ListBookProps> = ({
-  value,
-  onChange,
-  onPositionChange,
-  onAddNewBookClick,
-  onDeleteBookClick,
-  name,
-  booksInList,
-}) => {
-  return (
-    <div className="w-full flex flex-col gap-2 justify-center items-start">
-      <DragDropContext
-        onDragEnd={(result: DropResult) => {
-          const draggedBookInList = booksInList?.[result.source.index];
-          const destinationIndex = result.destination?.index;
-          if (!draggedBookInList) return;
-          if (destinationIndex === undefined) return;
-          if (destinationIndex === result.source.index) return;
-
-          // Set the new position of the dragged book and all the books after it
-          const newBooksInList = [...booksInList];
-          // Remove the dragged book from the list
-          newBooksInList.splice(result.source.index, 1);
-          // Add the dragged book to the new position
-          newBooksInList.splice(destinationIndex, 0, draggedBookInList);
-          const booksListWithUpdatedIndexes = newBooksInList.map(
-            (bookInList, index) => ({
-              ...bookInList,
-              position: index,
-            })
-          );
-          onPositionChange(booksListWithUpdatedIndexes);
-        }}
-      >
-        <Droppable droppableId="droppable-books-in-list">
-          {(provided) => (
-            <ul
-              className="w-full flex flex-col justify-center items-start gap-2"
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-            >
-              {booksInList?.map((bookInList, index) => (
-                <Draggable
-                  key={`draggable-id-book-in-modal-books-list-${bookInList.bookId}`}
-                  draggableId={`draggable-id-book-in-modal-books-list-${bookInList.bookId}`}
-                  index={index}
-                >
-                  {(provided) => (
-                    <li
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      className="w-full"
-                    >
-                      <BookInListDetails
-                        bookInList={bookInList}
-                        onAddNewBookClick={onAddNewBookClick}
-                        onDeleteBookClick={onDeleteBookClick}
-                        onChange={onChange}
-                        value={value}
-                        name={`${name}-${bookInList.bookId}`}
-                        position={index + 1}
-                      />
-                    </li>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </ul>
-          )}
-        </Droppable>
-      </DragDropContext>
-      <div className="w-full flex flex-row gap-2">
-        <BooksListThumbnail
-          className="flex-shrink-0"
-          Icon={
-            <div className="absolute-center">
-              <Add.Fill
-                className="!text-foreground !bg-background border-none rounded-full p-1"
-                iconSize="md"
-                onClick={onAddNewBookClick}
-              />
-            </div>
-          }
-          thumbnailSize="md"
-        />
-
-        <div className="w-full h-full flex flex-col justify-start items-start gap-2">
-          <div className={`text-muted h-fit`}>Book Name</div>
-          <TextArea
-            value={value}
-            rows={3}
-            name={name}
-            onChange={(e) => {
-              onChange(null, e.target.value);
-            }}
-            placeholder="Comment"
-            key={`books-in-list-book-name`}
-          />
-        </div>
-      </div>
-    </div>
-  );
-};
-
 const ContentEditBookList = ({
   listName,
-  booksListId,
+  initialBooksListId, // Initial, because if the user creates a new list, this will be empty
   newListDescription,
+  onNewListCreated,
 }: {
   listName: string;
-  booksListId: string;
+  initialBooksListId: string;
   newListDescription: string;
+  onNewListCreated: (list?: BooksListData) => void;
 }) => {
   const router = useRouter();
   const { booksListsData } = useSelector(selectBooksLists);
@@ -247,20 +88,14 @@ const ContentEditBookList = ({
 
   useEffect(() => {
     const booksListData = booksListsData.find(
-      (booksList) => booksList.listId === booksListId
+      (booksList) => booksList.listId === initialBooksListId
     );
-    setCurrentBookList(booksListData);
-    booksListData?.booksInList?.forEach((bookInList) => {
-      formik.setFieldValue(
-        buildFormikValueName(bookInList.bookId),
-        bookInList.comments
-      );
-    });
-  }, [booksListId, booksListsData]);
+    updateBooksList(booksListData);
+  }, [initialBooksListId]);
 
   useEffect(() => {
     const booksListData = booksListsData.find(
-      (booksList) => booksList.listId === booksListId
+      (booksList) => booksList.listId === initialBooksListId
     );
     if (!booksListData) return;
     const url = decodeURIComponent(booksListData.publicURL ?? "");
@@ -275,6 +110,16 @@ const ContentEditBookList = ({
   }, []);
 
   const isNewList = useMemo(() => !currentBooksList, [currentBooksList]);
+
+  const updateBooksList = (booksListData?: BooksListData) => {
+    setCurrentBookList(booksListData);
+    booksListData?.booksInList?.forEach((bookInList) => {
+      formik.setFieldValue(
+        buildFormikValueName(bookInList.bookId),
+        bookInList.comments
+      );
+    });
+  };
 
   const isBookInList = useCallback(
     (book: Book) =>
@@ -360,6 +205,7 @@ const ContentEditBookList = ({
           }
         );
         setCurrentBookList(createBooksListResponse);
+        onNewListCreated(createBooksListResponse);
       }
       if (formik.values.newBookComments === newBooksComments) {
         formik.setFieldValue("newBookComments", "");

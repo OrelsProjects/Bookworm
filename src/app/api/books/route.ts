@@ -5,7 +5,6 @@ import { CreateBookBody, CreateBooksResponse } from "@/src/models/book";
 import { IResponse } from "@/src/models/dto/response";
 
 import { NextRequest, NextResponse } from "next/server";
-import { getAverageColor } from "../_utils/thumbnailUtils";
 
 export async function POST(
   req: NextRequest

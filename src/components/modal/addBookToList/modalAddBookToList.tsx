@@ -2,27 +2,24 @@
 
 import React from "react";
 
-import Book from "../../models/book";
-import useBook from "../../hooks/useBook";
-import { UserBookData } from "../../models/userBook";
-import BookThumbnail from "../book/bookThumbnail";
-import { ModalContent } from "./modalContainers";
-import BookGeneralDetails from "./_components/bookGeneralDetails";
-import useBooksList from "../../hooks/useBooksList";
-import { BurgerLines } from "../icons/burgerLines";
-import BooksListList from "../booksList/booksListList";
-import { BooksListData } from "../../models/booksList";
+import Book from "../../../models/book";
+import useBook from "../../../hooks/useBook";
+import { UserBookData } from "../../../models/userBook";
+import BookThumbnail from "../../book/bookThumbnail";
+import { ModalContent } from "../modalContainers";
+import BookGeneralDetails from "../_components/bookGeneralDetails";
+import useBooksList from "../../../hooks/useBooksList";
+import { BurgerLines } from "../../icons/burgerLines";
+import BooksListList from "../../booksList/booksListList";
+import { BooksListData } from "../../../models/booksList";
 import toast from "react-hot-toast";
-import { isBooksEqual } from "../../utils/bookUtils";
+import { isBooksEqual } from "../../../utils/bookUtils";
 
 type ModalBookDetailsProps = {
   book: Book;
 };
 
-const ModalAddBookToList: React.FC<ModalBookDetailsProps> = ({
-  book,
-  ...modalProps
-}) => {
+const ModalAddBookToList: React.FC<ModalBookDetailsProps> = ({ book }) => {
   const { booksLists, addBookToList, removeBookFromList, loading } =
     useBooksList();
   const { getBookFullData, userBooksData } = useBook();
@@ -40,6 +37,7 @@ const ModalAddBookToList: React.FC<ModalBookDetailsProps> = ({
     if (loading.current) {
       return;
     }
+    debugger;
     const isBookInList = list.booksInList?.some((bookInList) =>
       isBooksEqual(book, bookInList.book)
     );

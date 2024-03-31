@@ -2,18 +2,18 @@ import React, { useEffect, useState } from "react";
 import {
   BooksListData,
   booksListDataToSafeBooksListData,
-} from "../../models/booksList";
-import { ThumbnailSize } from "../../consts/thumbnail";
-import BooksListThumbnail from "../booksList/booksListThumbnail";
+} from "../../../models/booksList";
+import { ThumbnailSize } from "../../../consts/thumbnail";
+import BooksListThumbnail from "../../booksList/booksListThumbnail";
 import { useFormik } from "formik";
-import { Books } from "../../models/book";
-import { ModalContent } from "./modalContainers";
-import { CommentsArea } from "./_components/commentsArea";
-import SwitchEditMode from "./_components/switchEditMode";
-import ContentEditBookList from "./_components/contentEditBookList";
-import { useModal } from "../../hooks/useModal";
-import { BurgerLines } from "../icons/burgerLines";
-import useBooksList from "../../hooks/useBooksList";
+import { Books } from "../../../models/book";
+import { ModalContent } from "../modalContainers";
+import { CommentsArea } from "../_components/commentsArea";
+import SwitchEditMode from "../_components/switchEditMode";
+import ContentEditBookList from "./contentEditBookList";
+import { useModal } from "../../../hooks/useModal";
+import { BurgerLines } from "../../icons/burgerLines";
+import useBooksList from "../../../hooks/useBooksList";
 
 interface ModalBooksListProps {
   booksListData?: BooksListData;
@@ -64,7 +64,7 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
     onSubmit: (values) => {},
   });
 
-  useEffect(() => {
+  const updateBooksList = (booksListData?: BooksListData) => {
     setCurrentBookList(booksListData);
     booksListData?.booksInList?.forEach((bookInList) => {
       formik.setFieldValue(
@@ -72,6 +72,10 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
         bookInList.comments
       );
     });
+  };
+
+  useEffect(() => {
+    updateBooksList(booksListData);
   }, [booksListData]);
 
   return (
@@ -152,9 +156,12 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
         </div>
       }
       bottomSection={ContentEditBookList({
-        booksListId: currentBooksList?.listId ?? "",
+        initialBooksListId: currentBooksList?.listId ?? "",
         listName: formik.values.listName,
         newListDescription: formik.values.newListDescription,
+        onNewListCreated: (booksListData?: BooksListData) => {
+          updateBooksList(booksListData);
+        },
       })}
     ></ModalContent>
   );
