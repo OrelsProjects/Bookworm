@@ -44,7 +44,7 @@ const BookList: React.FC<BookListProps> = ({
         disableScroll
           ? ""
           : direction === "row"
-          ? "overflow-x-auto overflow-y-clip"
+          ? "overflow-x-scroll overflow-y-clip hover:overflow-x-scroll"
           : "overflow-y-auto overflow-x-clip"
       }`}
       ref={scrollableDivRef}
