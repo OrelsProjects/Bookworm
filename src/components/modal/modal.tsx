@@ -12,6 +12,7 @@ import React, {
 import { IoArrowBack } from "react-icons/io5";
 import { ExpandType, ExpandingDiv, OpacityDiv } from "../animationDivs";
 import SizeContext from "../../lib/context/sizeContext";
+import { EventTracker } from "../../eventTracker";
 
 interface ContentDivProps extends HTMLAttributes<HTMLDivElement> {
   isOpen: boolean;
@@ -49,6 +50,16 @@ const TopBarCollapsed = ({
       setScrollPosition(0);
     }
   };
+
+  // record event onPopState
+  useEffect(() => {
+    const handleBackButtonClick = () => {
+      EventTracker.track("modal back button click");
+    };
+    window.addEventListener("popstate", handleBackButtonClick);
+
+    return () => window.removeEventListener("popstate", handleBackButtonClick);
+  }, []);
 
   useEffect(() => {
     const scrollbar = scrollRef?.current;
