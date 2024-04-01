@@ -285,7 +285,10 @@ const ModalProvider: React.FC = () => {
   return (
     <>
       {modalStack.map((modalData) => (
-        <RenderComponent modalData={modalData} />
+        <RenderComponent
+          modalData={modalData}
+          key={`modal-${modalData.type}`}
+        />
       ))}
       <RenderRegisterModal />
     </>

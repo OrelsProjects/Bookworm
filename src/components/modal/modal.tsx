@@ -124,7 +124,7 @@ const Modal: React.FC<ModalProps> = ({
   const ContentDiv: React.FC<ContentDivProps> = ({}) =>
     useMemo(() => {
       const key = "modal";
-      const className = "h-4/5 max-h-fit w-full bg-background rounded-t-5xl";
+      const className = "h-full w-full bg-background rounded-t-5xl";
       const onClick = (e: any) => e.stopPropagation();
 
       return shouldAnimate ? (
@@ -177,7 +177,7 @@ const Modal: React.FC<ModalProps> = ({
               ></div>
               <ContentDiv
                 key="modal"
-                className="h-4/5 max-h-fit w-full bg-background"
+                className="h-4/5 w-full bg-background"
                 isOpen={isOpen}
                 onClick={(e) => e.stopPropagation()}
               >

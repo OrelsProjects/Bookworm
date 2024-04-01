@@ -21,8 +21,6 @@ const useIsOverflow = ({
     const checkOverflow = () => {
       if (ref.current) {
         const { clientWidth, scrollWidth, clientHeight, scrollHeight } = ref.current;
-        console.log("scrollHeight", scrollHeight);
-        console.log("clientHeight", clientHeight);
         const hasOverflow = isVerticalOverflow
           ? scrollHeight > clientHeight
           : scrollWidth > clientWidth;
