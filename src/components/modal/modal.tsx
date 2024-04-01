@@ -160,17 +160,24 @@ const Modal: React.FC<ModalProps> = ({
           ref={scrollableDivRef}
         >
           <BackButton onClick={onClose} />
-          <div className="flex justify-center items-center relative w-full h-full z-20 pb-4">
+          <div className="flex justify-center items-center relative w-full h-full z-20">
             <div
-              className={`relative z-40 w-full h-full flex items-end justify-start ${
+              className={`relative z-40 w-full flex items-end justify-start self-start h-full ${
                 className ?? ""
               } z-10`}
-              style={{ backgroundColor: backgroundColor ?? "rgb(12, 12, 12)" }}
               onClick={onClose}
             >
+              {/* Hide borders */}
+              {/* <div className="bg-background w-full h-2 self-end absolute -bottom-[1px] z-30"></div> */}
+              <div
+                className="-z-10 absolute inset-0 w-full h-full bg-background"
+                style={{
+                  backgroundColor: backgroundColor ?? "rgb(12, 12, 12)",
+                }}
+              ></div>
               <ContentDiv
                 key="modal"
-                className="h-4/5 max-h-fit w-full bg-background rounded-t-5xl"
+                className="h-4/5 max-h-fit w-full bg-background"
                 isOpen={isOpen}
                 onClick={(e) => e.stopPropagation()}
               >
