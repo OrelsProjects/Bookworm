@@ -9,7 +9,7 @@ import BooksListGridView from "./gridView";
 
 export const ModalBooksList = <T extends SafeBooksListData>({
   safeBooksListData,
-}: ModalBooksListProps<T>) => {
+}: ModalBooksListProps<T>) => {  
   const ThumbnailDetails = (
     <div className="w-full h-full justify-start items-start">
       <Tooltip

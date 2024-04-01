@@ -113,6 +113,19 @@ const useBooksList = () => {
     localStorage.removeItem("booksList");
   }, []);
 
+  const sortByPosition = (
+    booksList?: BooksListData
+  ): BooksListData | undefined => {
+    if (!booksList) {
+      return booksList;
+    }
+    let sortedBooksInList = [...(booksList.booksInList ?? [])];
+    sortedBooksInList.sort((a, b) => {
+      return (a.position ?? 0) - (b.position ?? 0);
+    });
+    return { ...booksList, booksInList: sortedBooksInList };
+  };
+
   const searchInBooksList = (searchTerm: string) => {
     const newList = booksLists.filter((list) =>
       list.booksInList?.some(
@@ -276,7 +289,7 @@ const useBooksList = () => {
     loading.current = true;
     try {
       let newBook = { ...book };
-      debugger
+      debugger;
       if (!book.bookId) {
         newBook = await addBook(book);
       }
@@ -350,6 +363,7 @@ const useBooksList = () => {
     searchInBooksList,
     updateBooksInList,
     updateBooksInListPositions,
+    sortByPosition,
   };
 };
 

@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import BookThumbnail from "../../book/bookThumbnail";
 import { BurgerLines } from "../../icons/burgerLines";
 import { BooksListViewProps } from "./consts";
@@ -17,6 +17,7 @@ import { isBookRead } from "../../../models/userBook";
 import { ErrorUnauthenticated } from "../../../models/errors/unauthenticatedError";
 import SwitchEditMode from "../_components/switchEditMode";
 import { BooksListData } from "../../../models/booksList";
+import { BookInListWithBook } from "../../../models/bookInList";
 
 export default function BooksListGridView({
   safeBooksListData,
@@ -32,6 +33,18 @@ export default function BooksListGridView({
     deleteUserBook,
   } = useBook();
   const { showBookDetailsModal, showBooksListEditModal } = useModal();
+
+  const [sortedBooksInList, setSortedBooksInList] = React.useState<
+    BookInListWithBook[]
+  >([]);
+
+  useEffect(() => {
+    const booksInlistSorted = [...(safeBooksListData?.booksInList ?? [])];
+    booksInlistSorted.sort((a, b) => {
+      return a.position - b.position;
+    });
+    setSortedBooksInList(booksInlistSorted);
+  }, [safeBooksListData]);
 
   const booksInUsersList = useMemo(() => {
     const booksInList: Record<number, boolean> = {};
@@ -148,7 +161,7 @@ export default function BooksListGridView({
         </div>
       </div>
       <div className={`flex flex-wrap justify-between gap-4`}>
-        {safeBooksListData?.booksInList.map((bookInList, index) => (
+        {sortedBooksInList.map((bookInList, index) => (
           <div
             key={`book-in-list-${index}`}
             className={`flex flex-col justify-start items-start gap-2 

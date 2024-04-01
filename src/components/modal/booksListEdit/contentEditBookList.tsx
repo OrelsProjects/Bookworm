@@ -23,18 +23,6 @@ import { Book } from "../../../models";
 import { DuplicateError } from "../../../models/errors/duplicateError";
 import useBooksList from "../../../hooks/useBooksList";
 import { Logger } from "../../../logger";
-import {
-  DragDropContext,
-  DropResult,
-  Droppable,
-  Draggable,
-} from "@hello-pangea/dnd";
-import BooksListThumbnail from "../../booksList/booksListThumbnail";
-import { TextArea } from "../../ui/textarea";
-import BookThumbnail from "../../book/bookThumbnail";
-import { Cancel } from "../../icons/cancel";
-import GripLines from "../../icons/gripLines";
-import { CommentsArea } from "../_components/commentsArea";
 import { buildFormikValueName } from "./modalBooksListEdit";
 import { useSelector } from "react-redux";
 import { selectBooksLists } from "../../../lib/features/booksLists/booksListsSlice";
@@ -70,6 +58,7 @@ const ContentEditBookList = ({
     addBookToList,
     removeBookFromList,
     updateBooksInListPositions,
+    sortByPosition,
     loading: loadingList,
   } = useBooksList();
   const { addBook, getBookFullData, loading: loadingBook } = useBook();
@@ -112,16 +101,7 @@ const ContentEditBookList = ({
   const isNewList = useMemo(() => !currentBooksList, [currentBooksList]);
 
   const updateBooksList = (booksListData?: BooksListData) => {
-    let sortedBooksListData: BooksListData | undefined = undefined;
-    if (booksListData) {
-      const sortedBooksInList = [...(booksListData.booksInList ?? [])].sort(
-        (a, b) => a.position - b.position
-      );
-      sortedBooksListData = {
-        ...booksListData,
-        booksInList: sortedBooksInList,
-      };
-    }
+    let sortedBooksListData = sortByPosition(booksListData);
     setCurrentBookList(sortedBooksListData);
     booksListData?.booksInList?.forEach((bookInList) => {
       formik.setFieldValue(
