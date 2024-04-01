@@ -112,7 +112,17 @@ const ContentEditBookList = ({
   const isNewList = useMemo(() => !currentBooksList, [currentBooksList]);
 
   const updateBooksList = (booksListData?: BooksListData) => {
-    setCurrentBookList(booksListData);
+    let sortedBooksListData: BooksListData | undefined = undefined;
+    if (booksListData) {
+      const sortedBooksInList = [...(booksListData.booksInList ?? [])].sort(
+        (a, b) => a.position - b.position
+      );
+      sortedBooksListData = {
+        ...booksListData,
+        booksInList: sortedBooksInList,
+      };
+    }
+    setCurrentBookList(sortedBooksListData);
     booksListData?.booksInList?.forEach((bookInList) => {
       formik.setFieldValue(
         buildFormikValueName(bookInList.bookId),
@@ -223,6 +233,7 @@ const ContentEditBookList = ({
 
   const scrollSearchBarIntoView = () => {
     if (isSearchBarScrolledIntoView) return;
+    console.log("scrolling into view");
     const searchBarElement = searchBarRef.current;
     if (searchBarElement) {
       searchBarRef.current?.scrollIntoView({
