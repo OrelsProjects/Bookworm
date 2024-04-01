@@ -37,7 +37,6 @@ const ModalAddBookToList: React.FC<ModalBookDetailsProps> = ({ book }) => {
     if (loading.current) {
       return;
     }
-    debugger;
     const isBookInList = list.booksInList?.some((bookInList) =>
       isBooksEqual(book, bookInList.book)
     );

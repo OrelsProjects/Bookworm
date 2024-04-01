@@ -74,7 +74,6 @@ function useSearch(): UseSearchResult {
       if (axios.isCancel(error)) {
         return;
       }
-      debugger;
       Logger.error("Failed to fetch books", { error, data: { query: value } });
       setError(error.message);
       return [];

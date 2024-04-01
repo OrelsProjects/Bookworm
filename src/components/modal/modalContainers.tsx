@@ -35,7 +35,7 @@ const ContentContainer: React.FC<ModalContentContainer> = ({
   className,
 }) => (
   <div
-    className={`h-full w-full flex flex-col justify-start items-center gap-4 px-8 pb-4 ${
+    className={`h-fit w-full flex flex-col justify-start items-center gap-4 px-8 pb-4 bg-background  rounded-t-5xl ${
       className ?? ""
     }`}
   >

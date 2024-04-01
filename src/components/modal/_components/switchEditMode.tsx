@@ -2,11 +2,15 @@ import React, { useMemo } from "react";
 import { FaGlasses } from "react-icons/fa";
 import { BiSolidPencil } from "react-icons/bi";
 import { useSelector } from "react-redux";
-import { ModalTypes, selectModal } from "../../../lib/features/modal/modalSlice";
+import {
+  ModalTypes,
+  selectModal,
+} from "../../../lib/features/modal/modalSlice";
 import { BooksListData, SafeBooksListData } from "../../../models/booksList";
 import { useModal } from "../../../hooks/useModal";
 import useBooksList from "../../../hooks/useBooksList";
 import { Switch } from "../../ui/switch";
+import { EventTracker } from "../../../eventTracker";
 
 export default function SwitchEditMode({
   safeBooksListData,
@@ -64,7 +68,14 @@ export default function SwitchEditMode({
         </span>
         <Switch
           defaultChecked={isEdit}
-          onCheckedChange={handleOnChange}
+          onCheckedChange={(value) => {
+            if (value) {
+              EventTracker.track("switch edit mode");
+            } else {
+              EventTracker.track("switch view mode");
+            }
+            handleOnChange(value);
+          }}
           checkedIcon={<BiSolidPencil />}
           uncheckedIcon={<FaGlasses />}
         />

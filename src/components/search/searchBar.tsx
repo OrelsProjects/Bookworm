@@ -108,7 +108,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         ) : (
           books &&
           books.length > 0 && (
-            <div className="flex flex-col gap-2 mt-2">
+            <div className="flex flex-col gap-2 mt-3">
               <div className="font-bold text-2xl">Books</div>
               <div className="flex 3 flex-col gap-6">
                 {books
