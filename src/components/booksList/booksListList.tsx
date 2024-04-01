@@ -83,10 +83,7 @@ const BooksListList: React.FC<Props> = ({
               key={`books-list-${listData.listId}`}
             >
               <BooksListThumbnail
-                books={
-                  listData?.booksInList?.map((bookInList) => bookInList.book) ??
-                  []
-                }
+                booksInList={listData?.booksInList}
                 alt={`${listData.name} list thumbnail`}
                 className="flex-shrink-0"
                 thumbnailSize={bookThumbnailSize}

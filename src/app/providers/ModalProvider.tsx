@@ -82,6 +82,7 @@ const ModalProvider: React.FC = () => {
         const firstBookEdit = data?.booksInList?.[0]?.book;
         return darkenColor(firstBookEdit?.thumbnailColor) ?? defaultColor;
       case ModalTypes.BOOKS_LIST_DETAILS:
+        debugger;
         const firstBook = data?.bookList.booksInList?.[0]?.book;
         return darkenColor(firstBook?.thumbnailColor) ?? defaultColor;
       case ModalTypes.ADD_BOOK_TO_LIST:
@@ -120,14 +121,10 @@ const ModalProvider: React.FC = () => {
         title = data?.title ?? "";
         break;
       case ModalTypes.BOOKS_LIST_DETAILS_EDIT:
-        books =
-          data?.booksInList?.map(
-            (bookInList: BookInListWithBook) => bookInList.book
-          ) ?? [];
         title = data?.name ?? "";
         thumbnail = (
           <BooksListThumbnail
-            books={books}
+            booksInList={data?.booksInList}
             thumbnailSize={thumbnailSize}
             className={rounded}
           />
@@ -140,7 +137,7 @@ const ModalProvider: React.FC = () => {
           ) ?? [];
         thumbnail = (
           <BooksListThumbnail
-            books={books}
+            booksInList={data?.booksInList}
             thumbnailSize={thumbnailSize}
             className={rounded}
           />

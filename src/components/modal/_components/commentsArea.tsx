@@ -79,7 +79,7 @@ export const CommentsArea: React.FC<CommentAreaProps> = ({
     setLoading(true);
 
     try {
-      const { book, ...rest } = bookInList;
+      const { book: book, ...rest } = bookInList;
       rest.comments = comments;
       await updateBookInList(rest);
       setLoading(false);

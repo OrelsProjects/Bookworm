@@ -33,9 +33,7 @@ export const ModalBooksList = <T extends SafeBooksListData>({
     <ModalContent
       thumbnail={
         <BooksListThumbnail
-          books={safeBooksListData?.booksInList.map(
-            (booksListData) => booksListData.book
-          )}
+          booksInList={safeBooksListData?.booksInList}
           thumbnailSize="xl"
         />
       }

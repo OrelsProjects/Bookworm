@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Book } from "../../models";
 import { Skeleton } from "../ui/skeleton";
 import { ThumbnailSize, getThumbnailSize } from "../../consts/thumbnail";
+import { BookInList, BookInListWithBook } from "../../models/bookInList";
 
 interface BooksListThumbnailProps {
-  books?: Book[];
+  booksInList?: BookInListWithBook[];
   thumbnailSize?: ThumbnailSize;
   className?: string;
   Icon?: React.ReactNode;
@@ -14,7 +15,7 @@ interface BooksListThumbnailProps {
 type Props = BooksListThumbnailProps & React.HTMLProps<HTMLDivElement>;
 
 const BooksListThumbnail: React.FC<Props> = ({
-  books,
+  booksInList,
   className,
   thumbnailSize = "md",
   Icon,
@@ -22,14 +23,26 @@ const BooksListThumbnail: React.FC<Props> = ({
   ...props
 }) => {
   const [imagesLoaded, setImagesLoaded] = useState(false);
-  const [thumbnailBooks, setThumbnailBooks] = useState<Book[]>(
-    books?.slice(0, 4) ?? []
+  const [thumbnailBooks, setThumbnailBooks] = useState<BookInListWithBook[]>(
+    booksInList?.slice(0, 4) ?? []
   );
+
+  useEffect(() => {
+    const sortedBooksInList = [...(booksInList ?? [])];
+    sortedBooksInList.sort((a, b) => {
+      return a.position - b.position;
+    });
+    setThumbnailBooks(sortedBooksInList?.slice(0, 4) ?? []);
+  }, [booksInList]);
+
   // Preload images
   useEffect(() => {
     const booksForThumbnail =
-      books
-        ?.filter((book) => book !== undefined && book.thumbnailUrl)
+      booksInList
+        ?.filter(
+          (bookInList) =>
+            bookInList !== undefined && bookInList.book.thumbnailUrl
+        )
         .slice(0, 4) ?? [];
     setThumbnailBooks(booksForThumbnail);
     let imagesToLoad = booksForThumbnail.map(() => new Image());
@@ -37,9 +50,9 @@ const BooksListThumbnail: React.FC<Props> = ({
     if (booksForThumbnail?.length === 0) {
       setImagesLoaded(true);
     }
-    booksForThumbnail.forEach((book, index) => {
-      if (book.thumbnailUrl) {
-        imagesToLoad[index].src = book.thumbnailUrl;
+    booksForThumbnail.forEach((bookInList, index) => {
+      if (bookInList.book.thumbnailUrl) {
+        imagesToLoad[index].src = bookInList.book.thumbnailUrl;
         imagesToLoad[index].onload = () => {
           imagesLoadedCount++;
           if (imagesLoadedCount === booksForThumbnail.length) {
@@ -54,19 +67,19 @@ const BooksListThumbnail: React.FC<Props> = ({
         };
       }
     });
-  }, [books]);
+  }, [booksInList]);
 
   const Thumbnail1Book = () => {
-    const book = thumbnailBooks[0];
+    const bookInList = thumbnailBooks[0];
     return (
       <img
         loading="lazy"
-        src={book.thumbnailUrl}
-        alt={`${book.title} cover`}
-        key={props.key || `list-thumbnail-${book.bookId}`}
+        src={bookInList.book.thumbnailUrl}
+        alt={`${bookInList.book.title} cover`}
+        key={props.key || `list-thumbnail-${bookInList.bookId}`}
         className={`w-full h-full`}
         style={{
-          backgroundColor: book.thumbnailColor || "transparent",
+          backgroundColor: bookInList.book.thumbnailColor || "transparent",
         }}
       />
     );
@@ -81,27 +94,28 @@ const BooksListThumbnail: React.FC<Props> = ({
         <div className="w-full h-full absolute z-10">
           <img
             loading="lazy"
-            src={thumbnailBooks[0].thumbnailUrl}
-            alt={`${thumbnailBooks[0].title} cover`}
+            src={thumbnailBooks[0].book.thumbnailUrl}
+            alt={`${thumbnailBooks[0].book.title} cover`}
             className={`w-full h-full`}
             style={{
               backgroundColor:
-                thumbnailBooks[0].thumbnailColor || "transparent",
+                thumbnailBooks[0].book.thumbnailColor || "transparent",
             }}
           />
         </div>
         <div className="w-full h-full z-20 flex flex-row items-end">
-          {thumbnailBooks.slice(1, booksCount).map((book) => (
+          {thumbnailBooks.slice(1, booksCount).map((bookInList) => (
             <img
               loading="lazy"
-              key={props.key || book.bookId}
-              src={book.thumbnailUrl}
-              alt={props.alt || `${book.title} cover`}
+              key={props.key || bookInList.bookId}
+              src={bookInList.book.thumbnailUrl}
+              alt={props.alt || `${bookInList.book.title} cover`}
               className={`${
                 booksCount === 2 ? "w-full h-full absolute top-1/2" : "w-1/2"
               } h-1/2`}
               style={{
-                backgroundColor: book.thumbnailColor || "transparent",
+                backgroundColor:
+                  bookInList.book.thumbnailColor || "transparent",
               }}
             />
           ))}
@@ -115,18 +129,18 @@ const BooksListThumbnail: React.FC<Props> = ({
   const Thumbnail3Books = () => Thumbnail2Or3Books(3);
 
   const Thumbnail4Books = () => {
-    return thumbnailBooks.map((book) => (
+    return thumbnailBooks.map((bookInList) => (
       <div
         className={`w-1/2 h-1/2`}
-        key={props.key || `list-thumbnail-${book.bookId}`}
+        key={props.key || `list-thumbnail-${bookInList.bookId}`}
       >
         <img
           loading="lazy"
-          src={book.thumbnailUrl}
-          alt={`${book.title} cover`}
+          src={bookInList.book.thumbnailUrl}
+          alt={`${bookInList.book.title} cover`}
           className={`w-full h-full`}
           style={{
-            backgroundColor: book.thumbnailColor || "transparent",
+            backgroundColor: bookInList.book.thumbnailColor || "transparent",
           }}
         />
       </div>

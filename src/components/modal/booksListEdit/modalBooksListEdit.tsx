@@ -14,6 +14,7 @@ import ContentEditBookList from "./contentEditBookList";
 import { useModal } from "../../../hooks/useModal";
 import { BurgerLines } from "../../icons/burgerLines";
 import useBooksList from "../../../hooks/useBooksList";
+import { BookInListWithBook } from "../../../models/bookInList";
 
 interface ModalBooksListProps {
   booksListData?: BooksListData;
@@ -25,20 +26,20 @@ const Thumbnail: React.FC<{
   loading?: boolean;
 }> = ({ booksListId, thumbnailSize, loading }) => {
   const { booksLists } = useBooksList();
-  const [books, setBooks] = useState<Books | undefined>();
+  const [books, setBooks] = useState<BookInListWithBook[] | undefined>();
 
   useEffect(() => {
     const booksList = booksLists.find(
       (booksList) => booksList.listId === booksListId
     );
     if (booksList) {
-      setBooks(booksList.booksInList.map((bookInList) => bookInList.book));
+      setBooks(booksList.booksInList);
     }
   }, [booksListId, booksLists]);
 
   return (
     <BooksListThumbnail
-      books={books}
+      booksInList={books}
       thumbnailSize={thumbnailSize}
       loading={loading}
     />
