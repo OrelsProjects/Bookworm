@@ -21,7 +21,7 @@ const Header = ({ className }: HeaderProps): React.ReactNode => {
 
   return (
     !loadingState.loading && (
-      <div className="relative h-0 w-full flex items-start justify-end">
+      <div className="relative h-0 w-full flex items-start justify-end mt-1">
         <div
           className={`flex justify-end items-center w-fit z-10 relative ${
             className ?? ""
