@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Book } from "../../models";
 import { Skeleton } from "../ui/skeleton";
 import { ThumbnailSize, getThumbnailSize } from "../../consts/thumbnail";
-import { BookInList, BookInListWithBook } from "../../models/bookInList";
+import { BookInListWithBook } from "../../models/bookInList";
+import CustomImage from "../image";
 
 interface BooksListThumbnailProps {
   booksInList?: BookInListWithBook[];
@@ -22,9 +22,8 @@ const BooksListThumbnail: React.FC<Props> = ({
   loading,
   ...props
 }) => {
-  const [imagesLoaded, setImagesLoaded] = useState(false);
   const [thumbnailBooks, setThumbnailBooks] = useState<BookInListWithBook[]>(
-    booksInList?.slice(0, 4) ?? []
+    []
   );
 
   useEffect(() => {
@@ -35,44 +34,11 @@ const BooksListThumbnail: React.FC<Props> = ({
     setThumbnailBooks(sortedBooksInList?.slice(0, 4) ?? []);
   }, [booksInList]);
 
-  // Preload images
-  useEffect(() => {
-    const booksForThumbnail =
-      booksInList
-        ?.filter(
-          (bookInList) =>
-            bookInList !== undefined && bookInList.book.thumbnailUrl
-        )
-        .slice(0, 4) ?? [];
-    setThumbnailBooks(booksForThumbnail);
-    let imagesToLoad = booksForThumbnail.map(() => new Image());
-    let imagesLoadedCount = 0;
-    if (booksForThumbnail?.length === 0) {
-      setImagesLoaded(true);
-    }
-    booksForThumbnail.forEach((bookInList, index) => {
-      if (bookInList.book.thumbnailUrl) {
-        imagesToLoad[index].src = bookInList.book.thumbnailUrl;
-        imagesToLoad[index].onload = () => {
-          imagesLoadedCount++;
-          if (imagesLoadedCount === booksForThumbnail.length) {
-            setImagesLoaded(true);
-          }
-        };
-        imagesToLoad[index].onerror = () => {
-          imagesLoadedCount++;
-          if (imagesLoadedCount === booksForThumbnail.length) {
-            setImagesLoaded(true);
-          }
-        };
-      }
-    });
-  }, [booksInList]);
-
   const Thumbnail1Book = () => {
     const bookInList = thumbnailBooks[0];
     return (
-      <img
+      <CustomImage
+        thumbnailSize={thumbnailSize}
         loading="lazy"
         src={bookInList.book.thumbnailUrl}
         alt={`${bookInList.book.title} cover`}
@@ -92,7 +58,8 @@ const BooksListThumbnail: React.FC<Props> = ({
         key={props.key || `list-thumbnail-${thumbnailBooks[0].bookId}`}
       >
         <div className="w-full h-full absolute z-10">
-          <img
+          <CustomImage
+            thumbnailSize={thumbnailSize}
             loading="lazy"
             src={thumbnailBooks[0].book.thumbnailUrl}
             alt={`${thumbnailBooks[0].book.title} cover`}
@@ -105,7 +72,8 @@ const BooksListThumbnail: React.FC<Props> = ({
         </div>
         <div className="w-full h-full z-20 flex flex-row items-end">
           {thumbnailBooks.slice(1, booksCount).map((bookInList) => (
-            <img
+            <CustomImage
+              thumbnailSize={thumbnailSize}
               loading="lazy"
               key={props.key || bookInList.bookId}
               src={bookInList.book.thumbnailUrl}
@@ -134,7 +102,8 @@ const BooksListThumbnail: React.FC<Props> = ({
         className={`w-1/2 h-1/2`}
         key={props.key || `list-thumbnail-${bookInList.bookId}`}
       >
-        <img
+        <CustomImage
+          thumbnailSize={thumbnailSize}
           loading="lazy"
           src={bookInList.book.thumbnailUrl}
           alt={`${bookInList.book.title} cover`}
@@ -177,7 +146,7 @@ const BooksListThumbnail: React.FC<Props> = ({
       } rounded-xl bg-clip-border	overflow-hidden ${className ?? ""}`}
       {...props}
     >
-      {imagesLoaded && !loading ? (
+      {!loading ? (
         <Thumbnail />
       ) : (
         <Skeleton

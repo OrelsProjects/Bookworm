@@ -289,7 +289,6 @@ const useBooksList = () => {
     loading.current = true;
     try {
       let newBook = { ...book };
-      debugger;
       if (!book.bookId) {
         newBook = await addBook(book);
       }
