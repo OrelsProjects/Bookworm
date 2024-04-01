@@ -48,12 +48,12 @@ export default function BooksListGridView({
 
   const booksInUsersList = useMemo(() => {
     const booksInList: Record<number, boolean> = {};
-    safeBooksListData?.booksInList?.map((bookInList) => {
+    sortedBooksInList?.map((bookInList) => {
       const bookData = getBookFullData(bookInList.book);
       booksInList[bookInList.book.bookId] = !!bookData;
     });
     return booksInList;
-  }, [userBooksData]);
+  }, [sortedBooksInList]);
 
   const isRead = useMemo(() => {
     const booksIsRead: Record<number, boolean> = {};
