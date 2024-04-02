@@ -66,10 +66,10 @@ function PrivacyPolicy() {
             at:
           </p>
           <a
-            href="mailto:bookwormapp2@gmail.com"
+            href="mailto:bookwiz.app@gmail.com"
             className="text-sky-600 underline dark:text-accent"
           >
-            bookwormapp2@gmail.com
+            bookwiz.app@gmail.com
           </a>
         </section>
       </div>
