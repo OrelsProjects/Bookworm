@@ -20,12 +20,11 @@ import { darkenColor } from "../../utils/thumbnailUtils";
 import ModalAddBookToList from "../../components/modal/addBookToList/modalAddBookToList";
 import ModalBooksListEdit from "../../components/modal/booksListEdit/modalBooksListEdit";
 import { usePathname, useRouter } from "next/navigation";
-import { BookInList, BookInListWithBook } from "../../models/bookInList";
+import { BookInListWithBook } from "../../models/bookInList";
 import { ModalBooksList } from "../../components/modal/booksList/modalBooksList";
 import ModalSignup from "../../components/modal/modalSignup";
 import BookThumbnail from "../../components/book/bookThumbnail";
 import BooksListThumbnail from "../../components/booksList/booksListThumbnail";
-import Tooltip from "../../components/ui/tooltip";
 import { Books } from "../../models/book";
 
 const ModalProvider: React.FC = () => {
@@ -96,7 +95,6 @@ const ModalProvider: React.FC = () => {
     const rounded = "!rounded-md";
     let thumbnail: React.ReactNode;
     let title: string = "";
-    let books: Books = [];
     switch (type) {
       case ModalTypes.BOOK_DETAILS:
         const bookData = (data as ModalBookDetailsProps).bookData;
@@ -130,13 +128,10 @@ const ModalProvider: React.FC = () => {
         );
         break;
       case ModalTypes.BOOKS_LIST_DETAILS:
-        books =
-          data?.bookList?.booksInList?.map(
-            (bookInList: BookInListWithBook) => bookInList.book
-          ) ?? [];
+        const booksInList = data?.bookList?.booksInList;
         thumbnail = (
           <BooksListThumbnail
-            booksInList={data?.booksInList}
+            booksInList={booksInList}
             thumbnailSize={thumbnailSize}
             className={rounded}
           />

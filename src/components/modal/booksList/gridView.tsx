@@ -130,41 +130,42 @@ export default function BooksListGridView({
 
   return (
     <div className="h-full w-full flex flex-col gap-6 mt-2">
-      <div className="w-full flex flex-row justify-between">
-        <div className="w-full flex flex-row items-center justify-between">
-          <div className="w-fit flex flex-row items-center gap-2">
-            <BurgerLines.Fill iconSize="sm" className="!text-foreground" />
-            <div className="font-bold text-xl flex flex-row gap-1 items-center justify-center">
-              Book List{" "}
-              {safeBooksListData?.booksInList &&
-              safeBooksListData.booksInList.length > 0 ? (
-                <div className="text-muted font-normal">
-                  ({safeBooksListData.booksInList.length})
-                </div>
-              ) : (
-                ""
-              )}
-            </div>
+      <div className="w-full flex flex-row items-center justify-between">
+        <div className="w-fit flex flex-row items-center gap-2">
+          <BurgerLines.Fill iconSize="sm" className="!text-foreground" />
+          <div className="font-bold text-xl flex flex-row gap-1 items-center justify-center">
+            Book List{" "}
+            {safeBooksListData?.booksInList &&
+            safeBooksListData.booksInList.length > 0 ? (
+              <div className="text-muted font-normal">
+                ({safeBooksListData.booksInList.length})
+              </div>
+            ) : (
+              ""
+            )}
           </div>
-          {isBooksListDataNotSafe && (
-            <SwitchEditMode
-              safeBooksListData={safeBooksListData}
-              onCheckedChange={(checked) => {
-                if (!checked) return;
-                showBooksListEditModal(booksListData, {
-                  popLast: true,
-                  shouldAnimate: false,
-                });
-              }}
-            />
-          )}
         </div>
+        {isBooksListDataNotSafe && (
+          <SwitchEditMode
+            safeBooksListData={safeBooksListData}
+            onCheckedChange={(checked) => {
+              if (!checked) return;
+              showBooksListEditModal(booksListData, {
+                popLast: true,
+                shouldAnimate: false,
+              });
+            }}
+          />
+        )}
       </div>
-      <div className={`flex flex-wrap justify-between gap-4`}>
+      <div
+        className={`flex flex-wrap justify-between gap-4  lg:justify-between lg:items-center lg:gap-[44px]`}
+      >
         {sortedBooksInList.map((bookInList, index) => (
-          <div
-            key={`book-in-list-${index}`}
-            className={`flex flex-col justify-start items-start gap-2 
+          <div className="lg:w-1/6 lg:flex lg:items-center lg:justify-center">
+            <div
+              key={`book-in-list-${index}`}
+              className={`flex flex-col justify-start items-start gap-2 
             ${getThumbnailSize(thumbnailSize).width}
             ${
               isOddNumberOfBooks &&
@@ -172,32 +173,32 @@ export default function BooksListGridView({
               "mr-auto"
             }
             `}
-            onClick={(e) => {
-              e.stopPropagation();
-              showBookDetailsModal({
-                bookData: bookInList.book,
-                bookInList,
-                curator,
-              });
-            }}
-          >
-            <BookThumbnail
-              book={bookInList.book}
-              thumbnailSize={thumbnailSize}
-              Icon={
-                <div className="w-full h-full z-40 absolute top-0">
-                  <div className="w-full h-full flex flex-row items-end justify-center gap-6 p-2">
-                    <div className="h-fit w-fit p-2 px-2.5 rounded-full bg-background">
-                      <Bookmark.Fill
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleUpdateBookReadingStatus(
-                            bookInList.book,
-                            ReadingStatusEnum.TO_READ
-                          );
-                        }}
-                        iconSize="xs"
-                        className={`
+              onClick={(e) => {
+                e.stopPropagation();
+                showBookDetailsModal({
+                  bookData: bookInList.book,
+                  bookInList,
+                  curator,
+                });
+              }}
+            >
+              <BookThumbnail
+                book={bookInList.book}
+                thumbnailSize={thumbnailSize}
+                Icon={
+                  <div className="w-full h-full z-40 absolute top-0">
+                    <div className="w-full h-full flex flex-row items-end justify-center gap-6 p-2">
+                      <div className="h-fit w-fit p-2 px-2.5 rounded-full bg-background">
+                        <Bookmark.Fill
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleUpdateBookReadingStatus(
+                              bookInList.book,
+                              ReadingStatusEnum.TO_READ
+                            );
+                          }}
+                          iconSize="xs"
+                          className={`
                       ${
                         booksInUsersList[bookInList.book.bookId] &&
                         !isRead[bookInList.book.bookId]
@@ -205,35 +206,36 @@ export default function BooksListGridView({
                           : "!text-foreground"
                       }
                       `}
-                      />
-                    </div>
-                    <Checkmark.Fill
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleUpdateBookReadingStatus(
-                          bookInList.book,
-                          ReadingStatusEnum.READ
-                        );
-                      }}
-                      iconSize="md"
-                      className={`rounded-full p-1.5
+                        />
+                      </div>
+                      <Checkmark.Fill
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleUpdateBookReadingStatus(
+                            bookInList.book,
+                            ReadingStatusEnum.READ
+                          );
+                        }}
+                        iconSize="md"
+                        className={`rounded-full p-1.5
                       ${
                         isRead[bookInList.book.bookId]
                           ? "!bg-primary !text-background"
                           : "!bg-background !text-foreground"
                       }
                       `}
-                    />
+                      />
+                    </div>
                   </div>
+                }
+              />
+              <div className="w-full">
+                <div className="w-full text-lg leading-7 font-bold line-clamp-1">
+                  {bookInList.book.title}
                 </div>
-              }
-            />
-            <div className="w-full">
-              <div className="w-full text-lg leading-7 font-bold line-clamp-1">
-                {bookInList.book.title}
-              </div>
-              <div className="w-full text-sm text-primary leading-5 truncate">
-                {bookInList.book.authors?.join(", ")}
+                <div className="w-full text-sm text-primary leading-5 truncate">
+                  {bookInList.book.authors?.join(", ")}
+                </div>
               </div>
             </div>
           </div>
