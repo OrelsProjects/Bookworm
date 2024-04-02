@@ -39,6 +39,8 @@ const BooksListThumbnail: React.FC<Props> = ({
     return (
       <CustomImage
         thumbnailSize={thumbnailSize}
+        placeholder={<></>}
+        defaultUrl="/thumbnailPlaceholder.png"
         loading="lazy"
         src={bookInList.book.thumbnailUrl}
         alt={`${bookInList.book.title} cover`}
@@ -60,6 +62,8 @@ const BooksListThumbnail: React.FC<Props> = ({
         <div className="w-full h-full absolute z-10">
           <CustomImage
             thumbnailSize={thumbnailSize}
+            placeholder={<></>}
+            defaultUrl="/thumbnailPlaceholder.png"
             loading="lazy"
             src={thumbnailBooks[0].book.thumbnailUrl}
             alt={`${thumbnailBooks[0].book.title} cover`}
@@ -74,6 +78,8 @@ const BooksListThumbnail: React.FC<Props> = ({
           {thumbnailBooks.slice(1, booksCount).map((bookInList) => (
             <CustomImage
               thumbnailSize={thumbnailSize}
+              placeholder={<></>}
+              defaultUrl="/thumbnailPlaceholder.png"
               loading="lazy"
               key={props.key || bookInList.bookId}
               src={bookInList.book.thumbnailUrl}
@@ -104,6 +110,8 @@ const BooksListThumbnail: React.FC<Props> = ({
       >
         <CustomImage
           thumbnailSize={thumbnailSize}
+          placeholder={<></>}
+          defaultUrl="/thumbnailPlaceholder.png"
           loading="lazy"
           src={bookInList.book.thumbnailUrl}
           alt={`${bookInList.book.title} cover`}

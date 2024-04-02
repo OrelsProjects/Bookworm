@@ -82,7 +82,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         onBlur={onBlur}
         onSubmit={handleSubmit}
         onChange={handleOnChange}
-        className={`w-full pr-16 transition-all duration-300 ease-in-out rounded-full ${
+        className={`w-full pr-[72px] transition-all duration-300 ease-in-out rounded-full ${
           className ?? ""
         }`}
         formClassName="w-full"

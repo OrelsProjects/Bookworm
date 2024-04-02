@@ -12,6 +12,7 @@ import { EventTracker } from "@/src/eventTracker";
 import { Feedback } from "../../components/icons/feedback";
 import { Privacy } from "../../components/icons/privacy";
 import { SignOut } from "../../components/icons/signOut";
+import CustomImage from "../../components/image";
 
 const FEEDBACK_GIVEN = "feedback_given";
 
@@ -91,24 +92,29 @@ const Avatar: React.FC<AvatarProps> = ({ avatarUrl, defaultText }) => {
     toggleDropdown();
   };
 
+  const DefaultAvatar = () => (
+    <div className="w-full h-full text-sm rounded-full bg-background border-2 border-foreground flex justify-center items-center cursor-pointer">
+      {defaultText && (defaultText.substring(0, 2) || "").toUpperCase()}
+    </div>
+  );
+console.log(avatarUrl)
   return (
     <div
       className="relative rounded-full h-[50px] w-[50px] z-50"
       onClick={toggleDropdown}
     >
-      {!avatarImageLoaded ? (
-        <img
+      {
+        <CustomImage
           src={avatarUrl}
-          height={36}
-          width={36}
+          placeholder={<DefaultAvatar />}
+          defaultImage={<DefaultAvatar />}
+          height={42}
+          width={42}
           alt={"avatar"}
-          className="cursor-pointer rounded-full"
+          className="cursor-pointer rounded-full mt-1"
+          thumbnailSize={"sm"}
         />
-      ) : (
-        <div className="w-full h-full text-sm rounded-full bg-background border-2 border-foreground flex justify-center items-center cursor-pointer">
-          {defaultText && (defaultText.substring(0, 2) || "").toUpperCase()}
-        </div>
-      )}
+      }
       {showDropdown && (
         <div className="absolute top-full right-0 w-36 mt-2 z-50">
           <Dropdown

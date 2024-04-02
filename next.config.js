@@ -26,6 +26,10 @@ module.exports = {
         protocol: "https",
         hostname: "i.gr-assets.com",
       },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+      },
     ],
   },
 };
