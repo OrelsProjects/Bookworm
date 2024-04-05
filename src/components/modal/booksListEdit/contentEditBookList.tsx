@@ -349,7 +349,6 @@ const ContentEditBookList = ({
           }}
           onPositionChange={handlePositionChange}
           onChange={(bookInList, comment) => {
-            debugger;
             if (!bookInList) {
               formik.setFieldValue("newBookComments", comment);
             } else if (bookInList?.book && currentBooksList) {
@@ -372,7 +371,10 @@ const ContentEditBookList = ({
               setCurrentBookList(newBooksList);
             }
           }}
-          onNewBookClick={() => setShowSearchBar(true)}
+          onNewBookClick={() => {
+            searchBarRef.current?.focus();
+            setShowSearchBar(true);
+          }}
           key={currentBooksList?.listId}
           name="newBookComments"
           booksInList={currentBooksList?.booksInList?.map(
@@ -391,6 +393,7 @@ const ContentEditBookList = ({
                 onSearch={() => {
                   scrollSearchBarIntoView();
                 }}
+                autoFocus
                 CustomSearchItem={SearchResult}
                 CustomSearchItemSkeleton={() => (
                   <div className="flex flex-col gap-6">
