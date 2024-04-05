@@ -47,7 +47,7 @@ const bottomSheetSlice = createSlice({
         state.modalStack.length > 0 &&
         state.modalStack[state.modalStack.length - 1].type ===
           action.payload.type;
-      if (isModalOnTop) {
+      if (isModalOnTop && !action.payload.options?.popLast) {
         return;
       }
       if (action.payload.options?.popLast) {

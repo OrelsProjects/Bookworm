@@ -8,7 +8,6 @@ import {
   SafeBooksListData,
 } from "../../../models/booksList";
 import Logger from "../../../utils/loggerServer";
-import { setThumbnailColorsToBooks } from "./_utils/thumbnailUtils";
 
 export async function GET(
   req: NextRequest
@@ -28,7 +27,6 @@ export async function GET(
       return NextResponse.json({ error: "List not found" }, { status: 404 });
     }
     let books = bookListData.booksInList.map((book) => book.book);
-    books = await setThumbnailColorsToBooks(books);
 
     bookListData.booksInList = bookListData.booksInList.map(
       (bookInList, index) => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   BooksListData,
   booksListDataToSafeBooksListData,
@@ -52,7 +52,7 @@ export const buildFormikValueName = (bookId: number) =>
 const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
   booksListData,
 }) => {
-  const { showBooksListModal } = useModal();
+  const { showBooksListModal, showBooksListEditModal } = useModal();
   const [currentBooksList, setCurrentBookList] = useState<
     BooksListData | undefined
   >();
@@ -65,6 +65,12 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
     onSubmit: (values) => {},
   });
 
+  const handleNewListCreated = (booksListData: BooksListData) => {
+    showBooksListEditModal(booksListData, {
+      shouldAnimate: false,
+      popLast: true,
+    });
+  };
   const updateBooksList = (booksListData?: BooksListData) => {
     setCurrentBookList(booksListData);
     booksListData?.booksInList?.forEach((bookInList) => {
@@ -160,8 +166,9 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
         initialBooksListId: currentBooksList?.listId ?? "",
         listName: formik.values.listName,
         newListDescription: formik.values.newListDescription,
-        onNewListCreated: (booksListData?: BooksListData) => {
-          updateBooksList(booksListData);
+        onNewListCreated: (booksListData: BooksListData) => {
+          handleNewListCreated(booksListData);
+          // updateBooksList(booksListData);
         },
       })}
     ></ModalContent>

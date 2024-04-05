@@ -5,7 +5,6 @@ import {
   GetAxiosInstance,
   getUserIdFromRequest,
 } from "../../../utils/apiUtils";
-import { setThumbnailColorsToBooksListData } from "../list/_utils/thumbnailUtils";
 import Logger from "../../../utils/loggerServer";
 
 export async function GET(
@@ -15,7 +14,6 @@ export async function GET(
     const axios = GetAxiosInstance(req);
     const response = await axios.get<BooksListData[]>("/lists");
     let bookListData = response.data;
-    bookListData = await setThumbnailColorsToBooksListData(bookListData);
     const result = {
       result: bookListData,
     };

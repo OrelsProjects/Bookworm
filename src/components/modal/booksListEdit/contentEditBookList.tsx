@@ -27,6 +27,7 @@ import { buildFormikValueName } from "./modalBooksListEdit";
 import { useSelector } from "react-redux";
 import { selectBooksLists } from "../../../lib/features/booksLists/booksListsSlice";
 import ListBooks from "./dragAndDropBooksInList";
+import { useModal } from "../../../hooks/useModal";
 
 export interface ListBookAndBookDetailsProps {
   onAddNewBookClick?: () => void;
@@ -49,8 +50,9 @@ const ContentEditBookList = ({
   listName: string;
   initialBooksListId: string;
   newListDescription: string;
-  onNewListCreated: (list?: BooksListData) => void;
+  onNewListCreated: (list: BooksListData) => void;
 }) => {
+  const { showBooksListEditModal } = useModal();
   const router = useRouter();
   const { booksListsData } = useSelector(selectBooksLists);
   const {
@@ -67,6 +69,7 @@ const ContentEditBookList = ({
   >();
   const [isSearchBarScrolledIntoView, setIsSearchBarScrolledIntoView] =
     useState(false);
+  const [showSearchBar, setShowSearchBar] = useState(false);
   const searchBarRef = useRef<HTMLDivElement>(null);
   const formik = useFormik({
     initialValues: {
@@ -97,6 +100,11 @@ const ContentEditBookList = ({
       }
     };
   }, []);
+
+  const shouldShowSearchBar = useMemo(
+    () => (currentBooksList?.booksInList?.length ?? 0) > 0 || showSearchBar,
+    [currentBooksList, showSearchBar]
+  );
 
   const isNewList = useMemo(() => !currentBooksList, [currentBooksList]);
 
@@ -194,6 +202,12 @@ const ContentEditBookList = ({
                 : "Failed to create list.",
           }
         );
+        if (!createBooksListResponse) {
+          toast.error("Something went wrong.. We're on it!");
+          throw new Error("Failed to create list", {
+            cause: { listName, newListDescription, book, newBooksComments },
+          });
+        }
         setCurrentBookList(createBooksListResponse);
         onNewListCreated(createBooksListResponse);
       }
@@ -277,21 +291,45 @@ const ContentEditBookList = ({
   );
 
   const handlePositionChange = async (
-    booksInListWithBook: BookInListWithBook[]
+    booksInListWithNewPositions: BookInListWithBook[]
   ) => {
     if (!currentBooksList) return;
-    const booksListData: BooksListData = {
+
+    const updatedBooksInList = currentBooksList.booksInList.map(
+      (bookInList) => {
+        // Find the book in the list of new positions
+        const bookWithNewPosition = booksInListWithNewPositions.find(
+          (bookInListWithNewPosition) =>
+            bookInListWithNewPosition.bookId === bookInList.bookId
+        );
+
+        if (bookWithNewPosition) {
+          return { ...bookInList, position: bookWithNewPosition.position };
+        } else {
+          return bookInList;
+        }
+      }
+    );
+    updatedBooksInList.sort((a, b) => a.position - b.position);
+
+    const newBooksList = {
       ...currentBooksList,
-      booksInList: booksInListWithBook,
+      booksInList: updatedBooksInList,
     };
-    const previousList = { ...currentBooksList };
-    setCurrentBookList(booksListData);
+    setCurrentBookList(newBooksList);
+
     try {
-      await toast.promise(updateBooksInListPositions(booksListData), {
+      await toast.promise(updateBooksInListPositions(newBooksList), {
         loading: "Updating list...",
-        success: "List updated successfully!",
+        success: () => {
+          showBooksListEditModal(newBooksList, {
+            shouldAnimate: false,
+            popLast: true,
+          });
+          return "List updated successfully!";
+        },
         error: () => {
-          setCurrentBookList(previousList);
+          setCurrentBookList(currentBooksList);
           return "Failed to update list.";
         },
       });
@@ -311,46 +349,63 @@ const ContentEditBookList = ({
           }}
           onPositionChange={handlePositionChange}
           onChange={(bookInList, comment) => {
+            debugger;
             if (!bookInList) {
               formik.setFieldValue("newBookComments", comment);
-            } else if (bookInList?.book) {
+            } else if (bookInList?.book && currentBooksList) {
               formik.setFieldValue(
                 buildFormikValueName(bookInList.book.bookId),
                 comment
               );
+              const updatedBooksInList: BookInListWithBook[] | undefined =
+                currentBooksList.booksInList?.map((bookInListInList) => {
+                  if (bookInListInList.bookId === bookInList.book.bookId) {
+                    return { ...bookInListInList, comments: comment };
+                  }
+                  return bookInListInList;
+                });
+              const newBooksList = {
+                ...currentBooksList,
+                booksInList: updatedBooksInList,
+              };
+
+              setCurrentBookList(newBooksList);
             }
           }}
+          onNewBookClick={() => setShowSearchBar(true)}
           key={currentBooksList?.listId}
           name="newBookComments"
           booksInList={currentBooksList?.booksInList?.map(
             (bookInList) => bookInList
           )}
         />
-        <div ref={searchBarRef}>
-          <SearchBarIcon>
-            <SearchBar
-              formClassName="w-full"
-              className="!w-full gap-3 !pr-0"
-              onEmpty={() => {
-                setIsSearchBarScrolledIntoView(false);
-              }}
-              onSearch={() => {
-                scrollSearchBarIntoView();
-              }}
-              CustomSearchItem={SearchResult}
-              CustomSearchItemSkeleton={() => (
-                <div className="flex flex-col gap-6">
-                  {Array.from(Array(5)).map((_, index) => (
-                    <BookDetailsSkeleton
-                      key={`book-details-skeleton-${index}`}
-                      bookThumbnailSize="xs"
-                    />
-                  ))}
-                </div>
-              )}
-            />
-          </SearchBarIcon>
-        </div>
+        {shouldShowSearchBar && (
+          <div ref={searchBarRef}>
+            <SearchBarIcon>
+              <SearchBar
+                formClassName="w-full"
+                className="!w-full gap-3 !pr-0"
+                onEmpty={() => {
+                  setIsSearchBarScrolledIntoView(false);
+                }}
+                onSearch={() => {
+                  scrollSearchBarIntoView();
+                }}
+                CustomSearchItem={SearchResult}
+                CustomSearchItemSkeleton={() => (
+                  <div className="flex flex-col gap-6">
+                    {Array.from(Array(5)).map((_, index) => (
+                      <BookDetailsSkeleton
+                        key={`book-details-skeleton-${index}`}
+                        bookThumbnailSize="xs"
+                      />
+                    ))}
+                  </div>
+                )}
+              />
+            </SearchBarIcon>
+          </div>
+        )}
       </div>
     </div>
   );

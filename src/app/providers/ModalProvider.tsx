@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useCallback, useContext, useEffect, useMemo } from "react";
 import {
   ModalData,
   ModalState,
@@ -9,7 +10,6 @@ import {
 } from "@/src/lib/features/modal/modalSlice";
 import { RootState } from "@/src/lib/store";
 import { Book } from "@/src/models";
-import React, { useCallback, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ModalBookDetails, {
   ModalBookDetailsProps,
@@ -20,16 +20,16 @@ import { darkenColor } from "../../utils/thumbnailUtils";
 import ModalAddBookToList from "../../components/modal/addBookToList/modalAddBookToList";
 import ModalBooksListEdit from "../../components/modal/booksListEdit/modalBooksListEdit";
 import { usePathname, useRouter } from "next/navigation";
-import { BookInListWithBook } from "../../models/bookInList";
 import { ModalBooksList } from "../../components/modal/booksList/modalBooksList";
 import ModalSignup from "../../components/modal/modalSignup";
 import BookThumbnail from "../../components/book/bookThumbnail";
 import BooksListThumbnail from "../../components/booksList/booksListThumbnail";
-import { Books } from "../../models/book";
+import ModalContext from "../../lib/context/modalContext";
 
 const ModalProvider: React.FC = () => {
   const router = useRouter();
   const pathname = usePathname();
+  const modalContext = useContext(ModalContext);
   const { modalStack }: ModalState = useSelector(
     (state: RootState) => state.modal
   );
@@ -69,25 +69,31 @@ const ModalProvider: React.FC = () => {
   }, [modalStack]);
 
   const modalBackgroundColor = useMemo<string>((): string => {
-    const defaultColor = "rgb(180,180,180)";
+    const defaultColor = "rgb(225,225,225)";
+    let color = defaultColor;
     switch (type) {
       case ModalTypes.BOOK_DETAILS:
-        return (
+        color =
           darkenColor(
             (data as ModalBookDetailsProps)?.bookData?.thumbnailColor
-          ) ?? defaultColor
-        );
+          ) ?? defaultColor;
+        break;
       case ModalTypes.BOOKS_LIST_DETAILS_EDIT:
         const firstBookEdit = data?.booksInList?.[0]?.book;
-        return darkenColor(firstBookEdit?.thumbnailColor) ?? defaultColor;
+        color = darkenColor(firstBookEdit?.thumbnailColor) ?? defaultColor;
+        break;
       case ModalTypes.BOOKS_LIST_DETAILS:
         const firstBook = data?.bookList.booksInList?.[0]?.book;
-        return darkenColor(firstBook?.thumbnailColor) ?? defaultColor;
+        color = darkenColor(firstBook?.thumbnailColor) ?? defaultColor;
+        break;
       case ModalTypes.ADD_BOOK_TO_LIST:
-        return darkenColor(data?.thumbnailColor) ?? defaultColor;
+        color = darkenColor(data?.thumbnailColor) ?? defaultColor;
+        break;
       default:
-        return defaultColor;
+        color = defaultColor;
     }
+    modalContext[type] = color;
+    return color;
   }, [type, data]);
 
   const topBarCollapsed = useMemo<React.ReactNode>(() => {
@@ -232,6 +238,7 @@ const ModalProvider: React.FC = () => {
     return (
       <Modal
         isOpen={isOpen}
+        type={type}
         onClose={() => {
           onClose?.();
           handleOnClose();

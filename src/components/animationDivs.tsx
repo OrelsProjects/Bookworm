@@ -18,6 +18,7 @@ interface AnimationDivProps extends LayoutProps {
   key?: string | number;
   isOpen?: boolean;
   children?: React.ReactNode;
+  shouldAnimate?: boolean;
   innerRef?: React.RefObject<HTMLDivElement>;
   className?: string;
   style?: React.CSSProperties;
@@ -107,15 +108,20 @@ const expandingBottomToTop: MotionProps = {
 };
 
 // Opacity Animation Wrapper
-const OpacityDiv = ({ innerRef, ...props }: AnimationDivProps) =>
-  props.children;
-// (
-//   <GeneralDiv
-//     innerRef={innerRef}
-//     {...props}
-//     animationProps={opacityAnimationProps}
-//   />
-// );
+const OpacityDiv = ({
+  innerRef,
+  shouldAnimate = true,
+  ...props
+}: AnimationDivProps) =>
+  shouldAnimate ? (
+    <GeneralDiv
+      innerRef={innerRef}
+      {...props}
+      animationProps={opacityAnimationProps}
+    />
+  ) : (
+    props.children
+  );
 
 const getExpandProps = (expandType?: ExpandType): MotionProps => {
   switch (expandType) {

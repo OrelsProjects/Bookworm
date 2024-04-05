@@ -13,6 +13,8 @@ import { IoArrowBack } from "react-icons/io5";
 import { ExpandType, ExpandingDiv, OpacityDiv } from "../animationDivs";
 import SizeContext from "../../lib/context/sizeContext";
 import { EventTracker } from "../../eventTracker";
+import { ModalTypes } from "../../lib/features/modal/modalSlice";
+import ModalContext from "../../lib/context/modalContext";
 
 interface ContentDivProps extends HTMLAttributes<HTMLDivElement> {
   isOpen: boolean;
@@ -23,6 +25,7 @@ interface ContentDivProps extends HTMLAttributes<HTMLDivElement> {
 export interface ModalProps {
   isOpen: boolean;
   backgroundColor?: string;
+  type: ModalTypes;
   topBarCollapsed: React.ReactNode;
   onClose?: () => void;
   className?: string;
@@ -101,7 +104,7 @@ const BackButton = ({
 
 const Modal: React.FC<ModalProps> = ({
   isOpen,
-  backgroundColor,
+  type,
   topBarCollapsed,
   onClose,
   className,
@@ -109,6 +112,7 @@ const Modal: React.FC<ModalProps> = ({
   shouldAnimate = true,
 }) => {
   const { width, height } = useContext(SizeContext);
+  const modalContext = useContext(ModalContext);
   const scrollableDivRef = useRef<HTMLDivElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -120,6 +124,11 @@ const Modal: React.FC<ModalProps> = ({
 
     return () => window.removeEventListener("popstate", handleBackButtonClick);
   }, []);
+
+  const backgroundColor = useMemo(
+    () => modalContext[type],
+    [type, modalContext, modalContext[type]]
+  );
 
   const ContentDiv: React.FC<ContentDivProps> = ({}) =>
     useMemo(() => {
@@ -154,7 +163,12 @@ const Modal: React.FC<ModalProps> = ({
       <TopBarCollapsed scrollRef={scrollableDivRef} onClose={onClose}>
         {topBarCollapsed}
       </TopBarCollapsed>
-      <OpacityDiv innerRef={modalRef} key="modal-background" isOpen={isOpen}>
+      <OpacityDiv
+        innerRef={modalRef}
+        key="modal-background"
+        isOpen={isOpen}
+        shouldAnimate={shouldAnimate}
+      >
         <div
           className="w-full h-full overscroll-none bg-background relative"
           ref={scrollableDivRef}

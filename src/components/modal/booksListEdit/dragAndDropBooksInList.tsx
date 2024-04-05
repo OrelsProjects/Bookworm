@@ -18,6 +18,7 @@ import { CommentsArea } from "../_components/commentsArea";
 interface ListBookProps extends ListBookAndBookDetailsProps {
   booksInList?: BookInListWithBook[];
   onPositionChange: (booksInListWithBook: BookInListWithBook[]) => void;
+  onNewBookClick: () => void;
 }
 
 interface BookInListDetailsProps extends ListBookAndBookDetailsProps {
@@ -28,6 +29,7 @@ interface BookInListDetailsProps extends ListBookAndBookDetailsProps {
 const BookInListDetails: React.FC<BookInListDetailsProps> = ({
   bookInList,
   onDeleteBookClick,
+  onChange,
   name,
   key,
   position,
@@ -66,7 +68,14 @@ const BookInListDetails: React.FC<BookInListDetailsProps> = ({
         >
           {bookInList?.book?.title ?? "Book Name"}
         </div>
-        <CommentsArea key={key} name={name} bookInList={bookInList} />
+        <CommentsArea
+          key={key}
+          name={name}
+          bookInList={bookInList}
+          onChanged={(comments: string) => {
+            onChange(bookInList, comments);
+          }}
+        />
       </div>
     </div>
   );
@@ -75,6 +84,7 @@ const BookInListDetails: React.FC<BookInListDetailsProps> = ({
 const ListBooks: React.FC<ListBookProps> = ({
   value,
   onChange,
+  onNewBookClick,
   onPositionChange,
   onAddNewBookClick,
   onDeleteBookClick,
@@ -141,7 +151,7 @@ const ListBooks: React.FC<ListBookProps> = ({
           )}
         </Droppable>
       </DragDropContext>
-      <div className="w-full flex flex-row gap-2">
+      <div className="w-full flex flex-row gap-2" onClick={onNewBookClick}>
         <BooksListThumbnail
           className="flex-shrink-0"
           Icon={

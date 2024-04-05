@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import BookThumbnail from "../../book/bookThumbnail";
 import { BurgerLines } from "../../icons/burgerLines";
 import { BooksListViewProps } from "./consts";
@@ -33,6 +33,16 @@ export default function BooksListGridView({
     deleteUserBook,
   } = useBook();
   const { showBookDetailsModal, showBooksListEditModal } = useModal();
+
+  const [value, setValue] = useState(4);
+
+  useEffect(() => {
+    setValue(3);
+    setTimeout(() => {
+      console.log(value);
+    }, 1000);
+    setValue(6);
+  }, []);
 
   const [sortedBooksInList, setSortedBooksInList] = React.useState<
     BookInListWithBook[]

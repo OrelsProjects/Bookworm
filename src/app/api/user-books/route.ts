@@ -8,7 +8,6 @@ import {
 } from "@/src/models/userBook";
 import { GetAxiosInstance } from "@/src/utils/apiUtils";
 import { NextRequest, NextResponse } from "next/server";
-import { setThumbnailColorsToBooks } from "./_utils/thumbnailUtils";
 
 
 export async function GET(
@@ -18,12 +17,9 @@ export async function GET(
     const axios = GetAxiosInstance(req);
     const response = await axios.get<UserBookData[]>("/user-book");
     const userBookData = response.data;
-    const resultWithThumbnailColors = await setThumbnailColorsToBooks(
-      userBookData
-    );
 
     const result: IResponse<UserBookData[]> = {
-      result: resultWithThumbnailColors,
+      result: userBookData,
     };
     return NextResponse.json(result, { status: 200 });
   } catch (error: any) {
