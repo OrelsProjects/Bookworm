@@ -89,7 +89,7 @@ export const BookButtons = () => {
     book: Book,
     userBookData?: UserBookData | null
   ) => {
-    if (loading.current) return;
+    if (loading) return;
     let promise: Promise<any> | undefined = undefined;
     let loadingMessage = "";
     let successMessage = "";

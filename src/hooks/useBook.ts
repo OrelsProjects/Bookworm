@@ -366,7 +366,7 @@ const useBook = () => {
     deleteUserBook,
     getBookFullData,
     userBooksData,
-    loading,
+    loading: loading.current,
   };
 };
 

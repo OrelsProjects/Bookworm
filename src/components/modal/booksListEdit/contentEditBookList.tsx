@@ -129,7 +129,7 @@ const ContentEditBookList = ({
 
   const handleAddNewBookClick = async (book: Book) => {
     try {
-      if (loadingList.current || loadingBook.current) return;
+      if (loadingList.current || loadingBook) return;
 
       if (!listName && isNewList) {
         formik.setFieldError("listName", "List name is required");
@@ -240,7 +240,7 @@ const ContentEditBookList = ({
 
   const handleDeleteBookClick = async (bookInList: BookInList) => {
     try {
-      if (loadingList.current || loadingBook.current) return;
+      if (loadingList.current || loadingBook) return;
       if (!currentBooksList) return;
 
       await toast.promise(

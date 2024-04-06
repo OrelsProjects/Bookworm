@@ -29,20 +29,9 @@ export default function BooksListGridView({
     updateBookReadingStatus,
     addUserBook,
     loading,
-    userBooksData,
     deleteUserBook,
   } = useBook();
   const { showBookDetailsModal, showBooksListEditModal } = useModal();
-
-  const [value, setValue] = useState(4);
-
-  useEffect(() => {
-    setValue(3);
-    setTimeout(() => {
-      console.log(value);
-    }, 1000);
-    setValue(6);
-  }, []);
 
   const [sortedBooksInList, setSortedBooksInList] = React.useState<
     BookInListWithBook[]
@@ -65,20 +54,20 @@ export default function BooksListGridView({
     return booksInList;
   }, [sortedBooksInList]);
 
-  const isRead = useMemo(() => {
+  const isRead = (bookId: number) => {
     const booksIsRead: Record<number, boolean> = {};
     safeBooksListData?.booksInList?.forEach((bookInList) => {
       const bookData = getBookFullData(bookInList.book);
       booksIsRead[bookInList.book.bookId] = isBookRead(bookData?.userBook);
     });
-    return booksIsRead;
-  }, [userBooksData]);
+    return booksIsRead[bookId];
+  };
 
   const handleUpdateBookReadingStatus = async (
     book: Book,
     status: ReadingStatusEnum
   ) => {
-    if (loading.current) return;
+    if (loading) return;
     const bookData = getBookFullData(book);
     let promise: Promise<any> | undefined = undefined;
     let loadingMessage = "";
@@ -211,7 +200,7 @@ export default function BooksListGridView({
                           className={`
                       ${
                         booksInUsersList[bookInList.book.bookId] &&
-                        !isRead[bookInList.book.bookId]
+                        !isRead(bookInList.book.bookId)
                           ? "!text-priamry"
                           : "!text-foreground"
                       }
@@ -229,7 +218,7 @@ export default function BooksListGridView({
                         iconSize="md"
                         className={`rounded-full p-1.5
                       ${
-                        isRead[bookInList.book.bookId]
+                        isRead(bookInList.book.bookId)
                           ? "!bg-primary !text-background"
                           : "!bg-background !text-foreground"
                       }
