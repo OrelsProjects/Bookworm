@@ -13,7 +13,7 @@ import {
 } from "../../../models/readingStatus";
 import { Checkmark } from "../../icons/checkmark";
 import { Bookmark } from "../../icons/bookmark";
-import { isBookRead } from "../../../models/userBook";
+import { isBookRead, isBookToRead } from "../../../models/userBook";
 import { ErrorUnauthenticated } from "../../../models/errors/unauthenticatedError";
 import SwitchEditMode from "../_components/switchEditMode";
 import { BooksListData } from "../../../models/booksList";
@@ -29,6 +29,7 @@ export default function BooksListGridView({
     updateBookReadingStatus,
     addUserBook,
     loading,
+    userBooksData,
     deleteUserBook,
   } = useBook();
   const { showBookDetailsModal, showBooksListEditModal } = useModal();
@@ -54,14 +55,23 @@ export default function BooksListGridView({
     return booksInList;
   }, [sortedBooksInList]);
 
-  const isRead = (bookId: number) => {
+  const isRead = useMemo(() => {
     const booksIsRead: Record<number, boolean> = {};
     safeBooksListData?.booksInList?.forEach((bookInList) => {
       const bookData = getBookFullData(bookInList.book);
       booksIsRead[bookInList.book.bookId] = isBookRead(bookData?.userBook);
     });
-    return booksIsRead[bookId];
-  };
+    return booksIsRead;
+  }, [userBooksData]);
+
+  const isToRead = useMemo(() => {
+    const booksIsRead: Record<number, boolean> = {};
+    safeBooksListData?.booksInList?.forEach((bookInList) => {
+      const bookData = getBookFullData(bookInList.book);
+      booksIsRead[bookInList.book.bookId] = isBookToRead(bookData?.userBook);
+    });
+    return booksIsRead;
+  }, [userBooksData]);
 
   const handleUpdateBookReadingStatus = async (
     book: Book,
@@ -199,9 +209,8 @@ export default function BooksListGridView({
                           iconSize="xs"
                           className={`
                       ${
-                        booksInUsersList[bookInList.book.bookId] &&
-                        !isRead(bookInList.book.bookId)
-                          ? "!text-priamry"
+                        isToRead[bookInList.book.bookId]
+                          ? "!text-primary"
                           : "!text-foreground"
                       }
                       `}
@@ -218,7 +227,7 @@ export default function BooksListGridView({
                         iconSize="md"
                         className={`rounded-full p-1.5
                       ${
-                        isRead(bookInList.book.bookId)
+                        isRead[bookInList.book.bookId]
                           ? "!bg-primary !text-background"
                           : "!bg-background !text-foreground"
                       }

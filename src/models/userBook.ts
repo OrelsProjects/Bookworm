@@ -49,6 +49,9 @@ class UserBook {
 export const isBookRead = (userBook?: UserBook): boolean =>
   userBook?.readingStatusId === ReadingStatusEnum.READ;
 
+export const isBookToRead = (userBook?: UserBook): boolean =>
+  userBook?.readingStatusId === ReadingStatusEnum.TO_READ;
+
 export type BookData = {
   book?: Book;
   mainGenre?: Genre;
