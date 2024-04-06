@@ -15,6 +15,7 @@ export interface BookThumbnailProps {
   onClick?: (book: Book) => void;
   Icon?: React.ReactNode;
   thumbnailSize?: ThumbnailSize;
+  loading?: "lazy" | "eager";
 }
 
 const ImagePlaceholder = ({
@@ -39,6 +40,7 @@ const BookThumbnail: React.FC<BookThumbnailProps> = ({
   onClick,
   Icon,
   thumbnailSize = "md",
+  loading,
 }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
@@ -69,7 +71,7 @@ const BookThumbnail: React.FC<BookThumbnailProps> = ({
         alt={`${bookTitle} thumbnail`}
         height={height}
         width={width}
-        loading="eager"
+        loading={loading}
         onClick={onClick && book ? () => onClick(book) : undefined}
         className={`${
           thumbnailSize === "xs" ? "rounded-[6px]" : "rounded-2xl"
