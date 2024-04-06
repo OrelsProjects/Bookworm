@@ -1,7 +1,7 @@
-import { PlaceholderValue } from "next/dist/shared/lib/get-img-props";
-import React from "react";
+import React, { useState } from "react";
 import { Book } from "../../models";
 import { ThumbnailSize, getThumbnailSize } from "../../consts/thumbnail";
+import { Skeleton } from "../ui/skeleton";
 
 export interface BookThumbnailProps {
   title?: string;
@@ -9,7 +9,6 @@ export interface BookThumbnailProps {
   book?: Book;
   height?: number;
   width?: number;
-  placeholder?: PlaceholderValue;
   blurDataURL?: string;
   className?: string;
   imageClassName?: string;
@@ -18,21 +17,43 @@ export interface BookThumbnailProps {
   thumbnailSize?: ThumbnailSize;
 }
 
+const ImagePlaceholder = ({
+  thumbnailSize,
+}: {
+  thumbnailSize: ThumbnailSize;
+}) => (
+  <Skeleton
+    className={`${getThumbnailSize(thumbnailSize).className} ${
+      thumbnailSize === "xs" ? "rounded-[6px]" : "rounded-2xl"
+    }`}
+  />
+);
+
 const BookThumbnail: React.FC<BookThumbnailProps> = ({
   title,
   src,
   book,
   height,
   width,
-  placeholder,
-  blurDataURL,
   className,
   onClick,
   Icon,
   thumbnailSize = "md",
 }) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
+
   const thumbnailUrl = book?.thumbnailUrl ?? src;
   const bookTitle = book?.title ?? title;
+  const placeholderSrc = "/thumbnailPlaceholder.png";
+
+  const handleImageLoaded = () => {
+    setImageLoaded(true);
+  };
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
 
   return (
     <div
@@ -40,16 +61,22 @@ const BookThumbnail: React.FC<BookThumbnailProps> = ({
         getThumbnailSize(thumbnailSize).className
       }`}
     >
+      {!imageLoaded && !imageError && (
+        <ImagePlaceholder thumbnailSize={thumbnailSize} />
+      )}
       <img
-        src={thumbnailUrl ?? "/thumbnailPlaceholder.png"}
+        src={imageError ? placeholderSrc : thumbnailUrl ?? placeholderSrc}
         alt={`${bookTitle} thumbnail`}
         height={height}
         width={width}
         loading="lazy"
         onClick={onClick && book ? () => onClick(book) : undefined}
-        className={`${thumbnailSize === "xs" ? "rounded-[6px]" : "rounded-2xl"} ${
-          className ?? ""
-        } w-full h-full`}
+        className={`${
+          thumbnailSize === "xs" ? "rounded-[6px]" : "rounded-2xl"
+        } ${className ?? ""} w-full h-full`}
+        onLoad={handleImageLoaded}
+        onError={handleImageError}
+        style={{ display: imageLoaded ? "block" : "none" }}
       />
 
       {Icon}
