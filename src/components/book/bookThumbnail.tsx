@@ -69,7 +69,7 @@ const BookThumbnail: React.FC<BookThumbnailProps> = ({
         alt={`${bookTitle} thumbnail`}
         height={height}
         width={width}
-        loading="lazy"
+        loading="eager"
         onClick={onClick && book ? () => onClick(book) : undefined}
         className={`${
           thumbnailSize === "xs" ? "rounded-[6px]" : "rounded-2xl"
