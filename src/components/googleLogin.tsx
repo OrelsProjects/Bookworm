@@ -21,6 +21,7 @@ export default function GoogleLogin({
     <Button
       onClick={() => {
         onClickBefore?.();
+        localStorage.setItem("listReferer", window.location.pathname); // Set referrer.
         handleGoogleLogin();
       }}
       variant="outline"
