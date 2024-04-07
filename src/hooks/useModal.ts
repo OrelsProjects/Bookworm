@@ -66,7 +66,6 @@ export const useModal = () => {
   };
 
   const showRegisterModal = () => {
-    debugger;
     onShowModal(null, ModalTypes.REGISTER);
   };
 
