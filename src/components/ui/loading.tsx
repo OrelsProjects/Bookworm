@@ -7,7 +7,7 @@ interface LoadingProps {
 }
 
 const separateBackslashN = (text: string): React.ReactNode[] => {
-  let splitText = text.split("\\n");
+  let splitText = text.split("\n");
   const textNodes: React.ReactNode[] = [];
   splitText.forEach((t, index) => {
     textNodes.push(
@@ -64,6 +64,6 @@ const Loading: React.FC<LoadingProps> = ({
       {text ? separateBackslashN(text) : null}
     </div>
   </div>
-); 
+);
 
 export default Loading;

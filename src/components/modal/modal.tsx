@@ -152,7 +152,7 @@ const Modal: React.FC<ModalProps> = ({
         </div>
       );
     }, [isOpen, children]);
-
+    
   return (
     <div
       className="absolute top-0 left-0 right-0 bottom-0 w-full h-full z-50 overscroll-none overflow-auto bg-background"
@@ -160,9 +160,11 @@ const Modal: React.FC<ModalProps> = ({
       ref={scrollableDivRef}
       id="modal"
     >
-      <TopBarCollapsed scrollRef={scrollableDivRef} onClose={onClose}>
-        {topBarCollapsed}
-      </TopBarCollapsed>
+      {topBarCollapsed && (
+        <TopBarCollapsed scrollRef={scrollableDivRef} onClose={onClose}>
+          {topBarCollapsed}
+        </TopBarCollapsed>
+      )}
       <OpacityDiv
         innerRef={modalRef}
         key="modal-background"

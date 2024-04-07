@@ -97,7 +97,6 @@ const Avatar: React.FC<AvatarProps> = ({ avatarUrl, defaultText }) => {
       {defaultText && (defaultText.substring(0, 2) || "").toUpperCase()}
     </div>
   );
-console.log(avatarUrl)
   return (
     <div
       className="relative rounded-full h-[50px] w-[50px] z-50"

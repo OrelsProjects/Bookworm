@@ -76,12 +76,16 @@ export default function Home(): React.ReactNode {
                         "",
                         `${recommendationList.publicURL}`
                       );
-                      showBooksListModal({
-                        bookList: recommendationList,
-                        onBack: () => {
-                          router.push("/home");
+                      showBooksListModal(
+                        {
+                          bookList: recommendationList,
                         },
-                      });
+                        {
+                          onBack: () => {
+                            router.push("/home");
+                          },
+                        }
+                      );
                     }}
                   >
                     See all

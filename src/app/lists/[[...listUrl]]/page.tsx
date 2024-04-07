@@ -31,16 +31,21 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
 
   const loadBooksList = async () => {
     try {
+      showBooksListModal({}, { loading: true });
       const userBooksList = booksLists.find(
         (list) => list.publicURL === params.listUrl
       );
       if (userBooksList) {
-        showBooksListModal({
-          bookList: userBooksList,
-          onBack: () => {
-            router.push("/home");
+        showBooksListModal(
+          {
+            bookList: userBooksList,
           },
-        });
+          {
+            onBack: () => {
+              router.push("/home");
+            },
+          }
+        );
         return;
       }
       const urlParams = new URLSearchParams();
@@ -54,14 +59,29 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
       const bookList = response.data.result;
       if (bookList) {
         if (!user) {
-          showBooksListModal({
-            bookList,
-            onBack: () => {
-              router.push("/home");
+          showBooksListModal(
+            {
+              bookList,
             },
-          });
+            {
+              onBack: () => {
+                router.push("/home");
+              },
+              popLast: true,
+              shouldAnimate: false,
+            }
+          );
         } else {
-          showBooksListModal({ bookList });
+          showBooksListModal(
+            { bookList },
+            {
+              popLast: true,
+              shouldAnimate: false,
+              onBack: () => {
+                router.push("/lists");
+              },
+            }
+          );
         }
       }
     } catch (error: any) {
@@ -71,7 +91,6 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
       router.push("/404");
     } finally {
       setLoadingBooksList(false);
-      localStorage.removeItem("redirect");
     }
   };
 
@@ -87,7 +106,7 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
     if (!params.listUrl) {
       setLoadingBooksList(false);
     }
-  }, [params.listUrl]);
+  }, [params.listUrl, window.location]);
 
   const onSeeAllClick = useCallback(() => {
     router.push("/my-library");

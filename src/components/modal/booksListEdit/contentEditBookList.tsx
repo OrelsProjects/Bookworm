@@ -227,7 +227,7 @@ const ContentEditBookList = ({
 
   const scrollSearchBarIntoView = () => {
     if (isSearchBarScrolledIntoView) return;
-    console.log("scrolling into view");
+    
     const searchBarElement = searchBarRef.current;
     if (searchBarElement) {
       searchBarRef.current?.scrollIntoView({

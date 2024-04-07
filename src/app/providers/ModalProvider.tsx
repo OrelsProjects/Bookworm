@@ -35,8 +35,6 @@ const ModalProvider: React.FC = () => {
   );
   const dispatch = useDispatch();
 
-  useEffect(() => {}, [window.location.href]);
-
   const { data, type } = useMemo(
     () => modalStack[modalStack.length - 1] ?? {},
     [modalStack]
@@ -83,7 +81,7 @@ const ModalProvider: React.FC = () => {
         color = darkenColor(firstBookEdit?.thumbnailColor) ?? defaultColor;
         break;
       case ModalTypes.BOOKS_LIST_DETAILS:
-        const firstBook = data?.bookList.booksInList?.[0]?.book;
+        const firstBook = data?.bookList?.booksInList?.[0]?.book;
         color = darkenColor(firstBook?.thumbnailColor) ?? defaultColor;
         break;
       case ModalTypes.ADD_BOOK_TO_LIST:
@@ -145,7 +143,10 @@ const ModalProvider: React.FC = () => {
         title = data?.bookList?.name ?? "";
         break;
       default:
-        thumbnail = <></>;
+        thumbnail = undefined;
+    }
+    if (!thumbnail || !title) {
+      return undefined;
     }
     return (
       <div
@@ -164,15 +165,18 @@ const ModalProvider: React.FC = () => {
     (data?: any, options?: ShowModalOptions) => {
       return (
         <RenderModal
-          onClose={data.onBack}
+          onClose={options?.onBack}
           type={ModalTypes.BOOKS_LIST_DETAILS}
           shouldAnimate={options?.shouldAnimate ?? true}
         >
-          <ModalBooksList safeBooksListData={data.bookList} />
+          <ModalBooksList
+            safeBooksListData={data.bookList}
+            loading={options?.loading}
+          />
         </RenderModal>
       );
     },
-    [shouldRenderBooksListDetailsModal]
+    [shouldRenderBooksListDetailsModal, topBarCollapsed]
   );
 
   const RenderBooksListDetailsEdit = (

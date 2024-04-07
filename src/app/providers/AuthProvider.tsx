@@ -29,25 +29,30 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const isLoadingUserFetch = useRef<boolean>(false);
   const dispatch = useDispatch();
 
+  const fetchUserLocal = () => {
+    const userStringified = localStorage.getItem("user") ?? null;
+    if (userStringified) {
+      const user = JSON.parse(userStringified);
+      dispatch(setUser(user));
+    }
+    dispatch(
+      setLoading({
+        loading: false,
+      })
+    );
+  };
+
   const fetchUser = async () => {
     if (isLoadingUserFetch.current) {
       return;
     }
     try {
-      const userStringified = localStorage.getItem("user") ?? null;
-      if (userStringified) {
-        const user = JSON.parse(userStringified);
-        dispatch(setUser(user));
-        dispatch(
-          setLoading({
-            loading: false,
-          })
-        );
-      } else {
+      if (!user) {
+        // If user was not set from local storage, show loading screen
         dispatch(
           setLoading({
             loading: true,
-            message: "Hi there!\n Just a moment, we're grabbing your user :)",
+            message: "Hi there!\nJust a moment, we're grabbing your user :)",
           })
         );
         isLoadingUserFetch.current = true;
@@ -64,7 +69,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         session?.tokens?.idToken?.payload?.picture?.toString() ?? "";
       const displayName =
         session?.tokens?.idToken?.payload?.name?.toString() ?? "";
-      const user: CreateUser = {
+      const createUser: CreateUser = {
         userId,
         email,
         profilePictureUrl,
@@ -75,7 +80,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const userResponse = await axios.post<IResponse<CreateUser>>(
         "/api/user/confirm",
         {
-          data: { user, fromList },
+          data: { user: createUser, fromList },
         },
         {
           headers: {
@@ -88,7 +93,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         dispatch(setUser({ ...userWithDetails, token }));
         localStorage.setItem("user", JSON.stringify(userWithDetails));
       } else {
-        dispatch(setUser({ ...user, token }));
+        dispatch(setUser({ ...createUser, token }));
         throw new Error("Failed to confirm user in db");
       }
     } catch (error: any) {
@@ -116,11 +121,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [user]);
 
   useEffect(() => {
-    dispatch(
-      setLoading({
-        loading: true,
-      })
-    );
     const unsubscribe = Hub.listen("auth", ({ payload }) => {
       switch (payload.event) {
         case "signInWithRedirect":
@@ -137,11 +137,10 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           break;
       }
     });
-
-    fetchUser();
+    fetchUserLocal();
 
     return unsubscribe;
-  }, [dispatch]);
+  }, []);
 
   return loadingState.loading ? (
     <div className="absolute w-screen h-screen top-0 bottom-0 right-0 left-0">

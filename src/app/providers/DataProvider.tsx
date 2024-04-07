@@ -27,8 +27,8 @@ const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
         if (loadingUserBooks.current) return;
         axios.defaults.baseURL = window.location.origin;
         loadingUserBooks.current = true;
-        const promises = [loadUserRecommendations(user)];
-        if (user) {
+        const promises = [];
+        if (user && state === AuthStateType.SIGNED_IN) {
           promises.push(loadUserBooksLists(user));
           promises.push(loadUserBooks(user));
         }
@@ -43,6 +43,17 @@ const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
     setDataLoaded(true);
     loadUserDataAsync();
   }, [state, user]);
+
+  useEffect(() => {
+    const loadRecommendations = async () => {
+      try {
+        await loadUserRecommendations(user);
+      } catch (error: any) {
+        Logger.error("Error loading recommendations", { error });
+      }
+    };
+    loadRecommendations();
+  }, []);
 
   return <>{children}</>;
 };

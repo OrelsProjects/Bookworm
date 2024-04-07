@@ -5,11 +5,14 @@ import BooksListThumbnail from "../../booksList/booksListThumbnail";
 import ReadMoreText from "../../readMoreText";
 import { ModalBooksListProps } from "./consts";
 import Tooltip from "../../ui/tooltip";
-import BooksListGridView from "./gridView";
+import BooksListGridView, { BooksListGridViewLoading } from "./gridView";
+import { Skeleton } from "../../ui/skeleton";
+import { getThumbnailSize } from "../../../consts/thumbnail";
 
 export const ModalBooksList = <T extends SafeBooksListData>({
   safeBooksListData,
-}: ModalBooksListProps<T>) => {  
+  loading,
+}: ModalBooksListProps<T>) => {
   const ThumbnailDetails = (
     <div className="w-full h-full justify-start items-start">
       <Tooltip
@@ -32,27 +35,54 @@ export const ModalBooksList = <T extends SafeBooksListData>({
   return (
     <ModalContent
       thumbnail={
-        <BooksListThumbnail
-          booksInList={safeBooksListData?.booksInList}
-          thumbnailSize="xl"
-        />
-      }
-      thumbnailDetails={ThumbnailDetails}
-      buttonsRow={
-        <div className="h-fit w-full flex flex-col justify-between">
-          <ReadMoreText
-            className="text-lg font-light leading-[30px]"
-            text={safeBooksListData?.description}
-            maxLines={2}
+        loading ? (
+          <Skeleton
+            className={`${getThumbnailSize("xl").className} rounded-2xl`}
+            type="shimmer"
           />
-          <div className="flex flex-row gap-1 w-fit font-bold text-base"></div>
-        </div>
+        ) : (
+          <BooksListThumbnail
+            booksInList={safeBooksListData?.booksInList}
+            thumbnailSize="xl"
+          />
+        )
+      }
+      thumbnailDetails={
+        loading ? (
+          <div className="w-full flex flex-col gap-2 mt-1">
+            <Skeleton className="w-5/6 h-4 rounded-lg" type="shimmer" />
+            <Skeleton className="w-4/6 h-3 rounded-lg" type="shimmer" />
+          </div>
+        ) : (
+          ThumbnailDetails
+        )
+      }
+      buttonsRow={
+        loading ? (
+          <div className="w-full flex flex-col gap-2 mt-1 mb-5">
+            <Skeleton className="w-3/4 h-4 rounded-lg" type="shimmer" />
+            <Skeleton className="w-4/6 h-4 rounded-lg" type="shimmer" />
+          </div>
+        ) : (
+          <div className="h-fit w-full flex flex-col justify-between">
+            <ReadMoreText
+              className="text-lg font-light leading-[30px]"
+              text={safeBooksListData?.description}
+              maxLines={2}
+            />
+            <div className="flex flex-row gap-1 w-fit font-bold text-base"></div>
+          </div>
+        )
       }
       bottomSection={
-        <BooksListGridView
-          safeBooksListData={safeBooksListData}
-          curator={safeBooksListData?.curatorName}
-        />
+        loading ? (
+          <BooksListGridViewLoading />
+        ) : (
+          <BooksListGridView
+            safeBooksListData={safeBooksListData}
+            curator={safeBooksListData?.curatorName}
+          />
+        )
       }
     />
   );

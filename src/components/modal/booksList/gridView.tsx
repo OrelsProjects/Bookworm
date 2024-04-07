@@ -18,6 +18,61 @@ import { ErrorUnauthenticated } from "../../../models/errors/unauthenticatedErro
 import SwitchEditMode from "../_components/switchEditMode";
 import { BooksListData } from "../../../models/booksList";
 import { BookInListWithBook } from "../../../models/bookInList";
+import { Skeleton } from "../../ui/skeleton";
+
+export function BooksListGridViewLoading() {
+  return (
+    <div className="h-full w-full flex flex-col gap-6 mt-2">
+      <div className="w-full flex flex-row items-center justify-between">
+        <Skeleton className="w-36 h-6 rounded-full" />
+      </div>
+      <div
+        className={`flex flex-wrap justify-between gap-4  lg:justify-between lg:items-center lg:gap-[44px]`}
+      >
+        {[1, 2, 3, 4, 5, 6].map((index) => (
+          <div className="lg:w-1/6 lg:flex lg:items-center lg:justify-center">
+            <div
+              key={`book-in-list-${index}`}
+              className={`flex flex-col justify-start items-start gap-2 
+            ${getThumbnailSize("3xl").width}
+            `}
+            >
+              <Skeleton
+                className={`w-full h-full rounded-2xl ${
+                  getThumbnailSize("3xl").className
+                }`}
+              />
+              {/* <BookThumbnail
+                thumbnailSize="3xl"
+                loading="eager"
+                Icon={
+                  <div className="w-full h-full z-40 absolute top-0">
+                    <div className="w-full h-full flex flex-row items-end justify-center gap-6 p-2">
+                      <div className="h-fit w-fit p-2 px-2.5 rounded-full bg-background">
+                        <Bookmark.Fill
+                          iconSize="xs"
+                          className="!text-foreground"
+                        />
+                      </div>
+                      <Checkmark.Fill
+                        iconSize="md"
+                        className={`rounded-full p-1.5 !bg-background !text-foreground`}
+                      />
+                    </div>
+                  </div>
+                }
+              /> */}
+              <div className="w-full flex flex-col gap-1">
+                <Skeleton className="w-full h-3 rounded-full" />
+                <Skeleton className="w-[90%] h-3 rounded-full" />
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function BooksListGridView({
   safeBooksListData,

@@ -14,8 +14,10 @@ const animationClass = ({ className, type }: SkeletonProps) => {
   switch (type) {
     case "shimmer":
       extraClass = `${shimmerEffect}`;
+      break;
     case "pulse":
       extraClass = "animate-pulse";
+      break;
   }
   return `${baseClass} ${extraClass}`;
 };

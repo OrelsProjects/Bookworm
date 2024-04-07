@@ -59,14 +59,16 @@ export const useModal = () => {
   ) => handleShowModal(data, ModalTypes.BOOKS_LIST_DETAILS_EDIT, options);
 
   const showBooksListModal = (
-    data: {
-      bookList: SafeBooksListData;
-      onBack?: () => void;
-    },
+    data: { bookList?: SafeBooksListData },
     options?: ShowModalOptions
-  ) => handleShowModal(data, ModalTypes.BOOKS_LIST_DETAILS, options);
+  ) => {
+    handleShowModal(data, ModalTypes.BOOKS_LIST_DETAILS, options);
+  };
 
-  const showRegisterModal = () => onShowModal(null, ModalTypes.REGISTER);
+  const showRegisterModal = () => {
+    debugger;
+    onShowModal(null, ModalTypes.REGISTER);
+  };
 
   const closeModal = () => dispatch(hideModal());
 
