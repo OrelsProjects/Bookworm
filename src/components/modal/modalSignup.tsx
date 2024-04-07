@@ -33,7 +33,6 @@ export default function ModalSignup() {
           <GoogleLogin
             text="Continue with Google"
             onClickBefore={() => {
-              localStorage.setItem("listReferer", window.location.pathname);
               localStorage.setItem("redirect", window.location.pathname);
             }}
             className="!w-full justify-start gap-3 pl-5"

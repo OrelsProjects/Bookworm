@@ -59,6 +59,7 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
       const bookList = response.data.result;
       if (bookList) {
         if (!user) {
+          localStorage.setItem("listReferer", window.location.pathname); // Set referrer.
           showBooksListModal(
             {
               bookList,
