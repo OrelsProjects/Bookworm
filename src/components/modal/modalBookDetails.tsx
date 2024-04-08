@@ -52,9 +52,7 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
   React.useEffect(() => {
     setTitle(bookFullData?.bookData?.book?.title ?? book?.title);
     setAuthors(bookFullData?.bookData?.book?.authors ?? book?.authors);
-    setGoodreadsRating(
-      bookFullData?.goodreadsData?.goodreadsRating
-    );
+    setGoodreadsRating(bookFullData?.goodreadsData?.goodreadsRating);
   }, [userBooksData]);
 
   const Summary = () => (
@@ -66,7 +64,11 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
               {curatorsFirstNames + "'s" ?? "List Creator"} Comment
             </div>
             {bookInList.comments ? (
-              <ReadMoreText text={bookInList.comments} maxLines={3} />
+              <ReadMoreText
+                text={bookInList.comments}
+                maxLines={3}
+                className={"max-w-full line-clamp-3 !h-full"}
+              />
             ) : (
               <div>
                 {curator ?? "The List Creator"} Didn't Add His Comment Yet
