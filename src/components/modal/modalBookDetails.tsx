@@ -67,7 +67,7 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
               <ReadMoreText
                 text={bookInList.comments}
                 maxLines={3}
-                className={"max-w-full line-clamp-3 !h-full"}
+                className={"max-w-full"}
               />
             ) : (
               <div>
@@ -82,7 +82,7 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
             <ReadMoreText
               text={book?.description}
               maxLines={bookInList ? 3 : 6}
-              className={"max-w-full line-clamp-3 !h-full"}
+              className={"max-w-full"}
             />
           </div>
         )}
