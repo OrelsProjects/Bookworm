@@ -80,7 +80,7 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
             <ReadMoreText
               text={book?.description}
               maxLines={bookInList ? 3 : 6}
-              className={"text-xl text-foreground font-thin !overflow-none"}
+              className={"max-w-full line-clamp-3 !h-full"}
             />
           </div>
         )}
