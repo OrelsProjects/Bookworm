@@ -1,5 +1,6 @@
 import { search } from "fast-fuzzy";
-import { Book, UserBook, UserBookData } from "../models";
+import { Book, UserBookData } from "../models";
+import { BooksListData } from "../models/booksList";
 
 const fuzzySearchOptions = {
   threshold: 0.8,
@@ -49,10 +50,13 @@ const compareBooksByTitle = (book1: Book, book2: Book): boolean => {
 export const isBooksEqual = (
   book1?: Book | null,
   book2?: Book | null,
-  threshold: number = 0.8
+  threshold: number = 0.95
 ): boolean => {
   if (!book1 || !book2) {
     return false;
+  }
+  if (book1.bookId === book2.bookId) {
+    return true;
   }
   fuzzySearchOptions.threshold = threshold;
   return compareBooksByIsbn(book1, book2) || compareBooksByTitle(book1, book2);
@@ -103,3 +107,15 @@ export const sortByDateAdded = (userBookData: UserBookData[]): UserBookData[] =>
     }
     return 0;
   });
+
+export const filterByReadlist = (
+  listName: string,
+  userBooks: UserBookData[],
+  booksLists: BooksListData[]
+): UserBookData[] => {
+  const list = booksLists.find((list) => list.name === listName);
+  const booksInList = list?.booksInList.map((listData) => listData.book);
+  return userBooks.filter((userBook) =>
+    booksInList?.some((book) => isBooksEqual(book, userBook.bookData?.book))
+  );
+};

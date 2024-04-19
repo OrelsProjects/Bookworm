@@ -11,7 +11,7 @@ import {
 import { fetchAuthSession } from "aws-amplify/auth";
 import { Hub } from "aws-amplify/utils";
 import "../../amplifyconfiguration";
-import { Loading } from "../../components";
+import Loading from "../../components/ui/loading";
 import { initEventTracker, setUserEventTracker } from "../../eventTracker";
 
 import { Logger, initLogger, setUserLogger } from "@/src/logger";
@@ -29,18 +29,34 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const isLoadingUserFetch = useRef<boolean>(false);
   const dispatch = useDispatch();
 
+  const fetchUserLocal = () => {
+    const userStringified = localStorage.getItem("user") ?? null;
+    if (userStringified) {
+      const user = JSON.parse(userStringified);
+      dispatch(setUser(user));
+    }
+    dispatch(
+      setLoading({
+        loading: false,
+      })
+    );
+  };
+
   const fetchUser = async () => {
     if (isLoadingUserFetch.current) {
       return;
     }
     try {
-      dispatch(
-        setLoading({
-          loading: true,
-          message: "Welcome back! Just a moment, we're grabbing your user :)",
-        })
-      );
-      isLoadingUserFetch.current = true;
+      if (!user) {
+        // If user was not set from local storage, show loading screen
+        dispatch(
+          setLoading({
+            loading: true,
+            message: "Hi there!\nJust a moment, we're grabbing your user :)",
+          })
+        );
+        isLoadingUserFetch.current = true;
+      }
 
       const session = await fetchAuthSession();
       const userId = session.userSub ?? "";
@@ -51,15 +67,20 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const token = session?.tokens?.accessToken?.toString() ?? "";
       const profilePictureUrl =
         session?.tokens?.idToken?.payload?.picture?.toString() ?? "";
-      const user: CreateUser = {
+      const displayName =
+        session?.tokens?.idToken?.payload?.name?.toString() ?? "";
+      const createUser: CreateUser = {
         userId,
         email,
         profilePictureUrl,
+        displayName,
       };
+      const fromList = localStorage.getItem("listReferer");
+      localStorage.removeItem("listReferer");
       const userResponse = await axios.post<IResponse<CreateUser>>(
         "/api/user/confirm",
         {
-          data: user,
+          data: { user: createUser, fromList },
         },
         {
           headers: {
@@ -70,13 +91,14 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const userWithDetails = userResponse.data.result;
       if (userWithDetails) {
         dispatch(setUser({ ...userWithDetails, token }));
+        localStorage.setItem("user", JSON.stringify(userWithDetails));
       } else {
-        dispatch(setUser({ ...user, token }));
+        dispatch(setUser({ ...createUser, token }));
         throw new Error("Failed to confirm user in db");
       }
     } catch (error: any) {
+      localStorage.removeItem("user");
       Logger.error("Error fetching user", { error });
-      toast.error("Error fetching user");
     } finally {
       dispatch(
         setLoading({
@@ -99,11 +121,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [user]);
 
   useEffect(() => {
-    dispatch(
-      setLoading({
-        loading: true,
-      })
-    );
     const unsubscribe = Hub.listen("auth", ({ payload }) => {
       switch (payload.event) {
         case "signInWithRedirect":
@@ -120,18 +137,14 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           break;
       }
     });
-
-    fetchUser();
+    fetchUserLocal();
 
     return unsubscribe;
-  }, [dispatch]);
+  }, []);
 
   return loadingState.loading ? (
-    <div className="w-full h-full flex justify-center items-center">
-      <Loading
-        spinnerClassName="!w-24 !h-24 !fill-primary"
-        text={loadingState.message ?? ""}
-      />
+    <div className="absolute w-screen h-screen top-0 bottom-0 right-0 left-0">
+      <Loading spinnerClassName="w-20 h-20" text={loadingState.message ?? ""} />
     </div>
   ) : (
     children

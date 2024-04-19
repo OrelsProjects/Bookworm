@@ -25,18 +25,20 @@ input[type="text"]:-moz-ui-autofill {
 @layer base {
   :root {
     /* Selected button (Primary/Default) */
-    --primary: 193, 89, 89;
+    /* --primary: 193, 89, 89; */
+    --primary: 255, 148, 38;
     /* Primary/Medium */
     --primary-foreground: 9, 72, 123;
     /* Primary/weak */
-    --primary-weak: 0, 42, 77;
+    --primary-weak: 217, 217, 217;
     /* Not selected button (Surface/Secondary) */
     --secondary: 21, 63, 102;
     --background: 20, 20, 20;
     /* Text main color (Neutral/Default) */
     --foreground: 245, 245, 245;
     /* Text secondary color (Neutral/Strong) */
-    --muted: 193, 202, 209;
+    --muted: 154, 149, 149;
+    --muted-foreground: 35 35 35;
     /* Surface/Primary */
     --card: 21, 63, 102;
     /* Status/Success/Default */
@@ -57,7 +59,7 @@ input[type="text"]:-moz-ui-autofill {
     --error: 255, 69, 58;
 
     /* Border Radius */
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
     --tw-shadow-color: var(--background);
   }
@@ -114,7 +116,7 @@ input[type="text"]:-moz-ui-autofill {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground font-roboto;
+    @apply bg-background text-foreground;
   }
   body,
   input,
@@ -125,38 +127,6 @@ input[type="text"]:-moz-ui-autofill {
   }
 }
 
-@layer utilities {
-  .grid-header-table {
-    @apply grid grid-cols-header-table;
-  }
-
-  .modal-size {
-    @apply h-modal-sm w-modal-sm;
-  }
-
-  .title {
-    @apply line-clamp-1 text-3xl;
-  }
-
-  @screen xl {
-    .grid-header-table {
-      @apply grid grid-cols-header-table-xl;
-    }
-    .modal-size {
-      @apply h-modal w-modal;
-    }
-    .title {
-      @apply text-3xl;
-    }
-  }
-
-  @screen 2xl {
-    .title {
-      @apply text-5xl;
-    }
-  }
-}
-
 .modal-background {
   @apply bg-secondary rounded-lg p-4;
 }
@@ -164,12 +134,12 @@ input[type="text"]:-moz-ui-autofill {
 @layer utilities {
   /* Hide scrollbar for Chrome, Safari and Opera */
   .scrollbar-hide::-webkit-scrollbar {
-    display: none;
+    /* display: none; */
   }
   /* Hide scrollbar for IE, Edge and Firefox */
   .scrollbar-hide {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
   .tooltipContent {
     display: -webkit-box;
@@ -190,6 +160,9 @@ input[type="text"]:-moz-ui-autofill {
 ::-webkit-scrollbar {
   width: 4px;
   height: 0px; /* Decrease the height to make the thumb slimmer */
+  background: rgb(var(--muted-foreground));
+  border-radius: 999999px;
+  padding: 4px;
 }
 
 /* Track */
@@ -199,8 +172,8 @@ input[type="text"]:-moz-ui-autofill {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: rgb(var(--foreground));
-  border-radius: 5px;
+  background: rgba(var(--muted), 0.4);
+  border-radius: 2px;
 }
 
 /* Handle on hover */
@@ -213,6 +186,18 @@ input[type="text"]:-moz-ui-autofill {
 }
 
 /* Animations */
+@keyframes errorFade {
+  0% {
+    background-color: rgba(var(--background), 1);
+  }
+  30% {
+    background-color: rgba(var(--error), 0.5);
+  }
+  100% {
+    background-color: rgba(var(--background), 1);
+  }
+}
+
 @keyframes shimmer {
   0% {
     transform: translateX(-100%);
@@ -220,6 +205,10 @@ input[type="text"]:-moz-ui-autofill {
   100% {
     transform: translateX(100%);
   }
+}
+
+.animation-error-fade {
+  animation: errorFade 2s;
 }
 
 .shimmer-effect {
@@ -242,4 +231,19 @@ input[type="text"]:-moz-ui-autofill {
     transparent 100%
   );
   animation: shimmer 2s infinite;
+}
+
+.absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.text-see-all {
+  @apply text-xl text-foreground underline leading-5.5 flex-shrink-0;
+}
+
+.text-list-title {
+  @apply text-xl leading-5.5 font-normal line-clamp-1 text-start;
 }

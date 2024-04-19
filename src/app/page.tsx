@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { selectAuth } from "../lib/features/auth/authSlice";
-import { Loading } from "../components";
+import Loading from "../components/ui/loading";
 
 function App() {
   const router = useRouter();
@@ -12,11 +12,7 @@ function App() {
   const { user, loadingState, error } = useSelector(selectAuth);
 
   useEffect(() => {
-    if (!loadingState.loading && user) {
-      router.push("/home");
-    } else {
-      router.push("/login");
-    }
+    router.push("/home");
   }, [loadingState, user]);
 
   // Sometimes the redirect of google returns with an error and 300ms later it returns with the user
@@ -37,9 +33,7 @@ function App() {
 
   return (
     <div className="h-full w-full flex flex-col justify-center items-center ">
-      {loadingState.loading && (
-        <Loading spinnerClassName="!w-24 !h-24 !fill-primary" />
-      )}
+      {loadingState.loading && <Loading spinnerClassName="!w-24 !h-24" />}
     </div>
   );
 }

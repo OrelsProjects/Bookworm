@@ -1,25 +1,29 @@
-import mixpanel from "mixpanel-browser";
-import dotenv from "dotenv";
+import posthog from "posthog-js";
 import { User } from "./models";
 import { Logger } from "./logger";
-dotenv.config();
 
-export enum TimeoutLength {
+enum TimeoutLength {
   SHORT = 100,
   MEDIUM = 5000,
   LONG = 10000,
 }
 
-export interface Dict {
+interface Dict {
   [key: string]: any;
 }
 export const initEventTracker = () => {
-  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_API_KEY ?? "");
+  // mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_API_KEY ?? "");
+  const env = process.env.NODE_ENV;
+  posthog.init(process.env.NEXT_PUBLIC_POSTHOG_API_KEY ?? "", {
+    api_host: "https://app.posthog.com",
+    disable_session_recording: env !== "production",
+  });
 };
 
 export const setUserEventTracker = (user?: User | null) => {
   try {
-    mixpanel.identify(user?.userId);
+    posthog.identify(user?.userId);
+    // mixpanel.identify(user?.userId);
   } catch (error: any) {
     Logger.error("Error setting user for event tracker", {
       data: {
@@ -48,13 +52,24 @@ export class EventTracker {
    * @param timeout how long to wait before sending the same event again
    */
   static track(eventName: string, props?: Dict, timeout?: TimeoutLength) {
-    if (timeout && timeoutEvent(eventName, timeout)) {
-      return;
+    try {
+      if (timeout && timeoutEvent(eventName, timeout)) {
+        return;
+      }
+      if (process.env.NODE_ENV !== "production") {
+        console.log("Tracking event", eventName, props ?? "");
+        return;
+      }
+      posthog.capture(eventName, props);
+    } catch (error: any) {
+      Logger.error("Error tracking event", {
+        data: {
+          eventName,
+          props,
+          timeout,
+        },
+        error,
+      });
     }
-    if (process.env.NODE_ENV !== "production") {
-      console.log("Tracking event", eventName, props ?? "");
-      return;
-    }
-    mixpanel.track(eventName, props);
   }
 }

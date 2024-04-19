@@ -8,12 +8,12 @@ import { UserBookData } from "./userBook";
 import { ImportStatus } from "./importStatus";
 
 export {
-  User,
-  Book,
+  type User,
+  type Book,
   Genre,
   BookSubGenre,
   GoodreadsData,
   UserBook,
-  UserBookData,
+  type UserBookData,
   ImportStatus,
 };

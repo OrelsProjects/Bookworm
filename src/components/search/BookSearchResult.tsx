@@ -1,107 +1,116 @@
-import React, { useEffect, useState } from "react";
-import { SquareSkeleton, LineSkeleton } from "../skeleton";
-import { Book, UserBook, UserBookData } from "../../models";
-import { RootState } from "@/src/lib/store";
-import { useSelector } from "react-redux";
-import useBook from "@/src/hooks/useBook";
-import toast from "react-hot-toast";
-import { Logger } from "@/src/logger";
-import { isBooksEqualExactly, removeSubtitle } from "@/src/utils/bookUtils";
-import BookThumbnail from "../bookThumnail";
-import { Add, Bookmark, Checkmark } from "../icons";
-import Title from "../book/title";
-import Authors from "../book/authors";
+import React, { useMemo } from "react";
+import { Skeleton } from "../ui/skeleton";
+import { Book } from "../../models";
+import { CiCirclePlus as Plus } from "react-icons/ci";
+import { CiBookmark as Bookmark } from "react-icons/ci";
+import { IoBookmark as BookmarkFill } from "react-icons/io5";
+import { IoCheckmarkCircleOutline as Checkmark } from "react-icons/io5";
+import { IoCheckmarkCircle as CheckmarkFill } from "react-icons/io5";
 
-interface BookComponentProps {
+import BookThumbnail from "../book/bookThumbnail";
+import Title from "../book/bookTitle";
+import Authors from "../book/authors";
+import BookButtons from "../book/bookButtons";
+import { useModal } from "../../hooks/useModal";
+import useBook from "../../hooks/useBook";
+import { ReadingStatusEnum } from "../../models/readingStatus";
+import { useSelector } from "react-redux";
+import { selectAuth } from "../../lib/features/auth/authSlice";
+
+export interface BookComponentProps {
   book: Book;
-  isFirstInList?: boolean;
 }
 
-const BookSearchResult: React.FC<BookComponentProps> = ({
-  book,
-  isFirstInList,
-}) => {
-  const { favoriteBook } = useBook();
-  const [loadingFavorite, setLoadingFavorite] = useState(false);
-  const [userBookData, setUserBookData] = useState<UserBookData | undefined>(
-    undefined
-  );
-  const userBooksData: UserBookData[] = useSelector(
-    (state: RootState) => state.userBooks.userBooksData
-  );
+const BookSearchResult: React.FC<BookComponentProps> = ({ book }) => {
+  const { user } = useSelector(selectAuth);
+  const { showBookDetailsModal } = useModal();
+  const { getBookFullData } = useBook();
+  const {
+    handleAddBookToList,
+    updateBookStatusToRead,
+    updateBookStatusToToRead,
+  } = BookButtons();
 
-  useEffect(() => {
-    const userBookData = userBooksData.find(
-      (userBookData) =>
-        isFirstInList && isBooksEqualExactly(userBookData.bookData.book, book)
-    );
-    setUserBookData(userBookData);
-  }, [userBooksData]);
-
-  const onFavorite = async (userBook: UserBook) => {
-    try {
-      setLoadingFavorite(true);
-      await favoriteBook(userBook);
-    } catch (error: any) {
-      Logger.error("Failed to favorite book", {
-        data: userBook,
-        error,
-      });
-      toast.error("Something went wrong.. We're on it!");
-    } finally {
-      setLoadingFavorite(false);
-    }
-  };
-
-  const Button = ({
-    onClick,
-    className,
-    children,
-    title,
-  }: {
-    onClick?: () => void;
-    className?: string;
-    children: React.ReactNode;
-    title: string;
-  }) => (
-    <div
-      className={`flex flex-col items-center ${className}`}
-      onClick={() => onClick?.()}
-    >
-      {children}
-      <div className="text-sm font-light">{title}</div>
-    </div>
+  const bookFullData = useMemo(
+    () => getBookFullData(book),
+    [book, getBookFullData]
   );
 
-  const Buttons = () => (
-    <div className="flex flex-row gap-4">
-      <Button title="Read?" onClick={() => {}}>
-        <Add.Fill className="w-4 h-4" />
-      </Button>
-      <Button title="To Read">
-        <Bookmark.Outline className="w-3 h-4" />
-      </Button>
-      <Button title="Readlist" onClick={() => {}}>
-        <Checkmark.Outline className="w-4 h-4" />
-      </Button>
-    </div>
-  );
+  const isBookRead = useMemo(() => {
+    const bookData = getBookFullData(book);
+    return bookData?.userBook.readingStatusId === ReadingStatusEnum.READ;
+  }, [book, getBookFullData]);
+
+  const isBookToRead = useMemo(() => {
+    const bookData = getBookFullData(book);
+    return bookData?.userBook.readingStatusId === ReadingStatusEnum.TO_READ;
+  }, [book, getBookFullData]);
+
+  const CheckmarkIcon = isBookRead ? CheckmarkFill : Checkmark;
+  const BookmarkIcon = isBookToRead ? BookmarkFill : Bookmark;
 
   return (
-    <div className="flex flex-row justify-start items-start gap-3 h-full">
+    <div
+      className={`flex flex-row justify-start items-start gap-2 w-full`}
+      onClick={(e) => {
+        e.stopPropagation();
+        showBookDetailsModal({ bookData: book });
+      }}
+    >
       <div className="flex-shrink-0">
         <BookThumbnail
           src={book.thumbnailUrl}
-          fill
-          className="rounded-xl !relative !w-16 !h-24"
+          className="rounded-xl !relative"
+          thumbnailSize="sm"
         />
       </div>
-      <div className="h-24 flex flex-col justify-between">
-        <div className="flex flex-col w-8">
+      <div className="h-full flex flex-col justify-between items-start">
+        <div className="flex flex-col">
           <Title title={book.title} />
           <Authors authors={book.authors} prefix="by" />
         </div>
-        <Buttons />
+        <div className="w-full h-full flex justify-start items-end gap-6 mt-6">
+          <div
+            className="flex flex-col gap-0 text-sm justify-center items-center flex-shrink-0"
+            onClick={(e) => {
+              e.stopPropagation();
+              updateBookStatusToRead(book, bookFullData);
+            }}
+          >
+            <CheckmarkIcon
+              className={`text-2xl w-5 h-5 ${
+                isBookRead ? "!text-primary" : ""
+              }`}
+            />
+            <div className="leading-4">Read?</div>
+          </div>
+          <div
+            className="flex flex-col gap-0 text-sm justify-center items-center flex-shrink-0"
+            onClick={(e) => {
+              e.stopPropagation();
+              updateBookStatusToToRead(book, bookFullData);
+            }}
+          >
+            <BookmarkIcon
+              className={`text-2xl w-5 h-5 ml-1 ${
+                isBookToRead ? "!text-primary" : ""
+              }`}
+            />
+            <div className="leading-4">To Read</div>
+          </div>
+          {user && (
+            <div
+              className="flex flex-col gap-0 text-sm justify-center items-center flex-shrink-0"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleAddBookToList(book);
+              }}
+            >
+              <Plus className="text-2xl w-5 h-5" />
+              <div className="leading-4">Readlist</div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -115,18 +124,15 @@ export const SearchItemSkeleton: React.FC<SearchItemSkeletonProps> = ({
   className,
 }) => {
   return (
-    <div className={`flex rounded-lg shadow space-x-4 ${className}`}>
-      {/* Thumbnail Skeleton */}
-      <SquareSkeleton className="w-16 h-24 rounded-xl" />
-
-      {/* Text and Buttons Skeletons */}
+    <div className={`flex rounded-lg shadow space-x-4 ${className ?? ""}`}>
+      <Skeleton className="w-16 h-24 rounded-xl" />
       <div className="flex flex-col flex-grow justify-start items-start gap-2 mt-2">
-        <LineSkeleton className="h-2 rounded w-1/2" />
-        <LineSkeleton className="h-2 rounded w-1/3" />
+        <Skeleton className="h-2 rounded w-1/2" />
+        <Skeleton className="h-2 rounded w-1/3" />
         <div className="flex flex-row gap-4 mt-6">
-          <SquareSkeleton className="w-4 h-4 rounded-full" />
-          <SquareSkeleton className="w-4 h-4 rounded-full" />
-          <SquareSkeleton className="w-4 h-4 rounded-full" />
+          <Skeleton className="w-4 h-4 rounded-full" />
+          <Skeleton className="w-4 h-4 rounded-full" />
+          <Skeleton className="w-4 h-4 rounded-full" />
         </div>
       </div>
     </div>

@@ -17,7 +17,7 @@ function PrivacyPolicy() {
             Introduction
           </h2>
           <p className="text-muted dark:text-muted">
-            This Privacy Policy describes how BookWizard ("we", "us", or "our")
+            This Privacy Policy describes how BookWiz ("we", "us", or "our")
             collects, uses, and discloses your personal information when you use
             our website and services (the "Services").
           </p>
@@ -66,10 +66,10 @@ function PrivacyPolicy() {
             at:
           </p>
           <a
-            href="mailto:bookwormapp2@gmail.com"
+            href="mailto:bookwiz.app@gmail.com"
             className="text-sky-600 underline dark:text-accent"
           >
-            bookwormapp2@gmail.com
+            bookwiz.app@gmail.com
           </a>
         </section>
       </div>

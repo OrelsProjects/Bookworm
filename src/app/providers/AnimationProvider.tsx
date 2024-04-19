@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
 import { OpacityDiv } from "@/src/components/animationDivs";
 
 interface ProviderProps {

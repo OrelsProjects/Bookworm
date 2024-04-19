@@ -1,0 +1,67 @@
+"use client";
+
+import * as React from "react";
+import * as TooltipPrimitive from "@radix-ui/react-tooltip";
+
+import { cn } from "../../lib/utils";
+
+const TooltipProvider = TooltipPrimitive.Provider;
+
+const TooltipTrigger = TooltipPrimitive.Trigger;
+
+const RadixTooltip = TooltipPrimitive;
+
+interface Props {
+  alwaysOpen?: boolean;
+  children: React.ReactNode;
+}
+
+function TooltipRadix({ alwaysOpen, children }: Props): React.ReactElement {
+  const [open, setOpen] = React.useState(false);
+
+  return (
+    <RadixTooltip.Root
+      open={alwaysOpen || open}
+      delayDuration={0}
+      onOpenChange={setOpen}
+    >
+      <div onClick={() => setOpen(true)}>
+        <div className="pointer-events-none">{children}</div>
+      </div>
+    </RadixTooltip.Root>
+  );
+}
+
+const TooltipContent = React.forwardRef<
+  React.ElementRef<typeof TooltipPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>
+>(({ className, sideOffset = 4, ...props }, ref) => (
+  <TooltipPrimitive.Content
+    ref={ref}
+    sideOffset={sideOffset}
+    className={cn(
+      "z-50 overflow-hidden max-w-full flex flex-wrap line-clamp-6 rounded-md bg-background px-3 py-1.5 text-xs text-foreground animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+      className
+    )}
+    {...props}
+  />
+));
+TooltipContent.displayName = TooltipPrimitive.Content.displayName;
+
+export { TooltipRadix, TooltipTrigger, TooltipContent, TooltipProvider };
+
+interface TooltipProps {
+  children: React.ReactNode;
+  tooltipContent: React.ReactNode;
+}
+
+export default function Tooltip({ children, tooltipContent }: TooltipProps) {
+  return (
+    <TooltipProvider>
+      <TooltipRadix>
+        <TooltipTrigger>{children}</TooltipTrigger>
+        <TooltipContent>{tooltipContent}</TooltipContent>
+      </TooltipRadix>
+    </TooltipProvider>
+  );
+}

@@ -4,43 +4,58 @@ import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { BottomBarItem, bottomBarItems } from "./bottomBarItems";
+import { getIconSize } from "../../consts/icon";
+import { useModal } from "../../hooks/useModal";
 
 const BottomBar = () => {
   const router = useRouter();
   const pathname = usePathname();
-  const [selected, setSelected] = React.useState<string>("");
+  const { clearStack } = useModal();
+  const [selected, setSelected] = React.useState<BottomBarItem>();
 
   useEffect(() => {
-    if (bottomBarItems.map((item) => item.path).includes(pathname)) {
-      setSelected(pathname);
-    } else {
-      setSelected(bottomBarItems[0].path);
-    }
+    const selected = bottomBarItems.find((item) =>
+      pathname.includes(item.path)
+    );
+    setSelected(selected ?? bottomBarItems[0]);
   }, [pathname]);
 
-  const isItemSelected = (item: BottomBarItem) => selected === item.path;
-
   return (
-    <div className="flex items-center justify-between gap-4 w-max bg-foreground rounded-3xl absolute bottom-8 py-3 px-7">
-      {bottomBarItems.map((item) => {
-        return (
-          <div
-            key={item.name}
-            className="flex items-center justify-center w-full h-full"
-            onClick={() => {
-              if (item.path === pathname) return;
-              router.push(item.path);
-              setSelected(item.name);
-            }}
-          >
-            {isItemSelected(item) ? (
-              <item.icon.Fill className="w-8 h-8" />
-            ) : (
-              <item.icon.Outline className="w-8 h-8 text-background" />
-            )}
-          </div>
-        );
-      })}
+    <div className="w-full h-fit flex flex-row justify-center z-40 absolute bottom-8 inset-0">
+      <div className="flex items-center justify-between gap-4 w-max bg-foreground rounded-xl fixed bottom-8 py-3 px-7">
+        {bottomBarItems.map((item) => {
+          return (
+            <div
+              key={item.name}
+              className="flex items-center justify-center w-full h-full cursor-pointer"
+              onClick={() => {
+                if (pathname.includes(item.path)) return;
+                router.push(item.path);
+                clearStack();
+                setSelected(item);
+              }}
+            >
+              {selected?.path === item.path ? (
+                <item.iconSelected
+                  className={`${item.className} ${
+                    getIconSize({
+                      size: item.size,
+                    }).className
+                  } !text-primary`}
+                />
+              ) : (
+                <item.icon
+                  className={`${item.className} ${
+                    getIconSize({
+                      size: item.size,
+                    }).className
+                  } !text-background`}
+                />
+              )}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };

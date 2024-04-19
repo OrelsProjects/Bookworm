@@ -1,7 +1,6 @@
 import Logger from "@/src/utils/loggerServer";
 import { GetAxiosInstance, getUserIdFromRequest } from "@/src/utils/apiUtils";
 import { GoodreadsData } from "@/src/models";
-import { GoodreadsDataDTO } from "@/src/models/dto";
 import { IResponse } from "@/src/models/dto/response";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -20,16 +19,15 @@ export async function GET(
     }
     const axios = GetAxiosInstance(req);
 
-    const response = await axios.get<GoodreadsDataDTO>(`goodreads-book`, {
+    const response = await axios.get<GoodreadsData>(`goodreads-book`, {
       params: {
         bookISBN: isbn,
       },
     });
     const { data } = response;
-    const goodreadsData = GoodreadsDataDTO.FromResponse(data);
     return NextResponse.json(
       {
-        result: goodreadsData,
+        result: data,
       },
       { status: 200 }
     );

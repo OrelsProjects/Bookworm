@@ -1,89 +1,151 @@
 "use client";
 
-import React from "react";
+import React, { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
+import useTable from "../../hooks/useTable";
+import BookList from "../../components/book/bookList";
+import useUserRecommendations from "../../hooks/useRecommendations";
+import { ReadingStatusEnum } from "../../models/readingStatus";
+import SearchBarIcon from "../../components/search/searchBarIcon";
 import SearchBar from "../../components/search/searchBar";
-import { Book } from "../../models";
-import Image from "next/image";
-import { useDispatch, useSelector } from "react-redux";
-import { selectUserBooks } from "../../lib/features/userBooks/userBooksSlice";
-import { removeSubtitle } from "../../utils/bookUtils";
-import { Add } from "../../components/icons";
-import {
-  BottomSheetTypes,
-  showBottomSheet,
-} from "../../lib/features/modal/modalSlice";
+import Loading from "../../components/ui/loading";
+import Tooltip from "../../components/ui/tooltip";
+import { useModal } from "../../hooks/useModal";
 
 export default function Home(): React.ReactNode {
   const router = useRouter();
-  const { userBooksData } = useSelector(selectUserBooks);
+  const { userBooks, nextPage } = useTable(ReadingStatusEnum.TO_READ);
+  const { recommendations: recommendationsLists, loading } =
+    useUserRecommendations();
+  const [searchFocused, setSearchFocused] = useState(false);
+  const [searchEmpty, setSearchEmpty] = useState(true);
 
-  return (
-    <div className="h-full w-full flex flex-col relative justify-top items-start gap-6 p-3">
-      <SearchBar />
-      <BookList
-        books={userBooksData.map((ubd) => ubd.bookData.book)}
-        onSeeAllClick={() => router.push("/my-library")}
-      />
-    </div>
-  );
-}
+  const onSeeAllClick = useCallback(() => {
+    router.push("/my-library");
+  }, [router]);
 
-interface BookProps {
-  book?: Book;
-}
+  const Books = () =>
+    userBooks &&
+    userBooks.length > 0 && (
+      <div className="flex flex-col gap-5">
+        <div className="w-full flex flex-row justify-between items-start">
+          <div className="text-list-title">My Next Read</div>
+          <div className="text-see-all" onClick={onSeeAllClick}>
+            See all
+          </div>
+        </div>
+        <BookList
+          books={userBooks.map((ubd) => ubd.bookData.book)}
+          onNextPageScroll={nextPage}
+          direction="row"
+          thumbnailSize="2xl"
+        />
+      </div>
+    );
 
-const BookComponent: React.FC<BookProps> = ({ book }) => {
-  const dispatch = useDispatch();
-  const onBookClick = () =>
-    dispatch(showBottomSheet({ book, type: BottomSheetTypes.BOOK_DETAILS }));
-
-  return (
-    book && (
-      <div className="text-foreground text-center flex flex-col justify-center items-center gap-2">
-        <div className="rounded-lg overflow-visible w-24 h-36 relative">
-          <Image
-            src={book.thumbnailUrl ?? ""}
-            alt={book.title}
-            width={150}
-            height={200}
-            layout="responsive"
-            onClick={onBookClick}
-            className="!w-full !h-full rounded-lg"
+  const Recommendations = () => {
+    const router = useRouter();
+    const { showBooksListModal } = useModal();
+    return recommendationsLists && recommendationsLists.length > 0 ? (
+      <div className="flex flex-col gap-2">
+        <div className="w-full flex flex-col gap-10">
+          {recommendationsLists.length > 0 &&
+            recommendationsLists.slice(0, 5).map((recommendationList) => (
+              <div
+                className="flex flex-col gap-5"
+                key={`recommendation-${recommendationList.publicURL}`}
+              >
+                <div className="w-full flex flex-row justify-between items-start">
+                  <Tooltip
+                    tooltipContent={
+                      <div className="text-sm text-foreground line-clamp-4 tracking-tighter max-w-xs">
+                        {recommendationList.name}
+                      </div>
+                    }
+                  >
+                    <div className="text-list-title">
+                      {recommendationList.name}
+                    </div>
+                  </Tooltip>
+                  <div
+                    className="text-see-all"
+                    onClick={() => {
+                      // add publicurl to route without changing the page
+                      window.history.pushState(
+                        {},
+                        "",
+                        `${recommendationList.publicURL}`
+                      );
+                      showBooksListModal(
+                        {
+                          bookList: recommendationList,
+                        },
+                        {
+                          onBack: () => {
+                            router.push("/home");
+                          },
+                        }
+                      );
+                    }}
+                  >
+                    See all
+                  </div>
+                </div>
+                <BookList
+                  books={
+                    recommendationList.booksInList.map(
+                      (bookInList) => bookInList.book
+                    ) ?? []
+                  }
+                  onNextPageScroll={nextPage}
+                  direction="row"
+                  thumbnailSize="2xl"
+                />
+              </div>
+            ))}
+        </div>
+      </div>
+    ) : (
+      loading && (
+        <div className="h-full w-full flex justify-center items-center absolute">
+          <Loading
+            spinnerClassName="w-20 h-20"
+            text="Looking for some recommendations..🤖"
           />
-          <Add.Outline className="w-8 h-8 absolute -bottom-4 right-2 bg-background rounded-full border-none overflow-hidden" />
         </div>
-        <div>
-          <div className="line-clamp-1 w-full text-left">
-            {removeSubtitle(book.title)}
-          </div>
-          <div className="line-clamp-1 w-full text-left text-primary">
-            {book.authors?.join(", ") ?? ""}
-          </div>
-        </div>
-      </div>
-    )
-  );
-};
+      )
+    );
+  };
 
-type BookListProps = {
-  books?: (Book | undefined)[];
-  onSeeAllClick?: () => void;
-};
-const BookList: React.FC<BookListProps> = ({ books, onSeeAllClick }) => {
-  return (
-    <div className="w-full overflow-auto flex flex-col gap-2">
-      <div className="w-full flex justify-between">
-        <div className="text-xl font-bold">Books I've Read</div>
-        <div className="text-lg font-bold underline" onClick={onSeeAllClick}>
-          See all
-        </div>
-      </div>
-      <div className="flex flex-row gap-2 w-full overflow-auto">
-        {books?.map((book, index) => (
-          <BookComponent key={index} book={book} />
-        ))}
-      </div>
+  const Content = () => (
+    <div className="h-fit w-full flex flex-col gap-10">
+      <Books />
+      <Recommendations />
     </div>
   );
-};
+
+  return (
+    <div
+      className={`h-full w-full flex flex-col relative justify-top items-start gap-10
+    ${searchFocused ? "" : ""}
+    `}
+    >
+      <SearchBarIcon>
+        <SearchBar
+          onEmpty={() => setSearchFocused(false)}
+          onChange={(value: string) => {
+            if (value) {
+              setSearchFocused(true);
+            }
+          }}
+          onBlur={() => {
+            if (searchEmpty) {
+              setSearchFocused(false);
+            }
+          }}
+        />
+      </SearchBarIcon>
+      {searchFocused ? <></> : <Content />}
+    </div>
+  );
+}

@@ -5,9 +5,10 @@ import {
   CreateUserBookBody,
   DeleteUserBookBody,
   UpdateUserBookBody,
-} from "@/src/models/dto/userBookDTO";
+} from "@/src/models/userBook";
 import { GetAxiosInstance } from "@/src/utils/apiUtils";
 import { NextRequest, NextResponse } from "next/server";
+
 
 export async function GET(
   req: NextRequest
@@ -16,6 +17,7 @@ export async function GET(
     const axios = GetAxiosInstance(req);
     const response = await axios.get<UserBookData[]>("/user-book");
     const userBookData = response.data;
+
     const result: IResponse<UserBookData[]> = {
       result: userBookData,
     };

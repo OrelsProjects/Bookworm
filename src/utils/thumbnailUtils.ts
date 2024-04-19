@@ -1,17 +1,25 @@
+type RGBA = [number, number, number, number];
+type RGB = [number, number, number];
+
+const extractRGBFromString = (
+  rgbString: string,
+  defaultValue: RGB = [0, 0, 0]
+): RGB => {
+  const match = rgbString.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
+  if (!match) {
+    return defaultValue;
+  }
+  return match.slice(1, 4).map(Number) as RGB;
+};
+
 export function darkenColor(
   rgb?: string,
-  darkenPercent: number = 20
+  darkenPercent: number = 10
 ): string | undefined {
-  // Parse the RGB values from the string
-  const colorMatch = rgb?.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
-  if (!colorMatch) {
-    return rgb;
-  }
+  if (!rgb) return rgb;
 
-  // Extract individual color components
-  let [r, g, b] = colorMatch.slice(1).map(Number);
+  let [r, g, b] = extractRGBFromString(rgb);
 
-  // Calculate the amount to subtract from each color component
   const subtract = (colorValue: number) => {
     return Math.max(
       0,
@@ -19,11 +27,34 @@ export function darkenColor(
     );
   };
 
-  // Apply the darkness
   r = subtract(r);
   g = subtract(g);
   b = subtract(b);
 
-  // Return the darkened color in RGB format
+  return `rgb(${r}, ${g}, ${b})`;
+}
+
+export function increaseLuminosity(
+  rgbString?: string,
+  percentage: number = 40
+): string | undefined {
+  if (!rgbString) {
+    return rgbString;
+  }
+
+  // Parse the R, G, B values from the string
+  let [r, g, b] = extractRGBFromString(rgbString);
+
+  // Function to calculate the increased luminosity without exceeding 255
+  const increase = (color: number): number => {
+    return Math.min(255, color + (255 - color) * (percentage / 100));
+  };
+
+  // Apply the increase function to each color component
+  r = increase(r);
+  g = increase(g);
+  b = increase(b);
+
+  // Return the updated RGB string
   return `rgb(${r}, ${g}, ${b})`;
 }

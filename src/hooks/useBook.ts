@@ -1,14 +1,12 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useRef } from "react";
 import { Book, GoodreadsData, User, UserBook, UserBookData } from "../models";
 import axios from "axios";
 import { Books, CreateBooksResponse } from "../models/book";
-import {
-  CreateUserBookBody,
-  UpdateUserBookBody,
-} from "../models/dto/userBookDTO";
+import { CreateUserBookBody, UpdateUserBookBody } from "../models/userBook";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  USER_BOOKS_KEY,
   addUserBooks as addUserBooksRedux,
   deleteUserBook as deleteUserBookRedux,
   setUserBooks,
@@ -17,21 +15,25 @@ import {
   updateUserBookGoodreadsData,
 } from "../lib/features/userBooks/userBooksSlice";
 import { IResponse } from "../models/dto/response";
-import { setError } from "../lib/features/auth/authSlice";
+import {
+  AuthStateType,
+  selectAuth,
+  setError,
+} from "../lib/features/auth/authSlice";
 import { RootState } from "../lib/store";
-import ReadingStatus from "../models/readingStatus";
+import ReadingStatus, { ReadingStatusEnum } from "../models/readingStatus";
 import { Logger } from "../logger";
 import { EventTracker } from "../eventTracker";
-import { BookData } from "../models/userBook";
-import { sortByAuthor, sortByDateAdded, sortByTitle } from "../utils/bookUtils";
+import { isBooksEqualExactly, sortByDateAdded } from "../utils/bookUtils";
+import { ErrorDeleteUserBook } from "../models/errors/userBookErrors";
+import { useModal } from "./useModal";
+import { ErrorUnauthenticated } from "../models/errors/unauthenticatedError";
 
-// ErrorDeleteUserBook error class
-class ErrorDeleteUserBook extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = "ErrorDeleteUserBook";
-  }
-}
+const getUserBooksFromLocalStorage = (): UserBookData[] => {
+  return JSON.parse(
+    localStorage.getItem(USER_BOOKS_KEY) ?? "[]"
+  ) as UserBookData[];
+};
 
 export enum BookSort {
   Title = "Title",
@@ -39,55 +41,28 @@ export enum BookSort {
   DateAdded = "DateAdded",
 }
 
-const useBook = () => {
-  const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch();
-  const { userBooksData } = useSelector((state: RootState) => state.userBooks);
+export type BookFilter = "readlist" | "status";
 
-  const favoriteBook = async (userBook: UserBook): Promise<void> => {
-    if (loading) {
-      throw new Error("Cannot favorite book while another book is loading");
+const useBook = () => {
+  const loading = useRef(false);
+  const dispatch = useDispatch();
+  const { user, state } = useSelector(selectAuth);
+  const { userBooksData } = useSelector((state: RootState) => state.userBooks);
+  const { showRegisterModal } = useModal();
+
+  const openRegisterModal = () => {
+    if (!user || state !== AuthStateType.SIGNED_IN) {
+      showRegisterModal();
+      return true;
     }
-    setLoading(true);
-    try {
-      const isFavorite = !userBook.isFavorite;
-      const updateUserBookBody: UpdateUserBookBody = {
-        userBookId: userBook.userBookId,
-        isFavorite: isFavorite,
-      };
-      await axios.patch<UserBook>(`/api/user-books`, updateUserBookBody);
-      let userBookData: UserBookData | undefined = userBooksData.find(
-        (userBookData) =>
-          userBookData.userBook.userBookId === userBook.userBookId
-      );
-      if (!userBookData) {
-        throw new Error("No user book data found");
-      }
-      userBookData = {
-        ...userBookData,
-        userBook: {
-          ...userBookData.userBook,
-          isFavorite,
-        },
-      };
-      dispatch(updateUserBookData(userBookData));
-    } catch (error: any) {
-      Logger.error("Error favoriting book", {
-        data: {
-          userBook,
-        },
-        error,
-      });
-    } finally {
-      setLoading(false);
-    }
+    return false;
   };
 
   const deleteUserBook = async (userBook: UserBook): Promise<void> => {
-    if (loading) {
+    if (loading.current) {
       throw new Error("Cannot delete book while another book is loading");
     }
-    setLoading(true);
+    loading.current = true;
     try {
       const response = await axios.delete<IResponse<void>>("/api/user-books", {
         data: {
@@ -111,58 +86,83 @@ const useBook = () => {
       }
       throw error;
     } finally {
-      setLoading(false);
+      loading.current = false;
     }
   };
 
-  const addUserBook = async (
-    book: Book,
-    isFavorite?: boolean,
-    suggestionSource?: string,
-    userComments?: string,
-    dateAdded?: string,
-    userRating?: number,
-    readingStartDate?: string,
-    readingFinishDate?: string
-  ): Promise<UserBook> => {
-    if (loading) {
+  const addBook = async (book: Book): Promise<Book> => {
+    const responseAddBooks = await axios.post<IResponse<CreateBooksResponse>>(
+      "/api/books",
+      book
+    );
+    const createBookResponse = responseAddBooks.data.result ?? {};
+    const books: Books =
+      createBookResponse.success?.concat(createBookResponse.duplicates ?? []) ??
+      [];
+
+    if (books.length === 0) {
+      throw new Error("No books returned from backend");
+    }
+    return books[0];
+  };
+
+  const addUserBook = async ({
+    book,
+    suggestionSource,
+    userComments,
+    dateAdded,
+    userRating,
+    readingStartDate,
+    readingFinishDate,
+    readingStatusId,
+  }: {
+    book: Book;
+    isFavorite?: boolean;
+    suggestionSource?: string;
+    userComments?: string;
+    dateAdded?: string;
+    userRating?: number;
+    readingStartDate?: string;
+    readingFinishDate?: string;
+    readingStatusId?: ReadingStatusEnum;
+  }): Promise<UserBook> => {
+    if (loading.current) {
       throw new Error("Cannot add book while another book is loading");
     }
-    setLoading(true);
+    if (openRegisterModal()) {
+      throw new ErrorUnauthenticated("User not authenticated");
+    }
+    loading.current = true;
     EventTracker.track("User add book", {
       book,
-      isFavorite,
       suggestionSource,
       userComments,
       dateAdded,
       userRating,
       readingStartDate,
       readingFinishDate,
+      readingStatusId,
     });
     try {
-      const responseAddBooks = await axios.post<IResponse<CreateBooksResponse>>(
-        "/api/books",
-        book
-      );
-      const createBookResponse = responseAddBooks.data.result ?? {};
-      const books: Books =
-        createBookResponse.success?.concat(
-          createBookResponse.duplicates ?? []
-        ) ?? [];
-      if (books.length === 0) {
-        throw new Error("No books returned from backend");
-      }
-      const bookToAdd = books[0];
-      const createUserBookBody: CreateUserBookBody = {
-        bookId: books[0].bookId,
-        isFavorite: isFavorite ?? false,
+      let bookToAdd: Book = { ...book };
+      let createUserBookBody: CreateUserBookBody = {
+        bookId: book.bookId,
+        isFavorite: false,
         suggestionSource: suggestionSource ?? "",
         userComments: userComments ?? "",
         dateAdded: dateAdded ?? new Date().toISOString(),
         userRating: userRating,
         readingStartDate: readingStartDate ?? new Date().toISOString(),
         readingFinishDate: readingFinishDate ?? new Date().toISOString(),
+        readingStatusId: readingStatusId,
       };
+      if (!bookToAdd.bookId) {
+        const newBook = await addBook(book);
+        createUserBookBody = {
+          ...createUserBookBody,
+          bookId: newBook.bookId,
+        };
+      }
       const responseAddUserBooks = await axios.post<IResponse<UserBook>>(
         "/api/user-books",
         createUserBookBody
@@ -172,10 +172,11 @@ const useBook = () => {
       if (!userBook) {
         throw new Error("No user books returned from backend");
       }
+
       const userBookData: UserBookData = {
         userBook,
         bookData: {
-          book: bookToAdd,
+          book: { ...bookToAdd, bookId: createUserBookBody.bookId },
         },
         readingStatus: new ReadingStatus(userBook.readingStatusId),
       };
@@ -185,7 +186,6 @@ const useBook = () => {
       Logger.error("Error adding user book", {
         data: {
           book,
-          isFavorite,
           suggestionSource,
           userComments,
           dateAdded,
@@ -197,27 +197,24 @@ const useBook = () => {
       });
       throw error;
     } finally {
-      setLoading(false);
+      loading.current = false;
     }
   };
 
-  const loadUserBooks = async (user?: User): Promise<void> => {
+  const loadUserBooks = async (user?: User | null) => {
     try {
-      if (loading) {
+      if (loading.current) {
         return;
       }
-      let currentUserBooks = JSON.parse(
-        localStorage.getItem("userBooks") ?? "[]"
-      );
+      loading.current = true;
+
+      let currentUserBooks = getUserBooksFromLocalStorage();
       if (currentUserBooks) {
         if (Array.isArray(currentUserBooks)) {
-          dispatch(
-            setUserBooks(sortBooks(BookSort.DateAdded, currentUserBooks))
-          );
+          dispatch(setUserBooks(sortByDateAdded([...currentUserBooks])));
         }
       }
 
-      setLoading((loading) => !loading);
       dispatch(
         setUserBooksLoading({ loading: true, dontLoadIfBooksExist: false })
       ); // Show loading to prevent empty screen from showing while redux is loading
@@ -237,13 +234,13 @@ const useBook = () => {
       );
 
       let { result } = response.data;
-      result = sortBooks(BookSort.DateAdded, result ?? []);
+      result = sortByDateAdded([...(result ?? [])]);
       dispatch(setUserBooks(result ?? []));
       dispatch(setError(null));
     } catch (error: any) {
       dispatch(setError(error.message));
     } finally {
-      setLoading(false);
+      loading.current = false;
       dispatch(setUserBooksLoading({ loading: false }));
     }
   };
@@ -281,11 +278,11 @@ const useBook = () => {
 
   const updateUserBook = async (
     updateBookBody: UpdateUserBookBody
-  ): Promise<UserBook> => {
-    if (loading) {
-      throw new Error("Cannot update user book while another book is loading");
+  ): Promise<UserBook | undefined> => {
+    if (loading.current) {
+      return;
     }
-    setLoading(true);
+    loading.current = true;
     EventTracker.track("User update book", {
       updateBookBody,
     });
@@ -311,7 +308,6 @@ const useBook = () => {
         userBook: newUserBook,
         readingStatus: new ReadingStatus(updateBookBody.readingStatusId),
       };
-
       dispatch(updateUserBookData(userBookData));
       return newUserBook;
     } catch (error: any) {
@@ -323,58 +319,54 @@ const useBook = () => {
       });
       throw error;
     } finally {
-      setLoading(false);
+      loading.current = false;
     }
   };
 
-  const getBookFullData = (book?: Book): UserBookData | null | undefined => {
-    const userBookData = userBooksData.find(
-      (userBookData) => userBookData.bookData?.book?.bookId === book?.bookId
-    );
-    return userBookData;
+  const updateBookReadingStatus = async (
+    userBook: UserBook,
+    readingStatus: ReadingStatusEnum
+  ) => {
+    const updateBookBody: UpdateUserBookBody = {
+      userBookId: userBook.userBookId,
+      readingStatusId: readingStatus,
+    };
+    await updateUserBook(updateBookBody);
   };
 
-  const sortBooks = (
-    sort: BookSort,
-    userBookDataToSort: UserBookData[]
-  ): UserBookData[] => {
-    try {
-      let sortedUserBooks: UserBookData[] = userBookDataToSort;
-      switch (sort) {
-        case BookSort.Title:
-          sortedUserBooks = sortByTitle([...userBookDataToSort]);
-          break;
-        case BookSort.Author:
-          sortedUserBooks = sortByAuthor([...userBookDataToSort]);
-          break;
-        case BookSort.DateAdded:
-          sortedUserBooks = sortByDateAdded([...userBookDataToSort]);
-          break;
-      }
-      return sortedUserBooks;
-    } catch (error: any) {
-      Logger.error("Error sorting books", {
-        data: {
-          sort,
-          userBookDataToSort,
-        },
-        error,
-      });
-      return userBookDataToSort;
+  function getBookFullData(bookId: number): UserBookData | null;
+  function getBookFullData(book: Book): UserBookData | null;
+  function getBookFullData(bookOrBookId: Book | number): UserBookData | null {
+    if (typeof bookOrBookId === "number") {
+      return (
+        userBooksData.find(
+          (userBookData) => userBookData.bookData?.book?.bookId === bookOrBookId
+        ) ?? null
+      );
+    } else {
+      return (
+        userBooksData.find((userBookData) => {
+          const isEqual = isBooksEqualExactly(
+            userBookData.bookData?.book,
+            bookOrBookId
+          );
+          return isEqual;
+        }) ?? null
+      );
     }
-  };
+  }
 
   return {
     getBookGoodreadsData,
     updateUserBook,
+    updateBookReadingStatus,
     loadUserBooks,
     addUserBook,
-    favoriteBook,
+    addBook,
     deleteUserBook,
     getBookFullData,
     userBooksData,
-    sortBooks,
-    loading,
+    loading: loading.current,
   };
 };
 

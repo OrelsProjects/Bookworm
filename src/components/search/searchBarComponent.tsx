@@ -1,17 +1,28 @@
 import React, { useEffect, useState } from "react";
-import { Input } from "../input";
-import Image from "next/image";
+import { Input } from "../ui/input";
+import { Search } from "../icons/search";
+import { Clear } from "../icons/clear";
 
-interface SearchBarComponentProps {
-  onSubmit: (value: string) => any;
-  onChange: (value: string) => any;
+export interface SearchBarComponentProps {
+  onSubmit?: (value: string) => any;
+  onChange?: (value: string) => any;
+  placeholder?: string;
   className?: string;
+  formClassName?: string;
+  autoFocus?: boolean;
+  onFocus?: () => any;
+  onBlur?: (value: string) => any;
 }
 
 export const SearchBarComponent: React.FC<SearchBarComponentProps> = ({
   onSubmit,
   onChange,
   className,
+  formClassName,
+  placeholder,
+  onFocus,
+  onBlur,
+  autoFocus,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [previousSearchTerm, setPreviousSearchTerm] = useState("");
@@ -19,53 +30,44 @@ export const SearchBarComponent: React.FC<SearchBarComponentProps> = ({
   useEffect(() => {
     if (searchTerm !== previousSearchTerm) {
       setPreviousSearchTerm(searchTerm);
-      onChange(searchTerm);
+      onChange?.(searchTerm);
     }
   }, [searchTerm]);
 
   return (
-    <div
-      className={`w-full flex justify-between items-center bg-secondary ${className}`}
-    >
+    <div className={`flex justify-between items-center ${className ?? ""}`}>
       <form
         onSubmit={(event: any) => {
           event.preventDefault();
           if (event.target) {
-            onSubmit(event.target[0].value);
+            onSubmit?.(event.target[0].value);
           }
         }}
-        className={`w-full`}
+        onFocus={onFocus}
+        onBlur={() => onBlur?.(searchTerm)}
+        className={`w-full ${formClassName}`}
       >
         <label
           htmlFor="search-bar"
-          className="relative flex flex-row w-full bg-background rounded-full border-2 px-4 py-1"
+          className="relative flex flex-row justify-center items-center w-full bg-background rounded-full border-2 border-foreground px-4"
         >
-          <Image
-            src="search.svg"
-            alt="Search"
-            height={32}
-            width={32}
-            className="cursor-pointer"
-            onClick={() => onSubmit(searchTerm)}
-          />
+          <Search.Fill iconSize="sm" className="!text-foreground" />
           <Input
             type="text"
             id="search-bar"
-            className="py-2 w-full h-full rounded-full bg-background  text-white placeholder-gray-300 focus:outline-none border-none"
-            placeholder="Search all books, authors..."
+            className="py-2 h-[46px] w-full rounded-full bg-background  text-foreground text-base placeholder:text-sm placeholder-gray-300 focus:outline-none border-none lowercase"
+            placeholder={placeholder ?? "Search..."}
             value={searchTerm}
+            autoFocus={autoFocus}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <Image
-            src="x.svg"
-            alt="clear"
-            height={32}
-            width={32}
-            className={`cursor-pointer ${
-              searchTerm ? "" : "invisible placeholder-gray-300"
-            }`}
-            onClick={() => setSearchTerm("")}
-          />
+          {searchTerm && (
+            <Clear.Fill
+              iconSize="xs"
+              className="!text-foreground"
+              onClick={() => setSearchTerm("")}
+            />
+          )}
         </label>
       </form>
     </div>

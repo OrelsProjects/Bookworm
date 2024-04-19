@@ -2,6 +2,8 @@ import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./features/auth/authSlice";
 import userBooksReducer from "./features/userBooks/userBooksSlice";
 import modalReducer from "./features/modal/modalSlice";
+import booksListsReducer from "./features/booksLists/booksListsSlice";
+import recommendationsReducer from "./features/recommendations/recommendationsSlice";
 
 export const makeStore = () => {
   return configureStore({
@@ -9,6 +11,8 @@ export const makeStore = () => {
       auth: authReducer,
       userBooks: userBooksReducer,
       modal: modalReducer,
+      booksLists: booksListsReducer,
+      recommendations: recommendationsReducer,
     },
   });
 };

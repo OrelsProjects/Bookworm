@@ -1,15 +1,13 @@
 import { createLogger, format, transports } from "winston";
 import "dotenv/config";
+import { LogItem } from "../logger";
 
-interface Dict {
-  [key: string]: any;
-}
 
 interface Logger {
-  debug: (message: string, user_id: string, data?: Dict) => void;
-  info: (message: string, user_id: string, data?: Dict) => void;
-  error: (message: string, user_id: string, data?: Dict) => void;
-  warn: (message: string, user_id: string, data?: Dict) => void;
+  debug: (message: string, user_id: string, data?: LogItem) => void;
+  info: (message: string, user_id: string, data?: LogItem) => void;
+  error: (message: string, user_id: string, data?: LogItem) => void;
+  warn: (message: string, user_id: string, data?: LogItem) => void;
 }
 
 const httpTransportOptions = {
@@ -30,7 +28,7 @@ const logger: () => Logger = () => {
     level: "info" | "error" | "warn" | "debug",
     message: string,
     user_id: string,
-    data?: Dict
+    data?: LogItem
   ) => {
     try {
       _logger.log(level, message, {
@@ -47,13 +45,13 @@ const logger: () => Logger = () => {
   };
 
   return {
-    debug: (message: string, user_id: string, data?: Dict) =>
+    debug: (message: string, user_id: string, data?: LogItem) =>
       log("debug", message, user_id, data),
-    info: (message: string, user_id: string, data?: Dict) =>
+    info: (message: string, user_id: string, data?: LogItem) =>
       log("info", message, user_id, data),
-    error: (message: string, user_id: string, data?: Dict) =>
+    error: (message: string, user_id: string, data?: LogItem) =>
       log("error", message, user_id, data),
-    warn: (message: string, user_id: string, data?: Dict) =>
+    warn: (message: string, user_id: string, data?: LogItem) =>
       log("warn", message, user_id, data),
   };
 };

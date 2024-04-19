@@ -1,9 +1,7 @@
 import { StatusType, datadogLogs } from "@datadog/browser-logs";
-import dotenv from "dotenv";
 import { User } from "./models";
-dotenv.config();
 
-export interface Dict {
+interface Dict {
   [key: string]: any;
 }
 
@@ -12,7 +10,7 @@ export interface LogItem {
   error?: Error;
 }
 
-export const initLogger = (userId?: string) => {
+export const initLogger = () => {
   try {
     const env = process.env.NODE_ENV ?? "development";
     datadogLogs.init({

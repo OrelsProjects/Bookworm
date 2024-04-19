@@ -49,55 +49,30 @@ class UserBook {
 export const isBookRead = (userBook?: UserBook): boolean =>
   userBook?.readingStatusId === ReadingStatusEnum.READ;
 
+export const isBookToRead = (userBook?: UserBook): boolean =>
+  userBook?.readingStatusId === ReadingStatusEnum.TO_READ;
+
 export type BookData = {
   book?: Book;
   mainGenre?: Genre;
   subgenres?: (Genre | undefined)[] | undefined;
 };
 
-export class UserBookData {
+export interface UserBookData {
   userBook: UserBook;
   bookData: BookData;
   goodreadsData?: GoodreadsData | null;
   readingStatus?: ReadingStatus;
-
-  constructor(
-    book_data: {
-      book: Book;
-      mainGenre?: Genre;
-      subgenres?: (Genre | undefined)[] | undefined;
-    },
-    readingStatus: ReadingStatus,
-    userBookId: number,
-    userId: string,
-    suggestionSource?: string,
-    userComments?: string,
-    dateAdded?: string,
-    userRating?: number,
-    readingStartDate?: string,
-    readingFinishDate?: string,
-    isDeleted?: boolean,
-    isFavorite?: boolean,
-    goodreadsData?: GoodreadsData
-  ) {
-    this.userBook = new UserBook(
-      book_data.book.bookId,
-      userBookId,
-      dateAdded,
-      readingStatus.readingStatusId,
-      isDeleted,
-      userId,
-      isFavorite,
-      userRating,
-      userComments,
-      suggestionSource,
-      readingStartDate,
-      readingFinishDate
-    );
-    this.bookData = book_data;
-    this.readingStatus = readingStatus;
-    this.goodreadsData = goodreadsData ?? null;
-  }
 }
+
+export type CreateUserBookBody = Omit<
+  UserBook,
+  "userBookId" | "userId" | "isDeleted"
+>;
+
+export type UpdateUserBookBody = Omit<UserBook, "bookId">;
+export type DeleteUserBookBody = {
+  userBookId: string;
+};
 
 export default UserBook;
