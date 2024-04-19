@@ -46,11 +46,11 @@ const ButtonImage: React.FC<ButtonImageProps> = ({
   className = "",
 }) => {
   const textSize = {
-    xs: "text-sm font-light",
-    sm: "text-lg",
-    md: "text-lg",
-    lg: "text-lg",
-    xl: "text-xl",
+    xs: "text-sm font-light sm:text-base",
+    sm: "text-lg sm:text-lg",
+    md: "text-lg sm:text-lg",
+    lg: "text-lg sm:text-lg",
+    xl: "text-xl sm:text-2xl",
   };
 
   return (
@@ -62,14 +62,12 @@ const ButtonImage: React.FC<ButtonImageProps> = ({
       }}
     >
       <Icon
-        style={{
-          height: getIconSize({ size: iconSize }).heightPx,
-          width: getIconSize({ size: iconSize }).widthPx,
-        }}
-        className={`${selected ? "!text-primary" : "!text-foreground"}
+        className={`${selected ? "!text-primary" : "!text-foreground"} ${
+          getIconSize({ size: iconSize }).className
+        }
           `}
       />
-      <div className={`text-foreground text-lg`}>{title}</div>
+      <div className={`text-foreground ${textSize}`}>{title}</div>
     </div>
   );
 };
@@ -193,14 +191,11 @@ export const BookButtons = () => {
               `}
             >
               <FaCheck
-                style={{
-                  height: getIconSize({ size: iconSize }).heightPx,
-                  width: getIconSize({ size: iconSize }).widthPx,
-                  padding: 5,
-                }}
                 className={`!text-primary ${
                   isBookRead ? "fill-background" : "fill-foreground"
-                } `}
+                } h-full w-full
+                p-[5px] sm:p-2
+                `}
               />
             </div>
             <div className={`text-foreground text-lg`}>Read</div>

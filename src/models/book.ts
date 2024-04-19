@@ -6,6 +6,7 @@ export interface Book {
   title: string;
   mainGenreId?: number;
   bookId: number;
+  genres?: string[];
   thumbnailUrl?: string;
   thumbnailColor?: string;
   subtitle?: string;

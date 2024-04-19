@@ -51,16 +51,16 @@ const specialIconSizes = {
 
 const iconSizes = {
   xs: {
-    width: "w-4",
-    height: "h-4",
+    width: "w-4 sm:w-6",
+    height: "h-4 sm:h-6",
     widthPx: 16,
     heightPx: 16,
     widthRem: 1,
     heightRem: 1,
   },
   sm: {
-    width: "w-6",
-    height: "h-6",
+    width: "w-6 sm:w-10",
+    height: "h-6 sm:h-10",
     widthPx: 24,
     heightPx: 24,
     widthRem: 1.5,
@@ -111,6 +111,6 @@ export const getIconSize = ({ size, specialIcon }: IconSizeProps) => {
     heightPx: iconSize?.heightPx ?? 32,
     widthRem: iconSize?.widthRem ?? 2,
     heightRem: iconSize?.heightRem ?? 2,
-    className: `!${width} !${height}`,
+    className: `${width} ${height}`,
   };
 };

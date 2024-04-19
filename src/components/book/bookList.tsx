@@ -5,8 +5,6 @@ import useScrollPosition from "../../hooks/useScrollPosition";
 import { Add } from "../icons/add";
 import { ThumbnailSize } from "../../consts/thumbnail";
 import { useModal } from "../../hooks/useModal";
-import { AiFillPlusCircle } from "react-icons/ai";
-import { getIconSize } from "../../consts/icon";
 
 type BookListProps = {
   books: (Book | undefined)[];

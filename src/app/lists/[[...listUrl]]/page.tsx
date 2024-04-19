@@ -167,9 +167,6 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
     </div>
   );
 
-  if (loadingBooksList) {
-    return <Loading spinnerClassName="w-12 h-12" />;
-  }
   return (
     <div className="h-full w-full flex flex-col gap-10 pb-4">
       <SearchBarIcon>
