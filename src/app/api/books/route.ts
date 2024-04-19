@@ -18,7 +18,7 @@ export async function POST(
     const { bookId, ...bookNoId } = book;
     const createBookBody: CreateBookBody = {
       books: [bookNoId],
-    };
+    }; 
 
     const axios = GetAxiosInstance(req);
     const response = await axios.post<CreateBooksResponse>(
