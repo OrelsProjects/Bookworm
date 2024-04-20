@@ -280,7 +280,11 @@ const useBooksList = () => {
     }
   };
 
-  const addBookToList = async (listId: string, book: Book) => {
+  const addBookToList = async (
+    listId: string,
+    book: Book,
+    comments?: string
+  ) => {
     if (loading.current) {
       throw new LoadingError(
         "Operation in progress. Please wait until the current operation completes."
@@ -295,6 +299,7 @@ const useBooksList = () => {
       const response = await axios.post<BookInList>(`/api/list/book`, {
         listId,
         bookId: newBook.bookId,
+        comments,
       });
       const bookInList = response.data;
       const bookInListWithBook = { ...bookInList, book };
@@ -327,7 +332,7 @@ const useBooksList = () => {
   };
 
   const cancelUpdateBookInList = () => {
-    updateBookInListCancelToken.cancel("Operation cancelled by user");
+        updateBookInListCancelToken.cancel("Operation cancelled by user");
   };
 
   const updateBookInList = async (bookInList: BookInList) => {

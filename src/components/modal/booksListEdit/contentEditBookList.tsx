@@ -159,7 +159,7 @@ const ContentEditBookList = ({
 
       if (currentBooksList) {
         await toast.promise(
-          addBookToList(currentBooksList.listId, bookWithId),
+          addBookToList(currentBooksList.listId, bookWithId, newBooksComments),
           {
             loading: `Adding ${book.title} to list...`,
             success: `${book.title} added to list successfully!`,
@@ -227,7 +227,7 @@ const ContentEditBookList = ({
 
   const scrollSearchBarIntoView = () => {
     if (isSearchBarScrolledIntoView) return;
-    
+
     const searchBarElement = searchBarRef.current;
     if (searchBarElement) {
       searchBarRef.current?.scrollIntoView({
