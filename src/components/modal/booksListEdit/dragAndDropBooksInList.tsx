@@ -133,15 +133,15 @@ const ListBooks: React.FC<ListBookProps> = ({
                       {...provided.dragHandleProps}
                       className="w-full"
                     >
-                        <BookInListDetails
-                          bookInList={bookInList}
-                          onAddNewBookClick={onAddNewBookClick}
-                          onDeleteBookClick={onDeleteBookClick}
-                          onChange={onChange}
-                          value={value}
-                          name={`${name}-${bookInList.bookId}`}
-                          position={index + 1}
-                        />
+                      <BookInListDetails
+                        bookInList={bookInList}
+                        onAddNewBookClick={onAddNewBookClick}
+                        onDeleteBookClick={onDeleteBookClick}
+                        onChange={onChange}
+                        value={value}
+                        name={`${name}-${bookInList.bookId}`}
+                        position={index + 1}
+                      />
                     </li>
                   )}
                 </Draggable>
@@ -176,7 +176,7 @@ const ListBooks: React.FC<ListBookProps> = ({
               onChange(null, e.target.value);
             }}
             placeholder="Comment"
-            key={`books-in-list-book-name`}
+            key={`new-book-comment-input`}
           />
         </div>
       </div>

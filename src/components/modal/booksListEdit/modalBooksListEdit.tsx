@@ -6,7 +6,6 @@ import {
 import { ThumbnailSize } from "../../../consts/thumbnail";
 import BooksListThumbnail from "../../booksList/booksListThumbnail";
 import { useFormik } from "formik";
-import { Books } from "../../../models/book";
 import { ModalContent } from "../modalContainers";
 import { CommentsArea } from "../_components/commentsArea";
 import SwitchEditMode from "../_components/switchEditMode";

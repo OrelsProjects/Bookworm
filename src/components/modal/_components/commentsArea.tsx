@@ -4,8 +4,8 @@ import useBooksList from "../../../hooks/useBooksList";
 import { BookInListWithBook } from "../../../models/bookInList";
 import { TextArea } from "../../ui/textarea";
 import { BooksListData } from "../../../models/booksList";
-import { CanceledError } from "axios";
 import { Logger } from "../../../logger";
+import { CancelError } from "../../../models/errors/cancelError";
 
 interface CommentAreaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -18,7 +18,7 @@ interface CommentAreaProps
 
 export const CommentsArea: React.FC<CommentAreaProps> = ({
   bookInList,
-  bookListData,
+  bookListData: booksListData,
   listName,
   onChanged,
   error,
@@ -37,13 +37,13 @@ export const CommentsArea: React.FC<CommentAreaProps> = ({
 
   useEffect(() => {
     if (listName) {
-      setComments(bookListData?.name ?? "");
+      setComments(booksListData?.name ?? "");
     } else if (bookInList?.comments) {
       setComments(bookInList.comments);
     } else {
-      setComments(bookListData?.description ?? "");
+      setComments(booksListData?.description ?? "");
     }
-  }, [bookInList, bookListData]);
+  }, [bookInList, booksListData]);
 
   useEffect(() => {
     if (comments !== previousComments) {
@@ -51,13 +51,13 @@ export const CommentsArea: React.FC<CommentAreaProps> = ({
     }
   }, [comments]);
 
-  const handleUpdateList = async (bookListData: BooksListData) => {
+  const handleUpdateList = async (booksListData: BooksListData) => {
     if (loading) {
-      cancelUpdateBooksList();
+      cancelUpdateBooksList(booksListData);
     }
     setLoading(true);
     try {
-      const { curatorName, ...updateObject } = bookListData;
+      const { curatorName, ...updateObject } = booksListData;
       if (listName) {
         updateObject.name = comments;
       } else {
@@ -65,43 +65,38 @@ export const CommentsArea: React.FC<CommentAreaProps> = ({
       }
       await updateBooksList({ ...updateObject });
       setLoading(false);
-    } catch (e: any) {
-      if (e instanceof CanceledError) {
-        return;
-      }
-      Logger.error("Error updating list", e);
-      toast.error("Failed to update.. Let's try again");
     } finally {
       setLoading(false);
     }
   };
 
   const handleUpdateBookInList = async (bookInList: BookInListWithBook) => {
-    if (loading) {
-      cancelUpdateBookInList();
-    }
     setLoading(true);
-
     try {
       const { book: book, ...rest } = bookInList;
       rest.comments = comments;
       await updateBookInList(rest);
       setLoading(false);
-    } catch (e: any) {
-      Logger.error("Error updating book in list", e);
-      toast.error("Failed to update.. Let's try again 🛠️");
     } finally {
       setLoading(false);
     }
   };
 
   const handleUpdate = async () => {
-    if (bookInList) {
-      await handleUpdateBookInList(bookInList);
-    } else if (bookListData) {
-      await handleUpdateList(bookListData);
+    try {
+      if (bookInList) {
+        await handleUpdateBookInList(bookInList);
+      } else if (booksListData) {
+        await handleUpdateList(booksListData);
+      }
+      onChanged?.(comments);
+    } catch (e: any) {
+      if (e instanceof CancelError) {
+        return;
+      }
+      Logger.error("Error updating in comments area", e);
+      toast.error("Failed to update.. Let's try again 🛠️");
     }
-    onChanged?.(comments);
   };
 
   const handleOnChange = () => {
@@ -110,18 +105,18 @@ export const CommentsArea: React.FC<CommentAreaProps> = ({
       clearTimeout(timeout.current);
       if (loading) {
         if (bookInList) {
-          cancelUpdateBookInList();
-        } else if (bookListData) {
-          cancelUpdateBooksList();
+          cancelUpdateBookInList(bookInList);
+        } else if (booksListData) {
+          cancelUpdateBooksList(booksListData);
         }
         setLoading(false);
       }
     }
     const currentComments = listName
-      ? bookListData?.name ?? ""
+      ? booksListData?.name ?? ""
       : bookInList
       ? bookInList.comments
-      : bookListData?.description ?? "";
+      : booksListData?.description ?? "";
     timeout.current = setTimeout(() => {
       if (currentComments !== comments) {
         handleUpdate();

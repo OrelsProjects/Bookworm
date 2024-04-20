@@ -21,6 +21,7 @@ import { DuplicateError } from "../models/errors/duplicateError";
 import { BookInList, BookInListWithBook } from "../models/bookInList";
 import { LoadingError } from "../models/errors/loadingError";
 import useBook from "./useBook";
+import { CancelError } from "../models/errors/cancelError";
 
 const BOOK_LIST_DATA_KEY = "booksListData";
 
@@ -95,6 +96,10 @@ const useBooksList = () => {
   );
   const [booksListsData, setBooksListsData] = useState<BooksListData[]>([]);
   const { addBook } = useBook();
+
+  const updateBooksListAbortController = useRef<AbortController | null>(null);
+  const updateBookInListAbortController = useRef<AbortController | null>(null);
+
   const updateBooksListCancelToken = axios.CancelToken.source();
   const updateBookInListCancelToken = axios.CancelToken.source();
 
@@ -204,8 +209,16 @@ const useBooksList = () => {
     }
   };
 
-  const cancelUpdateBooksList = () => {
-    updateBooksListCancelToken.cancel("Operation cancelled by user");
+  const cancelUpdateBooksList = (booksList: BooksListData) => {
+    localStorage.setItem(`booksList-${booksList.listId}`, "true");
+  };
+
+  const onBooksListUpdated = (booksList: BooksListData) => {
+    localStorage.removeItem(`booksList-${booksList.listId}`);
+  };
+
+  const isUpdateBooksListCancelled = (booksList: BooksListData) => {
+    return localStorage.getItem(`booksList-${booksList.listId}`) === "true";
   };
 
   const updateBooksList = async (booksListData: BooksListData) => {
@@ -214,11 +227,19 @@ const useBooksList = () => {
       await axios.patch(`/api/list/`, booksList, {
         cancelToken: updateBooksListCancelToken.token,
       });
+      if (isUpdateBooksListCancelled(booksListData)) {
+        throw new CanceledError("Operation cancelled by user");
+      }
       dispatch(updateBooksListAction(booksListData));
       updateListInLocalStorage(booksListData);
     } catch (error: any) {
+      if (error instanceof CanceledError) {
+        throw new CancelError("Operation cancelled by user");
+      }
       Logger.error("Failed to update books list", error);
       throw error;
+    } finally {
+      onBooksListUpdated(booksListData);
     }
   };
 
@@ -331,24 +352,34 @@ const useBooksList = () => {
     }
   };
 
-  const cancelUpdateBookInList = () => {
-        updateBookInListCancelToken.cancel("Operation cancelled by user");
+  const cancelUpdateBookInList = (bookInList: BookInList) => {
+    localStorage.setItem(`bookInList-${bookInList.bookId}`, "true");
+  };
+
+  const onBookInListUpdated = (bookInList: BookInList) => {
+    localStorage.removeItem(`bookInList-${bookInList.bookId}`);
+  };
+
+  const isUpdateBookInListCancelled = (bookInList: BookInList) => {
+    return localStorage.getItem(`bookInList-${bookInList.bookId}`) === "true";
   };
 
   const updateBookInList = async (bookInList: BookInList) => {
     try {
-      await axios.patch(`/api/list/book`, bookInList, {
-        cancelToken: updateBookInListCancelToken.token,
-      });
-
-      dispatch(updateBookInListAction({ bookInList }));
       updateBookInListInLocalStorage(bookInList);
-    } catch (error: any) {
-      Logger.error("Failed to update book in list", error);
-      if (error instanceof CanceledError) {
-        return;
+      await axios.patch(`/api/list/book`, bookInList);
+      if (isUpdateBookInListCancelled(bookInList)) {
+        throw new CanceledError("Operation cancelled by user");
       }
+      dispatch(updateBookInListAction({ bookInList }));
+    } catch (error: any) {
+      if (error instanceof CanceledError) {
+        throw new CancelError("Operation cancelled by user");
+      }
+      Logger.error("Failed to update book in list", error);
       throw error;
+    } finally {
+      onBookInListUpdated(bookInList);
     }
   };
 
@@ -372,3 +403,8 @@ const useBooksList = () => {
 };
 
 export default useBooksList;
+
+/**
+ * 
+ 
+ */
