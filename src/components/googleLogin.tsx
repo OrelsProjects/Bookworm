@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "./ui/button";
 import useAuth from "../hooks/useAuth";
+import { EventTracker } from "../eventTracker";
 
 interface GoogleLoginProps {
   onClickBefore?: () => void;
@@ -15,7 +16,10 @@ export default function GoogleLogin({
 }: GoogleLoginProps) {
   const { signInWithGoogle } = useAuth();
 
-  const handleGoogleLogin = async () => await signInWithGoogle();
+  const handleGoogleLogin = async () => {
+    EventTracker.track("User clicked login button");
+    await signInWithGoogle();
+  };
 
   return (
     <Button

@@ -3,27 +3,27 @@
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
-import { BottomBarItem, bottomBarItems } from "./bottomBarItems";
+import { NavigationBarItem, navigationBarItems } from "./navigationBarItems";
 import { getIconSize } from "../../consts/icon";
 import { useModal } from "../../hooks/useModal";
 
-const BottomBar = () => {
+const NavigationBar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const { clearStack } = useModal();
-  const [selected, setSelected] = React.useState<BottomBarItem>();
+  const [selected, setSelected] = React.useState<NavigationBarItem>();
 
   useEffect(() => {
-    const selected = bottomBarItems.find((item) =>
+    const selected = navigationBarItems.find((item) =>
       pathname.includes(item.path)
     );
-    setSelected(selected ?? bottomBarItems[0]);
+    setSelected(selected ?? navigationBarItems[0]);
   }, [pathname]);
 
   return (
     <div className="w-full h-fit flex flex-row justify-center z-40 absolute bottom-8 inset-0">
-      <div className="flex items-center justify-between gap-4 w-max bg-foreground rounded-xl fixed bottom-8 py-3 px-7">
-        {bottomBarItems.map((item) => {
+      <div className="w-60 h-15 flex items-center justify-between gap-4 bg-foreground rounded-xl fixed bottom-8 py-3 px-7">
+        {navigationBarItems.map((item) => {
           return (
             <div
               key={item.name}
@@ -60,4 +60,4 @@ const BottomBar = () => {
   );
 };
 
-export default BottomBar;
+export default NavigationBar;

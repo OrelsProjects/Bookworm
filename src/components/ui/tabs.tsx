@@ -18,11 +18,13 @@ interface TabsProps {
   items: TabItem[];
   Title?: React.FC<any>;
   onClick?: (item: TabItem) => void; // Change the prop name to onClick
+  selectable?: boolean;
+  className?: string;
 }
 
-const Tabs = ({ items, Title, onClick }: TabsProps) => {
+const Tabs = ({ items, Title, onClick, selectable, className }: TabsProps) => {
   const [selectedItem, setSelectedItem] = useState<TabItem | null>(
-    items[0] ?? null
+    selectable ? items[0] : null
   );
 
   const handleClick = (item: TabItem) => {
@@ -32,10 +34,35 @@ const Tabs = ({ items, Title, onClick }: TabsProps) => {
     }
   };
 
+  const Tab = ({ item }: { item: TabItem }) => {
+    return (
+      <div className="w-full h-full flex justify-center items-center relative">
+        <div
+          className={`flex flex-row gap-2 items-center ${
+            item.loading ? "invisible" : ""
+          }`}
+        >
+          {item.icon}
+          {item.label}
+        </div>
+        <Loading
+          className={`${
+            item.loading
+              ? "w-full h-full absolute top-0 left-0 right-0 bottom-0"
+              : "hidden"
+          }`}
+          spinnerClassName="!fill-primary"
+        />
+      </div>
+    );
+  };
+
   return (
-    <div className="flex flex-col gap-[5px] w-full">
+    <div className={`flex flex-col gap-[5px] w-full`}>
       {Title && <Title />}
-      <div className="rounded-full overflow-x-auto w-full flex items-center gap-2">
+      <div
+        className={`rounded-full overflow-x-auto w-full flex items-center gap-2 ${className}`}
+      >
         {items.map((item) => (
           <Button
             key={`tab-${item.value}`}
@@ -46,25 +73,9 @@ const Tabs = ({ items, Title, onClick }: TabsProps) => {
                 ? "bg-primary border-primary"
                 : ""
             } ${item.className}`}
+            clickable={selectable}
           >
-            <div className="w-full h-full flex justify-center items-center relative">
-              <div
-                className={`flex flex-row gap-2 items-center ${
-                  item.loading ? "invisible" : ""
-                }`}
-              >
-                {item.icon}
-                {item.label}
-              </div>
-              <Loading
-                className={`${
-                  item.loading
-                    ? "w-full h-full absolute top-0 left-0 right-0 bottom-0"
-                    : "hidden"
-                }`}
-                spinnerClassName="!fill-primary"
-              />
-            </div>
+            <Tab item={item} />
           </Button>
         ))}
       </div>

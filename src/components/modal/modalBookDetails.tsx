@@ -13,6 +13,8 @@ import { BookInList } from "../../models/bookInList";
 import { useSelector } from "react-redux";
 import { selectAuth } from "../../lib/features/auth/authSlice";
 import { UserBookData } from "../../models/userBook";
+import { unslugifyText } from "../../utils/textUtils";
+import Tabs from "../ui/tabs";
 
 export interface ModalBookDetailsProps {
   bookData: Book;
@@ -56,7 +58,20 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
   }, [userBooksData]);
 
   const Summary = () => (
-    <div className="w-full flex relative flex-col justify-start gap-1">
+    <div className="w-full flex relative flex-col justify-start gap-1 ">
+      <div>
+        {book.genres && (
+          <Tabs
+            items={book.genres.slice(0, 3).map((genre: string) => ({
+              label: unslugifyText(genre),
+              value: unslugifyText(genre),
+              className: "!h-5 !py-3 !border-2 font-bold leading-6",
+            }))}
+            selectable={false}
+            className="flex flex-row !justify-between"
+          />
+        )}
+      </div>
       <div className="flex flex-col gap-4 text-foreground h-full font-thin shadow-inner pb-6">
         {bookInList && bookInList.comments && (
           <div>
