@@ -68,7 +68,7 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
               className: "!h-5 !py-3 !border-2 font-bold leading-6",
             }))}
             selectable={false}
-            className="flex flex-row !justify-between"
+            className="flex flex-row !justify-between mb-3"
           />
         )}
       </div>
