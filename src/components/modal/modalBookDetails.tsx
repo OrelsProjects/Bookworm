@@ -103,7 +103,7 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
   );
 
   const ButtonsRow = () => (
-    <div className="flex flex-col gap-8">
+    <div className="w-full flex flex-col gap-8">
       <Buttons book={book} iconSize="sm" showAddToListButton={!!user} />
       <GenresTabs genres={book?.genres ?? []} take={3} />
     </div>
