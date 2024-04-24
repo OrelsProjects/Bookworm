@@ -7,7 +7,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import toast from "react-hot-toast";
+import { toast } from "react-toastify";
 import { BookInList, BookInListWithBook } from "../../../models/bookInList";
 import { BooksListData } from "../../../models/booksList";
 import BookDetails from "../../book/bookDetails";
@@ -150,7 +150,7 @@ const ContentEditBookList = ({
             );
           })(),
           {
-            loading: "Adding new book...",
+            pending: "Adding new book...",
             success: "Book added successfully!",
             error: "Failed to add book.",
           }
@@ -161,7 +161,7 @@ const ContentEditBookList = ({
         await toast.promise(
           addBookToList(currentBooksList.listId, bookWithId, newBooksComments),
           {
-            loading: `Adding ${book.title} to list...`,
+            pending: `Adding ${book.title} to list...`,
             success: `${book.title} added to list successfully!`,
             error: `Failed to add ${book.title} to list.`,
           }
@@ -194,12 +194,17 @@ const ContentEditBookList = ({
             ],
           }),
           {
-            loading: "Creating new list...",
+            pending: "Creating new list...",
             success: "New list created successfully!",
-            error: (e) =>
-              e instanceof DuplicateError
-                ? "You already have a list with the same name 🤔"
-                : "Failed to create list.",
+            error: {
+              render(e: any) {
+                if (e instanceof DuplicateError) {
+                  return "You already have a list with the same name 🤔";
+                } else {
+                  return "Failed to create list.";
+                }
+              },
+            },
           }
         );
         if (!createBooksListResponse) {
@@ -246,7 +251,7 @@ const ContentEditBookList = ({
       await toast.promise(
         removeBookFromList(currentBooksList.listId, bookInList.bookId),
         {
-          loading: `Removing book from list...`,
+          pending: `Removing book from list...`,
           success: `book removed from list successfully!`,
           error: `Failed to remove book from list.`,
         }
@@ -320,17 +325,21 @@ const ContentEditBookList = ({
 
     try {
       await toast.promise(updateBooksInListPositions(newBooksList), {
-        loading: "Updating list...",
-        success: () => {
-          showBooksListEditModal(newBooksList, {
-            shouldAnimate: false,
-            popLast: true,
-          });
-          return "List updated successfully!";
+        pending: "Updating list...",
+        success: {
+          render() {
+            showBooksListEditModal(newBooksList, {
+              shouldAnimate: false,
+              popLast: true,
+            });
+            return "List updated successfully!";
+          },
         },
-        error: () => {
-          setCurrentBookList(currentBooksList);
-          return "Failed to update list.";
+        error: {
+          render() {
+            setCurrentBookList(currentBooksList);
+            return "Failed to update list.";
+          },
         },
       });
     } catch (e: any) {}

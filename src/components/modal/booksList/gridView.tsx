@@ -5,7 +5,7 @@ import { BooksListViewProps } from "./consts";
 import { useModal } from "../../../hooks/useModal";
 import { getThumbnailSize } from "../../../consts/thumbnail";
 import useBook from "../../../hooks/useBook";
-import toast from "react-hot-toast";
+import { toast } from "react-toastify";
 import { Book } from "../../../models";
 import {
   ReadingStatusEnum,

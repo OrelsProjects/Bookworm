@@ -3,7 +3,7 @@
 import React, { useEffect } from "react";
 import useSearch, { UseSearchResult } from "../../hooks/useSearch";
 import BookSearchResult, { SearchItemSkeleton } from "./BookSearchResult";
-import toast from "react-hot-toast";
+import { toast } from "react-toastify";
 import {
   SearchBarComponent,
   SearchBarComponentProps,

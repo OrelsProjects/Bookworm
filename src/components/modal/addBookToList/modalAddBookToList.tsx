@@ -12,7 +12,7 @@ import useBooksList from "../../../hooks/useBooksList";
 import { BurgerLines } from "../../icons/burgerLines";
 import BooksListList from "../../booksList/booksListList";
 import { BooksListData } from "../../../models/booksList";
-import toast from "react-hot-toast";
+import { toast } from "react-toastify";
 import { isBooksEqual } from "../../../utils/bookUtils";
 
 type ModalBookDetailsProps = {
@@ -57,7 +57,7 @@ const ModalAddBookToList: React.FC<ModalBookDetailsProps> = ({ book }) => {
         ? removeBookFromList(list.listId, book.bookId)
         : addBookToList(list.listId, book),
       {
-        loading: loadingMessage,
+        pending: loadingMessage,
         success: successMessage,
         error: errorMessage,
       }

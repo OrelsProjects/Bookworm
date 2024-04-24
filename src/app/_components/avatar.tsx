@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Dropdown from "@/src/components/ui/dropdown";
 import useAuth from "@/src/hooks/useAuth";
-import toast from "react-hot-toast";
+import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserBooks } from "@/src/lib/features/userBooks/userBooksSlice";
 import Papa from "papaparse";
@@ -63,7 +63,7 @@ const Avatar: React.FC<AvatarProps> = ({ avatarUrl, defaultText }) => {
 
   const handleSignOut = async () => {
     toast.promise(signOut(), {
-      loading: "Signing out...",
+      pending: "Signing out...",
       success: "Signed out",
       error: "Error signing out",
     });

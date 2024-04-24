@@ -1,11 +1,12 @@
+import "./globals.css";
+import "react-toastify/dist/ReactToastify.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import StoreProvider from "./providers/StoreProvider";
 import AuthProvider from "./providers/AuthProvider";
 import React from "react";
-import "./globals.css";
 import APIProvider from "./providers/APIProvider";
-import { Toaster } from "react-hot-toast";
+import { ToastContainer, Flip } from "react-toastify";
 import DataProvider from "./providers/DataProvider";
 import AnimationProvider from "./providers/AnimationProvider";
 import Header from "./_components/header";
@@ -51,12 +52,22 @@ export default function RootLayout({
                     <BrowserDetector>
                       <div className="w-full h-full overflow-auto scrollbar-hide font-roboto">
                         <Header className="h-fit w-fit" />
-                        <AnimationProvider>{children}</AnimationProvider>
+                        <AnimationProvider>
+                          {children}
+                          <ToastContainer
+                            stacked
+                            theme="dark"
+                            autoClose={2500}
+                            draggablePercent={60}
+                            className="!mb-16"
+                            transition={Flip}
+                            position="top-center"
+                          />
+                        </AnimationProvider>
                       </div>
                     </BrowserDetector>
                     <ModalProvider />
                     <BottomBarProvider />
-                    <Toaster />
                   </HeightProvider>
                 </DataProvider>
               </APIProvider>

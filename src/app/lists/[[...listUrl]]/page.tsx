@@ -9,7 +9,7 @@ import BooksListList from "../../../components/booksList/booksListList";
 import { Add } from "../../../components/icons/add";
 import { Plus } from "../../../components/icons/plus";
 import { useSelector } from "react-redux";
-import toast from "react-hot-toast";
+import { toast } from "react-toastify";
 import axios from "axios";
 import { SafeBooksListData } from "../../../models/booksList";
 import { IResponse } from "../../../models/dto/response";
