@@ -17,18 +17,20 @@ export default function GoogleLogin({
   const { signInWithGoogle } = useAuth();
 
   const handleGoogleLogin = async () => {
-    EventTracker.track("User clicked login button");
     await signInWithGoogle();
   };
 
   return (
     <Button
       onClick={() => {
-        onClickBefore?.();
+        console.log("google click");
+        try {
+          onClickBefore?.();
+        } catch (e) {}
         handleGoogleLogin();
       }}
       variant="outline"
-      className={`rounded-full w-max-full h-[50px] w-[50px] border-2 p-0 ${className}`}
+      className={`rounded-full w-max-full h-[50px] w-[50px] cursor-pointer border-2 p-0 ${className}`}
     >
       <img
         src="/google.png"

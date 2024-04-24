@@ -31,8 +31,10 @@ const useAuth = () => {
     };
     try {
       EventTracker.track("User signed in with Google");
+      console.log("signing in with google");
       await signInWithRedirect(signInWithRedirectInput);
     } catch (error: any) {
+      console.log("error signing in with google", error);
       if (error?.name === "UserAlreadyAuthenticatedException") {
         EventTracker.track("User already authenticated");
         await signOut();
