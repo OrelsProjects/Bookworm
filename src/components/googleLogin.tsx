@@ -23,7 +23,6 @@ export default function GoogleLogin({
   return (
     <Button
       onClick={() => {
-        console.log("google click");
         try {
           onClickBefore?.();
         } catch (e) {}
@@ -31,6 +30,7 @@ export default function GoogleLogin({
       }}
       variant="outline"
       className={`rounded-full w-max-full h-[50px] w-[50px] cursor-pointer border-2 p-0 ${className}`}
+      clickable={true}
     >
       <img
         src="/google.png"
