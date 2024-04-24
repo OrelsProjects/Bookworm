@@ -1,0 +1,1 @@
+export type Visitor = "book" | "bookInList" | "list";

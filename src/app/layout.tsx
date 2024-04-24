@@ -61,7 +61,6 @@ export default function RootLayout({
                             draggablePercent={60}
                             className="!mb-16"
                             transition={Flip}
-                            position="top-center"
                           />
                         </AnimationProvider>
                       </div>
