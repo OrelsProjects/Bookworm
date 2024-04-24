@@ -8,6 +8,7 @@ import Tooltip from "../../ui/tooltip";
 import BooksListGridView, { BooksListGridViewLoading } from "./gridView";
 import { Skeleton } from "../../ui/skeleton";
 import { getThumbnailSize } from "../../../consts/thumbnail";
+import GenresTabs from "../../genresTabs";
 
 export const ModalBooksList = <T extends SafeBooksListData>({
   safeBooksListData,
@@ -65,6 +66,7 @@ export const ModalBooksList = <T extends SafeBooksListData>({
           </div>
         ) : (
           <div className="h-fit w-full flex flex-col justify-between">
+            <GenresTabs genres={safeBooksListData?.genres ?? []} take={3} />
             <ReadMoreText
               className="text-lg font-light leading-[30px]"
               text={safeBooksListData?.description}

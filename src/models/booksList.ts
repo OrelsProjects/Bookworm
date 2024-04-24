@@ -1,4 +1,3 @@
-import Book from "./book";
 import { BookInListNoListId, BookInListWithBook } from "./bookInList";
 
 export interface BooksList {
@@ -13,6 +12,7 @@ export interface BooksList {
   publishedAt: Date | null;
   expiresAt: Date | null;
   isDeleted: boolean;
+  genres?: string[];
 }
 
 export type CreateBooksListPayload = Omit<
@@ -36,6 +36,7 @@ export type SafeBooksListData = {
   description: string | null;
   publicURL: string;
   name: string;
+  genres?: string[];
 } & { booksInList: BookInListWithBook[] } & { curatorName?: string };
 
 export const booksListDataToSafeBooksListData = (
