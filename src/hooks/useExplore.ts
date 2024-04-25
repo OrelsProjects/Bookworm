@@ -1,24 +1,33 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../lib/hooks";
 import {
   setGenres,
   setLists,
   setSelectedGenre,
+  setLoading,
+  setLoadingGenres,
+  setLoadingNewPage,
+  nextPage as nextPageAction,
+  reset,
+  setLastPageReached,
 } from "../lib/features/explore/exploreSlice";
 import { getTopGenres, getListsByGenre } from "../lib/api";
 import { Logger } from "../logger";
-import { set } from "lodash";
 
 const useExplore = () => {
   const dispatch = useAppDispatch();
-  const { lists, genres, selectedGenre } = useAppSelector(
-    (state) => state.explore
-  );
-  const [lastPageReached, setLastPageReached] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [loadingGenres, setLoadingGenres] = useState(false);
-  const [loadingNewPage, setLoadingNewPage] = useState(false);
-  const [page, setPage] = useState(1);
+  const {
+    lists,
+    genres,
+    selectedGenre,
+    loading,
+    loadingGenres,
+    loadingNewPage,
+    page,
+    lastPageReached,
+  } = useAppSelector((state) => state.explore);
+  const lastFetchTimestamp = useRef<number>(0);
+
   const [limit, _] = useState(10);
 
   useEffect(() => {
@@ -28,11 +37,8 @@ const useExplore = () => {
   }, []);
 
   useEffect(() => {
-    if (page === 1) {
-      fetchLists(selectedGenre, page);
-    } else {
-      setPage(1);
-    }
+    dispatch(reset());
+    fetchLists(selectedGenre, 1);
   }, [selectedGenre]);
 
   useEffect(() => {
@@ -44,7 +50,7 @@ const useExplore = () => {
       if (loadingGenres) {
         return;
       }
-      setLoadingGenres(true);
+      dispatch(setLoadingGenres(true));
       const topGenres = await getTopGenres();
       if (topGenres.length === 0) {
         throw new Error("No genres found");
@@ -55,7 +61,7 @@ const useExplore = () => {
       Logger.error("Error getting top genres", { error });
       throw error;
     } finally {
-      setLoadingGenres(false);
+      dispatch(setLoadingGenres(false));
     }
   };
 
@@ -70,21 +76,26 @@ const useExplore = () => {
       if (loadingNewPage) {
         return;
       }
-      setLoadingNewPage(true);
+      dispatch(setLoadingNewPage(true));
     } else {
       if (loading) {
         return;
       }
-      setLoading(true);
+      dispatch(setLoading(true));
     }
     try {
+      const now = Date.now();
+      lastFetchTimestamp.current = now;
       const response = await getListsByGenre({
         page,
         limit,
         genre,
       });
+      if (lastFetchTimestamp.current != now) {
+        return;
+      }
       if (response.length === 0) {
-        setLastPageReached(true);
+        dispatch(setLastPageReached(true));
         return;
       }
       let newList = [...response];
@@ -95,8 +106,8 @@ const useExplore = () => {
     } catch (error: any) {
       Logger.error("Error getting lists by genre", { error });
     } finally {
-      setLoading(false);
-      setLoadingNewPage(false);
+      dispatch(setLoading(false));
+      dispatch(setLoadingNewPage(false));
     }
   };
 
@@ -105,11 +116,10 @@ const useExplore = () => {
   };
 
   const nextPage = () => {
-    debugger;
-    if (loadingNewPage) {
+    if (loading || loadingNewPage || lastPageReached) {
       return;
     }
-    setPage(page + 1);
+    dispatch(nextPageAction());
   };
 
   return {

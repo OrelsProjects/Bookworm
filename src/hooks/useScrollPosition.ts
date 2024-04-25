@@ -9,6 +9,7 @@ interface AdditionalOptions {
   upperThreshold?: number;
   onThreshold?: () => void;
   timeBetweenScrollCalls?: number;
+  
 }
 
 function useScrollPosition(options?: AdditionalOptions) {

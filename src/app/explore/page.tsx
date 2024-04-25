@@ -26,8 +26,8 @@ const ExplorePage: React.FC<ExplorePageProps> = () => {
   const { showBooksListModal } = useModal();
   const { scrollableDivRef } = useScrollPosition({
     scrollDirection: "height",
-    lowerThreshold: 70,
-    upperThreshold: 90,
+    lowerThreshold: 60,
+    upperThreshold: 95,
     onThreshold: nextPage,
     timeBetweenScrollCalls: 50,
   });
