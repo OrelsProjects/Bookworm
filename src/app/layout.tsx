@@ -52,17 +52,17 @@ export default function RootLayout({
                     <BrowserDetector>
                       <div className="w-full h-full overflow-auto scrollbar-hide font-roboto">
                         <Header className="h-fit w-fit" />
-                        <AnimationProvider>
-                          {children}
-                          <ToastContainer
-                            stacked
-                            theme="dark"
-                            autoClose={2500}
-                            draggablePercent={60}
-                            className="!mb-16"
-                            transition={Flip}
-                          />
-                        </AnimationProvider>
+                        {/* <AnimationProvider> */}
+                        {children}
+                        <ToastContainer
+                          stacked
+                          theme="dark"
+                          autoClose={2500}
+                          draggablePercent={60}
+                          className="!mb-16"
+                          transition={Flip}
+                        />
+                        {/* </AnimationProvider> */}
                       </div>
                     </BrowserDetector>
                     <ModalProvider />

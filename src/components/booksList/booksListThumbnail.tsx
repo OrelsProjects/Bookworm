@@ -149,7 +149,7 @@ const BooksListThumbnail: React.FC<Props> = ({
 
   return (
     <div
-      className={`flex flex-col flex-wrap relative items-start justify-center ${
+      className={`flex flex-col flex-wrap flex-shrink-0 relative items-start justify-center ${
         getThumbnailSize(thumbnailSize).className
       } rounded-xl bg-clip-border	overflow-hidden ${className ?? ""}`}
       {...props}
