@@ -28,7 +28,7 @@ export type CreateBooksListPayload = Omit<
   | "isVisible"
 > & { booksInList?: BookInListNoListId[] };
 
-export type BooksListData = BooksList & {
+export type BooksListData = BooksList & { matchRate?: number } & {
   booksInList: BookInListWithBook[];
 } & { curatorName?: string };
 
@@ -37,6 +37,7 @@ export type SafeBooksListData = {
   publicURL: string;
   name: string;
   genres?: string[];
+  matchRate?: number;
 } & { booksInList: BookInListWithBook[] } & { curatorName?: string };
 
 export const booksListDataToSafeBooksListData = (
