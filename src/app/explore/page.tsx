@@ -112,7 +112,7 @@ const ExplorePage: React.FC<ExplorePageProps> = () => {
   );
 
   const ListTags = ({ list }: { list: SafeBooksListData }) => (
-    <div className="flex flex-row gap-2.5">
+    <div className="flex flex-row gap-2.5 font-bold">
       {list.matchRate && <Tag>{parseInt(`${list.matchRate}`, 10)}% Match</Tag>}
       {list.visitCount !== undefined && list.visitCount > 0 && (
         <Tag>
@@ -127,12 +127,21 @@ const ExplorePage: React.FC<ExplorePageProps> = () => {
     </div>
   );
 
-  const List = (list: SafeBooksListData) => (
+  const List = (list: SafeBooksListData, index: number) => (
     <div
       className="w-full flex flex-row gap-2.5 justify-start items-start py-1"
       onClick={() => showBooksListModal({ bookList: list })}
     >
-      <BooksListThumbnail thumbnailSize="md" booksInList={list.booksInList} />
+      <BooksListThumbnail
+        thumbnailSize="md"
+        booksInList={list.booksInList}
+        className="relative"
+        Icon={
+          <div className="absolute bottom-0 left-0 h-[27px] w-[29px] rounded-r-lg bg-background font-bold text-xs flex justify-center items-center">
+            #{index + 1}
+          </div>
+        }
+      />
       <div className="w-full flex flex-col gap-2.5 line-clamp-2">
         <ListTitleAndCurator list={list} />
         <ListDescription description={list.description || ""} />
