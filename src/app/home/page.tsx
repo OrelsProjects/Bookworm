@@ -59,7 +59,6 @@ export default function Home(): React.ReactNode {
         direction="row"
         thumbnailSize="3xl"
         showDelete
-        showAdd={false}
       />
     </div>
   );

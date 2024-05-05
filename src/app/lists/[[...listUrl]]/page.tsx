@@ -128,6 +128,7 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
         onNextPageScroll={nextPage}
         direction="row"
         thumbnailSize="2xl"
+        showAdd
       />
     </div>
   );

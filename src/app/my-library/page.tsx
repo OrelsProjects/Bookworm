@@ -152,6 +152,7 @@ export default function MyLibrary(): React.ReactNode {
             direction="column"
             thumbnailSize="md"
             disableScroll
+            showAdd
           />
         </div>
       </div>
