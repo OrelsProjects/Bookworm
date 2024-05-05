@@ -91,42 +91,52 @@ const ExplorePage: React.FC<ExplorePageProps> = () => {
     </div>
   );
 
+  const ListTitleAndCurator = ({ list }: { list: SafeBooksListData }) => (
+    <div className="flex flex-col gap-2 truncate" id="title-subtitle">
+      <div className="text-foreground font-semibold text-base leading-4 tracking-[0.15px] truncate">
+        {list.name}
+      </div>
+      <div className="text-primary font-normal text-sm leading-[14px] tracking-[0.15px] truncate">
+        {list.curatorName}
+      </div>
+    </div>
+  );
+
+  const ListDescription = ({ description }: { description: string }) => (
+    <div
+      className="text-foreground font-light text-sm h-9 max-h-9 leading-[21px] tracking-[0.15px] line-clamp-2"
+      id="curator-comment"
+    >
+      {description}
+    </div>
+  );
+
+  const ListTags = ({ list }: { list: SafeBooksListData }) => (
+    <div className="flex flex-row gap-2.5">
+      {list.matchRate && <Tag>{parseInt(`${list.matchRate}`, 10)}% Match</Tag>}
+      {list.visitCount !== undefined && list.visitCount > 0 && (
+        <Tag>
+          <div className="flex flex-row gap-[3px] justify-center items-center">
+            {list.visitCount} <Eye />
+          </div>
+        </Tag>
+      )}
+      {list.genres && list.genres.length > 0 && (
+        <Tag className="hidden sm:flex">{list.genres[0]}</Tag>
+      )}
+    </div>
+  );
+
   const List = (list: SafeBooksListData) => (
     <div
-      className="w-full flex flex-row gap-3 justify-start items-start py-1"
+      className="w-full flex flex-row gap-2.5 justify-start items-start py-1"
       onClick={() => showBooksListModal({ bookList: list })}
     >
       <BooksListThumbnail thumbnailSize="md" booksInList={list.booksInList} />
-      <div className="w-full flex flex-col gap-3 line-clamp-2">
-        <div className="flex flex-col truncate" id="title-subtitle">
-          <div className="text-foreground font-semibold text-base leading-4 tracking-[0.15px] truncate">
-            {list.name}
-          </div>
-          <div className="text-primary font-normal text-sm leading-[14px] tracking-[0.15px] truncate">
-            {list.curatorName}
-          </div>
-        </div>
-        <div
-          className="text-foreground font-light text-sm leading-[21px] tracking-[0.15px] line-clamp-2"
-          id="curator-comment"
-        >
-          {list.description}
-        </div>
-        <div className="w-full flex flex-row gap-[5px] overflow-auto">
-          {list.matchRate && (
-            <Tag>{parseInt(`${list.matchRate}`, 10)}% Match</Tag>
-          )}
-          {list.visitCount !== undefined && list.visitCount > 0 && (
-            <Tag>
-              <div className="flex flex-row gap-[3px] justify-center items-center">
-                {list.visitCount} <Eye />
-              </div>
-            </Tag>
-          )}
-          {list.genres && list.genres.length > 0 && (
-            <Tag className="hidden sm:flex">{list.genres[0]}</Tag>
-          )}
-        </div>
+      <div className="w-full flex flex-col gap-2.5 line-clamp-2">
+        <ListTitleAndCurator list={list} />
+        <ListDescription description={list.description || ""} />
+        <ListTags list={list} />
       </div>
     </div>
   );
