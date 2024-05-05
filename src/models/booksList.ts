@@ -37,6 +37,7 @@ export type SafeBooksListData = {
   publicURL: string;
   name: string;
   genres?: string[];
+  visitCount?: number;
   matchRate?: number;
 } & { booksInList: BookInListWithBook[] } & { curatorName?: string };
 
