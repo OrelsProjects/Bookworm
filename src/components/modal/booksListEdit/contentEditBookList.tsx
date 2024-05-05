@@ -279,7 +279,8 @@ const ContentEditBookList = ({
       book={book}
       bookThumbnailSize="xs"
       Icon={
-        isBookInList(book) ? (
+        book &&
+        (isBookInList(book) ? (
           <Checkmark.Fill className="flex-shrink-0" iconSize="md" />
         ) : (
           <Add.Outline
@@ -290,7 +291,7 @@ const ContentEditBookList = ({
               handleAddNewBookClick(book);
             }}
           />
-        )
+        ))
       }
     />
   );
