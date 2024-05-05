@@ -68,7 +68,7 @@ const Tabs = ({ items, Title, onClick, selectable, className }: TabsProps) => {
             key={`tab-${item.value}`}
             onClick={() => handleClick(item)}
             variant="outline"
-            className={`rounded-full flex-shrink-0 !min-w-20 h-6 p-4 w-max ${
+            className={`rounded-full border-2 flex-shrink-0 !min-w-20 h-6 p-4 w-max ${
               selectedItem?.value === item?.value
                 ? "bg-primary border-primary"
                 : ""

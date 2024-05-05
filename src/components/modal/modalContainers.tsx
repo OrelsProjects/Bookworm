@@ -35,7 +35,7 @@ const ContentContainer: React.FC<ModalContentContainer> = ({
   className,
 }) => (
   <div
-    className={`h-fit w-full flex flex-col justify-start items-center gap-6 px-8 pb-4 bg-background  rounded-t-5xl ${
+    className={`h-fit w-full flex flex-col justify-start items-center gap-[25px] px-8 pb-4 bg-background  rounded-t-5xl ${
       className ?? ""
     }`}
   >
@@ -51,7 +51,7 @@ export const ModalContent: React.FC<ModalContentProps> = ({
   children,
 }) => (
   <ContentContainer>
-    <div className="w-full h-fit flex flex-col items-center gap-4">
+    <div className="w-full h-fit flex flex-col items-center">
       <TopSectionContainer thumbnail={thumbnail}>
         <div className="h-full w-full flex flex-col justify-center items-start gap-1">
           {thumbnailDetails}

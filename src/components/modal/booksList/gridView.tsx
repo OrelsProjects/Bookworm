@@ -22,7 +22,7 @@ import { Skeleton } from "../../ui/skeleton";
 
 export function BooksListGridViewLoading() {
   return (
-    <div className="h-full w-full flex flex-col gap-6 mt-2">
+    <div className="h-full w-full flex flex-col gap-5">
       <div className="w-full flex flex-row items-center justify-between">
         <Skeleton className="w-36 h-6 rounded-full" />
       </div>
@@ -193,7 +193,7 @@ export default function BooksListGridView({
   );
 
   return (
-    <div className="h-full w-full flex flex-col gap-6 mt-2">
+    <div className="h-full w-full flex flex-col gap-5">
       <div className="w-full flex flex-row items-center justify-between">
         <div className="w-fit flex flex-row items-center gap-2">
           <BurgerLines.Fill iconSize="sm" className="!text-foreground" />

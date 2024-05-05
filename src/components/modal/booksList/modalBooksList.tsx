@@ -9,6 +9,8 @@ import BooksListGridView, { BooksListGridViewLoading } from "./gridView";
 import { Skeleton } from "../../ui/skeleton";
 import { getThumbnailSize } from "../../../consts/thumbnail";
 import GenresTabs from "../../genresTabs";
+import Tag from "../../ui/Tag";
+import { unslugifyText } from "../../../utils/textUtils";
 
 export const ModalBooksList = <T extends SafeBooksListData>({
   safeBooksListData,
@@ -65,14 +67,19 @@ export const ModalBooksList = <T extends SafeBooksListData>({
             <Skeleton className="w-4/6 h-4 rounded-lg" type="shimmer" />
           </div>
         ) : (
-          <div className="h-fit w-full flex flex-col justify-between">
-            <GenresTabs genres={safeBooksListData?.genres ?? []} take={3} />
+          <div className="h-fit w-full flex flex-col justify-between gap-[15px]">
+            <div className="w-full flex flex-row gap-3 justify-between items-center overflow-auto">
+              {safeBooksListData?.genres?.slice(0, 3)?.map((genre) => (
+                <Tag className="font-bold h-8 text-base">
+                  <div className="px-2 truncate">{unslugifyText(genre)}</div>
+                </Tag>
+              ))}
+            </div>
             <ReadMoreText
               className="text-lg font-light leading-[30px]"
               text={safeBooksListData?.description}
               maxLines={2}
             />
-            <div className="flex flex-row gap-1 w-fit font-bold text-base"></div>
           </div>
         )
       }
