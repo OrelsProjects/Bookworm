@@ -8,12 +8,11 @@ import React from "react";
 import APIProvider from "./providers/APIProvider";
 import { ToastContainer, Flip } from "react-toastify";
 import DataProvider from "./providers/DataProvider";
-import AnimationProvider from "./providers/AnimationProvider";
 import Header from "./_components/header";
 import ModalProvider from "./providers/ModalProvider";
 import BottomBarProvider from "./providers/BottomBarProvider";
 import NavigationProvider from "./providers/NavigationProvider";
-import HeightProvider from "./providers/HeightProvider";
+import ContentProvider from "./providers/ContentProvider";
 import BrowserDetector from "./providers/BrowserDetector";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -48,7 +47,7 @@ export default function RootLayout({
             <NavigationProvider>
               <APIProvider>
                 <DataProvider>
-                  <HeightProvider className=" py-10 px-7.5 flex flex-col z-20 tracking-semiwide relative overflow-clip">
+                  <ContentProvider>
                     <BrowserDetector>
                       <div className="w-full h-full overflow-auto scrollbar-hide font-roboto">
                         <Header className="h-fit w-fit" />
@@ -66,8 +65,7 @@ export default function RootLayout({
                       </div>
                     </BrowserDetector>
                     <ModalProvider />
-                    <BottomBarProvider />
-                  </HeightProvider>
+                  </ContentProvider>
                 </DataProvider>
               </APIProvider>
             </NavigationProvider>

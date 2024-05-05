@@ -21,8 +21,8 @@ const NavigationBar = () => {
   }, [pathname]);
 
   return (
-    <div className="w-full h-fit flex flex-row justify-center z-40 absolute bottom-8 inset-0">
-      <div className="w-60 h-15 flex items-center justify-between gap-4 bg-foreground rounded-xl fixed bottom-8 py-3 px-7">
+    <div className="w-full h-fit flex flex-row justify-center z-40 fixed bottom-0 inset-0">
+      <div className="w-full h-15 flex items-center justify-between gap-4 bg-background rounded-xl fixed bottom-0 py-3 px-7">
         {navigationBarItems.map((item) => {
           return (
             <div
@@ -49,7 +49,7 @@ const NavigationBar = () => {
                     getIconSize({
                       size: item.size,
                     }).className
-                  } !text-background`}
+                  } !text-foreground`}
                 />
               )}
             </div>
