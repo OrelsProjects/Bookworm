@@ -26,7 +26,7 @@ input[type="text"]:-moz-ui-autofill {
   :root {
     --background: 0, 0%, 8%;
 
-    --primary: 30, 105%, 57%;
+    --primary: 39, 95%, 39%, 1;
     --primary-foreground: 210, 40%, 98%;
 
     --secondary: 217.4, 42.7%, 16.5%;
@@ -60,7 +60,7 @@ input[type="text"]:-moz-ui-autofill {
   .dark {
     --background: 0, 0%, 8%;
 
-    --primary: 0, 100%, 61.6%;
+    --primary: 39, 95%, 39%, 1;
     --primary-foreground: 210, 40%, 98%;
 
     --secondary: 217.4, 42.7%, 16.5%;

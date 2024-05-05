@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import useSearch, { UseSearchResult } from "../../hooks/useSearch";
-import SearchResultComponent, { SearchItemSkeleton } from "./BookSearchResult";
+import SearchResultComponent, { SearchItemSkeleton } from "./searchResultComponent";
 import { toast } from "react-toastify";
 import {
   SearchBarComponent,

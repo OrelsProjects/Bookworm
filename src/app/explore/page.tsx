@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import React from "react";
 import BooksListThumbnail from "../../components/booksList/booksListThumbnail";
 import GenresTabs from "../../components/genresTabs";
 import { SearchBarComponent } from "../../components/search/searchBarComponent";
@@ -11,6 +11,8 @@ import { useModal } from "../../hooks/useModal";
 import { SafeBooksListData } from "../../models/booksList";
 import useScrollPosition from "../../hooks/useScrollPosition";
 import useSearch from "../../hooks/useSearch";
+import { FaEye as Eye } from "react-icons/fa";
+import { cn } from "../../lib/utils";
 
 interface ExplorePageProps {}
 
@@ -72,6 +74,23 @@ const ExplorePage: React.FC<ExplorePageProps> = () => {
     );
   };
 
+  const Tag = ({
+    children,
+    className,
+  }: {
+    children: React.ReactNode;
+    className?: string;
+  }) => (
+    <div
+      className={cn(
+        "w-fit h-6 text-sm sm:text-xs tracking-[0.15px] p-2 flex justify-center items-center rounded-full border-2 border-foreground bg-background",
+        className
+      )}
+    >
+      {children}
+    </div>
+  );
+
   const List = (list: SafeBooksListData) => (
     <div
       className="w-full flex flex-row gap-3 justify-start items-start py-1"
@@ -93,11 +112,21 @@ const ExplorePage: React.FC<ExplorePageProps> = () => {
         >
           {list.description}
         </div>
-        {/* <div className="flex flex-row justify-between overflow-auto">
-          <Skeleton className="w-16 h-5 rounded-full flex-shrink-0" />
-          <Skeleton className="w-16 h-5 rounded-full flex-shrink-0" />
-          <Skeleton className="w-16 h-5 rounded-full flex-shrink-0" />
-        </div> */}
+        <div className="w-full flex flex-row gap-[5px] overflow-auto">
+          {list.matchRate && (
+            <Tag>{parseInt(`${list.matchRate}`, 10)}% Match</Tag>
+          )}
+          {list.visitCount !== undefined && list.visitCount > 0 && (
+            <Tag>
+              <div className="flex flex-row gap-[3px] justify-center items-center">
+                {list.visitCount} <Eye />
+              </div>
+            </Tag>
+          )}
+          {list.genres && list.genres.length > 0 && (
+            <Tag className="hidden sm:flex">{list.genres[0]}</Tag>
+          )}
+        </div>
       </div>
     </div>
   );

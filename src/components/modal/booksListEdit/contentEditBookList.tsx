@@ -13,7 +13,7 @@ import { BooksListData } from "../../../models/booksList";
 import BookDetails from "../../book/bookDetails";
 import { Add } from "../../icons/add";
 import { Checkmark } from "../../icons/checkmark";
-import { SearchResultProps } from "../../search/BookSearchResult";
+import { SearchResultProps } from "../../search/searchResultComponent";
 import SearchBar from "../../search/searchBar";
 import SearchBarIcon from "../../search/searchBarIcon";
 import BookDetailsSkeleton from "../../skeletons/BookDetailsSkeleton";

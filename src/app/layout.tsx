@@ -52,7 +52,7 @@ export default function RootLayout({
                     <BrowserDetector>
                       <div className="w-full h-full overflow-auto scrollbar-hide font-roboto">
                         <Header className="h-fit w-fit" />
-                        <AnimationProvider>
+                        {/* <AnimationProvider> */}
                         {children}
                         <ToastContainer
                           stacked
@@ -62,7 +62,7 @@ export default function RootLayout({
                           className="!mb-16"
                           transition={Flip}
                         />
-                        </AnimationProvider>
+                        {/* </AnimationProvider> */}
                       </div>
                     </BrowserDetector>
                     <ModalProvider />
