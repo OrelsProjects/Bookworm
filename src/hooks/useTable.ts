@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectUserBooks } from "../lib/features/userBooks/userBooksSlice";
 import { UserBookData } from "../models";
@@ -16,7 +16,9 @@ import { BooksListData } from "../models/booksList";
 const useTable = (readingStatus?: ReadingStatusEnum) => {
   const { userBooksData, loading, error } = useSelector(selectUserBooks);
 
-  const currentReadingStatus = useRef<ReadingStatusEnum | undefined>(readingStatus);
+  const currentReadingStatus = useRef<ReadingStatusEnum | undefined>(
+    readingStatus
+  );
   const [userBooks, setUserBooks] = useState<UserBookData[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(50);
@@ -35,6 +37,20 @@ const useTable = (readingStatus?: ReadingStatusEnum) => {
   useEffect(() => {
     updateUserBooks(currentPage, currentReadingStatus.current, searchValue);
   }, [userBooksData, currentPage]);
+
+  const toReadBooks = useMemo(() => {
+    return userBooksData.filter(
+      (userBook) =>
+        userBook.readingStatus?.readingStatusId === ReadingStatusEnum.TO_READ
+    );
+  }, [userBooksData]);
+
+  const readBooks = useMemo(() => {
+    return userBooksData.filter(
+      (userBook) =>
+        userBook.readingStatus?.readingStatusId === ReadingStatusEnum.READ
+    );
+  }, [userBooksData]);
 
   const getSearchBooks = (value: string = "") => {
     return [...userBooksData].filter(
@@ -202,6 +218,8 @@ const useTable = (readingStatus?: ReadingStatusEnum) => {
     sortBooks,
     filterBooks,
     filteredBy,
+    toReadBooks,
+    readBooks,
   };
 };
 

@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { NavigationBarItem, navigationBarItems } from "./navigationBarItems";
 import { getIconSize } from "../../consts/icon";
 import { useModal } from "../../hooks/useModal";
+import { Button } from "../ui/button";
 
 const NavigationBar = () => {
   const router = useRouter();
@@ -21,13 +22,15 @@ const NavigationBar = () => {
   }, [pathname]);
 
   return (
-    <div className="w-full h-fit flex flex-row justify-center z-40 fixed bottom-0 inset-0">
-      <div className="w-full h-15 flex items-center justify-between gap-4 bg-background rounded-xl fixed bottom-0 py-3 px-7">
+    <div className="w-full h-fit flex flex-row justify-center items-center z-40 fixed bottom-0 inset-0">
+      <div className="w-full h-15 flex items-center justify-around gap-4 bg-background rounded-xl fixed bottom-0 py-3 px-7">
         {navigationBarItems.map((item) => {
           return (
-            <div
+            <Button
+              data-ripple-light={false}
+              data-ripple-dark={false}
               key={item.name}
-              className="flex items-center justify-center w-full h-full cursor-pointer"
+              className="flex items-center justify-center rounded-full w-fit h-fit cursor-pointer bg-transparent"
               onClick={() => {
                 if (pathname.includes(item.path)) return;
                 router.push(item.path);
@@ -52,7 +55,7 @@ const NavigationBar = () => {
                   } !text-foreground`}
                 />
               )}
-            </div>
+            </Button>
           );
         })}
       </div>

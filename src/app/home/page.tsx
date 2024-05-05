@@ -9,12 +9,19 @@ import { ReadingStatusEnum } from "../../models/readingStatus";
 import SearchBarIcon from "../../components/search/searchBarIcon";
 import SearchBar from "../../components/search/searchBar";
 import Loading from "../../components/ui/loading";
-import Tooltip from "../../components/ui/tooltip";
+import BooksListThumbnail from "../../components/booksList/booksListThumbnail";
+import Tag from "../../components/ui/Tag";
+import { cn } from "../../lib/utils";
+import { getThumbnailSize } from "../../consts/thumbnail";
+import { UserBookData } from "../../models";
 import { useModal } from "../../hooks/useModal";
 
 export default function Home(): React.ReactNode {
   const router = useRouter();
-  const { userBooks, nextPage } = useTable(ReadingStatusEnum.TO_READ);
+  const { showBooksListModal } = useModal();
+  const { toReadBooks, readBooks, nextPage } = useTable(
+    ReadingStatusEnum.TO_READ
+  );
   const { recommendations: recommendationsLists, loading } =
     useUserRecommendations();
   const [searchFocused, setSearchFocused] = useState(false);
@@ -24,85 +31,99 @@ export default function Home(): React.ReactNode {
     router.push("/my-library");
   }, [router]);
 
-  const Books = () =>
-    userBooks &&
-    userBooks.length > 0 && (
-      <div className="flex flex-col gap-5">
-        <div className="w-full flex flex-row justify-between items-start">
-          <div className="text-list-title">My Next Read</div>
-          <div className="text-see-all" onClick={onSeeAllClick}>
-            See all
-          </div>
-        </div>
-        <BookList
-          books={userBooks.map((ubd) => ubd.bookData.book)}
-          onNextPageScroll={nextPage}
-          direction="row"
-          thumbnailSize="2xl"
-        />
-      </div>
-    );
+  const ListTitle = ({
+    title,
+    onSeeAllClick,
+  }: {
+    title: string;
+    onSeeAllClick: () => void;
+  }) => (
+    <div className="w-full flex flex-row justify-between items-center">
+      <div className="text-2xl">{title}</div>
+      <SeeAll onClick={onSeeAllClick} />
+    </div>
+  );
+
+  const Books = ({
+    books,
+    title,
+  }: {
+    books: UserBookData[];
+    title: string;
+  }) => (
+    <div className="flex flex-col gap-3.5">
+      <ListTitle title={title} onSeeAllClick={onSeeAllClick} />
+      <BookList
+        books={books.map((ubd) => ubd.bookData.book)}
+        onNextPageScroll={nextPage}
+        direction="row"
+        thumbnailSize="3xl"
+        showDelete
+        showAdd={false}
+      />
+    </div>
+  );
+
+  const SeeAll = ({ onClick }: { onClick: () => void }) => (
+    <div className="text-see-all" onClick={onClick}>
+      see all
+    </div>
+  );
 
   const Recommendations = () => {
     const router = useRouter();
-    const { showBooksListModal } = useModal();
+
     return recommendationsLists && recommendationsLists.length > 0 ? (
       <div className="flex flex-col gap-2">
-        <div className="w-full flex flex-col gap-10">
-          {recommendationsLists.length > 0 &&
-            recommendationsLists.slice(0, 5).map((recommendationList) => (
-              <div
-                className="flex flex-col gap-5"
-                key={`recommendation-${recommendationList.publicURL}`}
-              >
-                <div className="w-full flex flex-row justify-between items-start">
-                  <Tooltip
-                    tooltipContent={
-                      <div className="text-sm text-foreground line-clamp-4 tracking-tighter max-w-xs">
-                        {recommendationList.name}
-                      </div>
-                    }
-                  >
-                    <div className="text-list-title">
-                      {recommendationList.name}
-                    </div>
-                  </Tooltip>
+        <div className="w-full flex flex-col gap-3.5">
+          <ListTitle
+            title="Recommended for you"
+            onSeeAllClick={() => router.push("/explore")}
+          />
+          <div className="flex flex-row gap-3.5 overflow-auto">
+            {recommendationsLists.length > 0 &&
+              recommendationsLists
+                .slice()
+                .sort((a, b) => (b.matchRate || 0) - (a.matchRate || 0))
+                .map((recommendationList) => (
                   <div
-                    className="text-see-all"
+                    className="flex flex-row gap-4"
+                    key={`recommendation-${recommendationList.publicURL}`}
                     onClick={() => {
-                      // add publicurl to route without changing the page
-                      window.history.pushState(
-                        {},
-                        "",
-                        `${recommendationList.publicURL}`
-                      );
-                      showBooksListModal(
-                        {
-                          bookList: recommendationList,
-                        },
-                        {
-                          onBack: () => {
-                            router.push("/explore");
-                          },
-                        }
-                      );
+                      showBooksListModal({ bookList: recommendationList });
                     }}
                   >
-                    See all
+                    <div
+                      className={cn(
+                        "flex flex-col gap-2.5",
+                        getThumbnailSize("3xl").width
+                      )}
+                    >
+                      <BooksListThumbnail
+                        thumbnailSize="3xl"
+                        booksInList={recommendationList.booksInList}
+                        className="relative"
+                      >
+                        <div className="w-full flex justify-center items-center h-8 px-[9px] absolute bottom-[5px] z-30">
+                          <Tag className="h-8 w-full">
+                            {recommendationList.matchRate &&
+                              parseInt(`${recommendationList.matchRate}`, 10)}
+                            % Match
+                          </Tag>
+                        </div>
+                      </BooksListThumbnail>
+                      <div className="w-full flex gap-2 flex-col">
+                        <span className="font-bold leading-[16px] truncate">
+                          {recommendationList.name}
+                        </span>
+                        <span className="text-primary text-sm leading-4 truncate">
+                          {recommendationList.curatorName}
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <BookList
-                  books={
-                    recommendationList.booksInList.map(
-                      (bookInList) => bookInList.book
-                    ) ?? []
-                  }
-                  onNextPageScroll={nextPage}
-                  direction="row"
-                  thumbnailSize="2xl"
-                />
-              </div>
-            ))}
+                ))}
+          </div>
         </div>
       </div>
     ) : (
@@ -118,9 +139,10 @@ export default function Home(): React.ReactNode {
   };
 
   const Content = () => (
-    <div className="h-fit w-full flex flex-col gap-10">
-      <Books />
+    <div className="h-fit w-full flex flex-col gap-[35px]">
+      <Books books={toReadBooks} title="Next read" />
       <Recommendations />
+      <Books books={readBooks} title="Books I've read" />
     </div>
   );
 

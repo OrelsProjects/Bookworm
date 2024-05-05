@@ -217,7 +217,7 @@ input[type="text"]:-moz-ui-autofill {
 }
 
 .text-see-all {
-  @apply text-xl text-foreground underline leading-5.5 flex-shrink-0;
+  @apply text-xl text-foreground underline underline-offset-2 leading-5.5 flex-shrink-0;
 }
 
 .text-list-title {

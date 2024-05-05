@@ -5,6 +5,12 @@ import useScrollPosition from "../../hooks/useScrollPosition";
 import { Add } from "../icons/add";
 import { ThumbnailSize } from "../../consts/thumbnail";
 import { useModal } from "../../hooks/useModal";
+import useBook from "../../hooks/useBook";
+import { FaTrashCan } from "react-icons/fa6";
+import { getIconSize } from "../../consts/icon";
+import { cn } from "../../lib/utils";
+import { toast } from "react-toastify";
+import { Logger } from "../../logger";
 
 type BookListProps = {
   books: (Book | undefined)[];
@@ -14,6 +20,8 @@ type BookListProps = {
   thumbnailSize?: ThumbnailSize;
   disableScroll?: boolean;
   CustomBookComponent?: React.FC<{ book?: Book }>;
+  showDelete?: boolean;
+  showAdd?: boolean;
 };
 
 const BookList: React.FC<BookListProps> = ({
@@ -24,14 +32,29 @@ const BookList: React.FC<BookListProps> = ({
   thumbnailSize,
   disableScroll,
   CustomBookComponent,
+  showDelete,
+  showAdd,
 }) => {
   const { showBookDetailsModal, showAddBookToListModal } = useModal();
+  const { deleteUserBookWithBook } = useBook();
   const { scrollableDivRef } = useScrollPosition({
     onThreshold: () => onNextPageScroll?.(), // TODO: Buggy scrolling. Once fixed, reduce the page size in useTable.ts
     scrollDirection: direction === "row" ? "width" : "height",
   });
 
   const onBookClick = (book: Book) => showBookDetailsModal({ bookData: book });
+  const onDeleteBookClick = async (book: Book) => {
+    let toastId = toast.loading("Deleting book...");
+    try {
+      await deleteUserBookWithBook(book);
+      toast.success("Book deleted successfully.");
+    } catch (e: any) {
+      Logger.error(e);
+      toast.error("An error occurred while deleting the book.");
+    } finally {
+      toast.dismiss(toastId);
+    }
+  };
   const onAddBookClick = (book?: Book) => showAddBookToListModal(book as Book);
 
   return (
@@ -70,11 +93,18 @@ const BookList: React.FC<BookListProps> = ({
                       className="absolute bottom-2 right-2 w-fit h-fit rounded-full overflow-hidden flex items-center justify-center shadow-sm shadow-black"
                       onClick={(e) => {
                         e.stopPropagation();
-                        onAddBookClick(book);
+                        if (book && showDelete) {
+                          onDeleteBookClick(book);
+                        } else {
+                          onAddBookClick(book);
+                        }
                       }}
                     >
                       <div className="w-10 h-10 bg-black rounded-full text-2xl flex justify-center items-center">
-                        +
+                        {showDelete && book && (
+                          <FaTrashCan className="w-3 h-3.5" />
+                        )}
+                        {showAdd && <span>+</span>}
                       </div>
                     </div>
                   </div>

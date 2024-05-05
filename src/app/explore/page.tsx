@@ -13,6 +13,7 @@ import useScrollPosition from "../../hooks/useScrollPosition";
 import useSearch from "../../hooks/useSearch";
 import { FaEye as Eye } from "react-icons/fa";
 import { cn } from "../../lib/utils";
+import Tag from "../../components/ui/Tag";
 
 interface ExplorePageProps {}
 
@@ -73,23 +74,6 @@ const ExplorePage: React.FC<ExplorePageProps> = () => {
       </div>
     );
   };
-
-  const Tag = ({
-    children,
-    className,
-  }: {
-    children: React.ReactNode;
-    className?: string;
-  }) => (
-    <div
-      className={cn(
-        "w-fit h-6 text-sm sm:text-xs tracking-[0.15px] p-2 flex justify-center items-center rounded-full border-2 border-foreground bg-background",
-        className
-      )}
-    >
-      {children}
-    </div>
-  );
 
   const ListTitleAndCurator = ({ list }: { list: SafeBooksListData }) => (
     <div className="flex flex-col gap-2 truncate" id="title-subtitle">

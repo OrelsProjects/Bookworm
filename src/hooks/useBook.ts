@@ -58,6 +58,16 @@ const useBook = () => {
     return false;
   };
 
+  const deleteUserBookWithBook = async (book: Book) => {
+    const userBook = userBooksData.find(
+      (userBookData) => userBookData.bookData?.book?.bookId === book.bookId
+    );
+    if (!userBook) {
+      throw new Error("No user book found for book");
+    }
+    await deleteUserBook(userBook.userBook);
+  };
+
   const deleteUserBook = async (userBook: UserBook): Promise<void> => {
     if (loading.current) {
       throw new Error("Cannot delete book while another book is loading");
@@ -329,6 +339,7 @@ const useBook = () => {
   ) => {
     const updateBookBody: UpdateUserBookBody = {
       userBookId: userBook.userBookId,
+      userId: userBook.userId,
       readingStatusId: readingStatus,
     };
     await updateUserBook(updateBookBody);
@@ -357,15 +368,16 @@ const useBook = () => {
   }
 
   return {
-    getBookGoodreadsData,
-    updateUserBook,
-    updateBookReadingStatus,
-    loadUserBooks,
-    addUserBook,
     addBook,
+    addUserBook,
+    loadUserBooks,
+    userBooksData,
+    updateUserBook,
     deleteUserBook,
     getBookFullData,
-    userBooksData,
+    getBookGoodreadsData,
+    deleteUserBookWithBook,
+    updateBookReadingStatus,
     loading: loading.current,
   };
 };
