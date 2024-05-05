@@ -15,7 +15,7 @@ const Login: React.FC = () => {
 
   useEffect(() => {
     if (!loadingState.loading && user) {
-      router.push("/home");
+      router.push("/explore");
     }
   }, [loadingState, user]);
 

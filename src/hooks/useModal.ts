@@ -72,13 +72,13 @@ export const useModal = () => {
   const closeModal = () => dispatch(hideModal());
 
   return {
-    showAddBookToListModal,
-    showBookDetailsModal,
-    showBookInListDetailsModal,
-    showBooksListEditModal,
-    showBooksListModal,
-    showRegisterModal,
     closeModal,
     clearStack,
+    showRegisterModal,
+    showBooksListModal,
+    showBookDetailsModal,
+    showAddBookToListModal,
+    showBooksListEditModal,
+    showBookInListDetailsModal,
   };
 };

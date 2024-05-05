@@ -10,6 +10,7 @@ import useExplore from "../../hooks/useExplore";
 import { useModal } from "../../hooks/useModal";
 import { SafeBooksListData } from "../../models/booksList";
 import useScrollPosition from "../../hooks/useScrollPosition";
+import useSearch from "../../hooks/useSearch";
 
 interface ExplorePageProps {}
 
@@ -23,6 +24,13 @@ const ExplorePage: React.FC<ExplorePageProps> = () => {
     genres,
     selectGenre,
   } = useExplore();
+  const {
+    search,
+    loading: searchLoading,
+    results: searchResults,
+    nextPage: searchNextPage,
+  } = useSearch();
+
   const { showBooksListModal } = useModal();
   const { scrollableDivRef } = useScrollPosition({
     scrollDirection: "height",
@@ -98,8 +106,8 @@ const ExplorePage: React.FC<ExplorePageProps> = () => {
     <div className="w-full h-full flex flex-col">
       <SearchBarIcon>
         <SearchBarComponent
-          // onChange={(value: string) => searchBooks(value)}
-          // onSubmit={(value: string) => searchBooks(value)}
+          onChange={(value: string) => search(value)}
+          onSubmit={(value: string) => search(value)}
           placeholder="Search Readlists..."
           className="pr-16"
         />

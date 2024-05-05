@@ -42,7 +42,7 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
           },
           {
             onBack: () => {
-              router.push("/home");
+              router.push("/explore");
             },
           }
         );
@@ -66,7 +66,7 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
             },
             {
               onBack: () => {
-                router.push("/home");
+                router.push("/explore");
               },
               popLast: true,
               shouldAnimate: false,

@@ -1,8 +1,8 @@
 import Logger from "@/src/utils/loggerServer";
 import { GetAxiosInstance, getUserIdFromRequest } from "@/src/utils/apiUtils";
-import { Book } from "../../../models";
+import { Book } from "../../../../models";
 import { NextRequest, NextResponse } from "next/server";
-import { setThumbnailColorsToBooks } from "../list/_utils/thumbnailUtils";
+import { setThumbnailColorsToBooks } from "../../list/_utils/thumbnailUtils";
 
 export async function GET(req: NextRequest) {
   let query: string | null = "";

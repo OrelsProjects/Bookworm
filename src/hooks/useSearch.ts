@@ -2,41 +2,53 @@ import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { debounce } from "lodash";
 import { Book } from "../models";
-import { IResponse } from "../models/dto/response";
-import { Books } from "../models/book";
-import { EventTracker } from "../eventTracker";
-import slugify from "slugify";
 import { Logger } from "../logger";
+import { searchAll } from "../lib/api";
+import { SearchResults } from "../models/search";
 
 // Define a type for the hook's return value
 export interface UseSearchResult {
   searchValue: string;
-  books: Book[] | null;
+  results: SearchResults | null;
   loading: boolean;
   error: string | null;
-  updateSearchValue: (value: string) => void;
+  nextPage: () => void;
+  search: (value: string) => void;
 }
 
 function useSearch(): UseSearchResult {
-  const [searchValue, setSearchValue] = useState<string>("");
   const searchValueRef = useRef<string>("");
-  const [results, setResults] = useState<Book[] | null>(null);
-  const [resultsToUpdate, setResultsToUpdate] = useState<Book[] | null>(null);
+
+  const [limit, _] = useState<number>(10);
+  const [page, setPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [lastSearchTime, setLastSearchTime] = useState<number>(0);
+  const [searchValue, setSearchValue] = useState<string>("");
+  const [results, setResults] = useState<SearchResults | null>(null);
+  const [resultsToUpdate, setResultsToUpdate] = useState<SearchResults | null>(
+    null
+  );
 
-  const searchCancelToken = axios.CancelToken.source();
+  useEffect(() => {
+    updateResults(resultsToUpdate);
+  }, [resultsToUpdate]);
 
-  const updateSearchValue = (value: string) => {
-    if (value === searchValue) {
-      return;
+  // Search useEffect
+  useEffect(() => {
+    if (searchValue === "") {
+      setResultsToUpdate(null);
+      setLoading(false);
     }
-    setSearchValue(value);
-    searchValueRef.current = value;
-  };
 
-  const updateResults = (value: Book[] | null) => {
+    if (searchValue) {
+      debouncedFetchData(searchValue);
+    }
+    return () => {
+      debouncedFetchData.cancel();
+    };
+  }, [searchValue]);
+
+  const updateResults = (value: SearchResults | null) => {
     if (value === results) {
       return;
     }
@@ -47,29 +59,25 @@ function useSearch(): UseSearchResult {
     }
   };
 
-  useEffect(() => {
-    updateResults(resultsToUpdate);
-  }, [resultsToUpdate]);
-
-  const fetchBooks = async (value: string) => {
+  const search = async (value: string) => {
     try {
       setLoading(true);
       setError(null);
       if (!value) {
         return [];
       }
-      EventTracker.track("User search new book", { query: value });
-      const response = await axios.get<IResponse<Book[]>>(
-        `/api/google-books?query=${value}`,
-        {
-          cancelToken: searchCancelToken.token,
-        }
-      );
+      searchValueRef.current = value;
+      setSearchValue(value);
+      const result = await searchAll({ query: value, page, limit });
       if (value !== searchValueRef.current) {
         return;
       }
-      const books: Books = response.data.result ?? [];
-      setResultsToUpdate(books);
+      if (!result) {
+        setResultsToUpdate(null);
+        return;
+      }
+
+      setResultsToUpdate(result);
     } catch (error: any) {
       if (axios.isCancel(error)) {
         return;
@@ -85,30 +93,28 @@ function useSearch(): UseSearchResult {
     }
   };
 
-  // Debounced function
-  const debouncedFetchData = debounce(fetchBooks, 300);
+  /**
+   * Update search value so the useEffect can call debounced search
+   * @param value is the search value
+   */
+  const updateSearchValue = (value: string) => {
+    searchValueRef.current = value;
+    setSearchValue(value);
+  };
 
-  useEffect(() => {
-    if (searchValue === "") {
-      setResultsToUpdate(null);
-      setLoading(false);
-    }
+  const debouncedFetchData = debounce(search, 300);
 
-    if (searchValue) {
-      debouncedFetchData(searchValue);
-    }
-    return () => {
-      debouncedFetchData.cancel();
-      // searchCancelToken.cancel();
-    };
-  }, [searchValue]);
+  const nextPage = () => {
+    setPage(page + 1);
+  };
 
   return {
-    searchValue,
-    updateSearchValue,
-    books: results,
-    loading,
     error,
+    loading,
+    results,
+    nextPage,
+    searchValue,
+    search: updateSearchValue,
   };
 }
 

@@ -13,6 +13,7 @@ import {
 } from "../lib/features/explore/exploreSlice";
 import { getTopGenres, getListsByGenre } from "../lib/api";
 import { Logger } from "../logger";
+import useSearch from "./useSearch";
 
 const useExplore = () => {
   const dispatch = useAppDispatch();
@@ -26,6 +27,7 @@ const useExplore = () => {
     page,
     lastPageReached,
   } = useAppSelector((state) => state.explore);
+  
   const lastFetchTimestamp = useRef<number>(0);
 
   const [limit, _] = useState(10);

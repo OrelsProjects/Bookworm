@@ -2,21 +2,23 @@
 
 import React, { useEffect } from "react";
 import useSearch, { UseSearchResult } from "../../hooks/useSearch";
-import BookSearchResult, { SearchItemSkeleton } from "./BookSearchResult";
+import SearchResultComponent, { SearchItemSkeleton } from "./BookSearchResult";
 import { toast } from "react-toastify";
 import {
   SearchBarComponent,
   SearchBarComponentProps,
 } from "./searchBarComponent";
 import { Skeleton } from "../ui/skeleton";
+import { cn } from "../../lib/utils";
 
 const TOP_RESULTS_COUNT = 10;
 
 export type SearchBarProps = {
-  CustomSearchItem?: typeof BookSearchResult;
+  CustomSearchItem?: typeof SearchResultComponent;
   CustomSearchItemSkeleton?: React.FC;
   className?: string;
   autoFocus?: boolean;
+  booksFirst?: boolean;
   onChange?: (text: string, previous?: string) => void;
   onSubmit?: (text: string) => void;
   onSearch?: (text: string) => void;
@@ -30,6 +32,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   CustomSearchItem,
   className,
   autoFocus,
+  booksFirst,
   onChange,
   onSearch,
   onSubmit,
@@ -38,13 +41,8 @@ const SearchBar: React.FC<SearchBarProps> = ({
   onBlur,
   ...props
 }: SearchBarProps) => {
-  const {
-    loading,
-    error,
-    updateSearchValue,
-    books,
-    searchValue,
-  }: UseSearchResult = useSearch();
+  const { loading, error, search, results, searchValue }: UseSearchResult =
+    useSearch();
 
   useEffect(() => {
     if (error) {
@@ -60,7 +58,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   const handleSubmit = (value: string) => {
     onSubmit?.(value);
-    updateSearchValue(value);
+    search(value);
   };
 
   const handleOnChange = (value: string) => {
@@ -70,14 +68,11 @@ const SearchBar: React.FC<SearchBarProps> = ({
       onFocus?.();
     }
     onChange?.(value, searchValue);
-    updateSearchValue(value);
+    search(value);
   };
 
   return (
-    <div
-      className={`w-full flex flex-col
-      ${(loading || books?.length) ?? 0 > 0 ? " gap-4 " : ""}`}
-    >
+    <div className={`w-full flex flex-col`}>
       <SearchBarComponent
         onBlur={onBlur}
         onSubmit={handleSubmit}
@@ -106,26 +101,31 @@ const SearchBar: React.FC<SearchBarProps> = ({
             )}
           </>
         ) : (
-          books &&
-          books.length > 0 && (
+          results &&
+          results.books.length > 0 && (
             <div className="flex flex-col gap-2 mt-3">
               <div className="font-bold text-2xl">Books</div>
-              <div className="flex 3 flex-col gap-6">
-                {books
+              <div
+                className={cn("flex 3 flex-col gap-6", {
+                  "flex-col-reverse": booksFirst,
+                })}
+              >
+                {results.lists.slice(0, TOP_RESULTS_COUNT).map((list, i) => (
+                  <SearchResultComponent
+                    key={`search-result-list-${list.name}`}
+                    booksList={list}
+                  />
+                ))}
+                {results.books
                   .slice(0, TOP_RESULTS_COUNT)
                   .map((book, i) =>
                     CustomSearchItem ? (
                       <CustomSearchItem
-                        key={
-                          book.title +
-                          book.isbn10 +
-                          book.datePublished +
-                          book.isbn
-                        }
+                        key={`search-result-book-${book.title}`}
                         book={book}
                       />
                     ) : (
-                      <BookSearchResult
+                      <SearchResultComponent
                         key={
                           book.title +
                           book.isbn10 +

@@ -82,7 +82,7 @@ export default function Home(): React.ReactNode {
                         },
                         {
                           onBack: () => {
-                            router.push("/home");
+                            router.push("/explore");
                           },
                         }
                       );

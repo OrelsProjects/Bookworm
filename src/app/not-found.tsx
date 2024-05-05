@@ -6,7 +6,7 @@ import React, { useEffect } from "react";
 const NotFound = () => {
   const router = useRouter();
   useEffect(() => {
-    router.push("/home");
+    router.push("/explore");
   }, []);
 
   return <></>;

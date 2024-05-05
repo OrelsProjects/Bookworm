@@ -16,16 +16,15 @@ import { Checkbox } from "../../components/ui/checkbox";
 import { Filter } from "../../components/icons/filter";
 import { ExpandType } from "../../components/animationDivs";
 import SearchBarIcon from "../../components/search/searchBarIcon";
-import AuthenticatedProvider from "../providers/AuthenticatedProvider";
 
 export default function MyLibrary(): React.ReactNode {
   const {
-    sortBooks,
-    filterBooks,
     nextPage,
-    searchBooks,
-    filteredBy,
+    sortBooks,
     userBooks,
+    filteredBy,
+    filterBooks,
+    searchBooks,
   } = useTable();
   const { booksLists } = useBooksList();
 
@@ -33,8 +32,6 @@ export default function MyLibrary(): React.ReactNode {
     UserBookData[]
   >([]);
   const [showFilterDropdown, setShowFilterDropdown] = React.useState(false);
-
-  // return <Loading spinnerClassName="w-20 h-20" />;
 
   useEffect(() => {
     setUserBookDataSorted(userBooks);

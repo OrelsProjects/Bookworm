@@ -6,7 +6,7 @@ type TitleProps = {
   style?: React.CSSProperties;
 };
 
-const Title: React.FC<TitleProps> = ({ title, className, style }) => (
+const GenericTitle: React.FC<TitleProps> = ({ title, className, style }) => (
   <div className="flex flex-grow w-full">
     <div
       className={`text-sm text-foreground line-clamp-1 flex-1 ${className ?? ""}`}
@@ -17,4 +17,4 @@ const Title: React.FC<TitleProps> = ({ title, className, style }) => (
   </div>
 );
 
-export default Title;
+export default GenericTitle;
