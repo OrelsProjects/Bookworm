@@ -12,7 +12,7 @@ export default function SearchBarIcon({
   // const [showSearch, setShowSearch] = useState<boolean>(false);
 
   return (
-    <div className="w-full">
+    <div className="h-fit max-h-full w-full">
       {/* {!showSearch ? (
         <Search.Fill
           onClick={() => setShowSearch((prev) => !prev)}

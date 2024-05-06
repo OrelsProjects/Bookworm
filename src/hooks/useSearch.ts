@@ -1,16 +1,15 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { debounce } from "lodash";
-import { Book } from "../models";
 import { Logger } from "../logger";
 import { searchAll } from "../lib/api";
-import { SearchResults } from "../models/search";
+import { SearchResults, SearchStatus } from "../models/search";
 
 // Define a type for the hook's return value
 export interface UseSearchResult {
   searchValue: string;
   results: SearchResults | null;
-  loading: boolean;
+  status: SearchStatus;
   error: string | null;
   nextPage: () => void;
   search: (value: string) => void;
@@ -21,7 +20,9 @@ function useSearch(): UseSearchResult {
 
   const [limit, _] = useState<number>(10);
   const [page, setPage] = useState<number>(1);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "error" | "results" | "no-results"
+  >("idle");
   const [error, setError] = useState<string | null>(null);
   const [searchValue, setSearchValue] = useState<string>("");
   const [results, setResults] = useState<SearchResults | null>(null);
@@ -37,7 +38,7 @@ function useSearch(): UseSearchResult {
   useEffect(() => {
     if (searchValue === "") {
       setResultsToUpdate(null);
-      setLoading(false);
+      setStatus("idle");
     }
 
     if (searchValue) {
@@ -61,7 +62,7 @@ function useSearch(): UseSearchResult {
 
   const search = async (value: string) => {
     try {
-      setLoading(true);
+      setStatus("loading");
       setError(null);
       if (!value) {
         return [];
@@ -74,9 +75,10 @@ function useSearch(): UseSearchResult {
       }
       if (!result) {
         setResultsToUpdate(null);
+        setStatus("no-results");
         return;
       }
-
+      setStatus("results");
       setResultsToUpdate(result);
     } catch (error: any) {
       if (axios.isCancel(error)) {
@@ -84,12 +86,13 @@ function useSearch(): UseSearchResult {
       }
       Logger.error("Failed to fetch books", { error, data: { query: value } });
       setError(error.message);
+      setStatus("error");
       return [];
     } finally {
+      // If different value is being searched, return
       if (searchValueRef.current && searchValueRef.current !== value) {
         return;
       }
-      setLoading(false);
     }
   };
 
@@ -110,7 +113,7 @@ function useSearch(): UseSearchResult {
 
   return {
     error,
-    loading,
+    status,
     results,
     nextPage,
     searchValue,

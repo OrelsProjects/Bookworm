@@ -62,9 +62,9 @@ module.exports = {
       },
       backgroundColor: {
         "statistic-card-gradient-start":
-          "rgba(var(--statistic-card-gradient-start), 0.5)",
+          "hsl(var(--statistic-card-gradient-start), 0.5)",
         "statistic-card-gradient-end":
-          "rgba(var(--statistic-card-gradient-end), 0.035)",
+          "hsl(var(--statistic-card-gradient-end), 0.035)",
       },
       transitionDuration: {
         "250": "250ms",

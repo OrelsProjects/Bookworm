@@ -5,3 +5,10 @@ export type SearchResults = {
   books: Book[];
   lists: SafeBooksListData[];
 };
+
+export type SearchStatus =
+  | "idle"
+  | "loading"
+  | "error"
+  | "results"
+  | "no-results";

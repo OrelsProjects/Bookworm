@@ -34,7 +34,7 @@ export default function ContentProvider({
       <div className="w-full" style={{ height: `${height}px` }}>
         <BottomBarProvider />
         <div
-          className={cn("w-full h-full py-10 pb-16 px-7.5 flex flex-col z-20 tracking-semiwide relative overflow-clip", className, {
+          className={cn("w-full h-full py-10 pb-16 px-7.5 flex flex-col z-10 tracking-semiwide relative overflow-clip", className, {
             "h-screen": browser === "safari",
           })}
           style={{ height: `${height}px` }}

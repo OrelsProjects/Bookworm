@@ -395,6 +395,7 @@ const ContentEditBookList = ({
           <div ref={searchBarRef}>
             <SearchBarIcon>
               <SearchBar
+                booksOnly
                 formClassName="w-full"
                 className="!w-full gap-3 !pr-0"
                 onEmpty={() => {

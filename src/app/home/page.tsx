@@ -15,6 +15,7 @@ import { cn } from "../../lib/utils";
 import { getThumbnailSize } from "../../consts/thumbnail";
 import { UserBookData } from "../../models";
 import { useModal } from "../../hooks/useModal";
+import { SeeAll } from "../../components/ui/seeAll";
 
 export default function Home(): React.ReactNode {
   const router = useRouter();
@@ -31,19 +32,6 @@ export default function Home(): React.ReactNode {
     router.push("/my-library");
   }, [router]);
 
-  const ListTitle = ({
-    title,
-    onSeeAllClick,
-  }: {
-    title: string;
-    onSeeAllClick: () => void;
-  }) => (
-    <div className="w-full flex flex-row justify-between items-center">
-      <div className="text-2xl">{title}</div>
-      <SeeAll onClick={onSeeAllClick} />
-    </div>
-  );
-
   const Books = ({
     books,
     title,
@@ -52,7 +40,7 @@ export default function Home(): React.ReactNode {
     title: string;
   }) => (
     <div className="flex flex-col gap-3.5">
-      <ListTitle title={title} onSeeAllClick={onSeeAllClick} />
+      <SeeAll title={title} onClick={onSeeAllClick} />
       <BookList
         books={books.map((ubd) => ubd.bookData.book)}
         onNextPageScroll={nextPage}
@@ -63,21 +51,15 @@ export default function Home(): React.ReactNode {
     </div>
   );
 
-  const SeeAll = ({ onClick }: { onClick: () => void }) => (
-    <div className="text-see-all" onClick={onClick}>
-      see all
-    </div>
-  );
-
   const Recommendations = () => {
     const router = useRouter();
 
     return recommendationsLists && recommendationsLists.length > 0 ? (
       <div className="flex flex-col gap-2">
         <div className="w-full flex flex-col gap-3.5">
-          <ListTitle
+          <SeeAll
             title="Recommended for you"
-            onSeeAllClick={() => router.push("/explore")}
+            onClick={() => router.push("/explore")}
           />
           <div className="flex flex-row gap-3.5 overflow-auto">
             {recommendationsLists.length > 0 &&
@@ -138,7 +120,7 @@ export default function Home(): React.ReactNode {
   };
 
   const Content = () => (
-    <div className="h-fit w-full flex flex-col gap-[35px]">
+    <div className="h-fit w-full flex flex-col gap-[35px] mt-[48px] overflow-auto">
       <Books books={toReadBooks} title="Next read" />
       <Recommendations />
       <Books books={readBooks} title="Books I've read" />
@@ -147,25 +129,22 @@ export default function Home(): React.ReactNode {
 
   return (
     <div
-      className={`h-full w-full flex flex-col relative justify-top items-start gap-10
-    ${searchFocused ? "" : ""}
-    `}
+      className={`h-full w-full flex flex-col relative justify-top items-start gap-10`}
     >
-      <SearchBarIcon>
-        <SearchBar
-          onEmpty={() => setSearchFocused(false)}
-          onChange={(value: string) => {
-            if (value) {
-              setSearchFocused(true);
-            }
-          }}
-          onBlur={() => {
-            if (searchEmpty) {
-              setSearchFocused(false);
-            }
-          }}
-        />
-      </SearchBarIcon>
+      <SearchBar
+        onEmpty={() => setSearchFocused(false)}
+        onChange={(value: string) => {
+          if (value) {
+            setSearchFocused(true);
+          }
+        }}
+        onBlur={() => {
+          if (searchEmpty) {
+            setSearchFocused(false);
+          }
+        }}
+        booksFirst
+      />
       {searchFocused ? <></> : <Content />}
     </div>
   );

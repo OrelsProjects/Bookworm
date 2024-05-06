@@ -1,15 +1,21 @@
 "use client";
 
-import React, { useEffect } from "react";
-import useSearch, { UseSearchResult } from "../../hooks/useSearch";
-import SearchResultComponent, { SearchItemSkeleton } from "./searchResultComponent";
+import React, { useEffect, useMemo } from "react";
+import useSearch from "../../hooks/useSearch";
+import SearchResultComponent, {
+  SearchItemSkeleton,
+} from "./searchResultComponent";
 import { toast } from "react-toastify";
 import {
   SearchBarComponent,
   SearchBarComponentProps,
 } from "./searchBarComponent";
-import { Skeleton } from "../ui/skeleton";
 import { cn } from "../../lib/utils";
+import useSearchBooks from "../../hooks/useSearchBooks";
+import { SearchResults } from "../../models/search";
+import { Book } from "../../models";
+import { SafeBooksListData } from "../../models/booksList";
+import { SeeAll } from "../ui/seeAll";
 
 const TOP_RESULTS_COUNT = 10;
 
@@ -19,6 +25,7 @@ export type SearchBarProps = {
   className?: string;
   autoFocus?: boolean;
   booksFirst?: boolean;
+  booksOnly?: boolean;
   onChange?: (text: string, previous?: string) => void;
   onSubmit?: (text: string) => void;
   onSearch?: (text: string) => void;
@@ -33,6 +40,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   className,
   autoFocus,
   booksFirst,
+  booksOnly,
   onChange,
   onSearch,
   onSubmit,
@@ -41,24 +49,23 @@ const SearchBar: React.FC<SearchBarProps> = ({
   onBlur,
   ...props
 }: SearchBarProps) => {
-  const { loading, error, search, results, searchValue }: UseSearchResult =
-    useSearch();
+  const searchHook = booksOnly ? useSearchBooks() : useSearch();
 
   useEffect(() => {
-    if (error) {
+    if (searchHook.error) {
       toast.error("Failed to fetch books");
     }
-  }, [error]);
+  }, [searchHook.error]);
 
   useEffect(() => {
-    if (loading) {
-      onSearch?.(searchValue);
+    if (searchHook.status === "loading") {
+      onSearch?.(searchHook.searchValue);
     }
-  }, [loading]);
+  }, [searchHook.status]);
 
   const handleSubmit = (value: string) => {
     onSubmit?.(value);
-    search(value);
+    searchHook.search(value);
   };
 
   const handleOnChange = (value: string) => {
@@ -67,12 +74,84 @@ const SearchBar: React.FC<SearchBarProps> = ({
     } else {
       onFocus?.();
     }
-    onChange?.(value, searchValue);
-    search(value);
+    onChange?.(value, searchHook.searchValue);
+    searchHook.search(value);
   };
 
+  const books: Book[] = useMemo(
+    () =>
+      booksOnly
+        ? (searchHook.results as Book[])
+        : (searchHook.results as SearchResults)?.books,
+    [booksOnly, searchHook.results]
+  );
+
+  const lists: SafeBooksListData[] | undefined = useMemo(() => {
+    return booksOnly ? undefined : (searchHook.results as SearchResults)?.lists;
+  }, [booksOnly, searchHook.results]);
+
+  const ListsComponent = () => (
+    <div className="flex flex-col gap-[15px]">
+      <SeeAll
+        title="Readlists"
+        onClick={() => {}}
+        loading={searchHook.status === "loading"}
+      />
+      <div className="flex flex-col gap-[22px]">
+        {searchHook.status === "loading"
+          ? Array.from(Array(3)).map((_, index) => (
+              <SearchItemSkeleton key={`search-item-skeleton-books-${index}`} />
+            ))
+          : lists
+              ?.slice(0, TOP_RESULTS_COUNT)
+              .map((list, i) => (
+                <SearchResultComponent
+                  key={`search-result-list-${list.name}`}
+                  booksList={list}
+                />
+              ))}
+      </div>
+    </div>
+  );
+
+  const BooksComponent = () => (
+    <div className="flex flex-col gap-[15px]">
+      <SeeAll
+        title="Books"
+        onClick={() => {}}
+        loading={searchHook.status === "loading"}
+        className={cn({ hidden: searchHook.status !== "results" })}
+      />
+      <div className="flex flex-col gap-[22px]">
+        {searchHook.status === "loading"
+          ? Array.from(Array(3)).map((_, index) => (
+              <SearchItemSkeleton
+                key={`search-item-skeleton-books-lists-${index}`}
+              />
+            ))
+          : books
+              ?.slice(0, TOP_RESULTS_COUNT)
+              .map((book, i) =>
+                CustomSearchItem ? (
+                  <CustomSearchItem
+                    key={`search-result-book-${book.title}`}
+                    book={book}
+                  />
+                ) : (
+                  <SearchResultComponent
+                    key={
+                      book.title + book.isbn10 + book.datePublished + book.isbn
+                    }
+                    book={book}
+                  />
+                )
+              )}
+      </div>
+    </div>
+  );
+
   return (
-    <div className={`w-full flex flex-col`}>
+    <div className={`h-fit max-h-full w-full flex flex-col`}>
       <SearchBarComponent
         onBlur={onBlur}
         onSubmit={handleSubmit}
@@ -80,67 +159,24 @@ const SearchBar: React.FC<SearchBarProps> = ({
         className={`w-full pr-[72px] transition-all duration-300 ease-in-out rounded-full ${
           className ?? ""
         }`}
-        formClassName="w-full"
+        formClassName="h-fit max-h-full w-full absolute inset-0 z-20 bg-background overflow-auto pr-[72px]"
         placeholder="Search all books, authors..."
         autoFocus={autoFocus}
         onFocus={onFocus}
         {...props}
       />
-      <div className="flex flex-col gap-3">
-        {loading ? (
-          <>
-            <Skeleton className="w-14 h-5 mt-5 rounded-full" />
-            {CustomSearchItemSkeleton ? (
-              <CustomSearchItemSkeleton />
-            ) : (
-              <>
-                {Array.from(Array(TOP_RESULTS_COUNT)).map((_, index) => (
-                  <SearchItemSkeleton key={`search-item-skeleton-${index}`} />
-                ))}
-              </>
-            )}
-          </>
-        ) : (
-          results &&
-          results.books.length > 0 && (
-            <div className="flex flex-col gap-2 mt-3">
-              <div className="font-bold text-2xl">Books</div>
-              <div
-                className={cn("flex 3 flex-col gap-6", {
-                  "flex-col-reverse": booksFirst,
-                })}
-              >
-                {results.lists.slice(0, TOP_RESULTS_COUNT).map((list, i) => (
-                  <SearchResultComponent
-                    key={`search-result-list-${list.name}`}
-                    booksList={list}
-                  />
-                ))}
-                {results.books
-                  .slice(0, TOP_RESULTS_COUNT)
-                  .map((book, i) =>
-                    CustomSearchItem ? (
-                      <CustomSearchItem
-                        key={`search-result-book-${book.title}`}
-                        book={book}
-                      />
-                    ) : (
-                      <SearchResultComponent
-                        key={
-                          book.title +
-                          book.isbn10 +
-                          book.datePublished +
-                          book.isbn
-                        }
-                        book={book}
-                      />
-                    )
-                  )}
-              </div>
-            </div>
-          )
-        )}
-      </div>
+      {searchHook.status !== "idle" && (
+        <div className="h-full flex flex-col gap-3 overflow-auto mt-[88px]">
+          <div
+            className={cn("h-full flex 3 flex-col gap-8 overflow-auto", {
+              "flex-col-reverse": booksFirst,
+            })}
+          >
+            <ListsComponent />
+            <BooksComponent />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -22,15 +22,15 @@ const NavigationBar = () => {
   }, [pathname]);
 
   return (
-    <div className="w-full h-fit flex flex-row justify-center items-center z-40 fixed bottom-0 inset-0">
-      <div className="w-full h-15 flex items-center justify-around gap-4 bg-background rounded-xl fixed bottom-0 py-3 px-7">
+    <div className="w-full h-fit flex flex-row justify-center items-center z-20 fixed bottom-0">
+      <div className="w-full h-15 flex items-center justify-center gap-[70px] rounded-xl fixed bottom-0 bg-background">
         {navigationBarItems.map((item) => {
           return (
             <Button
               data-ripple-light={false}
               data-ripple-dark={false}
               key={item.name}
-              className="flex items-center justify-center rounded-full w-fit h-fit cursor-pointer bg-transparent"
+              className="flex items-center justify-center rounded-full w-fit h-fit cursor-pointer bg-transparent p-0"
               onClick={() => {
                 if (pathname.includes(item.path)) return;
                 router.push(item.path);

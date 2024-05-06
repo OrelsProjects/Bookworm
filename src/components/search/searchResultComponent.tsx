@@ -160,7 +160,7 @@ export const SearchItemSkeleton: React.FC<SearchItemSkeletonProps> = ({
   className,
 }) => {
   return (
-    <div className={`flex rounded-lg shadow space-x-4 ${className ?? ""}`}>
+    <div className={`flex rounded-lg space-x-4 ${className ?? ""}`}>
       <Skeleton className="w-16 h-24 rounded-xl" />
       <div className="flex flex-col flex-grow justify-start items-start gap-2 mt-2">
         <Skeleton className="h-2 rounded w-1/2" />

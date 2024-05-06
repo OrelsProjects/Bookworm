@@ -49,7 +49,7 @@ export default function RootLayout({
                 <DataProvider>
                   <ContentProvider>
                     <BrowserDetector>
-                      <div className="w-full h-full overflow-auto scrollbar-hide font-roboto">
+                      <div className="w-full h-full font-roboto">
                         <Header className="h-fit w-fit" />
                         {/* <AnimationProvider> */}
                         {children}

@@ -14,6 +14,7 @@ import useSearch from "../../hooks/useSearch";
 import { FaEye as Eye } from "react-icons/fa";
 import { cn } from "../../lib/utils";
 import Tag from "../../components/ui/Tag";
+import SearchBar from "../../components/search/searchBar";
 
 interface ExplorePageProps {}
 
@@ -29,7 +30,7 @@ const ExplorePage: React.FC<ExplorePageProps> = () => {
   } = useExplore();
   const {
     search,
-    loading: searchLoading,
+    status: searchStatus,
     results: searchResults,
     nextPage: searchNextPage,
   } = useSearch();
@@ -135,19 +136,12 @@ const ExplorePage: React.FC<ExplorePageProps> = () => {
   );
 
   return (
-    <div className="w-full h-full flex flex-col">
-      <SearchBarIcon>
-        <SearchBarComponent
-          onChange={(value: string) => search(value)}
-          onSubmit={(value: string) => search(value)}
-          placeholder="Search Readlists..."
-          className="pr-16"
-        />
-      </SearchBarIcon>
+    <div className="w-full h-full flex flex-col relative">
+      <SearchBar />
       {loadingGenres ? (
-        <div className="w-full flex flex-col justify-start">
+        <div className="w-full flex flex-col justify-start  mt-[88px] ">
           {loadingGenres && <LoadingGenresTabs />}
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-[22px]">
             {Array.from({ length: 3 }).map((_, i) => (
               <LoadingList key={i} />
             ))}
@@ -155,7 +149,7 @@ const ExplorePage: React.FC<ExplorePageProps> = () => {
         </div>
       ) : (
         <div
-          className="flex flex-col mt-8 gap-8 overflow-auto"
+          className="flex flex-col gap-8 overflow-auto  mt-[88px]"
           ref={scrollableDivRef}
         >
           <div className="w-full flex flex-row gap-[9px] justify-start">
