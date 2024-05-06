@@ -9,8 +9,6 @@ import APIProvider from "./providers/APIProvider";
 import { ToastContainer, Flip } from "react-toastify";
 import DataProvider from "./providers/DataProvider";
 import Header from "./_components/header";
-import ModalProvider from "./providers/ModalProvider";
-import BottomBarProvider from "./providers/BottomBarProvider";
 import NavigationProvider from "./providers/NavigationProvider";
 import ContentProvider from "./providers/ContentProvider";
 import BrowserDetector from "./providers/BrowserDetector";
@@ -64,7 +62,6 @@ export default function RootLayout({
                         {/* </AnimationProvider> */}
                       </div>
                     </BrowserDetector>
-                    <ModalProvider />
                   </ContentProvider>
                 </DataProvider>
               </APIProvider>

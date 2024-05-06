@@ -15,7 +15,6 @@ import useBooksList from "../../hooks/useBooksList";
 import { Checkbox } from "../../components/ui/checkbox";
 import { Filter } from "../../components/icons/filter";
 import { ExpandType } from "../../components/animationDivs";
-import SearchBarIcon from "../../components/search/searchBarIcon";
 
 export default function MyLibrary(): React.ReactNode {
   const {
@@ -124,37 +123,35 @@ export default function MyLibrary(): React.ReactNode {
   );
 
   return (
-      <div className="w-full h-full flex flex-col gap-5">
-        <SearchBarIcon>
-          <SearchBarComponent
-            onChange={(value: string) => searchBooks(value)}
-            onSubmit={(value: string) => searchBooks(value)}
-            placeholder="Search in Your Books..."
-            className="pr-16"
-          />
-        </SearchBarIcon>
+    <div className="w-full h-full flex flex-col gap-5">
+      <SearchBarComponent
+        onChange={(value: string) => searchBooks(value)}
+        onSubmit={(value: string) => searchBooks(value)}
+        placeholder="Search in Your Books..."
+        className="pr-16"
+      />
 
-        <div className="h-full flex flex-col gap-10">
-          <div className="flex flex-col gap-4">
-            <Tabs
-              Title={() => <div className="font-bold text-xl">Sort by</div>}
-              items={sorterTabItems}
-              onClick={onSortClick}
-            />
-            <div className="flex flex-col gap-1 relative">
-              <div className="font-bold text-xl">Filter by</div>
-              <ListFilter filter="readlist" />
-            </div>
-          </div>
-          <BookList
-            books={userBookDataSorted.map((ubd) => ubd.bookData.book)}
-            onNextPageScroll={nextPage}
-            direction="column"
-            thumbnailSize="md"
-            disableScroll
-            showAdd
+      <div className="h-full flex flex-col gap-10">
+        <div className="flex flex-col gap-4">
+          <Tabs
+            Title={() => <div className="font-bold text-xl">Sort by</div>}
+            items={sorterTabItems}
+            onClick={onSortClick}
           />
+          <div className="flex flex-col gap-1 relative">
+            <div className="font-bold text-xl">Filter by</div>
+            <ListFilter filter="readlist" />
+          </div>
         </div>
+        <BookList
+          books={userBookDataSorted.map((ubd) => ubd.bookData.book)}
+          onNextPageScroll={nextPage}
+          direction="column"
+          thumbnailSize="md"
+          disableScroll
+          showAdd
+        />
       </div>
+    </div>
   );
 }

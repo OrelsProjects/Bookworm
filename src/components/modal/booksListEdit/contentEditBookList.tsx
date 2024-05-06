@@ -15,7 +15,6 @@ import { Add } from "../../icons/add";
 import { Checkmark } from "../../icons/checkmark";
 import { SearchResultProps } from "../../search/searchResultComponent";
 import SearchBar from "../../search/searchBar";
-import SearchBarIcon from "../../search/searchBarIcon";
 import BookDetailsSkeleton from "../../skeletons/BookDetailsSkeleton";
 import useBook from "../../../hooks/useBook";
 import { useRouter } from "next/navigation";
@@ -392,32 +391,30 @@ const ContentEditBookList = ({
           )}
         />
         {shouldShowSearchBar && (
-          <div ref={searchBarRef}>
-            <SearchBarIcon>
-              <SearchBar
-                booksOnly
-                formClassName="w-full"
-                className="!w-full gap-3 !pr-0"
-                onEmpty={() => {
-                  setIsSearchBarScrolledIntoView(false);
-                }}
-                onSearch={() => {
-                  scrollSearchBarIntoView();
-                }}
-                autoFocus
-                CustomSearchItem={SearchResult}
-                CustomSearchItemSkeleton={() => (
-                  <div className="flex flex-col gap-6">
-                    {Array.from(Array(5)).map((_, index) => (
-                      <BookDetailsSkeleton
-                        key={`book-details-skeleton-${index}`}
-                        bookThumbnailSize="xs"
-                      />
-                    ))}
-                  </div>
-                )}
-              />
-            </SearchBarIcon>
+          <div ref={searchBarRef} className="h-full w-full">
+            <SearchBar
+              booksOnly
+              formClassName="w-full"
+              className="!w-full gap-3 !pr-0"
+              onEmpty={() => {
+                setIsSearchBarScrolledIntoView(false);
+              }}
+              onSearch={() => {
+                scrollSearchBarIntoView();
+              }}
+              autoFocus
+              CustomSearchItem={SearchResult}
+              CustomSearchItemSkeleton={() => (
+                <div className="flex flex-col gap-6">
+                  {Array.from(Array(5)).map((_, index) => (
+                    <BookDetailsSkeleton
+                      key={`book-details-skeleton-${index}`}
+                      bookThumbnailSize="xs"
+                    />
+                  ))}
+                </div>
+              )}
+            />
           </div>
         )}
       </div>

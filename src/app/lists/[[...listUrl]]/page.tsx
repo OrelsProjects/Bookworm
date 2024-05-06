@@ -1,12 +1,11 @@
 "use client";
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { SearchBarComponent } from "../../../components/search/searchBarComponent";
 import useTable from "../../../hooks/useTable";
 import BookList from "../../../components/book/bookList";
 import BooksListList from "../../../components/booksList/booksListList";
-import { Add } from "../../../components/icons/add";
 import { Plus } from "../../../components/icons/plus";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -14,10 +13,8 @@ import axios from "axios";
 import { SafeBooksListData } from "../../../models/booksList";
 import { IResponse } from "../../../models/dto/response";
 import { Logger } from "../../../logger";
-import Loading from "../../../components/ui/loading";
 import { useModal } from "../../../hooks/useModal";
 import { selectAuth } from "../../../lib/features/auth/authSlice";
-import SearchBarIcon from "../../../components/search/searchBarIcon";
 import useBooksList from "../../../hooks/useBooksList";
 import { EmptyList } from "../../../components/emptyList";
 
@@ -170,20 +167,18 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
 
   return (
     <div className="h-full w-full flex flex-col gap-10 pb-4">
-      <SearchBarIcon>
-        <SearchBarComponent
-          onChange={(value: string) => {
-            searchInBooksList(value);
-            searchBooks(value);
-          }}
-          onSubmit={(value: string) => {
-            searchInBooksList(value);
-            searchBooks(value);
-          }}
-          placeholder="Search in Your Books..."
-          className="pr-16"
-        />
-      </SearchBarIcon>
+      <SearchBarComponent
+        onChange={(value: string) => {
+          searchInBooksList(value);
+          searchBooks(value);
+        }}
+        onSubmit={(value: string) => {
+          searchInBooksList(value);
+          searchBooks(value);
+        }}
+        placeholder="Search in Your Books..."
+        className="pr-16"
+      />
       <div className="flex gap-10 flex-grow flex-col h-full">
         <UserBooks />
         <UserBooksLists />

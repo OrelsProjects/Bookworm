@@ -5,6 +5,7 @@ import {
   motion,
 } from "framer-motion";
 import React from "react";
+import { cn } from "../lib/utils";
 
 export enum ExpandType {
   TopLeft,
@@ -44,7 +45,7 @@ const GeneralDiv = ({
         <motion.div
           key={props.key ?? `${Math.random()}`}
           ref={innerRef}
-          className={`w-full h-full ${className || ""}`}
+          className={cn("w-full h-full", className)}
           {...animationProps}
           // {...props}
         >

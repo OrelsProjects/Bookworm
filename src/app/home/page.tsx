@@ -6,7 +6,6 @@ import useTable from "../../hooks/useTable";
 import BookList from "../../components/book/bookList";
 import useUserRecommendations from "../../hooks/useRecommendations";
 import { ReadingStatusEnum } from "../../models/readingStatus";
-import SearchBarIcon from "../../components/search/searchBarIcon";
 import SearchBar from "../../components/search/searchBar";
 import Loading from "../../components/ui/loading";
 import BooksListThumbnail from "../../components/booksList/booksListThumbnail";

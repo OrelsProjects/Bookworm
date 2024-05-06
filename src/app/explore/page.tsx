@@ -3,8 +3,6 @@
 import React from "react";
 import BooksListThumbnail from "../../components/booksList/booksListThumbnail";
 import GenresTabs from "../../components/genresTabs";
-import { SearchBarComponent } from "../../components/search/searchBarComponent";
-import SearchBarIcon from "../../components/search/searchBarIcon";
 import { Skeleton } from "../../components/ui/skeleton";
 import useExplore from "../../hooks/useExplore";
 import { useModal } from "../../hooks/useModal";
@@ -12,7 +10,6 @@ import { SafeBooksListData } from "../../models/booksList";
 import useScrollPosition from "../../hooks/useScrollPosition";
 import useSearch from "../../hooks/useSearch";
 import { FaEye as Eye } from "react-icons/fa";
-import { cn } from "../../lib/utils";
 import Tag from "../../components/ui/Tag";
 import SearchBar from "../../components/search/searchBar";
 

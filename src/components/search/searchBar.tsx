@@ -15,7 +15,7 @@ import useSearchBooks from "../../hooks/useSearchBooks";
 import { SearchResults } from "../../models/search";
 import { Book } from "../../models";
 import { SafeBooksListData } from "../../models/booksList";
-import { SeeAll } from "../ui/seeAll";
+import { SeeAll, SeeAllTitle } from "../ui/seeAll";
 
 const TOP_RESULTS_COUNT = 10;
 
@@ -116,12 +116,15 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   const BooksComponent = () => (
     <div className="flex flex-col gap-[15px]">
-      <SeeAll
-        title="Books"
-        onClick={() => {}}
-        loading={searchHook.status === "loading"}
-        className={cn({ hidden: searchHook.status !== "results" })}
-      />
+      {booksOnly ? (
+        <SeeAllTitle title="Books" loading={searchHook.status === "loading"} />
+      ) : (
+        <SeeAll
+          title={"Books"}
+          onClick={() => {}}
+          loading={searchHook.status === "loading"}
+        />
+      )}
       <div className="flex flex-col gap-[22px]">
         {searchHook.status === "loading"
           ? Array.from(Array(3)).map((_, index) => (
@@ -166,13 +169,18 @@ const SearchBar: React.FC<SearchBarProps> = ({
         {...props}
       />
       {searchHook.status !== "idle" && (
-        <div className="h-full flex flex-col gap-3 overflow-auto mt-[88px]">
+        <div
+          className={cn("h-full flex flex-col gap-3 overflow-auto", {
+            "mt-[88px]": !booksOnly,
+            "mt-4": booksOnly,
+          })}
+        >
           <div
             className={cn("h-full flex 3 flex-col gap-8 overflow-auto", {
               "flex-col-reverse": booksFirst,
             })}
           >
-            <ListsComponent />
+            {!booksOnly && <ListsComponent />}
             <BooksComponent />
           </div>
         </div>
