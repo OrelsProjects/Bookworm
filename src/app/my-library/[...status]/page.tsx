@@ -169,6 +169,7 @@ export default function MyLibrary({
             Title={() => <div className="text-2xl">Sort by</div>}
             items={sorterTabItems}
             onClick={onSortClick}
+            selectable
           />
           <div className="flex flex-col gap-2.5 relative">
             <div className="text-2xl">Filter by</div>

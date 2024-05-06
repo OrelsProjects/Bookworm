@@ -16,15 +16,23 @@ export interface TabItem {
 
 interface TabsProps {
   items: TabItem[];
-  Title?: React.FC<any>;
-  onClick?: (item: TabItem) => void; // Change the prop name to onClick
-  selectable?: boolean;
   className?: string;
+  selectable?: boolean;
+  Title?: React.FC<any>;
+  defaultSelected?: TabItem;
+  onClick?: (item: TabItem) => void; // Change the prop name to onClick
 }
 
-const Tabs = ({ items, Title, onClick, selectable, className }: TabsProps) => {
+const Tabs = ({
+  items,
+  Title,
+  onClick,
+  selectable,
+  defaultSelected,
+  className,
+}: TabsProps) => {
   const [selectedItem, setSelectedItem] = useState<TabItem | null>(
-    selectable ? items[0] : null
+    selectable ? defaultSelected || items[0] : null
   );
 
   const handleClick = (item: TabItem) => {

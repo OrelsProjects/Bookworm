@@ -3,7 +3,7 @@
 import React, { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
 import BookList from "../../components/book/bookList";
-import useUserRecommendations from "../../hooks/useRecommendations";
+import useRecommendations from "../../hooks/useRecommendations";
 import { ReadStatus } from "../../models/readingStatus";
 import SearchBar from "../../components/search/searchBar";
 import Loading from "../../components/ui/loading";
@@ -17,8 +17,8 @@ import { SeeAll } from "../../components/ui/seeAll";
 export default function Home(): React.ReactNode {
   const router = useRouter();
   const { showBooksListModal } = useModal();
-  const { recommendations: recommendationsLists, loading } =
-    useUserRecommendations();
+  const { allRecommendations, loading } =
+    useRecommendations();
   const [searchFocused, setSearchFocused] = useState(false);
 
   const onSeeAllClick = useCallback(
@@ -46,19 +46,19 @@ export default function Home(): React.ReactNode {
     </div>
   );
 
-  const Recommendations = () => {
+  const RecommendationsList = () => {
     const router = useRouter();
 
-    return recommendationsLists && recommendationsLists.length > 0 ? (
+    return allRecommendations && allRecommendations.length > 0 ? (
       <div className="flex flex-col gap-2">
         <div className="w-full flex flex-col gap-3.5">
           <SeeAll
             title="Recommended for you"
-            onClick={() => router.push("/explore")}
+            onClick={() => router.push("/see-all/recommended")}
           />
           <div className="flex flex-row gap-3.5 overflow-auto">
-            {recommendationsLists.length > 0 &&
-              recommendationsLists
+            {allRecommendations.length > 0 &&
+              allRecommendations
                 .slice()
                 .sort((a, b) => (b.matchRate || 0) - (a.matchRate || 0))
                 .map((recommendationList) => (
@@ -117,7 +117,7 @@ export default function Home(): React.ReactNode {
   const Content = () => (
     <div className="h-fit w-full flex flex-col gap-[35px] mt-[48px] overflow-auto">
       <Books title="Next read" readStatus="to-read" />
-      <Recommendations />
+      <RecommendationsList />
       <Books title="Books I've read" readStatus="read" />
     </div>
   );

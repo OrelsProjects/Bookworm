@@ -1,17 +1,23 @@
 import { TabItem } from "../../../components/ui/tabs";
-import { BookSort } from "../../../hooks/useBook";
 
 export const sorterTabItems: TabItem[] = [
   {
-    label: "Recently Added",
-    value: BookSort.DateAdded,
+    label: "Match",
+    value: "Match",
   },
+  // {
+  //   label: "Rating",
+  //   value: "Rating",
+  // },
   {
-    label: "Title",
-    value: BookSort.Title,
-  },
-  {
-    label: "Author",
-    value: BookSort.Author,
+    label: "Views",
+    value: "Views",
   },
 ];
+
+// filters are possible keys of SafeBooksListData. Specifically, only genres
+export type RecommentionFilterTypes = "genres";
+// This type maps filters to an array of values that can be used to filter the recommendations
+export type RecommendationFilters = {
+  [key in RecommentionFilterTypes]: string[];
+};
