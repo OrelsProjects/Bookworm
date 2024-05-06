@@ -209,7 +209,7 @@ const useTable = (readingStatus?: ReadStatus) => {
    */
   const searchBooks = (value: string) => {
     setSearchValue(value);
-    updateUserBooks(3, currentReadingStatus.current, value);
+    updateUserBooks(1, currentReadingStatus.current, value);
   };
 
   return {
