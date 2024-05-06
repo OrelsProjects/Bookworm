@@ -20,12 +20,13 @@ import { SeeAll, SeeAllTitle } from "../ui/seeAll";
 const TOP_RESULTS_COUNT = 10;
 
 export type SearchBarProps = {
-  CustomSearchItem?: typeof SearchResultComponent;
   CustomSearchItemSkeleton?: React.FC;
-  className?: string;
-  autoFocus?: boolean;
+  CustomSearchItem?: typeof SearchResultComponent;
+  clearOnExit?: boolean; // Clear redux state on exit. Used for when navigating to a new page that uses the search data.
   booksFirst?: boolean;
   booksOnly?: boolean;
+  className?: string;
+  autoFocus?: boolean;
   onChange?: (text: string, previous?: string) => void;
   onSubmit?: (text: string) => void;
   onSearch?: (text: string) => void;
@@ -37,9 +38,10 @@ export type SearchBarProps = {
 const SearchBar: React.FC<SearchBarProps> = ({
   CustomSearchItemSkeleton,
   CustomSearchItem,
+  clearOnExit,
+  booksFirst,
   className,
   autoFocus,
-  booksFirst,
   booksOnly,
   onChange,
   onSearch,
@@ -49,7 +51,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
   onBlur,
   ...props
 }: SearchBarProps) => {
-  const searchHook = booksOnly ? useSearchBooks() : useSearch();
+  const searchHook = booksOnly
+    ? useSearchBooks()
+    : useSearch({ clearOnExit: !booksOnly });
 
   useEffect(() => {
     if (searchHook.error) {

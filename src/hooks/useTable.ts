@@ -10,18 +10,20 @@ import {
   sortByDateAdded,
   filterByReadlist,
 } from "../utils/bookUtils";
-import { ReadingStatusEnum } from "../models/readingStatus";
+import { ReadStatus, ReadingStatusEnum } from "../models/readingStatus";
 import { BooksListData } from "../models/booksList";
 
-const useTable = (readingStatus?: ReadingStatusEnum) => {
+const useTable = (readingStatus?: ReadStatus) => {
   const { userBooksData, loading, error } = useSelector(selectUserBooks);
 
   const currentReadingStatus = useRef<ReadingStatusEnum | undefined>(
-    readingStatus
+    readingStatus === "read"
+      ? ReadingStatusEnum.READ
+      : ReadingStatusEnum.TO_READ
   );
   const [userBooks, setUserBooks] = useState<UserBookData[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(50);
+  const [pageSize, setPageSize] = useState(20);
   const [totalRecords, setTotalRecords] = useState(0);
   const [readBooksCount, setReadBooksCount] = useState(0);
   const [toReadBooksCount, setToReadBooksCount] = useState(0);
@@ -102,9 +104,9 @@ const useTable = (readingStatus?: ReadingStatusEnum) => {
   };
 
   const nextPage = () => {
-    // setCurrentPage((prevPage) => {
-    //   return prevPage + 1;
-    // });
+    setCurrentPage((prevPage) => {
+      return prevPage + 1;
+    });
   };
 
   const handlePageSizeChange = (size: number) => {

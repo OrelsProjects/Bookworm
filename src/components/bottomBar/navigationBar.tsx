@@ -12,13 +12,13 @@ const NavigationBar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const { clearStack } = useModal();
-  const [selected, setSelected] = React.useState<NavigationBarItem>();
+  const [selected, setSelected] = React.useState<NavigationBarItem | null>();
 
   useEffect(() => {
     const selected = navigationBarItems.find((item) =>
       pathname.includes(item.path)
     );
-    setSelected(selected ?? navigationBarItems[0]);
+    setSelected(selected);
   }, [pathname]);
 
   return (

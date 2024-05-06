@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import useTable from "../../hooks/useTable";
 import BookList from "../../components/book/bookList";
 import useUserRecommendations from "../../hooks/useRecommendations";
-import { ReadingStatusEnum } from "../../models/readingStatus";
+import { ReadStatus, ReadingStatusEnum } from "../../models/readingStatus";
 import SearchBar from "../../components/search/searchBar";
 import Loading from "../../components/ui/loading";
 import BooksListThumbnail from "../../components/booksList/booksListThumbnail";
@@ -19,27 +19,30 @@ import { SeeAll } from "../../components/ui/seeAll";
 export default function Home(): React.ReactNode {
   const router = useRouter();
   const { showBooksListModal } = useModal();
-  const { toReadBooks, readBooks, nextPage } = useTable(
-    ReadingStatusEnum.TO_READ
-  );
+  const { toReadBooks, readBooks, nextPage } = useTable("to-read");
   const { recommendations: recommendationsLists, loading } =
     useUserRecommendations();
   const [searchFocused, setSearchFocused] = useState(false);
   const [searchEmpty, setSearchEmpty] = useState(true);
 
-  const onSeeAllClick = useCallback(() => {
-    router.push("/my-library");
-  }, [router]);
+  const onSeeAllClick = useCallback(
+    (readStatus: ReadStatus) => {
+      router.push(`/my-library/${readStatus}`);
+    },
+    [router]
+  );
 
   const Books = ({
     books,
     title,
+    readStatus,
   }: {
     books: UserBookData[];
     title: string;
+    readStatus: ReadStatus;
   }) => (
     <div className="flex flex-col gap-3.5">
-      <SeeAll title={title} onClick={onSeeAllClick} />
+      <SeeAll title={title} onClick={() => onSeeAllClick(readStatus)} />
       <BookList
         books={books.map((ubd) => ubd.bookData.book)}
         onNextPageScroll={nextPage}
@@ -120,9 +123,9 @@ export default function Home(): React.ReactNode {
 
   const Content = () => (
     <div className="h-fit w-full flex flex-col gap-[35px] mt-[48px] overflow-auto">
-      <Books books={toReadBooks} title="Next read" />
+      <Books books={toReadBooks} title="Next read" readStatus="to-read" />
       <Recommendations />
-      <Books books={readBooks} title="Books I've read" />
+      <Books books={readBooks} title="Books I've read" readStatus="read" />
     </div>
   );
 

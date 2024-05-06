@@ -1,22 +1,28 @@
 "use client";
 
 import React, { useCallback, useEffect, useMemo } from "react";
-import { Button } from "../../components/ui/button";
-import Tabs from "../../components/ui/tabs";
-import { sorterTabItems } from "./_consts";
-import { UserBookData } from "../../models";
-import { TabItem } from "../../components/ui/tabs";
-import { BookFilter, BookSort } from "../../hooks/useBook";
-import useTable from "../../hooks/useTable";
-import { SearchBarComponent } from "../../components/search/searchBarComponent";
-import BookList from "../../components/book/bookList";
-import Dropdown from "../../components/ui/dropdown";
-import useBooksList from "../../hooks/useBooksList";
-import { Checkbox } from "../../components/ui/checkbox";
-import { Filter } from "../../components/icons/filter";
-import { ExpandType } from "../../components/animationDivs";
+import { Button } from "../../../components/ui/button";
+import Tabs from "../../../components/ui/tabs";
+import { sorterTabItems } from "../_consts";
+import { UserBookData } from "../../../models";
+import { TabItem } from "../../../components/ui/tabs";
+import { BookFilter, BookSort } from "../../../hooks/useBook";
+import useTable from "../../../hooks/useTable";
+import { SearchBarComponent } from "../../../components/search/searchBarComponent";
+import BookList from "../../../components/book/bookList";
+import Dropdown from "../../../components/ui/dropdown";
+import useBooksList from "../../../hooks/useBooksList";
+import { Checkbox } from "../../../components/ui/checkbox";
+import { Filter } from "../../../components/icons/filter";
+import { ExpandType } from "../../../components/animationDivs";
+import { ReadStatus } from "../../../models/readingStatus";
+import { FaBars } from "react-icons/fa6";
 
-export default function MyLibrary(): React.ReactNode {
+export default function MyLibrary({
+  params,
+}: {
+  params: { status?: string };
+}): React.ReactNode {
   const {
     nextPage,
     sortBooks,
@@ -24,7 +30,8 @@ export default function MyLibrary(): React.ReactNode {
     filteredBy,
     filterBooks,
     searchBooks,
-  } = useTable();
+  } = useTable((params.status?.[0] || "to-read") as ReadStatus);
+
   const { booksLists } = useBooksList();
 
   const [userBookDataSorted, setUserBookDataSorted] = React.useState<
@@ -35,6 +42,17 @@ export default function MyLibrary(): React.ReactNode {
   useEffect(() => {
     setUserBookDataSorted(userBooks);
   }, [userBooks]);
+
+  const title = useMemo(() => {
+    switch (params.status?.[0]) {
+      case "read":
+        return "Books I've read";
+      case "to-read":
+        return "Next read";
+      default:
+        return "Next read";
+    }
+  }, [params.status]);
 
   const onSortClick = (tabItem: TabItem) => {
     const filteredBooks = filterBooks(undefined, undefined, booksLists);
@@ -131,26 +149,32 @@ export default function MyLibrary(): React.ReactNode {
         className="pr-16"
       />
 
-      <div className="h-full flex flex-col gap-10">
-        <div className="flex flex-col gap-4">
+      <div className="h-full flex flex-col gap-[30px] overflow-auto">
+        <div className="flex flex-col gap-[25px]">
           <Tabs
-            Title={() => <div className="font-bold text-xl">Sort by</div>}
+            Title={() => <div className="text-2xl">Sort by</div>}
             items={sorterTabItems}
             onClick={onSortClick}
           />
-          <div className="flex flex-col gap-1 relative">
-            <div className="font-bold text-xl">Filter by</div>
+          <div className="flex flex-col gap-2.5 relative">
+            <div className="text-2xl">Filter by</div>
             <ListFilter filter="readlist" />
           </div>
         </div>
-        <BookList
-          books={userBookDataSorted.map((ubd) => ubd.bookData.book)}
-          onNextPageScroll={nextPage}
-          direction="column"
-          thumbnailSize="md"
-          disableScroll
-          showAdd
-        />
+        <div className="flex flex-col gap-[25px]">
+          <div className="flex flex-row gap-1 justify-start items-center">
+            <FaBars className="w-[17.5px] h-[15px]" />
+            <span className="text-2xl">{title}</span>
+          </div>
+          <BookList
+            books={userBookDataSorted.map((ubd) => ubd.bookData.book)}
+            onNextPageScroll={nextPage}
+            direction="column"
+            thumbnailSize="md"
+            disableScroll
+            showAdd
+          />
+        </div>
       </div>
     </div>
   );

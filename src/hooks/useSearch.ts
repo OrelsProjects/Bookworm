@@ -4,6 +4,11 @@ import { debounce } from "lodash";
 import { Logger } from "../logger";
 import { searchAll } from "../lib/api";
 import { SearchResults, SearchStatus } from "../models/search";
+import { useAppDispatch, useAppSelector } from "../lib/hooks";
+import {
+  clearResults,
+  setSearchResults,
+} from "../lib/features/search/searchSlice";
 
 // Define a type for the hook's return value
 export interface UseSearchResult {
@@ -15,7 +20,13 @@ export interface UseSearchResult {
   search: (value: string) => void;
 }
 
-function useSearch(): UseSearchResult {
+function useSearch({
+  clearOnExit = true,
+}: {
+  clearOnExit?: boolean;
+}): UseSearchResult {
+  const dispatch = useAppDispatch();
+  const { books, lists } = useAppSelector((state) => state.search);
   const searchValueRef = useRef<string>("");
 
   const [limit, _] = useState<number>(10);
@@ -31,6 +42,18 @@ function useSearch(): UseSearchResult {
   );
 
   useEffect(() => {
+    if (books || lists) {
+      setResultsToUpdate({ books: books || [], lists: lists || [] });
+    }
+    return () => {
+      if (clearOnExit) {
+        dispatch(clearResults());
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    dispatch(setSearchResults({ results: resultsToUpdate }));
     updateResults(resultsToUpdate);
   }, [resultsToUpdate]);
 

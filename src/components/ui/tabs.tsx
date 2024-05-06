@@ -58,7 +58,7 @@ const Tabs = ({ items, Title, onClick, selectable, className }: TabsProps) => {
   };
 
   return (
-    <div className={`flex flex-col gap-[5px] w-full`}>
+    <div className={`flex flex-col gap-2.5 w-full`}>
       {Title && <Title />}
       <div
         className={`rounded-full overflow-x-auto w-full flex items-center gap-2 ${className}`}

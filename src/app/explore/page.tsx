@@ -25,12 +25,6 @@ const ExplorePage: React.FC<ExplorePageProps> = () => {
     genres,
     selectGenre,
   } = useExplore();
-  const {
-    search,
-    status: searchStatus,
-    results: searchResults,
-    nextPage: searchNextPage,
-  } = useSearch();
 
   const { showBooksListModal } = useModal();
   const { scrollableDivRef } = useScrollPosition({
