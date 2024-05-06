@@ -55,10 +55,6 @@ export default function MyLibrary({
     filter(filterValue, value);
   };
 
-  const filtersKeys = useMemo((): string[] => {
-    return Object.keys(filteredWith || {}) || [];
-  }, [filteredWith]);
-
   const filtersValues = useMemo((): string[] => {
     return Object.values(filteredWith || {}).flatMap((value) => value) || [];
   }, [filteredWith]);
@@ -134,6 +130,11 @@ export default function MyLibrary({
             Title={() => <div className="text-2xl">Sort by</div>}
             items={sorterTabItems}
             onClick={onSortClick}
+            defaultSelected={
+              sortedBy.length > 0
+                ? sorterTabItems.find((t) => t.value === sortedBy[0])
+                : undefined
+            }
             selectable
           />
           <div className="flex flex-col gap-2.5 relative">

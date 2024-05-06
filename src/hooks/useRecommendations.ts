@@ -40,7 +40,7 @@ const useRecommendations = () => {
     selectRecommendations
   );
 
-  const [sortedBy, setSorters] = useState<RecommendationSort[]>([]);
+  const [sortedBy, setSortedBy] = useState<RecommendationSort>("Match");
   const [filteredWith, setFilters] = useState<RecommendationFilters>();
   const [searchValue, setSearchValue] = useState<string>("");
   const [filteredRecommendations, setFilteredRecommendations] = useState<
@@ -59,11 +59,7 @@ const useRecommendations = () => {
   }, [recommendationsData, sortedBy, filteredWith, searchValue]);
 
   const sort = (sorter: RecommendationSort) => {
-    if (sortedBy.includes(sorter)) {
-      setSorters(sortedBy.filter((s) => s !== sorter));
-    } else {
-      setSorters([...sortedBy, sorter]);
-    }
+    setSortedBy(sorter);
   };
 
   const filter = (filter: RecommentionFilterTypes, value: string) => {
@@ -102,22 +98,20 @@ const useRecommendations = () => {
 
   const getSortedLists = (lists: SafeBooksListData[]) => {
     let sortedLists = [...lists];
-    for (const sorter of sortedBy) {
-      switch (sorter) {
-        case "Match":
-          sortedLists = sortedLists.sort(
-            (a, b) => (b.matchRate || 0) - (a.matchRate || 0)
-          );
-        // break;
-        case "Rating":
-          sortedLists = [...sortedLists];
-        // break;
-        case "Views":
-          sortedLists.sort((a, b) => (b.visitCount || 0) - (a.visitCount || 0));
-        // break;
-        default:
-          break;
-      }
+    switch (sortedBy) {
+      case "Match":
+        sortedLists = sortedLists.sort(
+          (a, b) => (b.matchRate || 0) - (a.matchRate || 0)
+        );
+        break;
+      case "Rating":
+        sortedLists = [...sortedLists];
+        break;
+      case "Views":
+        sortedLists.sort((a, b) => (b.visitCount || 0) - (a.visitCount || 0));
+        break;
+      default:
+        break;
     }
     return sortedLists;
   };
