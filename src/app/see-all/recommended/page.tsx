@@ -75,7 +75,7 @@ export default function MyLibrary({
         }}
         variant="outline"
         className={`rounded-full flex-shrink-0 !min-w-20 h-6 p-4 w-max max-w-[70%]
-              ${filtersValues.length > 0 ? "border-none bg-primary" : ""}
+              ${filtersValues.length > 0 ? "bg-primary" : ""}
               `}
       >
         <div className="w-fit flex flex-row gap-1 justify-start items-center truncate">

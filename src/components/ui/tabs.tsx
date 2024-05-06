@@ -78,7 +78,7 @@ const Tabs = ({
             variant="outline"
             className={`rounded-full border-2 flex-shrink-0 !min-w-20 h-6 p-4 w-max ${
               selectedItem?.value === item?.value
-                ? "bg-primary border-primary"
+                ? "bg-primary"
                 : ""
             } ${item.className}`}
             clickable={selectable}
