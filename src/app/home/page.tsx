@@ -2,28 +2,24 @@
 
 import React, { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
-import useTable from "../../hooks/useTable";
 import BookList from "../../components/book/bookList";
 import useUserRecommendations from "../../hooks/useRecommendations";
-import { ReadStatus, ReadingStatusEnum } from "../../models/readingStatus";
+import { ReadStatus } from "../../models/readingStatus";
 import SearchBar from "../../components/search/searchBar";
 import Loading from "../../components/ui/loading";
 import BooksListThumbnail from "../../components/booksList/booksListThumbnail";
 import Tag from "../../components/ui/Tag";
 import { cn } from "../../lib/utils";
 import { getThumbnailSize } from "../../consts/thumbnail";
-import { UserBookData } from "../../models";
 import { useModal } from "../../hooks/useModal";
 import { SeeAll } from "../../components/ui/seeAll";
 
 export default function Home(): React.ReactNode {
   const router = useRouter();
   const { showBooksListModal } = useModal();
-  const { toReadBooks, readBooks, nextPage } = useTable("to-read");
   const { recommendations: recommendationsLists, loading } =
     useUserRecommendations();
   const [searchFocused, setSearchFocused] = useState(false);
-  const [searchEmpty, setSearchEmpty] = useState(true);
 
   const onSeeAllClick = useCallback(
     (readStatus: ReadStatus) => {
@@ -33,19 +29,16 @@ export default function Home(): React.ReactNode {
   );
 
   const Books = ({
-    books,
     title,
     readStatus,
   }: {
-    books: UserBookData[];
     title: string;
     readStatus: ReadStatus;
   }) => (
     <div className="flex flex-col gap-3.5">
       <SeeAll title={title} onClick={() => onSeeAllClick(readStatus)} />
       <BookList
-        books={books.map((ubd) => ubd.bookData.book)}
-        onNextPageScroll={nextPage}
+        readStatus={readStatus}
         direction="row"
         thumbnailSize="3xl"
         showDelete
@@ -123,9 +116,9 @@ export default function Home(): React.ReactNode {
 
   const Content = () => (
     <div className="h-fit w-full flex flex-col gap-[35px] mt-[48px] overflow-auto">
-      <Books books={toReadBooks} title="Next read" readStatus="to-read" />
+      <Books title="Next read" readStatus="to-read" />
       <Recommendations />
-      <Books books={readBooks} title="Books I've read" readStatus="read" />
+      <Books title="Books I've read" readStatus="read" />
     </div>
   );
 
@@ -138,11 +131,6 @@ export default function Home(): React.ReactNode {
         onChange={(value: string) => {
           if (value) {
             setSearchFocused(true);
-          }
-        }}
-        onBlur={() => {
-          if (searchEmpty) {
-            setSearchFocused(false);
           }
         }}
         booksFirst

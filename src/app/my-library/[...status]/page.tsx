@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useMemo } from "react";
 import { Button } from "../../../components/ui/button";
 import Tabs from "../../../components/ui/tabs";
 import { sorterTabItems } from "../_consts";
-import { UserBookData } from "../../../models";
+import { Book, UserBookData } from "../../../models";
 import { TabItem } from "../../../components/ui/tabs";
 import { BookFilter, BookSort } from "../../../hooks/useBook";
 import useTable from "../../../hooks/useTable";
@@ -17,6 +17,7 @@ import { Filter } from "../../../components/icons/filter";
 import { ExpandType } from "../../../components/animationDivs";
 import { ReadStatus } from "../../../models/readingStatus";
 import { FaBars } from "react-icons/fa6";
+import useScrollPosition from "../../../hooks/useScrollPosition";
 
 export default function MyLibrary({
   params,
@@ -31,7 +32,11 @@ export default function MyLibrary({
     filterBooks,
     searchBooks,
   } = useTable((params.status?.[0] || "to-read") as ReadStatus);
-
+  const { scrollableDivRef } = useScrollPosition({
+    lowerThreshold: 60,
+    upperThreshold: 90,
+    onThreshold: nextPage,
+  });
   const { booksLists } = useBooksList();
 
   const [userBookDataSorted, setUserBookDataSorted] = React.useState<
@@ -42,6 +47,12 @@ export default function MyLibrary({
   useEffect(() => {
     setUserBookDataSorted(userBooks);
   }, [userBooks]);
+
+  const books = useMemo((): Book[] => {
+    return userBookDataSorted
+      .map((ubd) => ubd.bookData.book)
+      .filter((book) => book !== undefined) as Book[];
+  }, [userBookDataSorted]);
 
   const title = useMemo(() => {
     switch (params.status?.[0]) {
@@ -149,7 +160,10 @@ export default function MyLibrary({
         className="pr-16"
       />
 
-      <div className="h-full flex flex-col gap-[30px] overflow-auto">
+      <div
+        className="h-full flex flex-col gap-[30px] overflow-auto"
+        ref={scrollableDivRef}
+      >
         <div className="flex flex-col gap-[25px]">
           <Tabs
             Title={() => <div className="text-2xl">Sort by</div>}
@@ -167,7 +181,7 @@ export default function MyLibrary({
             <span className="text-2xl">{title}</span>
           </div>
           <BookList
-            books={userBookDataSorted.map((ubd) => ubd.bookData.book)}
+            books={books}
             onNextPageScroll={nextPage}
             direction="column"
             thumbnailSize="md"

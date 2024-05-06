@@ -144,7 +144,7 @@ export default function MyLibrary(): React.ReactNode {
           </div>
         </div>
         <BookList
-          books={userBookDataSorted.map((ubd) => ubd.bookData.book)}
+          readStatus="read"
           onNextPageScroll={nextPage}
           direction="column"
           thumbnailSize="md"

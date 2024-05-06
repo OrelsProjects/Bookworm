@@ -7,39 +7,127 @@ import { ThumbnailSize } from "../../consts/thumbnail";
 import { useModal } from "../../hooks/useModal";
 import useBook from "../../hooks/useBook";
 import { FaTrashCan } from "react-icons/fa6";
-import { getIconSize } from "../../consts/icon";
-import { cn } from "../../lib/utils";
 import { toast } from "react-toastify";
 import { Logger } from "../../logger";
+import useTable from "../../hooks/useTable";
+import { ReadStatus } from "../../models/readingStatus";
 
 type BookListProps = {
-  books: (Book | undefined)[];
+  books?: Book[];
+  showAdd?: boolean;
   className?: string;
-  direction: "row" | "column";
-  onNextPageScroll?: () => void;
-  thumbnailSize?: ThumbnailSize;
+  showDelete?: boolean;
   disableScroll?: boolean;
+  readStatus?: ReadStatus;
+  direction: "row" | "column";
+  thumbnailSize?: ThumbnailSize;
+  onNextPageScroll?: () => void;
+  scrollRef?: React.RefObject<HTMLDivElement>;
   CustomBookComponent?: React.FC<{ book?: Book }>;
+};
+
+const List = ({
+  books,
+  showAdd,
+  direction,
+  showDelete,
+  onBookClick,
+  thumbnailSize,
+  onAddBookClick,
+  onDeleteBookClick,
+  CustomBookComponent,
+}: {
+  books: (Book | undefined)[];
+  onBookClick: (book: Book) => void;
+  onAddBookClick: (book?: Book) => void;
+  onDeleteBookClick: (book: Book) => void;
+  CustomBookComponent?: React.FC<{ book?: Book }>;
+  thumbnailSize?: ThumbnailSize;
+  direction: "row" | "column";
   showDelete?: boolean;
   showAdd?: boolean;
-};
+}) =>
+  books.map((book) => (
+    <div
+      onClick={() => {
+        if (book) {
+          onBookClick(book);
+        }
+      }}
+      className="h-fit"
+      key={`book-in-books-list-${book?.bookId}`}
+    >
+      {CustomBookComponent ? (
+        <CustomBookComponent book={book} />
+      ) : (
+        <BookDetails
+          book={book}
+          bookThumbnailSize={thumbnailSize}
+          ThumbnailIcon={
+            direction === "row" && (
+              <div className="relative">
+                <div
+                  className="absolute bottom-2 right-2 w-fit h-fit rounded-full overflow-hidden flex items-center justify-center shadow-sm shadow-black"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (book && showDelete) {
+                      onDeleteBookClick(book);
+                    } else {
+                      onAddBookClick(book);
+                    }
+                  }}
+                >
+                  <div className="w-10 h-10 bg-black rounded-full text-2xl flex justify-center items-center">
+                    {showDelete && book && <FaTrashCan className="w-3 h-3.5" />}
+                    {showAdd && <span>+</span>}
+                  </div>
+                </div>
+              </div>
+            )
+          }
+          Icon={
+            direction === "column" && (
+              <div
+                className="h-full justify-self-center"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onAddBookClick(book);
+                }}
+              >
+                <Add.Fill
+                  className="!bg-foreground !text-background rounded-full p-1"
+                  iconSize="md"
+                />
+              </div>
+            )
+          }
+          direction={direction}
+        />
+      )}
+    </div>
+  ));
 
 const BookList: React.FC<BookListProps> = ({
   books,
-  className,
-  direction = "row",
-  onNextPageScroll,
-  thumbnailSize,
-  disableScroll,
-  CustomBookComponent,
-  showDelete,
   showAdd,
+  className,
+  readStatus,
+  showDelete,
+  disableScroll,
+  thumbnailSize,
+  onNextPageScroll,
+  direction = "row",
+  CustomBookComponent,
 }) => {
-  const { showBookDetailsModal, showAddBookToListModal } = useModal();
+  const { userBooks, nextPage } = useTable(readStatus);
   const { deleteUserBookWithBook } = useBook();
+  const { showBookDetailsModal, showAddBookToListModal } = useModal();
   const { scrollableDivRef } = useScrollPosition({
-    onThreshold: () => onNextPageScroll?.(), // TODO: Buggy scrolling. Once fixed, reduce the page size in useTable.ts
+    onThreshold: () => (onNextPageScroll ? onNextPageScroll() : nextPage()),
     scrollDirection: direction === "row" ? "width" : "height",
+    timeBetweenScrollCalls: 100,
+    lowerThreshold: 60,
+    upperThreshold: 95,
   });
 
   const onBookClick = (book: Book) => showBookDetailsModal({ bookData: book });
@@ -70,67 +158,17 @@ const BookList: React.FC<BookListProps> = ({
       }`}
       ref={scrollableDivRef}
     >
-      {books.map((book) => (
-        <div
-          onClick={() => {
-            if (book) {
-              onBookClick(book);
-            }
-          }}
-          className="h-fit"
-          key={`book-in-books-list-${book?.bookId}`}
-        >
-          {CustomBookComponent ? (
-            <CustomBookComponent book={book} />
-          ) : (
-            <BookDetails
-              book={book}
-              bookThumbnailSize={thumbnailSize}
-              ThumbnailIcon={
-                direction === "row" && (
-                  <div className="relative">
-                    <div
-                      className="absolute bottom-2 right-2 w-fit h-fit rounded-full overflow-hidden flex items-center justify-center shadow-sm shadow-black"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (book && showDelete) {
-                          onDeleteBookClick(book);
-                        } else {
-                          onAddBookClick(book);
-                        }
-                      }}
-                    >
-                      <div className="w-10 h-10 bg-black rounded-full text-2xl flex justify-center items-center">
-                        {showDelete && book && (
-                          <FaTrashCan className="w-3 h-3.5" />
-                        )}
-                        {showAdd && <span>+</span>}
-                      </div>
-                    </div>
-                  </div>
-                )
-              }
-              Icon={
-                direction === "column" && (
-                  <div
-                    className="h-full justify-self-center"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onAddBookClick(book);
-                    }}
-                  >
-                    <Add.Fill
-                      className="!bg-foreground !text-background rounded-full p-1"
-                      iconSize="md"
-                    />
-                  </div>
-                )
-              }
-              direction={direction}
-            />
-          )}
-        </div>
-      ))}
+      <List
+        books={books || userBooks.map((ubd) => ubd.bookData.book)}
+        showAdd={showAdd}
+        direction={direction}
+        showDelete={showDelete}
+        onBookClick={onBookClick}
+        thumbnailSize={thumbnailSize}
+        onAddBookClick={onAddBookClick}
+        onDeleteBookClick={onDeleteBookClick}
+        CustomBookComponent={CustomBookComponent}
+      />
     </div>
   );
 };

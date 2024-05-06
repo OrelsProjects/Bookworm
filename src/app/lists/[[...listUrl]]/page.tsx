@@ -121,7 +121,7 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
         </h2>
       </div>
       <BookList
-        books={userBooks.map((ubd) => ubd.bookData.book)}
+        readStatus="read"
         onNextPageScroll={nextPage}
         direction="row"
         thumbnailSize="2xl"
