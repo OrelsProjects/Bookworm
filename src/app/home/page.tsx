@@ -17,8 +17,7 @@ import { SeeAll } from "../../components/ui/seeAll";
 export default function Home(): React.ReactNode {
   const router = useRouter();
   const { showBooksListModal } = useModal();
-  const { allRecommendations, loading } =
-    useRecommendations();
+  const { allRecommendations, loading } = useRecommendations();
   const [searchFocused, setSearchFocused] = useState(false);
 
   const onSeeAllClick = useCallback(
@@ -40,7 +39,7 @@ export default function Home(): React.ReactNode {
       <BookList
         readStatus={readStatus}
         direction="row"
-        thumbnailSize="3xl"
+        thumbnailSize="2xl"
         showDelete
       />
     </div>
@@ -61,44 +60,47 @@ export default function Home(): React.ReactNode {
               allRecommendations
                 .slice()
                 .sort((a, b) => (b.matchRate || 0) - (a.matchRate || 0))
-                .map((recommendationList) => (
-                  <div
-                    className="flex flex-row gap-4"
-                    key={`recommendation-${recommendationList.publicURL}`}
-                    onClick={() => {
-                      showBooksListModal({ bookList: recommendationList });
-                    }}
-                  >
+                .map((recommendationList) => {
+                  const match = parseInt(`${recommendationList.matchRate}`, 10);
+                  return (
                     <div
-                      className={cn(
-                        "flex flex-col gap-2.5",
-                        getThumbnailSize("3xl").width
-                      )}
+                      className="flex flex-row gap-4"
+                      key={`recommendation-${recommendationList.publicURL}`}
+                      onClick={() => {
+                        showBooksListModal({ bookList: recommendationList });
+                      }}
                     >
-                      <BooksListThumbnail
-                        thumbnailSize="3xl"
-                        booksInList={recommendationList.booksInList}
-                        className="relative"
+                      <div
+                        className={cn(
+                          "flex flex-col gap-2.5",
+                          getThumbnailSize("2xl").width
+                        )}
                       >
-                        <div className="w-full flex justify-center items-center h-8 px-[9px] absolute bottom-[5px] z-30">
-                          <Tag className="h-8 w-full">
-                            {recommendationList.matchRate &&
-                              parseInt(`${recommendationList.matchRate}`, 10)}
-                            % Match
-                          </Tag>
+                        <BooksListThumbnail
+                          thumbnailSize="2xl"
+                          booksInList={recommendationList.booksInList}
+                          className="relative"
+                        >
+                          <div className="w-full flex justify-center items-center h-8 px-[9px] absolute bottom-[5px] z-30">
+                            {!isNaN(match) && (
+                              <Tag className="h-8 w-full">
+                                {recommendationList.matchRate && match}% Match
+                              </Tag>
+                            )}
+                          </div>
+                        </BooksListThumbnail>
+                        <div className="w-full flex gap-2 flex-col">
+                          <span className="font-bold leading-[16px] truncate">
+                            {recommendationList.name}
+                          </span>
+                          <span className="text-primary text-sm leading-4 truncate">
+                            {recommendationList.curatorName}
+                          </span>
                         </div>
-                      </BooksListThumbnail>
-                      <div className="w-full flex gap-2 flex-col">
-                        <span className="font-bold leading-[16px] truncate">
-                          {recommendationList.name}
-                        </span>
-                        <span className="text-primary text-sm leading-4 truncate">
-                          {recommendationList.curatorName}
-                        </span>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
           </div>
         </div>
       </div>
