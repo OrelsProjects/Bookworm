@@ -69,7 +69,11 @@ export const isBooksEqualExactly = (
   if (!book1 || !book2) {
     return false;
   }
-  return compareBooksByIsbn(book1, book2) || book1.title === book2.title;
+  return (
+    compareBooksByIsbn(book1, book2) ||
+    book1.title === book2.title ||
+    book1.bookId === book2.bookId
+  );
 };
 
 export const sortByTitle = (userBookData: UserBookData[]): UserBookData[] =>
@@ -111,11 +115,20 @@ export const sortByDateAdded = (userBookData: UserBookData[]): UserBookData[] =>
 export const filterByReadlist = (
   listName: string,
   userBooks: UserBookData[],
-  booksLists: BooksListData[]
+  booksLists: BooksListData[],
+  exactly: boolean = false
 ): UserBookData[] => {
   const list = booksLists.find((list) => list.name === listName);
   const booksInList = list?.booksInList.map((listData) => listData.book);
-  return userBooks.filter((userBook) =>
-    booksInList?.some((book) => isBooksEqual(book, userBook.bookData?.book))
-  );
+  if (exactly) {
+    return userBooks.filter((userBook) =>
+      booksInList?.some((book) =>
+        isBooksEqualExactly(book, userBook.bookData?.book)
+      )
+    );
+  } else {
+    return userBooks.filter((userBook) =>
+      booksInList?.some((book) => isBooksEqual(book, userBook.bookData?.book))
+    );
+  }
 };

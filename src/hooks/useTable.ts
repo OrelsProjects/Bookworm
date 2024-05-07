@@ -145,7 +145,7 @@ const useTable = (readingStatus?: ReadStatus) => {
         filters = filters.filter((f) => f.value !== value);
       }
     }
-
+    
     try {
       for (const { filter, value } of filters) {
         switch (filter) {
@@ -153,7 +153,8 @@ const useTable = (readingStatus?: ReadStatus) => {
             filteredBooks = filterByReadlist(
               value,
               [...filteredBooks],
-              [...booksLists]
+              [...booksLists],
+              true
             );
             break;
         }

@@ -32,10 +32,13 @@ const NavigationBar = () => {
               key={item.name}
               className="flex items-center justify-center rounded-full w-fit h-fit cursor-pointer bg-transparent p-0"
               onClick={() => {
-                if (pathname.includes(item.path)) return;
-                router.push(item.path);
-                clearStack();
-                setSelected(item);
+                if (pathname.includes(item.path)) {
+                  router.refresh();
+                } else {
+                  router.push(item.path);
+                  clearStack();
+                  setSelected(item);
+                }
               }}
             >
               {selected?.path === item.path ? (
