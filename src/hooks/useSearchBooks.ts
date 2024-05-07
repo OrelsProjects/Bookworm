@@ -18,7 +18,7 @@ export interface UseSearchResult {
   search: (value: string) => void;
 }
 
-function useSearchBooks(): UseSearchResult {
+function useSearchBooks({ limit = 10 }: { limit?: number }): UseSearchResult {
   //  loading, error, search, results, searchValue
   const [searchValue, setSearchValue] = useState<string>("");
   const searchValueRef = useRef<string>("");
@@ -57,7 +57,8 @@ function useSearchBooks(): UseSearchResult {
       if (!value) {
         return [];
       }
-      const books = await searchBooks({ query: value, page: 1, limit: 10 });
+      const books = await searchBooks({ query: value, page: 1, limit });
+
       if (value !== searchValueRef.current) {
         return;
       }

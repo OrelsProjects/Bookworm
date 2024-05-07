@@ -17,7 +17,7 @@ import { Book } from "../../models";
 import { SafeBooksListData } from "../../models/booksList";
 import { SeeAll, SeeAllTitle } from "../ui/seeAll";
 
-const TOP_RESULTS_COUNT = 10;
+const MAX_RESULTS_NO_SEE_ALL = 5;
 
 export type SearchBarProps = {
   CustomSearchItemSkeleton?: React.FC;
@@ -27,6 +27,7 @@ export type SearchBarProps = {
   booksOnly?: boolean;
   className?: string;
   autoFocus?: boolean;
+  limit?: number;
   onChange?: (text: string, previous?: string) => void;
   onSubmit?: (text: string) => void;
   onSearch?: (text: string) => void;
@@ -49,17 +50,30 @@ const SearchBar: React.FC<SearchBarProps> = ({
   onFocus,
   onEmpty,
   onBlur,
+  limit,
   ...props
 }: SearchBarProps) => {
   const searchHook = booksOnly
-    ? useSearchBooks()
-    : useSearch({ clearOnExit: !booksOnly });
+    ? useSearchBooks({ limit })
+    : useSearch({ clearOnExit: !booksOnly, limit });
+
+  const [seeAllBooks, setSeeAllBooks] = React.useState(false);
+  const [seeAllLists, setSeeAllLists] = React.useState(false);
+
+  useEffect(() => {
+    console.log("loading?", searchHook.status === "loading");
+  }, [searchHook.status]);
 
   useEffect(() => {
     if (searchHook.error) {
       toast.error("Failed to fetch books");
     }
   }, [searchHook.error]);
+
+  const isLoading = useMemo(
+    () => searchHook.status === "loading",
+    [searchHook.status]
+  );
 
   useEffect(() => {
     if (searchHook.status === "loading") {
@@ -94,20 +108,44 @@ const SearchBar: React.FC<SearchBarProps> = ({
     return booksOnly ? undefined : (searchHook.results as SearchResults)?.lists;
   }, [booksOnly, searchHook.results]);
 
+  const itemsToShowBooksCount = useMemo(() => {
+    return booksOnly
+      ? 10
+      : seeAllBooks
+      ? books?.length
+      : MAX_RESULTS_NO_SEE_ALL;
+  }, [seeAllBooks, books]);
+
+  const itemsToShowListsCount = useMemo(() => {
+    return seeAllLists ? lists?.length : MAX_RESULTS_NO_SEE_ALL;
+  }, [seeAllLists, lists]);
+
+  const shouldShowBooks = useMemo(
+    () => isLoading || (!isLoading && (books?.length || 0) > 0),
+    [isLoading, books]
+  );
+
+  const shouldShowLists = useMemo(
+    () => !booksOnly && (isLoading || (!isLoading && (lists?.length || 0) > 0)),
+    [isLoading, lists]
+  );
+
   const ListsComponent = () => (
     <div className="flex flex-col gap-[15px]">
       <SeeAll
         title="Readlists"
-        onClick={() => {}}
-        loading={searchHook.status === "loading"}
+        onClick={() => {
+          setSeeAllLists(!seeAllLists);
+        }}
+        loading={isLoading}
       />
       <div className="flex flex-col gap-[22px]">
-        {searchHook.status === "loading"
+        {isLoading
           ? Array.from(Array(3)).map((_, index) => (
               <SearchItemSkeleton key={`search-item-skeleton-books-${index}`} />
             ))
           : lists
-              ?.slice(0, TOP_RESULTS_COUNT)
+              ?.slice(0, itemsToShowListsCount)
               .map((list, i) => (
                 <SearchResultComponent
                   key={`search-result-list-${list.name}`}
@@ -121,23 +159,25 @@ const SearchBar: React.FC<SearchBarProps> = ({
   const BooksComponent = () => (
     <div className="flex flex-col gap-[15px]">
       {booksOnly ? (
-        <SeeAllTitle title="Books" loading={searchHook.status === "loading"} />
+        <SeeAllTitle title="Books" loading={isLoading} />
       ) : (
         <SeeAll
           title={"Books"}
-          onClick={() => {}}
-          loading={searchHook.status === "loading"}
+          onClick={() => {
+            setSeeAllBooks(!seeAllBooks);
+          }}
+          loading={isLoading}
         />
       )}
       <div className="flex flex-col gap-[22px]">
-        {searchHook.status === "loading"
+        {isLoading
           ? Array.from(Array(3)).map((_, index) => (
               <SearchItemSkeleton
                 key={`search-item-skeleton-books-lists-${index}`}
               />
             ))
           : books
-              ?.slice(0, TOP_RESULTS_COUNT)
+              ?.slice(0, itemsToShowBooksCount)
               .map((book, i) =>
                 CustomSearchItem ? (
                   <CustomSearchItem
@@ -184,8 +224,8 @@ const SearchBar: React.FC<SearchBarProps> = ({
               "flex-col-reverse": booksFirst,
             })}
           >
-            {!booksOnly && <ListsComponent />}
-            <BooksComponent />
+            {shouldShowLists && <ListsComponent />}
+            {shouldShowBooks && <BooksComponent />}
           </div>
         </div>
       )}

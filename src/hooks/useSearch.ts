@@ -21,15 +21,16 @@ export interface UseSearchResult {
 }
 
 function useSearch({
-  clearOnExit = true,
+  clearOnExit = true, // Clear redux state when the component unmounts
+  limit = 10, // Number of results per page
 }: {
   clearOnExit?: boolean;
+  limit?: number;
 }): UseSearchResult {
   const dispatch = useAppDispatch();
   const { books, lists } = useAppSelector((state) => state.search);
   const searchValueRef = useRef<string>("");
 
-  const [limit, _] = useState<number>(10);
   const [page, setPage] = useState<number>(1);
   const [status, setStatus] = useState<
     "idle" | "loading" | "error" | "results" | "no-results"
