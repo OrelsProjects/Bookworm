@@ -17,7 +17,7 @@ import { Book } from "../../models";
 import { SafeBooksListData } from "../../models/booksList";
 import { SeeAll, SeeAllTitle } from "../ui/seeAll";
 
-const MAX_RESULTS_NO_SEE_ALL = 5;
+const MAX_RESULTS_NO_SEE_ALL = 4;
 
 export type SearchBarProps = {
   CustomSearchItemSkeleton?: React.FC;
@@ -57,6 +57,8 @@ const SearchBar: React.FC<SearchBarProps> = ({
     ? useSearchBooks({ limit })
     : useSearch({ clearOnExit: !booksOnly, limit });
 
+  const scrollbarRef = React.useRef<HTMLDivElement>(null);
+
   const [seeAllBooks, setSeeAllBooks] = React.useState(false);
   const [seeAllLists, setSeeAllLists] = React.useState(false);
 
@@ -81,6 +83,14 @@ const SearchBar: React.FC<SearchBarProps> = ({
     }
   }, [searchHook.status]);
 
+  const scrollToTop = () => {
+    // scroll to top smoothly
+    scrollbarRef.current?.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   const handleSubmit = (value: string) => {
     onSubmit?.(value);
     searchHook.search(value);
@@ -89,8 +99,11 @@ const SearchBar: React.FC<SearchBarProps> = ({
   const handleOnChange = (value: string) => {
     if (!value) {
       onEmpty?.();
+      setSeeAllBooks(false);
+      setSeeAllLists(false);
     } else {
       onFocus?.();
+      scrollToTop();
     }
     onChange?.(value, searchHook.searchValue);
     searchHook.search(value);
@@ -121,13 +134,17 @@ const SearchBar: React.FC<SearchBarProps> = ({
   }, [seeAllLists, lists]);
 
   const shouldShowBooks = useMemo(
-    () => isLoading || (!isLoading && (books?.length || 0) > 0),
-    [isLoading, books]
+    () =>
+      (isLoading || (!isLoading && (books?.length || 0) > 0)) && !seeAllLists,
+    [isLoading, books, seeAllLists]
   );
 
   const shouldShowLists = useMemo(
-    () => !booksOnly && (isLoading || (!isLoading && (lists?.length || 0) > 0)),
-    [isLoading, lists]
+    () =>
+      !booksOnly &&
+      (isLoading || (!isLoading && (lists?.length || 0) > 0)) &&
+      !seeAllBooks,
+    [isLoading, lists, seeAllBooks]
   );
 
   const ListsComponent = () => (
@@ -141,7 +158,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
       />
       <div className="flex flex-col gap-[22px]">
         {isLoading
-          ? Array.from(Array(3)).map((_, index) => (
+          ? Array.from(Array(MAX_RESULTS_NO_SEE_ALL)).map((_, index) => (
               <SearchItemSkeleton key={`search-item-skeleton-books-${index}`} />
             ))
           : lists
@@ -171,7 +188,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
       )}
       <div className="flex flex-col gap-[22px]">
         {isLoading
-          ? Array.from(Array(3)).map((_, index) => (
+          ? Array.from(Array(MAX_RESULTS_NO_SEE_ALL)).map((_, index) => (
               <SearchItemSkeleton
                 key={`search-item-skeleton-books-lists-${index}`}
               />
@@ -198,7 +215,11 @@ const SearchBar: React.FC<SearchBarProps> = ({
   );
 
   return (
-    <div className={`h-fit max-h-full w-full flex flex-col`}>
+    <div
+      className={cn("h-fit max-h-full w-full flex flex-col flex-shrink-0", {
+        "h-full": seeAllBooks || seeAllLists,
+      })}
+    >
       <SearchBarComponent
         onBlur={onBlur}
         onSubmit={handleSubmit}
@@ -206,7 +227,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         className={`w-full pr-[72px] transition-all duration-300 ease-in-out rounded-full ${
           className ?? ""
         }`}
-        formClassName="h-fit max-h-full w-full absolute inset-0 z-20 bg-background overflow-auto pr-[72px]"
+        formClassName="h-fit max-h-full w-full absolute inset-0 z-20 bg-background pr-[72px]"
         placeholder="Search all books, authors..."
         autoFocus={autoFocus}
         onFocus={onFocus}
@@ -218,9 +239,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
             "mt-[88px]": !booksOnly,
             "mt-4": booksOnly,
           })}
+          ref={scrollbarRef}
         >
           <div
-            className={cn("h-full flex 3 flex-col gap-8 overflow-auto", {
+            className={cn("h-fit flex 3 flex-col gap-8", {
               "flex-col-reverse": booksFirst,
             })}
           >

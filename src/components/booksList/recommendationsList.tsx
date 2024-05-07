@@ -43,7 +43,7 @@ const ListTitleAndCurator = ({ list }: { list: SafeBooksListData }) => (
 
 const ListDescription = ({ description }: { description: string }) => (
   <div
-    className="text-foreground font-light text-sm h-9 max-h-9 leading-[21px] tracking-[0.15px] line-clamp-2"
+    className="text-foreground font-light text-sm h-10 max-h-10 leading-[21px] tracking-[0.15px] line-clamp-2"
     id="curator-comment"
   >
     {description}

@@ -16,7 +16,7 @@ export const ModalBooksList = <T extends SafeBooksListData>({
   safeBooksListData,
   loading,
 }: ModalBooksListProps<T>) => {
-  const ThumbnailDetails = (
+  const ThumbnailDetails = () => (
     <div className="w-full h-full justify-start items-start">
       <Tooltip
         tooltipContent={
@@ -32,6 +32,9 @@ export const ModalBooksList = <T extends SafeBooksListData>({
       <div className="line-clamp-1 text-muted text-lg">
         {safeBooksListData?.curatorName}
       </div>
+      {(safeBooksListData?.visitCount || 0) > 0 && (
+        <Tag>{safeBooksListData?.visitCount} views</Tag>
+      )}
     </div>
   );
 
@@ -57,7 +60,7 @@ export const ModalBooksList = <T extends SafeBooksListData>({
             <Skeleton className="w-4/6 h-3 rounded-lg" type="shimmer" />
           </div>
         ) : (
-          ThumbnailDetails
+          <ThumbnailDetails />
         )
       }
       buttonsRow={

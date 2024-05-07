@@ -101,15 +101,6 @@ export default function BooksListGridView({
     setSortedBooksInList(booksInlistSorted);
   }, [safeBooksListData]);
 
-  const booksInUsersList = useMemo(() => {
-    const booksInList: Record<number, boolean> = {};
-    sortedBooksInList?.map((bookInList) => {
-      const bookData = getBookFullData(bookInList.book);
-      booksInList[bookInList.book.bookId] = !!bookData;
-    });
-    return booksInList;
-  }, [sortedBooksInList]);
-
   const isRead = useMemo(() => {
     const booksIsRead: Record<number, boolean> = {};
     safeBooksListData?.booksInList?.forEach((bookInList) => {
@@ -118,6 +109,20 @@ export default function BooksListGridView({
     });
     return booksIsRead;
   }, [userBooksData]);
+
+  const booksReadCount = useMemo(() => {
+    let count = 0;
+    sortedBooksInList?.map((bookInList) => {
+      const bookData = getBookFullData(bookInList.book);
+      if (
+        bookData?.bookData.book?.bookId &&
+        isRead[bookData?.bookData.book?.bookId]
+      ) {
+        count++;
+      }
+    });
+    return count;
+  }, [sortedBooksInList]);
 
   const isToRead = useMemo(() => {
     const booksIsRead: Record<number, boolean> = {};
@@ -173,7 +178,7 @@ export default function BooksListGridView({
     }
   };
 
-  const isBooksListDataNotSafe = useMemo(() => {
+  const isBooksListOwnedByUser = useMemo(() => {
     return (safeBooksListData as any).userId !== undefined;
   }, [safeBooksListData]);
 
@@ -195,21 +200,26 @@ export default function BooksListGridView({
   return (
     <div className="h-full w-full flex flex-col gap-5">
       <div className="w-full flex flex-row items-center justify-between">
-        <div className="w-fit flex flex-row items-center gap-2">
-          <BurgerLines.Fill iconSize="sm" className="!text-foreground" />
-          <div className="font-bold text-xl flex flex-row gap-1 items-center justify-center">
-            Book List{" "}
-            {safeBooksListData?.booksInList &&
-            safeBooksListData.booksInList.length > 0 ? (
-              <div className="text-muted font-normal">
-                ({safeBooksListData.booksInList.length})
-              </div>
-            ) : (
-              ""
-            )}
+        <div className="w-full flex justify-between">
+          <div className="w-fit flex flex-row items-center gap-2">
+            <BurgerLines.Fill iconSize="sm" className="!text-foreground" />
+            <div className="text-2xl flex flex-row gap-1 items-center justify-center">
+              Book List
+              {/* {safeBooksListData?.booksInList &&
+              safeBooksListData.booksInList.length > 0 ? (
+                <div className="text-muted font-normal">
+                  ({safeBooksListData.booksInList.length})
+                </div>
+              ) : (
+                ""
+              )} */}
+            </div>
+          </div>
+          <div className="text-2xl">
+            {booksReadCount}/{sortedBooksInList.length}
           </div>
         </div>
-        {isBooksListDataNotSafe && (
+        {isBooksListOwnedByUser && (
           <SwitchEditMode
             safeBooksListData={safeBooksListData}
             onCheckedChange={(checked) => {
