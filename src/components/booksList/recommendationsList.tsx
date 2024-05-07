@@ -49,21 +49,24 @@ const ListDescription = ({ description }: { description: string }) => (
   </div>
 );
 
-const ListTags = ({ list }: { list: SafeBooksListData }) => (
-  <div className="flex flex-row gap-2.5 font-bold">
-    {list.matchRate && <Tag>{parseInt(`${list.matchRate}`, 10)}% Match</Tag>}
-    {list.visitCount !== undefined && list.visitCount > 0 && (
-      <Tag>
-        <div className="flex flex-row gap-[3px] justify-center items-center">
-          {list.visitCount} <Eye />
-        </div>
-      </Tag>
-    )}
-    {list.genres && list.genres.length > 0 && (
-      <Tag className="hidden sm:flex">{list.genres[0]}</Tag>
-    )}
-  </div>
-);
+const ListTags = ({ list }: { list: SafeBooksListData }) => {
+  const matchRate = parseInt(`${list.matchRate}`, 10);
+  return (
+    <div className="flex flex-row gap-2.5 font-bold">
+      {matchRate && isNaN(matchRate) && <Tag>{matchRate}% Match</Tag>}
+      {list.visitCount !== undefined && list.visitCount > 0 && (
+        <Tag>
+          <div className="flex flex-row gap-[3px] justify-center items-center">
+            {list.visitCount} <Eye />
+          </div>
+        </Tag>
+      )}
+      {list.genres && list.genres.length > 0 && (
+        <Tag className="hidden sm:flex">{list.genres[0]}</Tag>
+      )}
+    </div>
+  );
+};
 
 const RecommendationsList = ({
   lists,

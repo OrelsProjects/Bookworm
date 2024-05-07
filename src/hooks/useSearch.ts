@@ -111,11 +111,6 @@ function useSearch({
       setError(error.message);
       setStatus("error");
       return [];
-    } finally {
-      // If different value is being searched, return
-      if (searchValueRef.current && searchValueRef.current !== value) {
-        return;
-      }
     }
   };
 

@@ -98,9 +98,9 @@ function useSearchBooks(): UseSearchResult {
 
   return {
     searchValue,
-    search,
     results,
     status,
+    search,
     error,
   };
 }

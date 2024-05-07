@@ -25,10 +25,20 @@ export const SeeAll = ({
   ) : title ? (
     <SeeAllWithTitle title={title} onSeeAllClick={onClick} />
   ) : (
-    <div className={cn("text-see-all", className)} onClick={onClick}>
-      see all
-    </div>
+    <SeeAllText className={className} onClick={onClick} />
   );
+
+const SeeAllText = ({
+  className,
+  onClick,
+}: {
+  className?: string;
+  onClick: () => void;
+}) => (
+  <div className={cn("text-see-all hover:cursor", className)} onClick={onClick}>
+    See all
+  </div>
+);
 
 const SeeAllWithTitle = ({
   title,
@@ -51,7 +61,7 @@ const SeeAllWithTitle = ({
       )}
     >
       <div className="text-2xl">{title}</div>
-      <SeeAll onClick={onSeeAllClick} />
+      <SeeAllText onClick={onSeeAllClick} />
     </div>
   );
 

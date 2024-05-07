@@ -17,6 +17,7 @@ import { useModal } from "../../../hooks/useModal";
 import { selectAuth } from "../../../lib/features/auth/authSlice";
 import useBooksList from "../../../hooks/useBooksList";
 import { EmptyList } from "../../../components/emptyList";
+import { SeeAll } from "../../../components/ui/seeAll";
 
 const MyLists = ({ params }: { params: { listUrl?: string } }) => {
   const router = useRouter();
@@ -107,26 +108,15 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
   }, [params.listUrl, window.location]);
 
   const onSeeAllClick = useCallback(() => {
-    router.push("/my-library");
+    router.push("/my-library/read");
   }, [router]);
 
   const onAddListClick = () => showBooksListEditModal();
 
   const UserBooks = () => (
     <div className="w-full h-fit flex flex-col gap-5">
-      <div className="w-full flex flex-row justify-between items-end">
-        <div className="text-list-title">My Library</div>
-        <h2 className="text-see-all" onClick={onSeeAllClick}>
-          See all
-        </h2>
-      </div>
-      <BookList
-        readStatus="read"
-        onNextPageScroll={nextPage}
-        direction="row"
-        thumbnailSize="2xl"
-        showAdd
-      />
+      <SeeAll title="My Library" onClick={onSeeAllClick} />
+      <BookList readStatus="read" direction="row" thumbnailSize="2xl" showAdd />
     </div>
   );
 
@@ -179,7 +169,7 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
         placeholder="Search in Your Books..."
         className="pr-16"
       />
-      <div className="flex gap-10 flex-grow flex-col h-full">
+      <div className="h-full w-full flex gap-10 flex-grow flex-col overflow-auto">
         <UserBooks />
         <UserBooksLists />
       </div>
