@@ -4,7 +4,6 @@ import React from "react";
 import GenresTabs from "../../components/genresTabs";
 import { Skeleton } from "../../components/ui/skeleton";
 import useExplore from "../../hooks/useExplore";
-import { useModal } from "../../hooks/useModal";
 import useScrollPosition from "../../hooks/useScrollPosition";
 import SearchBar from "../../components/search/searchBar";
 import RecommendationsList, {
@@ -24,7 +23,6 @@ const ExplorePage: React.FC<ExplorePageProps> = () => {
     selectGenre,
   } = useExplore();
 
-  const { showBooksListModal } = useModal();
   const { scrollableDivRef } = useScrollPosition({
     scrollDirection: "height",
     lowerThreshold: 60,
@@ -34,7 +32,7 @@ const ExplorePage: React.FC<ExplorePageProps> = () => {
   });
 
   const LoadingGenresTabs = () => (
-    <div className="w-full flex flex-row gap-[9px] my-8 justify-start overflow-auto">
+    <div className="w-full flex flex-row gap-[9px] my-8 justify-between overflow-auto">
       <Skeleton className="w-20 h-6 rounded-full flex-shrink-0" />
       <Skeleton className="w-20 h-6 rounded-full flex-shrink-0" />
       <Skeleton className="w-20 h-6 rounded-full flex-shrink-0" />

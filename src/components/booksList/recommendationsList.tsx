@@ -5,6 +5,7 @@ import { useModal } from "../../hooks/useModal";
 import { FaEye as Eye } from "react-icons/fa";
 import Tag from "../../components/ui/Tag";
 import BooksListThumbnail from "./booksListThumbnail";
+import { unslugifyText } from "../../utils/textUtils";
 
 export const LoadingRecommendationsList = () => {
   return (
@@ -53,16 +54,19 @@ const ListTags = ({ list }: { list: SafeBooksListData }) => {
   const matchRate = parseInt(`${list.matchRate}`, 10);
   return (
     <div className="flex flex-row gap-2.5 font-bold">
-      {matchRate && isNaN(matchRate) && <Tag>{matchRate}% Match</Tag>}
       {list.visitCount !== undefined && list.visitCount > 0 && (
-        <Tag>
+        <Tag className="flex-shrink-0">
           <div className="flex flex-row gap-[3px] justify-center items-center">
             {list.visitCount} <Eye />
           </div>
         </Tag>
       )}
+      {matchRate && <Tag className="flex sm:hidden">{matchRate}%</Tag>}
+      {matchRate && <Tag className="hidden sm:flex">{matchRate}% Match</Tag>}
       {list.genres && list.genres.length > 0 && (
-        <Tag className="hidden sm:flex">{list.genres[0]}</Tag>
+        <Tag className="flex flex-shrink-0">
+          {unslugifyText(list.genres[0])}
+        </Tag>
       )}
     </div>
   );
