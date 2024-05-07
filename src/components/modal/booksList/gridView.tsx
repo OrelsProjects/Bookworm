@@ -134,7 +134,7 @@ export default function BooksListGridView({
   ) => {
     if (loading) return;
     const bookData = getBookFullData(book);
-    let promise: Promise<any> | undefined = undefined;
+    let updateBookPromise: Promise<any> | undefined = undefined;
     let loadingMessage = "";
     let successMessage = "";
     let errorMessage = "";
@@ -143,18 +143,18 @@ export default function BooksListGridView({
       bookData?.userBook?.readingStatusId &&
       bookData?.userBook?.readingStatusId === status
     ) {
-      promise = deleteUserBook(bookData.userBook);
+      updateBookPromise = deleteUserBook(bookData.userBook);
       loadingMessage = `Removing ${book?.title} from list ${readingStatusName}...`;
       successMessage = `${book?.title} removed from list ${readingStatusName}`;
       errorMessage = `Failed to remove ${book?.title} from list ${readingStatusName}`;
     } else {
       if (!bookData) {
-        promise = addUserBook({
+        updateBookPromise = addUserBook({
           book,
           readingStatusId: status as number,
         });
       } else {
-        promise = updateBookReadingStatus(bookData.userBook, status);
+        updateBookPromise = updateBookReadingStatus(bookData.userBook, status);
       }
       loadingMessage = `Adding ${book?.title} to list: ${readingStatusName}...`;
       successMessage = `${book?.title} updated to list: ${readingStatusName}`;
@@ -162,7 +162,7 @@ export default function BooksListGridView({
     }
     let loadingToast = toast.loading(loadingMessage);
     try {
-      await promise;
+      await updateBookPromise;
       toast.success(successMessage);
     } catch (e) {
       if (!(e instanceof ErrorUnauthenticated)) {

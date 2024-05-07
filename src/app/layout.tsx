@@ -6,7 +6,7 @@ import StoreProvider from "./providers/StoreProvider";
 import AuthProvider from "./providers/AuthProvider";
 import React from "react";
 import APIProvider from "./providers/APIProvider";
-import { ToastContainer, Flip } from "react-toastify";
+import { ToastContainer, Flip, Icons, Slide } from "react-toastify";
 import DataProvider from "./providers/DataProvider";
 import Header from "./_components/header";
 import NavigationProvider from "./providers/NavigationProvider";
@@ -45,20 +45,20 @@ export default function RootLayout({
             <NavigationProvider>
               <APIProvider>
                 <DataProvider>
+                  <ToastContainer
+                    stacked
+                    theme="dark"
+                    autoClose={2500}
+                    draggablePercent={60}
+                    className="!mb-16 z-50"
+                    transition={Slide}
+                  />
                   <ContentProvider>
                     <BrowserDetector>
                       <div className="w-full h-full font-roboto">
                         <Header className="h-fit w-fit" />
                         {/* <AnimationProvider> */}
                         {children}
-                        <ToastContainer
-                          stacked
-                          theme="dark"
-                          autoClose={2500}
-                          draggablePercent={60}
-                          className="!mb-16"
-                          transition={Flip}
-                        />
                         {/* </AnimationProvider> */}
                       </div>
                     </BrowserDetector>
