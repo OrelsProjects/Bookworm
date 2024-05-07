@@ -61,8 +61,13 @@ const ListTags = ({ list }: { list: SafeBooksListData }) => {
           </div>
         </Tag>
       )}
-      {matchRate && <Tag className="flex sm:hidden">{matchRate}%</Tag>}
-      {matchRate && <Tag className="hidden sm:flex">{matchRate}% Match</Tag>}
+      {/* TODO: REMOVE THE FIXED NUMBER OF 50% AND COME UP WITH A BETTER SOLUTION IN THE FUTURE */}
+      {matchRate && matchRate > 50 && (
+        <>
+          <Tag className="flex sm:hidden">{matchRate}%</Tag>
+          <Tag className="hidden sm:flex">{matchRate}% Match</Tag>
+        </>
+      )}
       {list.genres && list.genres.length > 0 && (
         <Tag className="flex flex-shrink-0">
           {unslugifyText(list.genres[0])}
