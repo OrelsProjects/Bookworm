@@ -1,18 +1,16 @@
+import "./globals.css";
+import "react-toastify/dist/ReactToastify.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import StoreProvider from "./providers/StoreProvider";
 import AuthProvider from "./providers/AuthProvider";
 import React from "react";
-import "./globals.css";
 import APIProvider from "./providers/APIProvider";
-import { Toaster } from "react-hot-toast";
+import { ToastContainer, Flip, Icons, Slide } from "react-toastify";
 import DataProvider from "./providers/DataProvider";
-import AnimationProvider from "./providers/AnimationProvider";
 import Header from "./_components/header";
-import ModalProvider from "./providers/ModalProvider";
-import BottomBarProvider from "./providers/BottomBarProvider";
 import NavigationProvider from "./providers/NavigationProvider";
-import HeightProvider from "./providers/HeightProvider";
+import ContentProvider from "./providers/ContentProvider";
 import BrowserDetector from "./providers/BrowserDetector";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -47,17 +45,24 @@ export default function RootLayout({
             <NavigationProvider>
               <APIProvider>
                 <DataProvider>
-                  <HeightProvider className=" py-10 px-7.5 flex flex-col z-20 tracking-semiwide relative overflow-clip">
+                  <ToastContainer
+                    stacked
+                    theme="dark"
+                    autoClose={2500}
+                    draggablePercent={60}
+                    className="!mb-16 z-50"
+                    transition={Slide}
+                  />
+                  <ContentProvider>
                     <BrowserDetector>
-                      <div className="w-full h-full overflow-auto scrollbar-hide font-roboto">
+                      <div className="w-full h-full font-roboto">
                         <Header className="h-fit w-fit" />
-                        <AnimationProvider>{children}</AnimationProvider>
+                        {/* <AnimationProvider> */}
+                        {children}
+                        {/* </AnimationProvider> */}
                       </div>
                     </BrowserDetector>
-                    <ModalProvider />
-                    <BottomBarProvider />
-                    <Toaster />
-                  </HeightProvider>
+                  </ContentProvider>
                 </DataProvider>
               </APIProvider>
             </NavigationProvider>

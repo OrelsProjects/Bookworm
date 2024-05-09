@@ -39,6 +39,9 @@ export const setUserLogger = (user?: User | null) => {
 const log = (type: StatusType, message: string, logItem?: LogItem) => {
   printLog(type, message, logItem);
   try {
+    if (process.env.NODE_ENV === "test") {
+      return;
+    }
     datadogLogs.logger.log(message, logItem?.data, type, logItem?.error);
   } catch (error: any) {}
 };

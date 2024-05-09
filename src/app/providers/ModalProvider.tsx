@@ -25,6 +25,13 @@ import ModalSignup from "../../components/modal/modalSignup";
 import BookThumbnail from "../../components/book/bookThumbnail";
 import BooksListThumbnail from "../../components/booksList/booksListThumbnail";
 import ModalContext from "../../lib/context/modalContext";
+import { Logger } from "../../logger";
+import axios from "axios";
+import {
+  BookInListVisit,
+  BookVisit,
+  ListVisit,
+} from "../../models/statistics/visit";
 
 const ModalProvider: React.FC = () => {
   const router = useRouter();
@@ -34,6 +41,65 @@ const ModalProvider: React.FC = () => {
     (state: RootState) => state.modal
   );
   const dispatch = useDispatch();
+
+  const [previousModalStack, setPreviousModalStack] = React.useState<
+    ModalData[]
+  >([]);
+
+  const isNewModalAdded = useMemo<boolean>(
+    () =>
+      modalStack.length > 0 && previousModalStack.length < modalStack.length,
+    [modalStack]
+  );
+
+  const isPreviousModalIsList = useMemo<boolean>(() => {
+    return (
+      modalStack.length > 1 &&
+      modalStack[modalStack.length - 2].type === ModalTypes.BOOKS_LIST_DETAILS
+    );
+  }, [modalStack]);
+
+  useEffect(() => {
+    try {
+      if (isNewModalAdded) {
+        const now = new Date();
+        switch (modalStack[modalStack.length - 1].type) {
+          case ModalTypes.BOOK_DETAILS:
+            const bookId = (
+              modalStack[modalStack.length - 1].data as ModalBookDetailsProps
+            ).bookData.bookId;
+            if (isPreviousModalIsList) {
+              const listId =
+                previousModalStack[previousModalStack.length - 1].data.bookList
+                  .listId;
+              const bookInListVisit: BookInListVisit = {
+                bookId,
+                listId,
+                visitedAt: now,
+              };
+              axios.post("/api/statistics/visit/book-in-list", bookInListVisit);
+            } else {
+              const bookVisit: BookVisit = {
+                bookId,
+                visitedAt: now,
+              };
+
+              axios.post("/api/statistics/visit/book", bookVisit);
+            }
+          case ModalTypes.BOOKS_LIST_DETAILS:
+            const bookListVisit: ListVisit = {
+              listId: modalStack[modalStack.length - 1].data.bookList.listId,
+              visitedAt: now,
+            };
+            axios.post("/api/statistics/visit/list", bookListVisit);
+        }
+      }
+    } catch (e: any) {
+      Logger.error(e);
+    } finally {
+      setPreviousModalStack(modalStack);
+    }
+  }, [modalStack]);
 
   const { data, type } = useMemo(
     () => modalStack[modalStack.length - 1] ?? {},

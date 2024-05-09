@@ -10,6 +10,7 @@ interface BooksListThumbnailProps {
   className?: string;
   Icon?: React.ReactNode;
   loading?: boolean;
+  children?: React.ReactNode;
 }
 
 type Props = BooksListThumbnailProps & React.HTMLProps<HTMLDivElement>;
@@ -20,6 +21,7 @@ const BooksListThumbnail: React.FC<Props> = ({
   thumbnailSize = "md",
   Icon,
   loading,
+  children,
   ...props
 }) => {
   const [thumbnailBooks, setThumbnailBooks] = useState<BookInListWithBook[]>(
@@ -149,7 +151,7 @@ const BooksListThumbnail: React.FC<Props> = ({
 
   return (
     <div
-      className={`flex flex-col flex-wrap relative items-start justify-center ${
+      className={`flex flex-col flex-wrap flex-shrink-0 relative items-start justify-center ${
         getThumbnailSize(thumbnailSize).className
       } rounded-xl bg-clip-border	overflow-hidden ${className ?? ""}`}
       {...props}
@@ -161,6 +163,7 @@ const BooksListThumbnail: React.FC<Props> = ({
           className={`${getThumbnailSize(thumbnailSize).className} rounded-xl`}
         />
       )}
+      {children}
       {Icon}
     </div>
   );

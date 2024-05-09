@@ -7,7 +7,7 @@ type AuthorsProps = {
   style?: React.CSSProperties;
 };
 
-const Authors: React.FC<AuthorsProps> = ({
+const GenericAuthors: React.FC<AuthorsProps> = ({
   authors,
   prefix,
   className,
@@ -23,4 +23,4 @@ const Authors: React.FC<AuthorsProps> = ({
   </div>
 );
 
-export default Authors;
+export default GenericAuthors;

@@ -4,6 +4,8 @@ import userBooksReducer from "./features/userBooks/userBooksSlice";
 import modalReducer from "./features/modal/modalSlice";
 import booksListsReducer from "./features/booksLists/booksListsSlice";
 import recommendationsReducer from "./features/recommendations/recommendationsSlice";
+import exploreReducer from "./features/explore/exploreSlice";
+import searchReducer from "./features/search/searchSlice";
 
 export const makeStore = () => {
   return configureStore({
@@ -13,6 +15,8 @@ export const makeStore = () => {
       modal: modalReducer,
       booksLists: booksListsReducer,
       recommendations: recommendationsReducer,
+      explore: exploreReducer,
+      search: searchReducer,
     },
   });
 };

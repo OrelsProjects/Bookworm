@@ -1,8 +1,8 @@
 import React from "react";
 import { Book } from "../../models";
 import BookThumbnail from "./bookThumbnail";
-import Authors from "./authors";
-import Title from "./bookTitle";
+import GenericAuthors from "./authors";
+import GenericTitle from "./bookTitle";
 import { ThumbnailSize, getThumbnailSize } from "../../consts/thumbnail";
 
 export type BookDetailsProps = {
@@ -40,8 +40,8 @@ const BookDetails: React.FC<BookDetailsProps> = ({
       />
       <div className={`grid gap-1.5 h-full justify-start`}>
         <div className={`flex flex-col h-fit`}>
-          <Title title={book?.title ?? ""} className="text-sm text-start line-clamp-1" />
-          <Authors authors={book?.authors} className="text-sm text-primary text-start line-clamp-1" />
+          <GenericTitle title={book?.title ?? ""} className="text-sm text-start line-clamp-1" />
+          <GenericAuthors authors={book?.authors} className="text-sm text-primary text-start line-clamp-1" />
         </div>
         {direction === "column" && (
           <div className="line-clamp-3 text-sm font-light">

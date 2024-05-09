@@ -5,7 +5,7 @@ import { BooksListViewProps } from "./consts";
 import { useModal } from "../../../hooks/useModal";
 import { getThumbnailSize } from "../../../consts/thumbnail";
 import useBook from "../../../hooks/useBook";
-import toast from "react-hot-toast";
+import { toast } from "react-toastify";
 import { Book } from "../../../models";
 import {
   ReadingStatusEnum,
@@ -22,7 +22,7 @@ import { Skeleton } from "../../ui/skeleton";
 
 export function BooksListGridViewLoading() {
   return (
-    <div className="h-full w-full flex flex-col gap-6 mt-2">
+    <div className="h-full w-full flex flex-col gap-5">
       <div className="w-full flex flex-row items-center justify-between">
         <Skeleton className="w-36 h-6 rounded-full" />
       </div>
@@ -101,15 +101,6 @@ export default function BooksListGridView({
     setSortedBooksInList(booksInlistSorted);
   }, [safeBooksListData]);
 
-  const booksInUsersList = useMemo(() => {
-    const booksInList: Record<number, boolean> = {};
-    sortedBooksInList?.map((bookInList) => {
-      const bookData = getBookFullData(bookInList.book);
-      booksInList[bookInList.book.bookId] = !!bookData;
-    });
-    return booksInList;
-  }, [sortedBooksInList]);
-
   const isRead = useMemo(() => {
     const booksIsRead: Record<number, boolean> = {};
     safeBooksListData?.booksInList?.forEach((bookInList) => {
@@ -118,6 +109,20 @@ export default function BooksListGridView({
     });
     return booksIsRead;
   }, [userBooksData]);
+
+  const booksReadCount = useMemo(() => {
+    let count = 0;
+    sortedBooksInList?.map((bookInList) => {
+      const bookData = getBookFullData(bookInList.book);
+      if (
+        bookData?.bookData.book?.bookId &&
+        isRead[bookData?.bookData.book?.bookId]
+      ) {
+        count++;
+      }
+    });
+    return count;
+  }, [sortedBooksInList]);
 
   const isToRead = useMemo(() => {
     const booksIsRead: Record<number, boolean> = {};
@@ -134,7 +139,7 @@ export default function BooksListGridView({
   ) => {
     if (loading) return;
     const bookData = getBookFullData(book);
-    let promise: Promise<any> | undefined = undefined;
+    let updateBookPromise: Promise<any> | undefined = undefined;
     let loadingMessage = "";
     let successMessage = "";
     let errorMessage = "";
@@ -143,18 +148,18 @@ export default function BooksListGridView({
       bookData?.userBook?.readingStatusId &&
       bookData?.userBook?.readingStatusId === status
     ) {
-      promise = deleteUserBook(bookData.userBook);
+      updateBookPromise = deleteUserBook(bookData.userBook);
       loadingMessage = `Removing ${book?.title} from list ${readingStatusName}...`;
       successMessage = `${book?.title} removed from list ${readingStatusName}`;
       errorMessage = `Failed to remove ${book?.title} from list ${readingStatusName}`;
     } else {
       if (!bookData) {
-        promise = addUserBook({
+        updateBookPromise = addUserBook({
           book,
           readingStatusId: status as number,
         });
       } else {
-        promise = updateBookReadingStatus(bookData.userBook, status);
+        updateBookPromise = updateBookReadingStatus(bookData.userBook, status);
       }
       loadingMessage = `Adding ${book?.title} to list: ${readingStatusName}...`;
       successMessage = `${book?.title} updated to list: ${readingStatusName}`;
@@ -162,7 +167,7 @@ export default function BooksListGridView({
     }
     let loadingToast = toast.loading(loadingMessage);
     try {
-      await promise;
+      await updateBookPromise;
       toast.success(successMessage);
     } catch (e) {
       if (!(e instanceof ErrorUnauthenticated)) {
@@ -173,7 +178,7 @@ export default function BooksListGridView({
     }
   };
 
-  const isBooksListDataNotSafe = useMemo(() => {
+  const isBooksListOwnedByUser = useMemo(() => {
     return (safeBooksListData as any).userId !== undefined;
   }, [safeBooksListData]);
 
@@ -193,23 +198,25 @@ export default function BooksListGridView({
   );
 
   return (
-    <div className="h-full w-full flex flex-col gap-6 mt-2">
+    <div className="h-full w-full flex flex-col gap-5">
       <div className="w-full flex flex-row items-center justify-between">
-        <div className="w-fit flex flex-row items-center gap-2">
-          <BurgerLines.Fill iconSize="sm" className="!text-foreground" />
-          <div className="font-bold text-xl flex flex-row gap-1 items-center justify-center">
-            Book List{" "}
-            {safeBooksListData?.booksInList &&
-            safeBooksListData.booksInList.length > 0 ? (
-              <div className="text-muted font-normal">
-                ({safeBooksListData.booksInList.length})
-              </div>
-            ) : (
-              ""
-            )}
+        <div className="w-full flex justify-between">
+          <div className="w-fit flex flex-row items-center gap-2">
+            <BurgerLines.Fill iconSize="sm" className="!text-foreground" />
+            <div className="text-2xl flex flex-row gap-1 items-center justify-center">
+              Book List
+              {/* {safeBooksListData?.booksInList &&
+              safeBooksListData.booksInList.length > 0 ? (
+                <div className="text-muted font-normal">
+                  ({safeBooksListData.booksInList.length})
+                </div>
+              ) : (
+                ""
+              )} */}
+            </div>
           </div>
         </div>
-        {isBooksListDataNotSafe && (
+        {isBooksListOwnedByUser ? (
           <SwitchEditMode
             safeBooksListData={safeBooksListData}
             onCheckedChange={(checked) => {
@@ -220,6 +227,10 @@ export default function BooksListGridView({
               });
             }}
           />
+        ) : (
+          <div className="text-2xl">
+            {booksReadCount}/{sortedBooksInList.length}
+          </div>
         )}
       </div>
       <div

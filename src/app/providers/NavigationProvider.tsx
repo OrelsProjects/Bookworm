@@ -19,8 +19,8 @@ const NavigationProvider: React.FC<NavigationProviderProps> = ({
   useEffect(() => {
     if (!user && state !== AuthStateType.SIGNED_IN) {
       const currentPathname = pathname;
-      if (pathname !== "/home") {
-        router.push("/home");
+      if (pathname !== "/explore") {
+        router.push("/explore");
         if (pathname.includes("/lists/")) {
           router.push(currentPathname);
         }

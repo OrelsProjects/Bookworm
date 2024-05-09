@@ -25,7 +25,7 @@ export async function GET(
   } catch (error: any) {
     Logger.error("Error getting user books", {
       error,
-    });
+    }); 
     return NextResponse.json({}, { status: 500 });
   }
 }

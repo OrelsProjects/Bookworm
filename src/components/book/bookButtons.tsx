@@ -11,7 +11,7 @@ import {
   readingStatusToName,
 } from "../../models/readingStatus";
 import { increaseLuminosity } from "../../utils/thumbnailUtils";
-import toast from "react-hot-toast";
+import { toast } from "react-toastify";
 import { IconSize, getIconSize } from "../../consts/icon";
 import { useModal } from "../../hooks/useModal";
 import { ErrorUnauthenticated } from "../../models/errors/unauthenticatedError";

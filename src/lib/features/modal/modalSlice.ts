@@ -65,7 +65,7 @@ const canSetNewModal = (
   return false;
 };
 
-const bottomSheetSlice = createSlice({
+const modalSlice = createSlice({
   name: "modal",
   initialState,
   reducers: {
@@ -97,7 +97,7 @@ const bottomSheetSlice = createSlice({
   },
 });
 
-export const { showModal, clearStack, hideModal } = bottomSheetSlice.actions;
+export const { showModal, clearStack, hideModal } = modalSlice.actions;
 export const selectModal = (state: RootState) => state.modal;
 
-export default bottomSheetSlice.reducer;
+export default modalSlice.reducer;

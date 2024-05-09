@@ -47,7 +47,7 @@ const Dropdown: React.FC<DropdownProps> = ({
   return (
     <div
       key="dropdown"
-      className={`bg-primary-weak rounded-lg flex-col justify-center items-start shadow-xl ${
+      className={`bg-primary rounded-lg flex-col justify-center items-start shadow-xl ${
         className ?? ""
       }`}
       ref={dropdownRef}

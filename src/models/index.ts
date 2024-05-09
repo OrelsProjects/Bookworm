@@ -13,7 +13,7 @@ export {
   Genre,
   BookSubGenre,
   GoodreadsData,
-  UserBook,
+  type UserBook,
   type UserBookData,
   ImportStatus,
 };

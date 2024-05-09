@@ -1,3 +1,5 @@
+export type ReadStatus = "read" | "to-read";
+
 enum ReadingStatusNameEnum {
   READ = "read",
   TO_READ = "to-read",

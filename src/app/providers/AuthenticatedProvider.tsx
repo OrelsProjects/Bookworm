@@ -16,7 +16,7 @@ export default function AuthenticatedProvider({
 
   useEffect(() => {
     if (state !== AuthStateType.SIGNED_IN) {
-      router.push("/home");
+      router.push("/explore");
     }
   }, [state]);
 

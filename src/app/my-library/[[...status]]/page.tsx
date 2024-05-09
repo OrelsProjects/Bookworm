@@ -1,32 +1,42 @@
 "use client";
 
 import React, { useCallback, useEffect, useMemo } from "react";
-import { Button } from "../../components/ui/button";
-import Tabs from "../../components/ui/tabs";
-import { sorterTabItems } from "./_consts";
-import { UserBookData } from "../../models";
-import { TabItem } from "../../components/ui/tabs";
-import { BookFilter, BookSort } from "../../hooks/useBook";
-import useTable from "../../hooks/useTable";
-import { SearchBarComponent } from "../../components/search/searchBarComponent";
-import BookList from "../../components/book/bookList";
-import Dropdown from "../../components/ui/dropdown";
-import useBooksList from "../../hooks/useBooksList";
-import { Checkbox } from "../../components/ui/checkbox";
-import { Filter } from "../../components/icons/filter";
-import { ExpandType } from "../../components/animationDivs";
-import SearchBarIcon from "../../components/search/searchBarIcon";
-import AuthenticatedProvider from "../providers/AuthenticatedProvider";
+import { Button } from "../../../components/ui/button";
+import Tabs from "../../../components/ui/tabs";
+import { sorterTabItems } from "../_consts";
+import { Book, UserBookData } from "../../../models";
+import { TabItem } from "../../../components/ui/tabs";
+import { BookFilter, BookSort } from "../../../hooks/useBook";
+import useTable from "../../../hooks/useTable";
+import { SearchBarComponent } from "../../../components/search/searchBarComponent";
+import BookList from "../../../components/book/bookList";
+import Dropdown from "../../../components/ui/dropdown";
+import useBooksList from "../../../hooks/useBooksList";
+import { Checkbox } from "../../../components/ui/checkbox";
+import { Filter } from "../../../components/icons/filter";
+import { ExpandType } from "../../../components/animationDivs";
+import { ReadStatus } from "../../../models/readingStatus";
+import { FaBars } from "react-icons/fa6";
+import useScrollPosition from "../../../hooks/useScrollPosition";
 
-export default function MyLibrary(): React.ReactNode {
+export default function MyLibrary({
+  params,
+}: {
+  params: { status?: string };
+}): React.ReactNode {
   const {
-    sortBooks,
-    filterBooks,
     nextPage,
-    searchBooks,
-    filteredBy,
+    sortBooks,
     userBooks,
-  } = useTable();
+    filteredBy,
+    filterBooks,
+    searchBooks,
+  } = useTable((params.status?.[0] || "to-read") as ReadStatus);
+  const { scrollableDivRef } = useScrollPosition({
+    lowerThreshold: 60,
+    upperThreshold: 90,
+    onThreshold: nextPage,
+  });
   const { booksLists } = useBooksList();
 
   const [userBookDataSorted, setUserBookDataSorted] = React.useState<
@@ -34,11 +44,26 @@ export default function MyLibrary(): React.ReactNode {
   >([]);
   const [showFilterDropdown, setShowFilterDropdown] = React.useState(false);
 
-  // return <Loading spinnerClassName="w-20 h-20" />;
-
   useEffect(() => {
     setUserBookDataSorted(userBooks);
   }, [userBooks]);
+
+  const books = useMemo((): Book[] => {
+    return userBookDataSorted
+      .map((ubd) => ubd.bookData.book)
+      .filter((book) => book !== undefined) as Book[];
+  }, [userBookDataSorted]);
+
+  const title = useMemo(() => {
+    switch (params.status?.[0]) {
+      case "read":
+        return "Books I've read";
+      case "to-read":
+        return "Next read";
+      default:
+        return "Next read";
+    }
+  }, [params.status]);
 
   const onSortClick = (tabItem: TabItem) => {
     const filteredBooks = filterBooks(undefined, undefined, booksLists);
@@ -84,7 +109,7 @@ export default function MyLibrary(): React.ReactNode {
         }}
         variant="outline"
         className={`rounded-full flex-shrink-0 !min-w-20 h-6 p-4 w-max max-w-[70%]
-              ${filteredBy.length > 0 ? "border-none bg-primary" : ""}
+              ${filteredBy.length > 0 ? "bg-primary" : ""}
               `}
       >
         <div className="w-fit flex flex-row gap-1 justify-start items-center truncate">
@@ -127,36 +152,45 @@ export default function MyLibrary(): React.ReactNode {
   );
 
   return (
-      <div className="w-full h-full flex flex-col gap-5">
-        <SearchBarIcon>
-          <SearchBarComponent
-            onChange={(value: string) => searchBooks(value)}
-            onSubmit={(value: string) => searchBooks(value)}
-            placeholder="Search in Your Books..."
-            className="pr-16"
-          />
-        </SearchBarIcon>
+    <div className="w-full h-full flex flex-col gap-5">
+      <SearchBarComponent
+        onChange={(value: string) => searchBooks(value)}
+        onSubmit={(value: string) => searchBooks(value)}
+        placeholder="Search in Your Books..."
+        className="pr-16"
+      />
 
-        <div className="h-full flex flex-col gap-10">
-          <div className="flex flex-col gap-4">
-            <Tabs
-              Title={() => <div className="font-bold text-xl">Sort by</div>}
-              items={sorterTabItems}
-              onClick={onSortClick}
-            />
-            <div className="flex flex-col gap-1 relative">
-              <div className="font-bold text-xl">Filter by</div>
-              <ListFilter filter="readlist" />
-            </div>
+      <div
+        className="h-full flex flex-col gap-[30px] overflow-auto"
+        ref={scrollableDivRef}
+      >
+        <div className="flex flex-col gap-[25px]">
+          <Tabs
+            Title={() => <div className="text-2xl">Sort by</div>}
+            items={sorterTabItems}
+            onClick={onSortClick}
+            selectable
+          />
+          <div className="flex flex-col gap-2.5 relative">
+            <div className="text-2xl">Filter by</div>
+            <ListFilter filter="readlist" />
+          </div>
+        </div>
+        <div className="flex flex-col gap-[25px]">
+          <div className="flex flex-row gap-1 justify-start items-center">
+            <FaBars className="w-[17.5px] h-[15px]" />
+            <span className="text-2xl">{title}</span>
           </div>
           <BookList
-            books={userBookDataSorted.map((ubd) => ubd.bookData.book)}
+            books={books}
             onNextPageScroll={nextPage}
             direction="column"
             thumbnailSize="md"
             disableScroll
+            showAdd
           />
         </div>
       </div>
+    </div>
   );
 }

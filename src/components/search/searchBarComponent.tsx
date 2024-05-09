@@ -4,25 +4,25 @@ import { Search } from "../icons/search";
 import { Clear } from "../icons/clear";
 
 export interface SearchBarComponentProps {
-  onSubmit?: (value: string) => any;
-  onChange?: (value: string) => any;
-  placeholder?: string;
   className?: string;
-  formClassName?: string;
   autoFocus?: boolean;
+  placeholder?: string;
+  formClassName?: string;
   onFocus?: () => any;
   onBlur?: (value: string) => any;
+  onSubmit?: (value: string) => any;
+  onChange?: (value: string) => any;
 }
 
 export const SearchBarComponent: React.FC<SearchBarComponentProps> = ({
+  onBlur,
+  onFocus,
   onSubmit,
   onChange,
-  className,
-  formClassName,
-  placeholder,
-  onFocus,
-  onBlur,
   autoFocus,
+  className,
+  placeholder,
+  formClassName,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [previousSearchTerm, setPreviousSearchTerm] = useState("");
@@ -55,7 +55,7 @@ export const SearchBarComponent: React.FC<SearchBarComponentProps> = ({
           <Input
             type="text"
             id="search-bar"
-            className="py-2 h-[46px] w-full rounded-full bg-background  text-foreground text-base placeholder:text-sm placeholder-gray-300 focus:outline-none border-none lowercase"
+            className="py-2 h-[46px] w-full rounded-full bg-background  text-foreground text-base placeholder:text-sm placeholder-gray-300 focus:outline-none border-none"
             placeholder={placeholder ?? "Search..."}
             value={searchTerm}
             autoFocus={autoFocus}

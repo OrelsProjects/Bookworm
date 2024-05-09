@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "./ui/button";
 import useAuth from "../hooks/useAuth";
+import { EventTracker } from "../eventTracker";
 
 interface GoogleLoginProps {
   onClickBefore?: () => void;
@@ -15,16 +16,21 @@ export default function GoogleLogin({
 }: GoogleLoginProps) {
   const { signInWithGoogle } = useAuth();
 
-  const handleGoogleLogin = async () => await signInWithGoogle();
+  const handleGoogleLogin = async () => {
+    await signInWithGoogle();
+  };
 
   return (
     <Button
       onClick={() => {
-        onClickBefore?.();
+        try {
+          onClickBefore?.();
+        } catch (e) {}
         handleGoogleLogin();
       }}
       variant="outline"
-      className={`rounded-full w-max-full h-[50px] w-[50px] border-2 p-0 ${className}`}
+      className={`rounded-full w-max-full h-[50px] w-[50px] cursor-pointer border-2 p-0 ${className}`}
+      clickable={true}
     >
       <img
         src="/google.png"

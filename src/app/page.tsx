@@ -12,7 +12,7 @@ function App() {
   const { user, loadingState, error } = useSelector(selectAuth);
 
   useEffect(() => {
-    router.push("/home");
+    router.push("/explore");
   }, [loadingState, user]);
 
   // Sometimes the redirect of google returns with an error and 300ms later it returns with the user

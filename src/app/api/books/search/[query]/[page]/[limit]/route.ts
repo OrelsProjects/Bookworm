@@ -1,22 +1,27 @@
 import Logger from "@/src/utils/loggerServer";
 import { GetAxiosInstance, getUserIdFromRequest } from "@/src/utils/apiUtils";
-import { Book } from "../../../models";
 import { NextRequest, NextResponse } from "next/server";
-import { setThumbnailColorsToBooks } from "../list/_utils/thumbnailUtils";
+import { Book } from "../../../../../../../models";
+import { setThumbnailColorsToBooks } from "../../../../../list/_utils/thumbnailUtils";
 
-export async function GET(req: NextRequest) {
+type SearchBooksParams = {
+  query: string;
+  page: number;
+  limit: number;
+};
+
+export async function GET(
+  req: NextRequest,
+  { params }: { params: SearchBooksParams }
+) {
   let query: string | null = "";
   try {
-    const url = req.nextUrl;
-    query = url.searchParams.get("query") ?? "";
-    if (!query) {
-      return NextResponse.json(
-        { error: "Missing query parameter" },
-        { status: 400 }
-      );
-    }
+    query = params.query;
+    const { page, limit } = params;
     const axios = GetAxiosInstance(req);
-    const response = await axios.get<Book[]>(`/google-books?query=${query}`);
+    const response = await axios.get<Book[]>(
+      `/google-books?query=${query}&page=${page}&limit=${limit}`
+    );
     const books = response.data ?? [];
     Logger.info(
       "Successfully fetched google books",

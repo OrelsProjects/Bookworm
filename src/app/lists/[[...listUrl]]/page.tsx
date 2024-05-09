@@ -1,25 +1,23 @@
 "use client";
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { SearchBarComponent } from "../../../components/search/searchBarComponent";
 import useTable from "../../../hooks/useTable";
 import BookList from "../../../components/book/bookList";
 import BooksListList from "../../../components/booksList/booksListList";
-import { Add } from "../../../components/icons/add";
 import { Plus } from "../../../components/icons/plus";
 import { useSelector } from "react-redux";
-import toast from "react-hot-toast";
+import { toast } from "react-toastify";
 import axios from "axios";
 import { SafeBooksListData } from "../../../models/booksList";
 import { IResponse } from "../../../models/dto/response";
 import { Logger } from "../../../logger";
-import Loading from "../../../components/ui/loading";
 import { useModal } from "../../../hooks/useModal";
 import { selectAuth } from "../../../lib/features/auth/authSlice";
-import SearchBarIcon from "../../../components/search/searchBarIcon";
 import useBooksList from "../../../hooks/useBooksList";
 import { EmptyList } from "../../../components/emptyList";
+import { SeeAll } from "../../../components/ui/seeAll";
 
 const MyLists = ({ params }: { params: { listUrl?: string } }) => {
   const router = useRouter();
@@ -42,7 +40,7 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
           },
           {
             onBack: () => {
-              router.push("/home");
+              router.push("/explore");
             },
           }
         );
@@ -66,7 +64,7 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
             },
             {
               onBack: () => {
-                router.push("/home");
+                router.push("/explore");
               },
               popLast: true,
               shouldAnimate: false,
@@ -110,25 +108,15 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
   }, [params.listUrl, window.location]);
 
   const onSeeAllClick = useCallback(() => {
-    router.push("/my-library");
+    router.push("/my-library/read");
   }, [router]);
 
   const onAddListClick = () => showBooksListEditModal();
 
   const UserBooks = () => (
     <div className="w-full h-fit flex flex-col gap-5">
-      <div className="w-full flex flex-row justify-between items-end">
-        <div className="text-list-title">My Library</div>
-        <h2 className="text-see-all" onClick={onSeeAllClick}>
-          See all
-        </h2>
-      </div>
-      <BookList
-        books={userBooks.map((ubd) => ubd.bookData.book)}
-        onNextPageScroll={nextPage}
-        direction="row"
-        thumbnailSize="2xl"
-      />
+      <SeeAll title="My Library" onClick={onSeeAllClick} />
+      <BookList readStatus="read" direction="row" thumbnailSize="2xl" showAdd />
     </div>
   );
 
@@ -169,21 +157,19 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
 
   return (
     <div className="h-full w-full flex flex-col gap-10 pb-4">
-      <SearchBarIcon>
-        <SearchBarComponent
-          onChange={(value: string) => {
-            searchInBooksList(value);
-            searchBooks(value);
-          }}
-          onSubmit={(value: string) => {
-            searchInBooksList(value);
-            searchBooks(value);
-          }}
-          placeholder="Search in Your Books..."
-          className="pr-16"
-        />
-      </SearchBarIcon>
-      <div className="flex gap-10 flex-grow flex-col h-full">
+      <SearchBarComponent
+        onChange={(value: string) => {
+          searchInBooksList(value);
+          searchBooks(value);
+        }}
+        onSubmit={(value: string) => {
+          searchInBooksList(value);
+          searchBooks(value);
+        }}
+        placeholder="Search in Your Books..."
+        className="pr-16"
+      />
+      <div className="h-full w-full flex gap-10 flex-grow flex-col overflow-auto">
         <UserBooks />
         <UserBooksLists />
       </div>

@@ -3,36 +3,42 @@
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
-import { BottomBarItem, bottomBarItems } from "./bottomBarItems";
+import { NavigationBarItem, navigationBarItems } from "./navigationBarItems";
 import { getIconSize } from "../../consts/icon";
 import { useModal } from "../../hooks/useModal";
+import { Button } from "../ui/button";
 
-const BottomBar = () => {
+const NavigationBar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const { clearStack } = useModal();
-  const [selected, setSelected] = React.useState<BottomBarItem>();
+  const [selected, setSelected] = React.useState<NavigationBarItem | null>();
 
   useEffect(() => {
-    const selected = bottomBarItems.find((item) =>
+    const selected = navigationBarItems.find((item) =>
       pathname.includes(item.path)
     );
-    setSelected(selected ?? bottomBarItems[0]);
+    setSelected(selected);
   }, [pathname]);
 
   return (
-    <div className="w-full h-fit flex flex-row justify-center z-40 absolute bottom-8 inset-0">
-      <div className="flex items-center justify-between gap-4 w-max bg-foreground rounded-xl fixed bottom-8 py-3 px-7">
-        {bottomBarItems.map((item) => {
+    <div className="w-full h-fit flex flex-row justify-center items-center z-20 fixed bottom-0">
+      <div className="w-full h-15 flex items-center justify-center gap-[70px] rounded-xl fixed bottom-0 bg-background">
+        {navigationBarItems.map((item) => {
           return (
-            <div
+            <Button
+              data-ripple-light={false}
+              data-ripple-dark={false}
               key={item.name}
-              className="flex items-center justify-center w-full h-full cursor-pointer"
+              className="flex items-center justify-center rounded-full w-fit h-fit cursor-pointer bg-transparent p-0"
               onClick={() => {
-                if (pathname.includes(item.path)) return;
-                router.push(item.path);
-                clearStack();
-                setSelected(item);
+                if (pathname.includes(item.path)) {
+                  router.refresh();
+                } else {
+                  router.push(item.path);
+                  clearStack();
+                  setSelected(item);
+                }
               }}
             >
               {selected?.path === item.path ? (
@@ -49,10 +55,10 @@ const BottomBar = () => {
                     getIconSize({
                       size: item.size,
                     }).className
-                  } !text-background`}
+                  } !text-foreground`}
                 />
               )}
-            </div>
+            </Button>
           );
         })}
       </div>
@@ -60,4 +66,4 @@ const BottomBar = () => {
   );
 };
 
-export default BottomBar;
+export default NavigationBar;

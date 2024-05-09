@@ -24,90 +24,66 @@ input[type="text"]:-moz-ui-autofill {
 
 @layer base {
   :root {
-    /* Selected button (Primary/Default) */
-    /* --primary: 193, 89, 89; */
-    --primary: 255, 148, 38;
-    /* Primary/Medium */
-    --primary-foreground: 9, 72, 123;
-    /* Primary/weak */
-    --primary-weak: 217, 217, 217;
-    /* Not selected button (Surface/Secondary) */
-    --secondary: 21, 63, 102;
-    --background: 20, 20, 20;
-    /* Text main color (Neutral/Default) */
-    --foreground: 245, 245, 245;
-    /* Text secondary color (Neutral/Strong) */
-    --muted: 154, 149, 149;
-    --muted-foreground: 35 35 35;
-    /* Surface/Primary */
-    --card: 21, 63, 102;
-    /* Status/Success/Default */
-    --accent: 28, 197, 135;
-    /* Stars rating color */
-    --rating: 255, 177, 60;
+    --background: 0, 0%, 8%;
 
-    /* Statistic card gradient colors - using RGBA for opacity */
-    --statistic-card-gradient-start: 0, 157, 255, 0.5; /* 50% opacity */
-    --statistic-card-gradient-end: 0, 157, 255, 0.035; /* 3.5% opacity */
+    --primary: 39, 95%, 39%, 1;
+    --primary-foreground: 210, 40%, 98%;
 
-    /* Borders and Inputs */
-    --border: 193, 202, 209;
-    --input: 193, 202, 209;
-    --ring: 0, 157, 255;
+    --secondary: 217.4, 42.7%, 16.5%;
+    --secondary-foreground: 210, 40%, 96.1%;
 
-    /* Error/Default */
-    --error: 255, 69, 58;
+    --foreground: 0, 0%, 100%;
 
-    /* Border Radius */
-    --radius: 0.75rem;
+    --muted: 220, 10.5%, 78.2%;
+    --muted-foreground: 215.4, 16.3%, 46.9%;
 
-    --tw-shadow-color: var(--background);
+    --card: 215.4, 42.7%, 33.3%;
+    --card-foreground: 210, 40%, 98%;
+
+    --accent: 160.9, 70.3%, 39.6%;
+    --accent-foreground: 210, 40%, 98%;
+
+    --rating: 38.8, 100%, 70.2%;
+    --statistic-card-gradient-start: 0, 100%, 61.6%; /* 50% opacity */
+    --statistic-card-gradient-end: 0, 100%, 61.6%; /* 3.5% opacity */
+
+    --border: 214.3, 31.8%, 91.4%;
+    --input: 214.3, 31.8%, 91.4%;
+    --ring: 222.2, 84%, 4.9%;
+
+    --error: 3, 100%, 61%;
+
+    --radius: 0.5rem;
+    --tw-shadow-color: 0, 0%, 8%;
   }
 
   .dark {
-    --background: 20, 20, 20;
+    --background: 0, 0%, 8%;
 
-    --primary: 0 100% 61.6%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 39, 95%, 39%, 1;
+    --primary-foreground: 210, 40%, 98%;
 
-    /* Surface/Secondary */
-    --secondary: 217.4 42.7% 16.5%;
-    --secondary-foreground: 210 40% 96.1%;
+    --secondary: 217.4, 42.7%, 16.5%;
+    --secondary-foreground: 210, 40%, 96.1%;
 
-    /* Neutral/Default */
-    --background: 20, 20, 20;
-    --foreground: 0 0% 100%;
+    --foreground: 0, 0%, 100%;
+    --muted: 220, 10.5%, 78.2%;
+    --muted-foreground: 215.4, 16.3%, 46.9%;
 
-    /* Neutral/Strong */
-    --muted: 220 10.5% 78.2%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --card: 215.4, 42.7%, 33.3%;
+    --card-foreground: 210, 40%, 98%;
+    --accent: 160.9, 70.3%, 39.6%;
+    --accent-foreground: 210, 40%, 98%;
+    --rating: 38.8, 100%, 70.2%;
+    --statistic-card-gradient-start: 0, 100%, 61.6%; 
+    --statistic-card-gradient-end: 0, 100%, 61.6%; 
+    --border: 214.3, 31.8%, 91.4%;
+    --input: 214.3, 31.8%, 91.4%;
+    --ring: 222.2, 84%, 4.9%;
+    --error: 3, 100%, 61%;
 
-    /* Surface/Primary */
-    --card: 215.4 42.7% 33.3%;
-    --card-foreground: 210 40% 98%;
-
-    /* Status/Success/Default */
-    --accent: 160.9 70.3% 39.6%;
-    --accent-foreground: 210 40% 98%;
-
-    /* Stars rating color */
-    --rating: 38.8 100% 70.2%;
-
-    /* Statistic card gradient colors */
-    --statistic-card-gradient-start: 0 100% 61.6%; /* 50% opacity */
-    --statistic-card-gradient-end: 0 100% 61.6%; /* 3.5% opacity */
-
-    /* Borders and Inputs */
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    /* Error/Default */
-    --error: 255, 69, 58;
-
-    /* Border Radius */
     --radius: 0.5rem;
-    --tw-shadow-color: var(--background);
+    --tw-shadow-color: 0, 0%, 8%;
   }
 }
 
@@ -241,7 +217,7 @@ input[type="text"]:-moz-ui-autofill {
 }
 
 .text-see-all {
-  @apply text-xl text-foreground underline leading-5.5 flex-shrink-0;
+  @apply text-xl text-foreground underline underline-offset-2 leading-5.5 flex-shrink-0;
 }
 
 .text-list-title {

@@ -6,7 +6,7 @@ import { AuthStateType, selectAuth } from "../../lib/features/auth/authSlice";
 import useBook from "../../hooks/useBook";
 import { Logger } from "@/src/logger";
 import useBooksList from "../../hooks/useBooksList";
-import useUserRecommendations from "../../hooks/useRecommendations";
+import useRecommendations from "../../hooks/useRecommendations";
 import axios from "axios";
 
 interface DataProviderProps {
@@ -16,7 +16,7 @@ interface DataProviderProps {
 const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
   const { loadUserBooks } = useBook();
   const { loadUserBooksLists } = useBooksList();
-  const { loadUserRecommendations } = useUserRecommendations();
+  const { loadUserRecommendations } = useRecommendations();
   const { user, state } = useSelector(selectAuth);
   const loadingUserBooks = useRef<boolean>(false);
   const [dataLoaded, setDataLoaded] = React.useState(false);
