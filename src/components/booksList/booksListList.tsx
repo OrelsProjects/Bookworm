@@ -13,6 +13,7 @@ import { isBooksEqual } from "../../utils/bookUtils";
 import { CommentsArea } from "../modal/_components/commentsArea";
 import { useModal } from "../../hooks/useModal";
 import { EmptyList } from "../emptyList";
+import CustomCheckbox from "../ui/customCheckbox";
 
 interface EndElementProps {
   onEndElementClick: (booksList: BooksListData) => void;
@@ -130,7 +131,7 @@ const BooksListList: React.FC<Props> = ({
                     endElementProps.onEndElementClick(listData);
                   }}
                 >
-                  <Checkbox
+                  <CustomCheckbox
                     checkedComponent={
                       <Checkmark.Fill
                         iconSize="lg"

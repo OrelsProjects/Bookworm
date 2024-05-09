@@ -63,10 +63,6 @@ const SearchBar: React.FC<SearchBarProps> = ({
   const [seeAllLists, setSeeAllLists] = React.useState(false);
 
   useEffect(() => {
-    console.log("loading?", searchHook.status === "loading");
-  }, [searchHook.status]);
-
-  useEffect(() => {
     if (searchHook.error) {
       toast.error("Failed to fetch books");
     }

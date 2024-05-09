@@ -215,11 +215,8 @@ export default function BooksListGridView({
               )} */}
             </div>
           </div>
-          <div className="text-2xl">
-            {booksReadCount}/{sortedBooksInList.length}
-          </div>
         </div>
-        {isBooksListOwnedByUser && (
+        {isBooksListOwnedByUser ? (
           <SwitchEditMode
             safeBooksListData={safeBooksListData}
             onCheckedChange={(checked) => {
@@ -230,6 +227,10 @@ export default function BooksListGridView({
               });
             }}
           />
+        ) : (
+          <div className="text-2xl">
+            {booksReadCount}/{sortedBooksInList.length}
+          </div>
         )}
       </div>
       <div

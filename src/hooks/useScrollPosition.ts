@@ -27,7 +27,6 @@ function useScrollPosition(options?: AdditionalOptions) {
         ? scrollbar.scrollWidth
         : scrollbar.scrollHeight;
     const scrollPercentage = (scrollPosition / totalSize) * 100;
-    console.log(scrollPercentage);
 
     if (
       scrollPercentage >= (options?.lowerThreshold ?? 50) &&
