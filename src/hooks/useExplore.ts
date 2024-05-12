@@ -18,13 +18,13 @@ import useSearch from "./useSearch";
 const useExplore = () => {
   const dispatch = useAppDispatch();
   const {
+    page,
     lists,
     genres,
-    selectedGenre,
     loading,
+    selectedGenre,
     loadingGenres,
     loadingNewPage,
-    page,
     lastPageReached,
   } = useAppSelector((state) => state.explore);
   
