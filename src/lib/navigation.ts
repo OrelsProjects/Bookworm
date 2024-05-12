@@ -1,8 +1,26 @@
 "use client";
 
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
-export const navigateToSeeAllBooksLists = () => {
+const useNavigation = () => {
   const router = useRouter();
-  router.push("/see-all/books-lists");
+
+  const navigateToSeeAllBooksLists = () => {
+    router.push("/see-all/books-lists");
+  };
+
+  const navigateToBooksListView = (listUrl: string) => {
+    router.push(`${listUrl}`);
+  };
+
+  const navigateToBookInList = (listUrl: string, bookName: string) => {
+    router.push(`${listUrl}/${bookName}`);
+  };
+
+  return {
+    navigateToSeeAllBooksLists,
+    navigateToBooksListView,
+  };
 };
+
+export default useNavigation;

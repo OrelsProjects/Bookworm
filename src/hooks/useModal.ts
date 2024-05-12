@@ -11,6 +11,7 @@ import { BooksListData, SafeBooksListData } from "../models/booksList";
 import { useSelector } from "react-redux";
 import { AuthStateType, selectAuth } from "../lib/features/auth/authSlice";
 import { ModalBookDetailsProps } from "../components/modal/modalBookDetails";
+import { useRouter } from "next/navigation";
 
 const modalsThatRequireAuth = [
   ModalTypes.ADD_BOOK_TO_LIST,
@@ -20,6 +21,7 @@ const modalsThatRequireAuth = [
 export const useModal = () => {
   const { state } = useSelector(selectAuth);
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const onShowModal = (
     data: any,
@@ -41,7 +43,12 @@ export const useModal = () => {
       showRegisterModal();
       return;
     }
-    onShowModal(data, type, options);
+
+    // if there's no back route, options.onBack will navigate to /explore. Otherwise, it will navigate to the back route
+    // Regardless of if there's options.onBack or not
+    const onBack =
+      window.history.length > 1 ? router.back : () => router.push("/explore");
+    onShowModal(data, type, { ...options, onBack });
   };
 
   const showAddBookToListModal = (data: Book) =>
@@ -59,7 +66,7 @@ export const useModal = () => {
   ) => handleShowModal(data, ModalTypes.BOOKS_LIST_DETAILS_EDIT, options);
 
   const showBooksListModal = (
-    data: { bookList?: SafeBooksListData },
+    data: { booksList?: SafeBooksListData },
     options?: ShowModalOptions
   ) => {
     handleShowModal(data, ModalTypes.BOOKS_LIST_DETAILS, options);

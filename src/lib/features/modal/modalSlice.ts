@@ -4,9 +4,10 @@ import type { RootState } from "../../store";
 
 export interface ShowModalOptions {
   popLast?: boolean;
+  loading?: boolean;
+  shallow?: boolean;
   shouldAnimate?: boolean;
   onBack?: () => void;
-  loading?: boolean;
 }
 
 export enum ModalTypes {

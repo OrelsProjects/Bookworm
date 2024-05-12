@@ -54,7 +54,7 @@ const ExplorePage: React.FC<ExplorePageProps> = () => {
         </div>
       ) : (
         <div
-          className="flex flex-col gap-8 overflow-auto mt-[88px]"
+          className="flex flex-col gap-8 overflow-auto"
           ref={scrollableDivRef}
         >
           <div className="w-full flex flex-row gap-[9px] justify-start">

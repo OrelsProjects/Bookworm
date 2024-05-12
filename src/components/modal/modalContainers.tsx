@@ -48,7 +48,6 @@ export const ModalContent: React.FC<ModalContentProps> = ({
   thumbnailDetails,
   buttonsRow,
   bottomSection,
-  children,
 }) => (
   <ContentContainer>
     <div className="w-full h-fit flex flex-col items-center">

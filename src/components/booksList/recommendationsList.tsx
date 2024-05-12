@@ -6,6 +6,7 @@ import { FaEye as Eye } from "react-icons/fa";
 import Tag from "../../components/ui/Tag";
 import BooksListThumbnail from "./booksListThumbnail";
 import { unslugifyText } from "../../utils/textUtils";
+import useNavigation from "../../lib/navigation";
 
 export const LoadingRecommendationsList = () => {
   return (
@@ -85,12 +86,13 @@ const RecommendationsList = ({
   showIndex?: boolean;
 }) => {
   const { showBooksListModal } = useModal();
+
   return (
     <div className="flex flex-col gap-3">
       {lists.map((list, index) => (
         <div
           className="w-full flex flex-row gap-2.5 justify-start items-start py-1"
-          onClick={() => showBooksListModal({ bookList: list })}
+          onClick={() => showBooksListModal({ booksList: list })}
         >
           <BooksListThumbnail
             thumbnailSize="md"

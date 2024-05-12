@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 
 import Book from "../../models/book";
 import useBook from "../../hooks/useBook";
@@ -12,9 +12,6 @@ import ReadMoreText from "../readMoreText";
 import { BookInList } from "../../models/bookInList";
 import { useSelector } from "react-redux";
 import { selectAuth } from "../../lib/features/auth/authSlice";
-import { UserBookData } from "../../models/userBook";
-import { unslugifyText } from "../../utils/textUtils";
-import Tabs from "../ui/tabs";
 import GenresTabs from "../genresTabs";
 
 export interface ModalBookDetailsProps {
