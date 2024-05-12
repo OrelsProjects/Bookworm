@@ -8,7 +8,9 @@ import { useAppDispatch, useAppSelector } from "../lib/hooks";
 import {
   clearResults,
   setSearchResults,
+  setStatus,
 } from "../lib/features/search/searchSlice";
+import { EventTracker } from "../eventTracker";
 
 // Define a type for the hook's return value
 export interface UseSearchResult {
@@ -29,12 +31,10 @@ function useSearch({
 }): UseSearchResult {
   const dispatch = useAppDispatch();
   const { books, lists } = useAppSelector((state) => state.search);
+  const { status } = useAppSelector((state) => state.search);
   const searchValueRef = useRef<string>("");
 
   const [page, setPage] = useState<number>(1);
-  const [status, setStatus] = useState<
-    "idle" | "loading" | "error" | "results" | "no-results"
-  >("idle");
   const [error, setError] = useState<string | null>(null);
   const [searchValue, setSearchValue] = useState<string>("");
   const [results, setResults] = useState<SearchResults | null>(null);
@@ -61,8 +61,8 @@ function useSearch({
   // Search useEffect
   useEffect(() => {
     if (searchValue === "") {
+      dispatch(clearResults());
       setResultsToUpdate(null);
-      setStatus("idle");
     }
 
     if (searchValue) {
@@ -86,11 +86,15 @@ function useSearch({
 
   const search = async (value: string) => {
     try {
-      setStatus("loading");
+      dispatch(setStatus("loading"));
       setError(null);
       if (!value) {
         return [];
       }
+      EventTracker.track("User searched", {
+        query: value,
+        path: window.location.pathname,
+      });
       searchValueRef.current = value;
       setSearchValue(value);
       const result = await searchAll({ query: value, page, limit });
@@ -99,10 +103,10 @@ function useSearch({
       }
       if (!result) {
         setResultsToUpdate(null);
-        setStatus("no-results");
+        dispatch(setStatus("no-results"));
         return;
       }
-      setStatus("results");
+      dispatch(setStatus("results"));
       setResultsToUpdate(result);
     } catch (error: any) {
       if (axios.isCancel(error)) {
@@ -110,7 +114,7 @@ function useSearch({
       }
       Logger.error("Failed to fetch books", { error, data: { query: value } });
       setError(error.message);
-      setStatus("error");
+      dispatch(setStatus("error"));
       return [];
     }
   };

@@ -55,7 +55,7 @@ const BooksListList: React.FC<Props> = ({
 
   const onListClick = (booksListData: BooksListData) =>
     showBooksListModal({
-      bookList: booksListData,
+      booksList: booksListData,
     });
 
   const isBookInList = useCallback(

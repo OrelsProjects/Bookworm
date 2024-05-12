@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import { Logger } from "../../logger";
 import useTable from "../../hooks/useTable";
 import { ReadStatus } from "../../models/readingStatus";
+import { EventTracker } from "../../eventTracker";
 
 type BookListProps = {
   books?: Book[];
@@ -132,6 +133,7 @@ const BookList: React.FC<BookListProps> = ({
 
   const onBookClick = (book: Book) => showBookDetailsModal({ bookData: book });
   const onDeleteBookClick = async (book: Book) => {
+    EventTracker.track("Delete book clicked");
     let toastId = toast.loading("Deleting book...");
     try {
       await deleteUserBookWithBook(book);

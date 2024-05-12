@@ -149,7 +149,7 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
                 if (!bookList) return;
                 showBooksListModal(
                   {
-                    bookList,
+                    booksList: bookList,
                   },
                   {
                     popLast: true,

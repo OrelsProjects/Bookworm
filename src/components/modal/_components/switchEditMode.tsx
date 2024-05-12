@@ -49,7 +49,7 @@ export default function SwitchEditMode({
       });
     } else if (!value && isEdit) {
       showBooksListModal(
-        { bookList: safeBooksListData },
+        { booksList: safeBooksListData },
         { popLast: true, shouldAnimate: false }
       );
     }

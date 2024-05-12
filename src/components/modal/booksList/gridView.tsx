@@ -179,7 +179,7 @@ export default function BooksListGridView({
   };
 
   const isBooksListOwnedByUser = useMemo(() => {
-    return (safeBooksListData as any).userId !== undefined;
+    return (safeBooksListData as any)?.userId !== undefined;
   }, [safeBooksListData]);
 
   const booksListData: BooksListData = useMemo(

@@ -70,7 +70,7 @@ const ModalProvider: React.FC = () => {
             ).bookData.bookId;
             if (isPreviousModalIsList) {
               const listId =
-                previousModalStack[previousModalStack.length - 1].data.bookList
+                previousModalStack[previousModalStack.length - 1].data.booksList
                   .listId;
               const bookInListVisit: BookInListVisit = {
                 bookId,
@@ -87,11 +87,11 @@ const ModalProvider: React.FC = () => {
               axios.post("/api/statistics/visit/book", bookVisit);
             }
           case ModalTypes.BOOKS_LIST_DETAILS:
-            const bookListVisit: ListVisit = {
-              listId: modalStack[modalStack.length - 1].data.bookList.listId,
+            const booksListVisit: ListVisit = {
+              listId: modalStack[modalStack.length - 1].data.booksList.listId,
               visitedAt: now,
             };
-            axios.post("/api/statistics/visit/list", bookListVisit);
+            axios.post("/api/statistics/visit/list", booksListVisit);
         }
       }
     } catch (e: any) {
@@ -147,7 +147,7 @@ const ModalProvider: React.FC = () => {
         color = darkenColor(firstBookEdit?.thumbnailColor) ?? defaultColor;
         break;
       case ModalTypes.BOOKS_LIST_DETAILS:
-        const firstBook = data?.bookList?.booksInList?.[0]?.book;
+        const firstBook = data?.booksList?.booksInList?.[0]?.book;
         color = darkenColor(firstBook?.thumbnailColor) ?? defaultColor;
         break;
       case ModalTypes.ADD_BOOK_TO_LIST:
@@ -198,7 +198,7 @@ const ModalProvider: React.FC = () => {
         );
         break;
       case ModalTypes.BOOKS_LIST_DETAILS:
-        const booksInList = data?.bookList?.booksInList;
+        const booksInList = data?.booksList?.booksInList;
         thumbnail = (
           <BooksListThumbnail
             booksInList={booksInList}
@@ -206,7 +206,7 @@ const ModalProvider: React.FC = () => {
             className={rounded}
           />
         );
-        title = data?.bookList?.name ?? "";
+        title = data?.booksList?.name ?? "";
         break;
       default:
         thumbnail = undefined;
@@ -229,14 +229,25 @@ const ModalProvider: React.FC = () => {
 
   const RenderBooksListDetails = useCallback(
     (data?: any, options?: ShowModalOptions) => {
+      let onBack = options?.onBack;
+      if (!options?.loading) {
+        // set window state to show books list url
+        const currentPath = window.location.pathname;
+        if (!currentPath.includes(data.booksList.publicURL)) {
+          window.history.pushState({}, "", data.booksList.publicURL);
+          onBack = () => {
+            window.history.pushState({}, "", currentPath);
+          };
+        }
+      }
       return (
         <RenderModal
-          onClose={options?.onBack}
+          onClose={onBack}
           type={ModalTypes.BOOKS_LIST_DETAILS}
           shouldAnimate={options?.shouldAnimate ?? true}
         >
           <ModalBooksList
-            safeBooksListData={data.bookList}
+            safeBooksListData={data.booksList}
             loading={options?.loading}
           />
         </RenderModal>
@@ -301,6 +312,7 @@ const ModalProvider: React.FC = () => {
     onClose?: () => void;
     shouldAnimate?: boolean;
   }) => {
+    const pathname = usePathname();
     const isOpen = useMemo<boolean>(
       () => modalStack.some((modal) => modal.type === type),
       [modalStack]

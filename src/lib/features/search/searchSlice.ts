@@ -5,10 +5,6 @@ import { SearchResults, SearchStatus } from "../../../models/search";
 import { SafeBooksListData } from "../../../models/booksList";
 import { Book } from "../../../models";
 
-export interface ShowModalOptions {
-  status: SearchStatus;
-}
-
 interface SearchState {
   status: SearchStatus;
   books: Book[] | null;

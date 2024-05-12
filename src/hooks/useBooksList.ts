@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import axios, { CanceledError } from "axios";
-import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../lib/store";
 import { Logger } from "../logger";
 import {
@@ -14,7 +13,11 @@ import {
   updateBookInList as updateBookInListAction,
   updateBooksInListPositions as updateBooksInListPositionsAction,
 } from "../lib/features/booksLists/booksListsSlice";
-import { BooksListData, CreateBooksListPayload } from "../models/booksList";
+import {
+  BooksListData,
+  CreateBooksListPayload,
+  SafeBooksListData,
+} from "../models/booksList";
 import { Book, User } from "../models";
 import { IResponse } from "../models/dto/response";
 import { DuplicateError } from "../models/errors/duplicateError";
@@ -22,6 +25,7 @@ import { BookInList, BookInListWithBook } from "../models/bookInList";
 import { LoadingError } from "../models/errors/loadingError";
 import useBook from "./useBook";
 import { CancelError } from "../models/errors/cancelError";
+import { useAppDispatch, useAppSelector } from "../lib/hooks";
 
 const BOOK_LIST_DATA_KEY = "booksListData";
 
@@ -90,18 +94,19 @@ const updateListInLocalStorage = (booksListData: BooksListData) => {
 
 const useBooksList = () => {
   const loading = useRef(false);
-  const dispatch = useDispatch();
-  const booksLists = useSelector(
+  const dispatch = useAppDispatch();
+  const booksLists = useAppSelector(
     (state: RootState) => state.booksLists.booksListsData
   );
+  const { recommendationsData } = useAppSelector(
+    (state: RootState) => state.recommendations
+  );
+  const { lists: exploreLists } = useAppSelector((state) => state.explore);
+
   const [booksListsData, setBooksListsData] = useState<BooksListData[]>([]);
   const { addBook } = useBook();
 
-  const updateBooksListAbortController = useRef<AbortController | null>(null);
-  const updateBookInListAbortController = useRef<AbortController | null>(null);
-
   const updateBooksListCancelToken = axios.CancelToken.source();
-  const updateBookInListCancelToken = axios.CancelToken.source();
 
   useEffect(() => {
     const sortedBooksInList = booksLists.map((list) => {
@@ -181,6 +186,42 @@ const useBooksList = () => {
       loading.current = false;
       dispatch(setBooksListsLoading(false));
     }
+  };
+
+  const getBooksList = async (
+    listUrl?: string
+  ): Promise<SafeBooksListData | undefined> => {
+    if (!listUrl) return;
+    const userBooksList = booksLists.find((list) =>
+      list.publicURL.toLowerCase().includes(listUrl.toLowerCase())
+    );
+    if (userBooksList) {
+      return userBooksList;
+    }
+    const recommendedBooksList = recommendationsData.find((list) =>
+      list.publicURL.toLowerCase().includes(listUrl.toLowerCase())
+    );
+    if (recommendedBooksList) {
+      return recommendedBooksList;
+    }
+
+    const exploreBooksList = exploreLists.find((list) =>
+      list.publicURL.toLowerCase().includes(listUrl.toLowerCase())
+    );
+    if (exploreBooksList) {
+      return exploreBooksList;
+    }
+
+    const urlParams = new URLSearchParams();
+    urlParams.append("url", listUrl ?? "");
+    const response = await axios.get<IResponse<SafeBooksListData>>(
+      "/api/list",
+      {
+        params: urlParams,
+      }
+    );
+    const bookList = response.data.result;
+    return bookList;
   };
 
   const createBooksList = async (
@@ -387,6 +428,7 @@ const useBooksList = () => {
     booksLists: booksListsData,
     loading: loading,
     loadUserBooksLists,
+    getBooksList,
     createBooksList,
     updateBooksList,
     cancelUpdateBooksList,

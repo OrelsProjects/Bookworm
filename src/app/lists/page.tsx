@@ -2,27 +2,28 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { SearchBarComponent } from "../../../components/search/searchBarComponent";
-import useTable from "../../../hooks/useTable";
-import BookList from "../../../components/book/bookList";
-import BooksListList from "../../../components/booksList/booksListList";
-import { Plus } from "../../../components/icons/plus";
+import { SearchBarComponent } from "../../components/search/searchBarComponent";
+import useTable from "../../hooks/useTable";
+import BookList from "../../components/book/bookList";
+import BooksListList from "../../components/booksList/booksListList";
+import { Plus } from "../../components/icons/plus";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { SafeBooksListData } from "../../../models/booksList";
-import { IResponse } from "../../../models/dto/response";
-import { Logger } from "../../../logger";
-import { useModal } from "../../../hooks/useModal";
-import { selectAuth } from "../../../lib/features/auth/authSlice";
-import useBooksList from "../../../hooks/useBooksList";
-import { EmptyList } from "../../../components/emptyList";
-import { SeeAll } from "../../../components/ui/seeAll";
+import { SafeBooksListData } from "../../models/booksList";
+import { IResponse } from "../../models/dto/response";
+import { Logger } from "../../logger";
+import { useModal } from "../../hooks/useModal";
+import { selectAuth } from "../../lib/features/auth/authSlice";
+import useBooksList from "../../hooks/useBooksList";
+import { EmptyList } from "../../components/emptyList";
+import { SeeAll } from "../../components/ui/seeAll";
+import { EventTracker } from "../../eventTracker";
 
 const MyLists = ({ params }: { params: { listUrl?: string } }) => {
   const router = useRouter();
   const { user } = useSelector(selectAuth);
-  const { booksLists, searchInBooksList } = useBooksList();
+  const { booksLists, searchInBooksList, getBooksList } = useBooksList();
   const { userBooks, nextPage, searchBooks, searchValue } = useTable();
   const { showBooksListModal, showBooksListEditModal } = useModal();
   const [loadingBooksList, setLoadingBooksList] = useState(false);
@@ -30,58 +31,11 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
   const loadBooksList = async () => {
     try {
       showBooksListModal({}, { loading: true });
-      const userBooksList = booksLists.find(
-        (list) => list.publicURL === params.listUrl
-      );
-      if (userBooksList) {
-        showBooksListModal(
-          {
-            bookList: userBooksList,
-          },
-          {
-            onBack: () => {
-              router.push("/explore");
-            },
-          }
-        );
-        return;
-      }
-      const urlParams = new URLSearchParams();
-      urlParams.append("url", params.listUrl ?? "");
-      const response = await axios.get<IResponse<SafeBooksListData>>(
-        "/api/list",
-        {
-          params: urlParams,
-        }
-      );
-      const bookList = response.data.result;
-      if (bookList) {
-        if (!user) {
-          localStorage.setItem("listReferer", window.location.pathname); // Set referrer.
-          showBooksListModal(
-            {
-              bookList,
-            },
-            {
-              onBack: () => {
-                router.push("/explore");
-              },
-              popLast: true,
-              shouldAnimate: false,
-            }
-          );
-        } else {
-          showBooksListModal(
-            { bookList },
-            {
-              popLast: true,
-              shouldAnimate: false,
-              onBack: () => {
-                router.push("/lists");
-              },
-            }
-          );
-        }
+      const booksList = await getBooksList(params.listUrl);
+      if (booksList) {
+        router.push(`/lists/${params.listUrl}`);
+      } else {
+        router.push("/lists");
       }
     } catch (error: any) {
       Logger.error("Error getting books lists", {
@@ -147,6 +101,9 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
               navigator.clipboard.writeText(
                 `${baseUrl}${list.publicURL}` ?? ""
               );
+              EventTracker.track("Link copied to clipboard", {
+                listId: list.listId,
+              });
               toast.success("Link copied to clipboard!");
             },
           }}

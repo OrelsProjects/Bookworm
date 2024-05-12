@@ -91,7 +91,7 @@ const SearchResultComponent: React.FC<SearchResultProps> = ({
         if (book) {
           showBookDetailsModal({ bookData: book });
         } else if (booksList) {
-          showBooksListModal({ bookList: booksList });
+          showBooksListModal({ booksList: booksList }, { shallow: true });
         }
       }}
     >

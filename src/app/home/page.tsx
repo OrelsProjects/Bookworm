@@ -13,6 +13,7 @@ import { cn } from "../../lib/utils";
 import { getThumbnailSize } from "../../consts/thumbnail";
 import { useModal } from "../../hooks/useModal";
 import { SeeAll } from "../../components/ui/seeAll";
+import useNavigation from "../../lib/navigation";
 
 export default function Home(): React.ReactNode {
   const router = useRouter();
@@ -47,6 +48,7 @@ export default function Home(): React.ReactNode {
 
   const RecommendationsList = () => {
     const router = useRouter();
+    const navigation = useNavigation();
 
     return allRecommendations && allRecommendations.length > 0 ? (
       <div className="flex flex-col gap-2">
@@ -67,7 +69,9 @@ export default function Home(): React.ReactNode {
                       className="flex flex-row gap-4"
                       key={`recommendation-${recommendationList.publicURL}`}
                       onClick={() => {
-                        showBooksListModal({ bookList: recommendationList });
+                        showBooksListModal({
+                          booksList: recommendationList,
+                        });
                       }}
                     >
                       <div

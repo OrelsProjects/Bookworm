@@ -1,6 +1,7 @@
 import React from "react";
 import { Skeleton } from "./skeleton";
 import { cn } from "../../lib/utils";
+import { EventTracker } from "../../eventTracker";
 
 export const SeeAllLoading = ({ title }: { title?: boolean }) =>
   title ? <SeeAllWithTitleLoading /> : <SeeAllComponentLoading />;
@@ -25,7 +26,13 @@ export const SeeAll = ({
   ) : title ? (
     <SeeAllWithTitle title={title} onSeeAllClick={onClick} />
   ) : (
-    <SeeAllText className={className} onClick={onClick} />
+    <SeeAllText
+      className={className}
+      onClick={() => {
+        EventTracker.track("See all clicked", { title });
+        onClick();
+      }}
+    />
   );
 
 const SeeAllText = ({
