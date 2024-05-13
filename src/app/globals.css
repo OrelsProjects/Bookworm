@@ -56,6 +56,7 @@ input[type="text"]:-moz-ui-autofill {
     --radius: 0.5rem;
     --tw-shadow-color: 0, 0%, 8%;
 
+    --landing-page: 35, 51%, 93%;
     --landing-cover: 227 71% 45%;
     --landing-cover-brighter: 227 71% 55%;
   }

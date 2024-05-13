@@ -19,6 +19,11 @@ interface BookPageFlipProps {
   onPageChange?: (page: BookPageFlipItemProps) => void;
 }
 
+const coverSizeClass =
+  "w-[320px] h-[480px] md:h-[620px] md:max-h-[620px] lg:h-[720px] lg:max-h-[720px] md:w-[320px] lg:w-[480px] md:max-w-[320px] lg:max-w-[480px]";
+const pageSizeClass =
+  "w-full h-full md:h-[605px] md:max-h-[605px] lg:h-[705px] lg:max-h-[705px] md:w-[305px] lg:w-[465px] md:max-w-[305px] lg:max-w-[465px]";
+
 const Cover = ({
   isFlipped,
   className,
@@ -46,7 +51,8 @@ const Cover = ({
     <div
       onClick={onClick}
       className={cn(
-        "w-full h-full rounded-lg flex flex-col justify-center items-center relative bg-landing-cover shadow-xl overflow-clip",
+        "w-full rounded-lg flex flex-col justify-center items-center relative bg-landing-cover shadow-xl overflow-clip",
+        coverSizeClass,
         { isFlipped: "bg-landing-cover-brighter" },
         className
       )}
@@ -58,7 +64,11 @@ const Cover = ({
         height: isFlipped ? "100vh" : "100%",
       }}
     >
-      <div className={`${showBack ? "opacity-10" : "opacity-100"} flex justify-start items-center flex-col pt-4`}>
+      <div
+        className={`${
+          showBack ? "opacity-10" : "opacity-100"
+        } flex justify-start items-center flex-col pt-4`}
+      >
         <h1 className="text-background text-6.5xl">BookWiz</h1>
         <h3 className="text-foreground text-2xl">Reading With Purpose</h3>
         {!backCover && (
@@ -89,7 +99,7 @@ const Page = ({
 }) => {
   const styles = {
     ...style,
-    transition: "all 1s ease", // Adjust timing and easing here
+    transition: "all 2.7s ease", // Adjust timing and easing here
     transformOrigin: "left center", // Set transform origin to left center
     transform: isFlipped ? "rotateY(180deg) translateX(10px)" : "rotateY(0deg)",
   };
@@ -97,7 +107,8 @@ const Page = ({
     <div
       onClick={onClick}
       className={cn(
-        "w-full h-full rounded-lg flex flex-col justify-start items-center relative bg-landing-cover shadow-xl",
+        "w-full h-full rounded-lg flex flex-col justify-start items-center relative shadow-xl bg-landing-page",
+        pageSizeClass,
         className
       )}
       style={{ ...styles }}
@@ -168,11 +179,16 @@ const BookPageFlip: React.FC<BookPageFlipProps> = ({
         "w-full h-full flex justify-start items-center flex-col gap-12 font-risque transition-all"
       )}
     >
-      <div className="w-9/12 sm:w-[480px] md:[720px] h-[480px] sm:[h-620px] md:[825px] ml-[43px] mr-[57px] relative flex flex-col">
+      <div
+        className={cn(
+          coverSizeClass,
+          "ml-[43px] mr-[57px] relative flex flex-col"
+        )}
+      >
         <motion.div
-          className="w-full h-full absolute top-0 mt-[25%]"
+          className="w-full h-full absolute top-0 mt-[25%] md:!mt-[25%]"
           initial={{ marginTop: "25%" }}
-          animate={isBookOpen ? { marginTop: "0%" } : { marginTop: "25%" }}
+          animate={isBookOpen ? { marginTop: "0" } : { marginTop: "25%" }}
         >
           <Cover
             onClick={handleCoverClick}
@@ -185,15 +201,13 @@ const BookPageFlip: React.FC<BookPageFlipProps> = ({
           />
           {isBookOpen ? (
             <motion.div
-              onClick={() => {
-                // setIsFlipped(false);
-              }}
               initial={{ scale: 1 }}
               animate={{ width: "86vw", height: "98vh", left: 6, top: 7 }}
-              transition={{ duration: 1 }}
+              transition={{ duration: 0.8 }}
               exit={{ scale: 1 }}
               className={cn(
-                "w-full h-full absolute bg-white z-40 left-2 rounded-lg top-2 flex flex-start justify-between items-center gap-6",
+                "absolute z-40 left-2 rounded-lg top-2 flex flex-start justify-between items-center gap-6 !bg-transparent",
+                pageSizeClass,
                 {
                   isPageFlipped: "z-[55]",
                 }
@@ -220,9 +234,12 @@ const BookPageFlip: React.FC<BookPageFlipProps> = ({
             <motion.div
               initial={{ width: "100%", height: "100%" }}
               animate={{ width: "100%", height: "100%" }}
-              transition={{ duration: 1 }}
+              transition={{ duration: 0.8 }}
               exit={{ scale: 1 }}
-              className="w-full h-full absolute bg-white z-40 left-2 rounded-lg top-2"
+              className={cn(
+                "w-full h-full absolute bg-landing-page z-40 left-2 rounded-lg top-2",
+                coverSizeClass
+              )}
             />
           )}
           {isBookOpen ? (
@@ -232,9 +249,12 @@ const BookPageFlip: React.FC<BookPageFlipProps> = ({
               }}
               initial={{ scale: 1 }}
               animate={{ width: "90vw", height: "100vh", left: 0, top: 0 }}
-              transition={{ duration: 1 }}
+              transition={{ duration: 0.8 }}
               exit={{ scale: 1 }}
-              className="w-full h-full absolute bg-landing-cover z-30 left-2 rounded-lg top-2"
+              className={cn(
+                "w-full h-full absolute bg-landing-cover z-30 left-2 rounded-lg top-2",
+                coverSizeClass
+              )}
             />
           ) : (
             <Cover backCover className="z-20 left-4 top-4" />

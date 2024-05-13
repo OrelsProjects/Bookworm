@@ -77,21 +77,21 @@ function App() {
   const items: BookPageFlipItemProps[] = [
     {
       content: (
-        <div className="w-full h-full flex flex-start justify-center items-start gap-6 bg-foreground text-background rounded-lg">
+        <div className="w-full h-full flex flex-start justify-center items-start gap-6 text-background rounded-lg">
           This is page number 1
         </div>
       ),
     },
     {
       content: (
-        <div className="w-full h-full flex flex-start justify-center items-start gap-6 bg-foreground text-background rounded-lg">
+        <div className="w-full h-full flex flex-start justify-center items-start gap-6 text-background rounded-lg">
           This is page number 2
         </div>
       ),
     },
     {
       content: (
-        <div className="w-full h-full flex flex-start justify-center items-start gap-6 bg-foreground text-background rounded-lg">
+        <div className="w-full h-full flex flex-start justify-center items-start gap-6 text-background rounded-lg">
           This is page number 3
         </div>
       ),
