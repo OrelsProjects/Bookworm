@@ -27,6 +27,7 @@ const NavigationProvider: React.FC<NavigationProviderProps> = ({
       }
     } else {
       const redirect = localStorage.getItem("redirect");
+      localStorage.removeItem("redirect");
       if (redirect) {
         router.push(redirect);
       }
