@@ -93,6 +93,7 @@ const RecommendationsList = ({
         <div
           className="w-full flex flex-row gap-2.5 justify-start items-start py-1"
           onClick={() => showBooksListModal({ booksList: list })}
+          key={`recommendation-list-${list.name}`}
         >
           <BooksListThumbnail
             thumbnailSize="md"

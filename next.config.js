@@ -1,3 +1,5 @@
+const { optimizeImage } = require("next/dist/server/image-optimizer");
+
 const cdnUrl = process.env.NEXT_PUBLIC_CDN_URL;
 // const withPWA = require("next-pwa")({
 //   dest: "public",
@@ -10,6 +12,7 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 module.exports = {
   reactStrictMode: false,
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "http",
