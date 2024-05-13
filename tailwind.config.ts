@@ -61,6 +61,7 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        "landing-page": "hsl(var(--landing-page))",
         "landing-cover": "hsl(var(--landing-cover))",
         "landing-cover-brighter": "hsl(var(--landing-cover-brighter))",
       },
