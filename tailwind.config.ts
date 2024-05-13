@@ -1,3 +1,5 @@
+import plugin from "tailwindcss/plugin";
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
@@ -59,6 +61,8 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        "landing-cover": "hsl(var(--landing-cover))",
+        "landing-cover-brighter": "hsl(var(--landing-cover-brighter))",
       },
       backgroundColor: {
         "statistic-card-gradient-start":
@@ -161,8 +165,72 @@ module.exports = {
       fontFamily: {
         sans: ["DM Sans", "sans-serif"],
         roboto: ["Roboto", "sans-serif"],
+        risque: ["Risque", "cursive"],
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    plugin(function ({ matchUtilities, theme }) {
+      matchUtilities(
+        {
+          "translate-z": (value) => ({
+            "--tw-translate-z": value,
+            transform: ` translate3d(var(--tw-translate-x), var(--tw-translate-y), var(--tw-translate-z)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))`,
+          }), // this is actual CSS
+        },
+        { values: theme("translate"), supportsNegativeValues: true }
+      );
+    }),
+    plugin(function ({ addUtilities, theme }) {
+      const rotateValues = theme("rotate", {}); // Ensure you define rotate values in your theme configuration
+
+      const rotateXUtilities = Object.fromEntries(
+        Object.entries(rotateValues).map(([key, value]) => {
+          return [
+            `.rotate-x-${key}`, // Class name, e.g., rotate-x-45
+            {
+              "--tw-rotate-x": `${value}`, // Use your rotate values from theme
+              transform: "rotateX(var(--tw-rotate-x))",
+            },
+          ];
+        })
+      );
+
+      const rotateYUtilities = Object.fromEntries(
+        Object.entries(rotateValues).map(([key, value]) => {
+          return [
+            `.rotate-y-${key}`, // Class name, e.g., rotate-y-45
+            {
+              "--tw-rotate-y": `${value}`, // Use your rotate values from theme
+              transform: "rotateY(var(--tw-rotate-y))",
+            },
+          ];
+        })
+      );
+
+      addUtilities(rotateXUtilities);
+      addUtilities(rotateYUtilities);
+    }),
+    plugin(function ({ matchUtilities, theme }) {
+      matchUtilities(
+        {
+          "rotate-x": (value) => ({
+            "--tw-rotate-x": value,
+            transform: `rotateX(var(--tw-rotate-x))`,
+          }),
+          "rotate-y": (value) => ({
+            "--tw-rotate-y": value,
+            transform: `rotateY(var(--tw-rotate-y))`,
+          }),
+        },
+        {
+          values: theme("rotate", {
+            auto: "auto", // default or common values can still be specified in theme
+          }),
+          supportsNegativeValues: true,
+        }
+      );
+    }),
+  ],
 };

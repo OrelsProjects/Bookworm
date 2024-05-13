@@ -1,32 +1,8 @@
 import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import StoreProvider from "./providers/StoreProvider";
-import AuthProvider from "./providers/AuthProvider";
 import React from "react";
-import APIProvider from "./providers/APIProvider";
-import { ToastContainer, Flip, Icons, Slide } from "react-toastify";
-import DataProvider from "./providers/DataProvider";
-import Header from "./_components/header";
-import NavigationProvider from "./providers/NavigationProvider";
-import ContentProvider from "./providers/ContentProvider";
-import BrowserDetector from "./providers/BrowserDetector";
-
-const inter = Inter({ subsets: ["latin"] });
-
-export const metadata: Metadata = {
-  // manifest: "/manifest.json",
-  title: "BookWiz",
-  openGraph: {
-    title: "BookWiz",
-    description: "BookWiz",
-    type: "website",
-    locale: "en_US",
-    url: "https://www.bookwiz.app",
-    siteName: "BookWiz",
-  },
-};
+import StoreProvider from "./providers/StoreProvider";
+import ScreenSizeProvider from "./providers/ScreenSizeProvider";
 
 export default function RootLayout({
   children,
@@ -35,38 +11,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <meta property="og:image" content="<generated>" />
-      <meta property="og:image:type" content="<generated>" />
-      <meta property="og:image:width" content="<generated>" />
-      <meta property="og:image:height" content="<generated>" />
-      <body className={`${inter.className} overflow-clip`}>
+      <body>
         <StoreProvider>
-          <AuthProvider>
-            <NavigationProvider>
-              <APIProvider>
-                <DataProvider>
-                  <ToastContainer
-                    stacked
-                    theme="dark"
-                    autoClose={2500}
-                    draggablePercent={60}
-                    className="!mb-16 z-50"
-                    transition={Slide}
-                  />
-                  <ContentProvider>
-                    <BrowserDetector>
-                      <div className="w-full h-full font-roboto">
-                        <Header className="h-fit w-fit" />
-                        {/* <AnimationProvider> */}
-                        {children}
-                        {/* </AnimationProvider> */}
-                      </div>
-                    </BrowserDetector>
-                  </ContentProvider>
-                </DataProvider>
-              </APIProvider>
-            </NavigationProvider>
-          </AuthProvider>
+          <ScreenSizeProvider>{children}</ScreenSizeProvider>
         </StoreProvider>
       </body>
     </html>

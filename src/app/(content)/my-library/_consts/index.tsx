@@ -1,5 +1,5 @@
-import { TabItem } from "../../../components/ui/tabs";
-import { BookSort } from "../../../hooks/useBook";
+import { TabItem } from "../../../../components/ui/tabs";
+import { BookSort } from "../../../../hooks/useBook";
 
 export const sorterTabItems: TabItem[] = [
   {

@@ -6,6 +6,7 @@ import BrowserContext from "../../lib/context/browserContext";
 import BottomBarProvider from "./BottomBarProvider";
 import { cn } from "../../lib/utils";
 import ModalProvider from "./ModalProvider";
+import ScreenSizeProvider from "./ScreenSizeProvider";
 
 // this one calculates the height of the screen and sets it as max height
 // for the children
@@ -17,22 +18,10 @@ export default function ContentProvider({
   className?: string;
 }) {
   const browser = useContext(BrowserContext);
-  const [height, setHeight] = React.useState<number>(0);
-  const [width, setWidth] = React.useState<number>(0);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setHeight(window.innerHeight);
-      setWidth(window.innerWidth);
-    };
-    window.addEventListener("resize", handleResize);
-    handleResize();
-    return () => window.removeEventListener("resize", handleResize);
-  }, [window.innerHeight, window.innerWidth, window]);
 
   return (
-    <SizeContext.Provider value={{ height, width }}>
-      <div className="w-full" style={{ height: `${height}px` }}>
+    <ScreenSizeProvider>
+      <div className="w-full h-full">
         <ModalProvider />
         <BottomBarProvider />
         <div
@@ -43,11 +32,10 @@ export default function ContentProvider({
               "h-screen": browser === "safari",
             }
           )}
-          style={{ height: `${height}px` }}
         >
           {children}
         </div>
       </div>
-    </SizeContext.Provider>
+    </ScreenSizeProvider>
   );
 }
