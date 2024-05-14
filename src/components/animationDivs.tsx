@@ -12,6 +12,7 @@ export enum ExpandType {
   TopRight,
   Center,
   Modal,
+  RightToLeft,
   BottomToTop,
 }
 
@@ -108,6 +109,18 @@ const expandingBottomToTop: MotionProps = {
   },
 };
 
+const expandingRightToLeft: MotionProps = {
+  initial: { width: 0 },
+  animate: { width: "80%" },
+  exit: { width: 0 },
+  transition: {
+    duration: 0.25,
+    ease: "easeInOut",
+    type: "tween",
+    stiffness: 70,
+  },
+};
+
 // Opacity Animation Wrapper
 const OpacityDiv = ({
   innerRef,
@@ -134,6 +147,8 @@ const getExpandProps = (expandType?: ExpandType): MotionProps => {
       return expandingModal;
     case ExpandType.TopRight:
       return expandingTopRightAnimationProps;
+    case ExpandType.RightToLeft:
+      return expandingRightToLeft;
     case ExpandType.BottomToTop:
       return expandingBottomToTop;
     default:

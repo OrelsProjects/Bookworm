@@ -57,6 +57,8 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
 
   const Summary = () => (
     <div className="w-full flex relative flex-col justify-start gap-1 ">
+      <GenresTabs genres={book?.genres ?? []} take={3} className="mb-6 mt-6"/>
+
       <div className="flex flex-col gap-4 text-foreground h-full font-thin shadow-inner pb-6">
         {bookInList && bookInList.comments && (
           <div>
@@ -100,9 +102,8 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
   );
 
   const ButtonsRow = () => (
-    <div className="w-full flex flex-col gap-8">
+    <div className="w-full md:w-fit flex flex-col gap-8 flex-shrink-0">
       <Buttons book={book} iconSize="sm" showAddToListButton={!!user} />
-      <GenresTabs genres={book?.genres ?? []} take={3} />
     </div>
   );
 

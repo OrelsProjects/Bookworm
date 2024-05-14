@@ -2,23 +2,23 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { SearchBarComponent } from "../../../components/search/searchBarComponent";
-import useTable from "../../../hooks/useTable";
-import BookList from "../../../components/book/bookList";
-import BooksListList from "../../../components/booksList/booksListList";
-import { Plus } from "../../../components/icons/plus";
+import { SearchBarComponent } from "../../components/search/searchBarComponent";
+import useTable from "../../hooks/useTable";
+import BookList from "../../components/book/bookList";
+import BooksListList from "../../components/booksList/booksListList";
+import { Plus } from "../../components/icons/plus";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { SafeBooksListData } from "../../../models/booksList";
-import { IResponse } from "../../../models/dto/response";
-import { Logger } from "../../../logger";
-import { useModal } from "../../../hooks/useModal";
-import { selectAuth } from "../../../lib/features/auth/authSlice";
-import useBooksList from "../../../hooks/useBooksList";
-import { EmptyList } from "../../../components/emptyList";
-import { SeeAll } from "../../../components/ui/seeAll";
-import { EventTracker } from "../../../eventTracker";
+import { SafeBooksListData } from "../../models/booksList";
+import { IResponse } from "../../models/dto/response";
+import { Logger } from "../../logger";
+import { useModal } from "../../hooks/useModal";
+import { selectAuth } from "../../lib/features/auth/authSlice";
+import useBooksList from "../../hooks/useBooksList";
+import { EmptyList } from "../../components/emptyList";
+import { SeeAll } from "../../components/ui/seeAll";
+import { EventTracker } from "../../eventTracker";
 
 const MyLists = ({ params }: { params: { listUrl?: string } }) => {
   const router = useRouter();

@@ -2,27 +2,29 @@ import React from "react";
 import Rating from "../../rating";
 import MarqueeText from "../../ui/marquee";
 import Tooltip from "../../ui/tooltip";
+import GenericTitle from "../../book/bookTitle";
+import GenericAuthors from "../../book/authors";
 
 const BookGeneralDetails: React.FC<{
   title?: string | null;
   authors?: string[] | null;
   goodreadsRating?: number | null;
 }> = ({ title, authors, goodreadsRating }) => (
-  <div className="h-full w-full flex flex-col gap-4 mt-2.5">
-    <div>
+  <div className="h-full md:h-fit w-full flex flex-col gap-4 mt-2.5 md:flex-shrink-0">
+    <div className="h-full w-full flex flex-col">
       <Tooltip
         tooltipContent={
-          <div className="w-fullfont text-foreground line-clamp-4">{title}</div>
+          <div className="w-full font text-foreground line-clamp-4">
+            {title}
+          </div>
         }
       >
-        <MarqueeText
-          text={title ?? ""}
-          className="w-full text-left text-foreground line-clamp-1 font-bold text-xl"
-        />
+        <GenericTitle title={title ?? ""} />
       </Tooltip>
-      <div className="text-lg text-muted line-clamp-2">
-        {authors?.join(", ")}
-      </div>
+      <GenericAuthors
+        authors={authors || []}
+        className="!text-muted text-lg md:text-[40px] leading-10 md:line-clamp-none font-normal"
+      />
     </div>
     <Rating rating={goodreadsRating} />
   </div>

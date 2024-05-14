@@ -13,7 +13,7 @@ import { useAppDispatch, useAppSelector } from "../lib/hooks";
 import {
   RecommendationFilters,
   RecommentionFilterTypes,
-} from "../app/(content)/see-all/_consts";
+} from "../app/see-all/_consts";
 
 const RECOMMENDATIONS_DATA_KEY = "userRecommendationsData";
 

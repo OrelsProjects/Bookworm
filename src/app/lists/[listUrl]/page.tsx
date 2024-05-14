@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { SafeBooksListData } from "../../../../models/booksList";
-import useBooksList from "../../../../hooks/useBooksList";
+import { SafeBooksListData } from "../../../models/booksList";
+import useBooksList from "../../../hooks/useBooksList";
 import { useRouter } from "next/navigation";
-import { useModal } from "../../../../hooks/useModal";
+import { useModal } from "../../../hooks/useModal";
 
 interface BooksListsPageProps {
   params: { listUrl: string };

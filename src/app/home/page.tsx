@@ -2,18 +2,18 @@
 
 import React, { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
-import BookList from "../../../components/book/bookList";
-import useRecommendations from "../../../hooks/useRecommendations";
-import { ReadStatus } from "../../../models/readingStatus";
-import SearchBar from "../../../components/search/searchBar";
-import Loading from "../../../components/ui/loading";
-import BooksListThumbnail from "../../../components/booksList/booksListThumbnail";
-import Tag from "../../../components/ui/Tag";
-import { cn } from "../../../lib/utils";
-import { getThumbnailSize } from "../../../consts/thumbnail";
-import { useModal } from "../../../hooks/useModal";
-import { SeeAll } from "../../../components/ui/seeAll";
-import useNavigation from "../../../lib/navigation";
+import BookList from "../../components/book/bookList";
+import useRecommendations from "../../hooks/useRecommendations";
+import { ReadStatus } from "../../models/readingStatus";
+import SearchBar from "../../components/search/searchBar";
+import Loading from "../../components/ui/loading";
+import BooksListThumbnail from "../../components/booksList/booksListThumbnail";
+import Tag from "../../components/ui/Tag";
+import { cn } from "../../lib/utils";
+import { getThumbnailSize } from "../../consts/thumbnail";
+import { useModal } from "../../hooks/useModal";
+import { SeeAll } from "../../components/ui/seeAll";
+import useNavigation from "../../lib/navigation";
 
 export default function Home(): React.ReactNode {
   const router = useRouter();

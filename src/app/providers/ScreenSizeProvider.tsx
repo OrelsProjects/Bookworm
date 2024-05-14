@@ -21,8 +21,8 @@ export default function ScreenSizeProvider({
     };
     window.addEventListener("resize", handleResize);
     handleResize();
-    return () => window.removeEventListener("resize", handleResize);
-  }, [window?.innerHeight, window?.innerWidth, window]);
+    return () => window?.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <SizeContext.Provider value={{ height, width }}>

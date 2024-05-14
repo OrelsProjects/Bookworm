@@ -6,6 +6,7 @@ interface GenresTabsProps {
   take: number;
   selectable?: boolean;
   onSelected?: (genre: string) => void;
+  className?: string;
 }
 
 const GenresTabs: React.FC<GenresTabsProps> = ({
@@ -13,6 +14,7 @@ const GenresTabs: React.FC<GenresTabsProps> = ({
   selectable,
   onSelected,
   take = 3,
+  className,
 }) => {
   return (
     <Tabs
@@ -27,7 +29,7 @@ const GenresTabs: React.FC<GenresTabsProps> = ({
           onSelected?.(item.value);
         }
       }}
-      className="flex flex-row !justify-between"
+      className={`flex flex-row justify-between md:justify-start ${className}`}
     />
   );
 };

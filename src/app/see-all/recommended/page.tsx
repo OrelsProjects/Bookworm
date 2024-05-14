@@ -1,25 +1,25 @@
 "use client";
 
 import React, { useMemo } from "react";
-import { Button } from "../../../../components/ui/button";
-import Tabs from "../../../../components/ui/tabs";
+import { Button } from "../../../components/ui/button";
+import Tabs from "../../../components/ui/tabs";
 import {
   RecommentionFilterTypes as RecommendationFilterTypes,
   sorterTabItems,
 } from "../_consts";
-import { TabItem } from "../../../../components/ui/tabs";
-import { BookFilter } from "../../../../hooks/useBook";
-import { SearchBarComponent } from "../../../../components/search/searchBarComponent";
-import Dropdown from "../../../../components/ui/dropdown";
-import { Checkbox } from "../../../../components/ui/checkbox";
-import { Filter } from "../../../../components/icons/filter";
-import { ExpandType } from "../../../../components/animationDivs";
+import { TabItem } from "../../../components/ui/tabs";
+import { BookFilter } from "../../../hooks/useBook";
+import { SearchBarComponent } from "../../../components/search/searchBarComponent";
+import Dropdown from "../../../components/ui/dropdown";
+import { Checkbox } from "../../../components/ui/checkbox";
+import { Filter } from "../../../components/icons/filter";
+import { ExpandType } from "../../../components/animationDivs";
 import { FaBars } from "react-icons/fa6";
 import useRecommendations, {
   RecommendationSort,
-} from "../../../../hooks/useRecommendations";
-import RecommendationsList from "../../../../components/booksList/recommendationsList";
-import { unslugifyText } from "../../../../utils/textUtils";
+} from "../../../hooks/useRecommendations";
+import RecommendationsList from "../../../components/booksList/recommendationsList";
+import { unslugifyText } from "../../../utils/textUtils";
 
 export default function MyLibrary({
   params,
