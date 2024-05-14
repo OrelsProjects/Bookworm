@@ -21,7 +21,7 @@ const NavigationProvider: React.FC<NavigationProviderProps> = ({
       const currentPathname = pathname;
       if (pathname !== "/explore" && pathname !== "/") {
         router.push("/");
-        if (pathname.includes("/lists/")) {
+        if (pathname.includes("/lists/")) { 
           router.push(currentPathname);
         }
       }
