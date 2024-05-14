@@ -17,7 +17,6 @@ import { initEventTracker, setUserEventTracker } from "../../eventTracker";
 import { Logger, initLogger, setUserLogger } from "@/src/logger";
 import axios from "axios";
 import { IResponse } from "@/src/models/dto/response";
-import { toast } from "react-toastify";
 import { CreateUser } from "@/src/models/user";
 
 interface AuthProviderProps {

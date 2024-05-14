@@ -30,6 +30,8 @@ const NavigationProvider: React.FC<NavigationProviderProps> = ({
       localStorage.removeItem("redirect");
       if (redirect) {
         router.push(redirect);
+      } else {
+        router.push("/home");  
       }
     }
   }, [user]);

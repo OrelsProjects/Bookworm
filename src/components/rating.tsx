@@ -3,6 +3,7 @@ import * as React from "react";
 // Next.js Image component for optimized image serving
 import { Button } from "./ui/button"; // Adjust the import path as necessary
 import Loading from "./ui/loading";
+import Image from "next/image";
 
 type StarProps = {
   filled?: boolean;
@@ -29,18 +30,10 @@ export const RatingStar: React.FC<StarProps> = ({
       : "/star.svg"
     : "/starEmpty.svg"; // Assuming you have an 'star-empty.svg' for empty stars
   return (
-    <div className={className}>
-      {imageFill ? (
-        <img src={starSrc} alt="Star" onClick={onClick} />
-      ) : (
-        <img
-          src={starSrc}
-          alt="Star"
-          width={22}
-          height={22}
-          onClick={onClick}
-        />
-      )}
+    <div
+      className={`w-4 h-4 md:w-10 md:h-10 md:flex md:justify-center md:items-center relative ${className}`}
+    >
+      <Image src={starSrc} alt="Star" fill onClick={onClick} />
     </div>
   );
 };
@@ -78,24 +71,22 @@ const Rating: React.FC<RatingProps> = ({
   );
 
   const Stars = ({ user }: { user?: boolean }) => (
-    <div className={`flex items-center justify-start gap-1 ${className ?? ""}`}>
-      {[...Array(user ? fullStarsUser : fullStars)].map((_, index) => (
-        <RatingStar
-          key={index}
-          filled
-          user={user}
-          className="inline-block w-4 h-4"
-        />
-      ))}
-      {[...Array(user ? emptyStarsUser : emptyStars)].map((_, index) => (
-        <RatingStar key={index} className="inline-block w-4 h-4" />
-      ))}
-      <p className="ms-1 text-lg font-thin text-foreground">
+    <div
+      className={`flex items-center justify-start md:justify-center gap-1 md:gap-16 ${
+        className ?? ""
+      }`}
+    >
+      <div className="flex flex-row gap-1 md:gap-2.5">
+        {[...Array(user ? fullStarsUser : fullStars)].map((_, index) => (
+          <RatingStar key={index} filled user={user} className="inline-block" />
+        ))}
+        {[...Array(user ? emptyStarsUser : emptyStars)].map((_, index) => (
+          <RatingStar key={index} className="inline-block" />
+        ))}
+      </div>
+      <p className="ms-1 md:ms-0 text-lg font-thin text-foreground md:text-[24px] leading-[48px]">
         {(user ? userRating : rating)?.toFixed(2)}
         {!user && totalRatings && ` (${totalRatings})`}
-      </p>
-      <p className="ms-1 text-sm font-thin text-foreground">
-        {/* ({user ? "Yours" : "Goodreads"}) */}
       </p>
     </div>
   );

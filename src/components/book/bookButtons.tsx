@@ -170,11 +170,11 @@ export const BookButtons = () => {
 
     return (
       <div
-        className={`h-fit w-full flex flex-row justify-evenly items-center gap-4 ${className}`}
+        className={`h-fit md:h-full w-full md:w-fit flex flex-row md:flex-col justify-evenly md:justify-between items-center gap-4 ${className}`}
       >
         {book && (
           <div
-            className={`flex flex-col justify-center items-center gap-2 w-1/3 ${className}`}
+            className={`flex flex-col md:flex-col justify-center items-center gap-2 w-1/3 ${className}`}
             onClick={() =>
               handleUpdateBookReadingStatus(
                 ReadingStatusEnum.READ,
@@ -200,20 +200,6 @@ export const BookButtons = () => {
             </div>
             <div className={`text-foreground text-lg`}>Read</div>
           </div>
-          // <ButtonImage
-          //   title="Read"
-          //   Icon={isBookRead ? CheckmarkFill : FaCheck}
-          //   iconSize={iconSize}
-          //   selected={isBookRead}
-          //   className="w-1/3"
-          //   onClick={() =>
-          //     handleUpdateBookReadingStatus(
-          //       ReadingStatusEnum.READ,
-          //       book,
-          //       userBookData
-          //     )
-          //   }
-          // />
         )}
 
         {book && (
@@ -222,7 +208,7 @@ export const BookButtons = () => {
             Icon={isBookToRead ? BookmarkFill : Bookmark}
             iconSize={iconSize}
             selected={isBookToRead}
-            className="w-1/3"
+            className="w-1/3 md:w-fit"
             onClick={() =>
               handleUpdateBookReadingStatus(
                 ReadingStatusEnum.TO_READ,
@@ -237,7 +223,7 @@ export const BookButtons = () => {
             title={"Add to list"}
             Icon={Plus}
             iconSize={iconSize}
-            className={"w-1/3"}
+            className={"w-1/3 md:w-fit"}
             selected={false}
             buttonsColor={buttonsColor}
             onClick={() => handleAddBookToList(book)}

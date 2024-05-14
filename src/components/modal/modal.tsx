@@ -73,7 +73,7 @@ const TopBarCollapsed = ({
 
   return (
     <div
-      className="w-full h-fit bg-background fixed top-0 left-0 z-30 flex justify-start items-center flex-shrink-0"
+      className="w-full h-fit bg-background fixed top-0 left-0 z-30 flex justify-start items-center flex-shrink-0 md:hidden"
       style={{ opacity: currentScrollPosition }}
     >
       <BackButton onClick={onClose} className="!top-2 !left-2 fixed" />
@@ -94,7 +94,7 @@ const BackButton = ({
     whileHover={{ scale: 1.2 }}
   >
     <div
-      className="bg-background h-10 w-10 rounded-full shadow-sm shadow-background flex justify-center items-center"
+      className="bg-background h-10 w-10 rounded-full shadow-md flex justify-center items-center"
       onClick={onClick}
     >
       <IoArrowBack className="!text-foreground !w-6 !h-6" />
@@ -133,26 +133,38 @@ const Modal: React.FC<ModalProps> = ({
   const ContentDiv: React.FC<ContentDivProps> = ({}) =>
     useMemo(() => {
       const key = "modal";
-      const className = "h-4/5 w-full bg-background rounded-t-5xl";
+      const className =
+        "h-4/5 w-full md:h-full md:w-4/5 bg-background rounded-tr-5xl rounded-tl-5xl md:rounded-tr-none md:rounded-l-2xl";
       const onClick = (e: any) => e.stopPropagation();
 
       return shouldAnimate ? (
-        <ExpandingDiv
-          key={key}
-          className={className}
-          onClick={onClick}
-          isOpen={isOpen}
-          expandType={ExpandType.Modal}
-        >
-          {children}
-        </ExpandingDiv>
+        <>
+          <ExpandingDiv
+            key={key}
+            className={`${className} md:hidden`}
+            onClick={onClick}
+            isOpen={isOpen}
+            expandType={ExpandType.Modal}
+          >
+            {children}
+          </ExpandingDiv>
+          <ExpandingDiv
+            key={key}
+            className={`${className} hidden md:flex`}
+            onClick={onClick}
+            isOpen={isOpen}
+            expandType={ExpandType.RightToLeft}
+          >
+            {children}
+          </ExpandingDiv>
+        </>
       ) : (
         <div key={key} className={className} onClick={onClick}>
           {children}
         </div>
       );
     }, [isOpen, children]);
-    
+
   return (
     <div
       className="absolute top-0 left-0 right-0 bottom-0 w-full h-full z-30 overscroll-none overflow-auto bg-background"
@@ -178,7 +190,7 @@ const Modal: React.FC<ModalProps> = ({
           <BackButton onClick={onClose} />
           <div className="flex justify-center items-center relative w-full h-full z-20">
             <div
-              className={`relative z-40 w-full flex items-end justify-start self-start h-full ${
+              className={`relative z-40 w-full flex items-end  justify-start md:justify-end self-start h-full ${
                 className ?? ""
               } z-10`}
               onClick={onClose}
@@ -190,10 +202,9 @@ const Modal: React.FC<ModalProps> = ({
                 style={{
                   backgroundColor: backgroundColor ?? "rgb(12, 12, 12)",
                 }}
-              ></div>
+              />
               <ContentDiv
                 key="modal"
-                className="h-4/5 w-full bg-background"
                 isOpen={isOpen}
                 onClick={(e) => e.stopPropagation()}
               >

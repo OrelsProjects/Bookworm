@@ -1,4 +1,4 @@
-import { TabItem } from "../../../../components/ui/tabs";
+import { TabItem } from "../../../components/ui/tabs";
 
 export const sorterTabItems: TabItem[] = [
   {

@@ -129,6 +129,7 @@ module.exports = {
         "thumbnail-xl": "120px",
         "thumbnail-2xl": "133px",
         "thumbnail-3xl": "170px",
+        "thumbnail-5xl": "266.67px",
       },
       letterSpacing: {
         semiwide: "0.15px",
@@ -154,6 +155,7 @@ module.exports = {
         "thumbnail-xl": "180px",
         "thumbnail-2xl": "200px",
         "thumbnail-3xl": "240px",
+        "thumbnail-5xl": "400px",
       },
       minHeight: {
         "screen-fill": "100vh", // Fallback
