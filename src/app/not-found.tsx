@@ -1,15 +1,18 @@
-"use client";
+'use client';
 
-import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import { useRouter } from 'next/navigation';
+import React, { useEffect } from 'react';
 
 const NotFound = () => {
   const router = useRouter();
-  useEffect(() => {
-    router.push("/explore");
-  }, []);
 
-  return <></>;
+  useEffect(() => {
+    if (router) {
+      router.push('/explore');
+    }
+  }, [router]);
+
+  return null;
 };
 
 export default NotFound;
