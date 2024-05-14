@@ -7,7 +7,7 @@ const NotFound = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (router) {
+    if (typeof window !== 'undefined') {
       router.push('/explore');
     }
   }, [router]);
