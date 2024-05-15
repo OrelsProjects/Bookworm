@@ -91,7 +91,7 @@ const RecommendationsList = ({
     <div className="flex flex-col gap-3">
       {lists.map((list, index) => (
         <div
-          className="w-full flex flex-row gap-2.5 justify-start items-start py-1 cursor-pointer hover:bg-slate-400/20 hover:rounded-lg"
+          className="w-full flex flex-row gap-2.5 justify-start items-start py-1 cursor-pointer transition-all hover:bg-slate-400/20 hover:rounded-lg"
           onClick={() => showBooksListModal({ booksList: list })}
           key={`recommendation-list-${list.name}`}
         >
