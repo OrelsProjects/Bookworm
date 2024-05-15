@@ -12,6 +12,7 @@ import { Logger } from "../../logger";
 import useTable from "../../hooks/useTable";
 import { ReadStatus } from "../../models/readingStatus";
 import { EventTracker } from "../../eventTracker";
+import { motion } from "framer-motion";
 
 type BookListProps = {
   books?: Book[];
@@ -67,7 +68,8 @@ const List = ({
           ThumbnailIcon={
             direction === "row" && (
               <div className="relative">
-                <div
+                <motion.div
+                  whileHover={{ scale: 1.2 }}
                   className="absolute bottom-2 right-2 w-fit h-fit rounded-full overflow-hidden flex items-center justify-center shadow-sm shadow-black"
                   onClick={(e) => {
                     e.stopPropagation();
@@ -82,13 +84,14 @@ const List = ({
                     {showDelete && book && <FaTrashCan className="w-3 h-3.5" />}
                     {showAdd && <span>+</span>}
                   </div>
-                </div>
+                </motion.div>
               </div>
             )
           }
           Icon={
             direction === "column" && (
-              <div
+              <motion.div
+                whileHover={{ scale: 1.2 }}
                 className="h-full justify-self-center"
                 onClick={(e) => {
                   e.stopPropagation();
@@ -99,7 +102,7 @@ const List = ({
                   className="!bg-foreground !text-background rounded-full p-1"
                   iconSize="md"
                 />
-              </div>
+              </motion.div>
             )
           }
           direction={direction}

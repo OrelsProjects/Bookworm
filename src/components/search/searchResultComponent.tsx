@@ -106,7 +106,7 @@ const SearchResultComponent: React.FC<SearchResultProps> = ({
         {book && (
           <div className="w-full h-full flex justify-start items-end gap-6 mt-6">
             <div
-              className="flex flex-col gap-0 text-sm justify-center items-center flex-shrink-0"
+              className="flex flex-col gap-0 text-sm justify-center items-center flex-shrink-0 cursor-pointer"
               onClick={(e) => {
                 e.stopPropagation();
                 updateBookStatusToRead(book, bookData);

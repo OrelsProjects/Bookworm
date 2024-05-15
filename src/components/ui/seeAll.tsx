@@ -42,7 +42,10 @@ const SeeAllText = ({
   className?: string;
   onClick: () => void;
 }) => (
-  <div className={cn("text-see-all hover:cursor", className)} onClick={onClick}>
+  <div
+    className={cn("text-see-all cursor-pointer", className)}
+    onClick={onClick}
+  >
     See all
   </div>
 );

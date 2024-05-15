@@ -16,9 +16,10 @@ export enum AuthStateType {
 
 interface AuthState {
   user: User | null;
-  state: AuthStateType;
-  loadingState: LoadingState;
   error: string | null;
+  state: AuthStateType;
+  allDataFetched: boolean;
+  loadingState: LoadingState;
 }
 
 const initialState: AuthState = {
@@ -29,6 +30,7 @@ const initialState: AuthState = {
     message: "",
   },
   error: null,
+  allDataFetched: false,
 };
 
 const authSlice = createSlice({
@@ -58,11 +60,17 @@ const authSlice = createSlice({
     clearUser: (state) => {
       state.user = null;
       state.state = AuthStateType.SIGNED_OUT;
+      state.error = null;
+      state.allDataFetched = false;
+    },
+    setAllDataFetched: (state) => {
+      state.allDataFetched = true;
     },
   },
 });
 
-export const { setUser, clearUser, setLoading, setError } = authSlice.actions;
+export const { setUser, clearUser, setLoading, setError, setAllDataFetched } =
+  authSlice.actions;
 
 export const selectAuth = (state: RootState): AuthState => state.auth;
 

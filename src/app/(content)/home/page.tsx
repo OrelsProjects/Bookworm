@@ -83,7 +83,7 @@ export default function Home(): React.ReactNode {
                   const match = parseInt(`${recommendationList.matchRate}`, 10);
                   return (
                     <div
-                      className="flex flex-row gap-4"
+                      className="flex flex-row gap-4 cursor-pointer"
                       key={`recommendation-${recommendationList.publicURL}`}
                       onClick={() => {
                         showBooksListModal({

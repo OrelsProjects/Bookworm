@@ -55,7 +55,7 @@ const ButtonImage: React.FC<ButtonImageProps> = ({
 
   return (
     <div
-      className={`flex flex-col justify-center items-center gap-2 ${className}`}
+      className={`flex flex-col justify-center items-center gap-2 cursor-pointer ${className}`}
       onClick={(e) => {
         e.stopPropagation();
         onClick?.();
@@ -174,7 +174,7 @@ export const BookButtons = () => {
       >
         {book && (
           <div
-            className={`flex flex-col md:flex-col justify-center items-center gap-2 w-1/3 ${className}`}
+            className={`flex flex-col md:flex-col justify-center items-center gap-2 w-1/3  cursor-pointer ${className}`}
             onClick={() =>
               handleUpdateBookReadingStatus(
                 ReadingStatusEnum.READ,
@@ -191,7 +191,7 @@ export const BookButtons = () => {
               `}
             >
               <FaCheck
-                className={`!text-primary ${
+                className={`!text-primary  cursor-pointer ${
                   isBookRead ? "fill-background" : "fill-foreground"
                 } h-full w-full
                 p-[5px] sm:p-2
