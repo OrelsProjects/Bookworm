@@ -36,7 +36,7 @@ const ListTitleAndCurator = ({ list }: { list: SafeBooksListData }) => (
     <div className="text-foreground font-semibold text-base leading-4 tracking-[0.15px] truncate">
       {list.name}
     </div>
-    <div className="text-primary font-normal text-sm leading-[14px] tracking-[0.15px] truncate">
+    <div className="text-primary font-normal text-sm leading-[12px] tracking-[0.15px] truncate">
       {list.curatorName}
     </div>
   </div>

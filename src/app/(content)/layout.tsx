@@ -12,6 +12,7 @@ import APIProvider from "../providers/APIProvider";
 import BrowserDetector from "../providers/BrowserDetector";
 import ContentProvider from "../providers/ContentProvider";
 import DataProvider from "../providers/DataProvider";
+import AnimationProvider from "../providers/AnimationProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 

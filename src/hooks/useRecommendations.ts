@@ -10,8 +10,11 @@ import { User } from "../models";
 import { IResponse } from "../models/dto/response";
 import { SafeBooksListData } from "../models/booksList";
 import { useAppDispatch, useAppSelector } from "../lib/hooks";
-import { RecommendationFilters, RecommentionFilterTypes } from "../models/recommendations";
-
+import {
+  RecommendationFilters,
+  RecommentionFilterTypes,
+} from "../models/recommendations";
+import { selectAuth } from "../lib/features/auth/authSlice";
 
 const RECOMMENDATIONS_DATA_KEY = "userRecommendationsData";
 
@@ -37,6 +40,7 @@ const useRecommendations = () => {
   const { recommendationsData, loading } = useAppSelector(
     selectRecommendations
   );
+  const { allDataFetched } = useAppSelector((state) => state.auth);
 
   const [sortedBy, setSortedBy] = useState<RecommendationSort>("Match");
   const [filteredWith, setFilters] = useState<RecommendationFilters>();
@@ -136,6 +140,7 @@ const useRecommendations = () => {
         "Operation in progress. Please wait until the current operation completes."
       );
     }
+    if (allDataFetched) return;
     dispatch(setRecommendationsLoading(true));
 
     try {

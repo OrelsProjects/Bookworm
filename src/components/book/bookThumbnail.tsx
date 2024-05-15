@@ -80,7 +80,6 @@ const BookThumbnail: React.FC<BookThumbnailProps> = ({
         onError={handleImageError}
         style={{ display: imageLoaded ? "block" : "none" }}
       />
-
       {Icon}
     </div>
   );

@@ -10,6 +10,7 @@ import BrowserDetector from "./providers/BrowserDetector";
 import ContentProvider from "./providers/ContentProvider";
 import DataProvider from "./providers/DataProvider";
 import NavigationProvider from "./providers/NavigationProvider";
+import AnimationProvider from "./providers/AnimationProvider";
 
 export default function RootLayout({
   children,
@@ -21,7 +22,11 @@ export default function RootLayout({
       <body className="w-[100vw] h-[100vh] pb-[calc(max(env(safe-area-inset-bottom),16px)-16px)]">
         <StoreProvider>
           <AuthProvider>
-            <NavigationProvider>{children}</NavigationProvider>
+            <NavigationProvider>
+              {/* <AnimationProvider> */}
+              {children}
+              {/* </AnimationProvider> */}
+            </NavigationProvider>
           </AuthProvider>
         </StoreProvider>
       </body>

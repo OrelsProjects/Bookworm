@@ -90,7 +90,7 @@ const BackButton = ({
   className?: string;
 }) => (
   <motion.div
-    className={`h-6 w-6 absolute top-[25px] left-[31px] z-30 ${className}`}
+    className={`h-6 w-6 absolute top-[25px] left-[31px] z-30 cursor-pointer ${className}`}
     whileHover={{ scale: 1.2 }}
   >
     <div
@@ -179,7 +179,7 @@ const Modal: React.FC<ModalProps> = ({
       )}
       <OpacityDiv
         innerRef={modalRef}
-        key="modal-background"
+        opacityKey="modal-background"
         isOpen={isOpen}
         shouldAnimate={shouldAnimate}
       >

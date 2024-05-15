@@ -28,7 +28,7 @@ const BookDetails: React.FC<BookDetailsProps> = ({
   const sizeClass = direction === "row" ? thumbnailSize.width : "w-full";
   return (
     <div
-      className={`h-fit flex flex-row ${flexDirection} flex-shrink-0 justify-start gap-2.5 ${sizeClass} ${
+      className={`h-fit flex flex-row ${flexDirection} flex-shrink-0 justify-start gap-2.5 cursor-pointer ${sizeClass} ${
         className ?? ""
       }`}
     >
@@ -40,8 +40,13 @@ const BookDetails: React.FC<BookDetailsProps> = ({
       />
       <div className={`grid gap-1.5 h-full justify-start`}>
         <div className={`flex flex-col h-fit`}>
-          <GenericTitle title={book?.title ?? ""} className="text-sm text-start line-clamp-1" />
-          <GenericAuthors authors={book?.authors} className="text-sm text-primary text-start line-clamp-1" />
+          <div className="text-sm md:text-base text-start line-clamp-1">
+            {book?.title ?? ""}
+          </div>
+          <GenericAuthors
+            authors={book?.authors}
+            className="text-sm md:text-base text-primary text-start line-clamp-1"
+          />
         </div>
         {direction === "column" && (
           <div className="line-clamp-3 text-sm font-light">

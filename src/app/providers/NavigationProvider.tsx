@@ -21,7 +21,7 @@ const NavigationProvider: React.FC<NavigationProviderProps> = ({
       const currentPathname = pathname;
       if (pathname !== "/explore" && pathname !== "/") {
         router.push("/");
-        if (pathname.includes("/lists/")) { 
+        if (pathname.includes("/lists/")) {
           router.push(currentPathname);
         }
       }
@@ -30,13 +30,13 @@ const NavigationProvider: React.FC<NavigationProviderProps> = ({
       localStorage.removeItem("redirect");
       if (redirect) {
         router.push(redirect);
-      } else {
-        router.push("/home");  
+      } else if (pathname === "/") {
+        router.push("/home");
       }
     }
   }, [user]);
 
-  return <>{children}</>;
+  return children;
 };
 
 export default NavigationProvider;

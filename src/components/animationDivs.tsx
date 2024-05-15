@@ -17,7 +17,7 @@ export enum ExpandType {
 }
 
 interface AnimationDivProps extends LayoutProps {
-  key?: string | number;
+  opacityKey?: string | number;
   isOpen?: boolean;
   children?: React.ReactNode;
   shouldAnimate?: boolean;
@@ -33,22 +33,22 @@ interface ExpandDivProps extends AnimationDivProps {
 }
 
 const GeneralDiv = ({
+  opacityKey,
+  innerRef,
   children,
   className,
-  animationProps,
-  innerRef,
   isOpen = true,
-  ...props
+  animationProps,
 }: AnimationDivProps) => {
+  console.log("opacityKey, isOpen", opacityKey, isOpen);
   return (
     <AnimatePresence mode="wait">
       {isOpen && (
         <motion.div
-          key={props.key ?? `${Math.random()}`}
+          key={opacityKey || `${Math.random()}`}
           ref={innerRef}
           className={cn("w-full h-full", className)}
           {...animationProps}
-          // {...props}
         >
           {children}
         </motion.div>
@@ -123,19 +123,22 @@ const expandingRightToLeft: MotionProps = {
 
 // Opacity Animation Wrapper
 const OpacityDiv = ({
+  opacityKey,
   innerRef,
   shouldAnimate = true,
   ...props
-}: AnimationDivProps) =>
-  shouldAnimate ? (
+}: AnimationDivProps) => {
+  return shouldAnimate ? (
     <GeneralDiv
+      opacityKey={opacityKey}
       innerRef={innerRef}
-      {...props}
       animationProps={opacityAnimationProps}
+      {...props}
     />
   ) : (
     props.children
   );
+};
 
 const getExpandProps = (expandType?: ExpandType): MotionProps => {
   switch (expandType) {
