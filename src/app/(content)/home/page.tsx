@@ -1,24 +1,42 @@
 "use client";
 
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import BookList from "../../components/book/bookList";
-import useRecommendations from "../../hooks/useRecommendations";
-import { ReadStatus } from "../../models/readingStatus";
-import SearchBar from "../../components/search/searchBar";
-import Loading from "../../components/ui/loading";
-import BooksListThumbnail from "../../components/booksList/booksListThumbnail";
-import Tag from "../../components/ui/Tag";
-import { cn } from "../../lib/utils";
-import { getThumbnailSize } from "../../consts/thumbnail";
-import { useModal } from "../../hooks/useModal";
-import { SeeAll } from "../../components/ui/seeAll";
-import useNavigation from "../../lib/navigation";
+import BookList from "../../../components/book/bookList";
+import useRecommendations from "../../../hooks/useRecommendations";
+import ReadingStatus, {
+  ReadStatus,
+  ReadingStatusEnum,
+} from "../../../models/readingStatus";
+import SearchBar from "../../../components/search/searchBar";
+import Loading from "../../../components/ui/loading";
+import BooksListThumbnail from "../../../components/booksList/booksListThumbnail";
+import Tag from "../../../components/ui/Tag";
+import { cn } from "../../../lib/utils";
+import { getThumbnailSize } from "../../../consts/thumbnail";
+import { useModal } from "../../../hooks/useModal";
+import { SeeAll } from "../../../components/ui/seeAll";
+import useNavigation from "../../../lib/navigation";
+import { useAppSelector } from "../../../lib/hooks";
 
 export default function Home(): React.ReactNode {
   const router = useRouter();
   const { showBooksListModal } = useModal();
   const { allRecommendations, loading } = useRecommendations();
+  const { userBooksData } = useAppSelector((state) => state.userBooks);
+
+  const hasBooksRead = useMemo(() => {
+    return userBooksData.some(
+      ({ userBook }) => userBook.readingStatusId === ReadingStatusEnum.READ
+    );
+  }, [userBooksData]);
+
+  const hasBooksToRead = useMemo(() => {
+    return userBooksData.some(
+      ({ userBook }) => userBook.readingStatusId === ReadingStatusEnum.TO_READ
+    );
+  }, [userBooksData]);
+
   const [searchFocused, setSearchFocused] = useState(false);
 
   const onSeeAllClick = useCallback(
@@ -48,7 +66,6 @@ export default function Home(): React.ReactNode {
 
   const RecommendationsList = () => {
     const router = useRouter();
-    const navigation = useNavigation();
 
     return allRecommendations && allRecommendations.length > 0 ? (
       <div className="flex flex-col gap-2">
@@ -122,9 +139,9 @@ export default function Home(): React.ReactNode {
 
   const Content = () => (
     <div className="h-fit w-full flex flex-col gap-[35px] mt-[48px] overflow-auto">
-      <Books title="Next read" readStatus="to-read" />
+      {hasBooksToRead && <Books title="Next read" readStatus="to-read" />}
       <RecommendationsList />
-      <Books title="Books I've read" readStatus="read" />
+      {hasBooksRead && <Books title="Books I've read" readStatus="read" />}
     </div>
   );
 

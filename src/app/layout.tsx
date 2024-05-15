@@ -19,34 +19,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-      <StoreProvider>
-      <AuthProvider>
-        <NavigationProvider>
-          <APIProvider>
-            <DataProvider>
-              <ToastContainer
-                stacked
-                theme="dark"
-                autoClose={2500}
-                draggablePercent={60}
-                className="!mb-16 z-50"
-                transition={Slide}
-              />
-              <ContentProvider>
-                <BrowserDetector>
-                  <div className="w-full h-full font-roboto">
-                    <Header className="h-fit w-fit" />
-                    {/* <AnimationProvider> */}
-                    {children}
-                    {/* </AnimationProvider> */}
-                  </div>
-                </BrowserDetector>
-              </ContentProvider>
-            </DataProvider>
-          </APIProvider>
-        </NavigationProvider>
-      </AuthProvider>
-    </StoreProvider>
+        <StoreProvider>
+          <AuthProvider>
+            <NavigationProvider>{children}</NavigationProvider>
+          </AuthProvider>
+        </StoreProvider>
       </body>
     </html>
   );
