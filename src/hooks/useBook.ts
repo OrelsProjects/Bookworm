@@ -1,10 +1,9 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { Book, GoodreadsData, User, UserBook, UserBookData } from "../models";
 import axios from "axios";
 import { Books, CreateBooksResponse } from "../models/book";
 import { CreateUserBookBody, UpdateUserBookBody } from "../models/userBook";
-import { useDispatch, useSelector } from "react-redux";
 import {
   USER_BOOKS_KEY,
   addUserBooks as addUserBooksRedux,
@@ -28,6 +27,7 @@ import { isBooksEqualExactly, sortByDateAdded } from "../utils/bookUtils";
 import { ErrorDeleteUserBook } from "../models/errors/userBookErrors";
 import { useModal } from "./useModal";
 import { ErrorUnauthenticated } from "../models/errors/unauthenticatedError";
+import { useAppDispatch, useAppSelector } from "../lib/hooks";
 
 const getUserBooksFromLocalStorage = (): UserBookData[] => {
   return JSON.parse(
@@ -45,9 +45,9 @@ export type BookFilter = "readlist" | "status";
 
 const useBook = () => {
   const loading = useRef(false);
-  const dispatch = useDispatch();
-  const { user, state } = useSelector(selectAuth);
-  const { userBooksData } = useSelector((state: RootState) => state.userBooks);
+  const dispatch = useAppDispatch();
+  const { user, state } = useAppSelector(selectAuth);
+  const { userBooksData } = useAppSelector((state: RootState) => state.userBooks);
   const { showRegisterModal } = useModal();
 
   const openRegisterModal = () => {

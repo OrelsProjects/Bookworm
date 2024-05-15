@@ -22,7 +22,7 @@ export function GetAxiosInstance(arg1: any, arg2?: any): Axios {
     axios.defaults.headers.common["user_id"] = userId;
   }
 
-  axios.defaults.baseURL = process.env.NEXT_PUBLIC_BASE_URL || "";
+  axios.defaults.baseURL = process.env.BASE_URL || "";
 
   return axios;
 }
