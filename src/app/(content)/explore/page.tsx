@@ -1,14 +1,14 @@
 "use client";
 
 import React from "react";
-import GenresTabs from "../../components/genresTabs";
-import { Skeleton } from "../../components/ui/skeleton";
-import useExplore from "../../hooks/useExplore";
-import useScrollPosition from "../../hooks/useScrollPosition";
-import SearchBar from "../../components/search/searchBar";
+import GenresTabs from "@/src/components/genresTabs";
+import { Skeleton } from "@/src/components/ui/skeleton";
+import useExplore from "@/src/hooks/useExplore";
+import useScrollPosition from "@/src/hooks/useScrollPosition";
+import SearchBar from "@/src/components/search/searchBar";
 import RecommendationsList, {
   LoadingRecommendationsList,
-} from "../../components/booksList/recommendationsList";
+} from "@/src/components/booksList/recommendationsList";
 
 interface ExplorePageProps {}
 

@@ -1,25 +1,23 @@
 "use client";
 
 import React, { useMemo } from "react";
-import { Button } from "../../../components/ui/button";
-import Tabs from "../../../components/ui/tabs";
-import {
-  RecommentionFilterTypes as RecommendationFilterTypes,
-  sorterTabItems,
-} from "../_consts";
-import { TabItem } from "../../../components/ui/tabs";
-import { BookFilter } from "../../../hooks/useBook";
-import { SearchBarComponent } from "../../../components/search/searchBarComponent";
-import Dropdown from "../../../components/ui/dropdown";
-import { Checkbox } from "../../../components/ui/checkbox";
-import { Filter } from "../../../components/icons/filter";
-import { ExpandType } from "../../../components/animationDivs";
+import { Button } from "@/src/components/ui/button";
+import Tabs from "@/src/components/ui/tabs";
+import { RecommentionFilterTypes as RecommendationFilterTypes } from "@/src/models/recommendations";
+import { sorterTabItems } from "@/src/app/(content)/see-all/_consts";
+import { TabItem } from "@/src/components/ui/tabs";
+import { BookFilter } from "@/src/hooks/useBook";
+import { SearchBarComponent } from "@/src/components/search/searchBarComponent";
+import Dropdown from "@/src/components/ui/dropdown";
+import { Checkbox } from "@/src/components/ui/checkbox";
+import { Filter } from "@/src/components/icons/filter";
+import { ExpandType } from "@/src/components/animationDivs";
 import { FaBars } from "react-icons/fa6";
 import useRecommendations, {
   RecommendationSort,
-} from "../../../hooks/useRecommendations";
-import RecommendationsList from "../../../components/booksList/recommendationsList";
-import { unslugifyText } from "../../../utils/textUtils";
+} from "@/src/hooks/useRecommendations";
+import RecommendationsList from "@/src/components/booksList/recommendationsList";
+import { unslugifyText } from "@/src/utils/textUtils";
 
 export default function MyLibrary({
   params,
@@ -56,7 +54,11 @@ export default function MyLibrary({
   };
 
   const filtersValues = useMemo((): string[] => {
-    return Object.values(filteredWith || {}).flatMap((value) => value) || [];
+    return (
+      (Object.values(filteredWith || {}).flatMap(
+        (value) => value
+      ) as string[]) || []
+    );
   }, [filteredWith]);
 
   const filterGenreDropdownText = useMemo(() => {
@@ -99,7 +101,7 @@ export default function MyLibrary({
                   <Checkbox
                     className="h-4 w-4 flex-shrink-0"
                     checked={
-                      filteredWith?.["genres"]?.find((f) => f === genre)
+                      filteredWith?.["genres"]?.find((f: string) => f === genre)
                         ? true
                         : false
                     }
