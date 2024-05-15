@@ -21,16 +21,14 @@ const Header = ({ className }: HeaderProps): React.ReactNode => {
 
   return (
     !loadingState.loading && (
-      <div
-        className="relative h-0 w-full flex items-start justify-end mt-1 z-50"
-        >
+      <div className="relative h-0 w-full flex items-start justify-end mt-1 z-50">
         <div
           className={`flex justify-end items-center w-fit z-10 relative ${
             className ?? ""
           }`}
         >
           {user ? (
-            <div>
+            <div className="h-[50px] w-[50px]">
               <Avatar
                 avatarUrl={user?.profilePictureUrl}
                 defaultText={user?.displayName ?? user.email}

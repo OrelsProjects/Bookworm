@@ -26,7 +26,7 @@ export default function ContentProvider({
         <BottomBarProvider />
         <div
           className={cn(
-            "w-full h-full py-10 pb-16 px-7.5 flex flex-col z-10 tracking-semiwide relative overflow-clip",
+            "w-full h-full py-10 pb-16 md:pl-72 px-7.5 flex flex-col z-10 tracking-semiwide relative overflow-clip",
             className,
             {
               "h-screen": browser === "safari",
