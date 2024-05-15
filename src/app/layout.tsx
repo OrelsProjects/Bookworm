@@ -18,7 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body className="w-[100vw] h-[100vh] pb-[calc(max(env(safe-area-inset-bottom),16px)-16px)]">
         <StoreProvider>
           <AuthProvider>
             <NavigationProvider>{children}</NavigationProvider>
