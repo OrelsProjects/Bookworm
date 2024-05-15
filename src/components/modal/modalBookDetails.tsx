@@ -89,7 +89,6 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
           </div>
         )}
       </div>
-      <div className="absolute bottom-0 w-full extra-text-shadow"></div>
     </div>
   );
 
