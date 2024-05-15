@@ -7,6 +7,7 @@ import BottomBarProvider from "./BottomBarProvider";
 import { cn } from "../../lib/utils";
 import ModalProvider from "./ModalProvider";
 import ScreenSizeProvider from "./ScreenSizeProvider";
+import { useAppSelector } from "../../lib/hooks";
 
 // this one calculates the height of the screen and sets it as max height
 // for the children
@@ -17,6 +18,7 @@ export default function ContentProvider({
   children: React.ReactNode;
   className?: string;
 }) {
+  const { user } = useAppSelector((state) => state.auth);
   const browser = useContext(BrowserContext);
 
   return (
@@ -26,7 +28,8 @@ export default function ContentProvider({
         <BottomBarProvider />
         <div
           className={cn(
-            "w-full h-full py-10 pb-16 md:pl-72 px-7.5 flex flex-col z-10 tracking-semiwide relative overflow-clip",
+            "w-full h-full py-10 pb-16 px-7.5 flex flex-col z-10 tracking-semiwide relative overflow-clip",
+            { "md:pl-72": user },
             className,
             {
               "h-screen": browser === "safari",

@@ -16,6 +16,7 @@ import { SearchResults } from "../../models/search";
 import { Book } from "../../models";
 import { SafeBooksListData } from "../../models/booksList";
 import { SeeAll, SeeAllTitle } from "../ui/seeAll";
+import { useAppSelector } from "../../lib/hooks";
 
 const MAX_RESULTS_NO_SEE_ALL = 4;
 
@@ -53,6 +54,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   limit,
   ...props
 }: SearchBarProps) => {
+  const { user } = useAppSelector((state) => state.auth);
   const searchHook = booksOnly
     ? useSearchBooks({ limit })
     : useSearch({ clearOnExit: !booksOnly, limit });
@@ -220,10 +222,15 @@ const SearchBar: React.FC<SearchBarProps> = ({
         onBlur={onBlur}
         onSubmit={handleSubmit}
         onChange={handleOnChange}
-        className={`w-full pr-[72px] transition-all duration-300 ease-in-out rounded-full ${
+        className={`w-full transition-all duration-300 ease-in-out rounded-full ${
           className ?? ""
         }`}
-        formClassName="h-fit max-h-full w-full absolute inset-0 z-20 bg-background pr-[72px] md:pr-0"
+        formClassName={cn(
+          "h-fit max-h-full w-full absolute inset-0 z-20 bg-background pr-[72px]",
+          {
+            "md:pr-0": user,
+          }
+        )}
         placeholder="Search all books, authors..."
         autoFocus={autoFocus}
         onFocus={onFocus}
