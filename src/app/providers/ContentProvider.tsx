@@ -21,7 +21,7 @@ export default function ContentProvider({
 
   return (
     <ScreenSizeProvider>
-      <div className="w-full h-full">
+      <div className="w-full h-full scrollbar-hide md:scrollbar-visible">
         <ModalProvider />
         <BottomBarProvider />
         <div

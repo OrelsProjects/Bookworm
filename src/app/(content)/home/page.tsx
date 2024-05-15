@@ -74,7 +74,7 @@ export default function Home(): React.ReactNode {
             title="Recommended for you"
             onClick={() => router.push("/see-all/recommended")}
           />
-          <div className="flex flex-row gap-[15px] overflow-auto">
+          <div className="flex flex-row gap-[15px] overflow-x-auto">
             {allRecommendations.length > 0 &&
               allRecommendations
                 .slice()

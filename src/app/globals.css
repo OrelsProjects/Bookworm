@@ -79,8 +79,8 @@ input[type="text"]:-moz-ui-autofill {
     --accent: 160.9, 70.3%, 39.6%;
     --accent-foreground: 210, 40%, 98%;
     --rating: 38.8, 100%, 70.2%;
-    --statistic-card-gradient-start: 0, 100%, 61.6%; 
-    --statistic-card-gradient-end: 0, 100%, 61.6%; 
+    --statistic-card-gradient-start: 0, 100%, 61.6%;
+    --statistic-card-gradient-end: 0, 100%, 61.6%;
     --border: 214.3, 31.8%, 91.4%;
     --input: 214.3, 31.8%, 91.4%;
     --ring: 222.2, 84%, 4.9%;
@@ -112,7 +112,6 @@ input[type="text"]:-moz-ui-autofill {
 }
 
 @layer utilities {
-
   /* Hide scrollbar for Chrome, Safari and Opera */
   .scrollbar-hide::-webkit-scrollbar {
     /* display: none; */
@@ -122,6 +121,12 @@ input[type="text"]:-moz-ui-autofill {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+  .scrollbar-visible {
+    -ms-overflow-style: auto;
+    scrollbar-width: auto;
+  }
+
   .tooltipContent {
     display: -webkit-box;
     -webkit-line-clamp: 20;
@@ -131,39 +136,42 @@ input[type="text"]:-moz-ui-autofill {
     max-height: 850px; /* Adjust based on your line height and font size to fit exactly 10 lines */
     max-width: 750px; /* Adjust as necessary */
   }
-
-  .extra-text-shadow {
-    box-shadow: 1px 2px 10px 12px rgba(var(--background), 1);
-  }
 }
 
-/* Size */
 ::-webkit-scrollbar {
-  width: 4px;
-  height: 0px; /* Decrease the height to make the thumb slimmer */
-  background: rgb(var(--muted-foreground));
-  border-radius: 999999px;
-  padding: 4px;
+  width: 0px;
+  height: 0px;
 }
 
-/* Track */
-::-webkit-scrollbar-track {
-  background: none;
-}
+@media (min-width: 768px) {
+  /* Size */
+  ::-webkit-scrollbar {
+    width: 0px;
+    height: 10px;
+    background: hsla(var(--muted-foreground), 0.3);
+    border-radius: 999999px;
+  }
 
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: rgba(var(--muted), 0.4);
-  border-radius: 2px;
-}
+  /* Track */
+  ::-webkit-scrollbar-track {
+    /* background: red; */
+  }
 
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: rgb(var(--muted));
-}
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: hsla(var(--foreground), 0.35);
+    border-radius: 9999px;
+  }
 
-.placeholder-gray-300-70::placeholder {
-  color: rgba(var(--foreground), 0.7);
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsla(var(--foreground), 0.5);
+    height: 10px;
+  }
+
+  .placeholder-gray-300-70::placeholder {
+    color: hsla(var(--foreground), 0.5);
+  }
 }
 
 /* Animations */
