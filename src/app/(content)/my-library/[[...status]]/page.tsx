@@ -157,7 +157,6 @@ export default function MyLibrary({
         onChange={(value: string) => searchBooks(value)}
         onSubmit={(value: string) => searchBooks(value)}
         placeholder="Search in Your Books..."
-        className="pr-16"
       />
 
       <div

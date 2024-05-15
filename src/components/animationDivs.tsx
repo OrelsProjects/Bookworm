@@ -111,7 +111,7 @@ const expandingBottomToTop: MotionProps = {
 
 const expandingRightToLeft: MotionProps = {
   initial: { width: 0 },
-  animate: { width: "80%" },
+  animate: { width: "85%" },
   exit: { width: 0 },
   transition: {
     duration: 0.25,

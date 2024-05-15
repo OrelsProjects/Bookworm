@@ -121,7 +121,6 @@ const MyLists = ({ params }: { params: { listUrl?: string } }) => {
           searchBooks(value);
         }}
         placeholder="Search in Your Books..."
-        className="pr-16"
       />
       <div className="h-full w-full flex gap-10 flex-grow flex-col overflow-auto">
         <UserBooks />

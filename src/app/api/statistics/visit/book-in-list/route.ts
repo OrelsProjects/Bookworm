@@ -14,7 +14,6 @@ export async function POST(
     createVisitBody = await req.json();
     const axios = GetAxiosInstance(req);
     await axios.post("/statistics/visitor", { ...createVisitBody, visitorType });
-    return NextResponse.json({}, { status: 200 });
   } catch (error: any) {
     loggerServer.error("Error creating visit", getUserIdFromRequest(req), {
         data: {
@@ -22,7 +21,7 @@ export async function POST(
         },
         error,
       });
-
-    return NextResponse.json({}, { status: 500 });
+  } finally {
+    return NextResponse.json({}, { status: 200 });
   }
 }

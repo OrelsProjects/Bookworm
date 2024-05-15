@@ -21,9 +21,7 @@ const TopSectionContainer: React.FC<
       className ?? ""
     }`}
   >
-    <div
-      className={`-mt-12 md:mt-0 h-fit flex-shrink-0 shadow-md rounded-xl`}
-    >
+    <div className={`-mt-12 md:mt-0 h-fit flex-shrink-0 shadow-md rounded-xl`}>
       {thumbnail}
     </div>
     {children}
@@ -38,14 +36,12 @@ const LeftSectionContainer: React.FC<
       className ?? ""
     }`}
   >
-    <div
-      className={`-ml-[170px] h-fit flex-shrink-0 shadow-md rounded-xl`}
-    >
+    <div className={`-ml-[170px] h-fit flex-shrink-0 shadow-md rounded-xl`}>
       {thumbnail}
     </div>
     {children}
     <div className="h-[100vh] w-[1px] flex justify-center items-center">
-    <div className="h-[95%] w-[1px] bg-muted-foreground" />
+      <div className="h-[90%] w-[1px] bg-muted-foreground" />
     </div>
   </div>
 );
@@ -55,7 +51,7 @@ const RightSectionContainer: React.FC<ModalContentContainer> = ({
   className,
 }) => (
   <div
-    className={`h-[95%] w-full hidden md:flex flex-col items-center justify-start gap-[30px] ${
+    className={`h-[90%] w-full hidden md:flex flex-col items-center justify-start gap-[30px] mr-10 overflow-auto ${
       className ?? ""
     }`}
   >
