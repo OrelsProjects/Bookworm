@@ -28,6 +28,7 @@ const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
   useEffect(() => {
     const loadUserDataAsync = async () => {
       try {
+        if (!user) return;
         if (loadingUserBooks.current) return;
         axios.defaults.baseURL = window.location.origin;
         loadingUserBooks.current = true;
