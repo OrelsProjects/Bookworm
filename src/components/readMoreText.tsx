@@ -44,7 +44,7 @@ const ReadMoreText: React.FC<ReadMoreTextProps> = ({
 
   return (
     text && (
-      <div className="text-foreground font-thin leading-7.5 text-xl flex flex-col items-start">
+      <div className="text-foreground font-thin leading-7.5 text-xl flex flex-col items-start md:text-[28px] md:leading-[42px]">
         <p
           ref={overflowRef}
           className={` ${className} ${

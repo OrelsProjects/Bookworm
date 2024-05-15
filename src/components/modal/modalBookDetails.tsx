@@ -13,6 +13,7 @@ import { BookInList } from "../../models/bookInList";
 import { useSelector } from "react-redux";
 import { selectAuth } from "../../lib/features/auth/authSlice";
 import GenresTabs from "../genresTabs";
+import { getThumbnailSize } from "../../consts/thumbnail";
 
 export interface ModalBookDetailsProps {
   bookData: Book;
@@ -56,13 +57,13 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
   }, [userBooksData]);
 
   const Summary = () => (
-    <div className="w-full flex relative flex-col justify-start gap-1 ">
-      <GenresTabs genres={book?.genres ?? []} take={3} className="mb-6 mt-6"/>
+    <div className="w-full h-full flex relative flex-col justify-start gap-1 ">
+      <GenresTabs genres={book?.genres ?? []} take={3} className="mb-6 mt-6" />
 
-      <div className="flex flex-col gap-4 text-foreground h-full font-thin shadow-inner pb-6">
+      <div className="h-full flex flex-col gap-4 text-foreground font-thin shadow-inner pb-6">
         {bookInList && bookInList.comments && (
           <div>
-            <div className="text-foreground font-bold text-xl">
+            <div className="text-foreground font-bold text-xl md:text-[32px] md:leading-[48px] md:font-normal">
               {curatorsFirstNames + "'s" ?? "List Creator"} Comment
             </div>
             {bookInList.comments ? (
@@ -80,7 +81,9 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
         )}
         {book?.description && (
           <div>
-            <div className="text-foreground font-bold text-xl">Summary</div>
+            <div className="text-foreground font-bold text-xl md:text-[32px] md:leading-[48px] md:font-normal">
+              Summary
+            </div>
             <ReadMoreText
               text={book?.description}
               maxLines={bookInList ? 3 : 6}
@@ -101,7 +104,11 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
   );
 
   const ButtonsRow = () => (
-    <div className="w-full md:w-fit flex flex-col gap-8 flex-shrink-0">
+    <div
+      className={`w-full md:w-fit flex flex-col gap-8 flex-shrink-0 md:${
+        getThumbnailSize("xl").height
+      }`}
+    >
       <Buttons book={book} iconSize="sm" showAddToListButton={!!user} />
     </div>
   );

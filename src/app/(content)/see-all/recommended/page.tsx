@@ -123,7 +123,6 @@ export default function MyLibrary({
         onChange={(value: string) => search(value)}
         onSubmit={(value: string) => search(value)}
         placeholder="Search in Your Books..."
-        className="pr-16"
       />
 
       <div className="h-full flex flex-col gap-[30px] overflow-auto">

@@ -89,17 +89,20 @@ const BackButton = ({
   onClick?: () => void;
   className?: string;
 }) => (
-  <motion.div
-    className={`h-6 w-6 absolute top-[25px] left-[31px] z-30 cursor-pointer ${className}`}
-    whileHover={{ scale: 1.2 }}
+  <div
+    className="absolute top-[25px] md:top-[6px] left-[31px] flex flex-row justify-center items-center gap-2.5 cursor-pointer"
+    onClick={onClick}
   >
-    <div
-      className="bg-background h-10 w-10 rounded-full shadow-md flex justify-center items-center"
-      onClick={onClick}
+    <motion.div
+      className={`h-10 w-10 z-30 ${className}`}
+      // whileHover={{ scale: 1.2 }}
     >
-      <IoArrowBack className="!text-foreground !w-6 !h-6" />
-    </div>
-  </motion.div>
+      <div className="bg-background h-10 w-10 rounded-full shadow-md flex justify-center items-center md:border md:border-foreground">
+        <IoArrowBack className="!text-foreground !w-6 !h-6" />
+      </div>
+    </motion.div>
+    <span className="hidden md:flex text-2xl font-light">Back</span>
+  </div>
 );
 
 const Modal: React.FC<ModalProps> = ({
@@ -134,7 +137,7 @@ const Modal: React.FC<ModalProps> = ({
     useMemo(() => {
       const key = "modal";
       const className =
-        "h-4/5 w-full md:h-full md:w-4/5 bg-background rounded-tr-5xl rounded-tl-5xl md:rounded-tr-none md:rounded-l-2xl";
+        "h-4/5 w-full md:h-full md:w-[85%] bg-background rounded-tr-5xl rounded-tl-5xl md:rounded-tr-none md:rounded-l-2xl";
       const onClick = (e: any) => e.stopPropagation();
 
       return shouldAnimate ? (
@@ -150,11 +153,12 @@ const Modal: React.FC<ModalProps> = ({
           </ExpandingDiv>
           <ExpandingDiv
             key={key}
-            className={`${className} hidden md:flex`}
+            className={`${className} hidden md:flex relative`}
             onClick={onClick}
             isOpen={isOpen}
             expandType={ExpandType.RightToLeft}
           >
+            <BackButton onClick={onClose} />
             {children}
           </ExpandingDiv>
         </>
@@ -167,7 +171,7 @@ const Modal: React.FC<ModalProps> = ({
 
   return (
     <div
-      className="absolute top-0 left-0 right-0 bottom-0 w-full h-full z-30 overscroll-none overflow-auto bg-background"
+      className="absolute top-0 left-0 right-0 bottom-0 w-full h-full z-30 overscroll-none overflow-auto bg-background md:bg-transparent md:pl-[262px]"
       style={{ height, width }}
       ref={scrollableDivRef}
       id="modal"
@@ -187,7 +191,7 @@ const Modal: React.FC<ModalProps> = ({
           className="w-full h-full overscroll-none bg-background relative"
           ref={scrollableDivRef}
         >
-          <BackButton onClick={onClose} />
+          <BackButton onClick={onClose} className="md:hidden" />
           <div className="flex justify-center items-center relative w-full h-full z-20">
             <div
               className={`relative z-40 w-full flex items-end  justify-start md:justify-end self-start h-full ${

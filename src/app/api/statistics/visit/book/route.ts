@@ -16,8 +16,10 @@ export async function POST(
     const visitorType: Visitor = "book";
     createVisitBody = await req.json();
     const axios = GetAxiosInstance(req);
-    await axios.post("/statistics/visitor", { ...createVisitBody, visitorType });
-    return NextResponse.json({}, { status: 200 });
+    await axios.post("/statistics/visitor", {
+      ...createVisitBody,
+      visitorType,
+    });
   } catch (error: any) {
     loggerServer.error("Error creating visit", getUserIdFromRequest(req), {
       data: {
@@ -25,7 +27,7 @@ export async function POST(
       },
       error,
     });
-
-    return NextResponse.json({}, { status: 500 });
+  } finally {
+    return NextResponse.json({}, { status: 200 });
   }
 }
