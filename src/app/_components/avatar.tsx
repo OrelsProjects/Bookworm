@@ -13,15 +13,21 @@ import { Feedback } from "../../components/icons/feedback";
 import { Privacy } from "../../components/icons/privacy";
 import { SignOut } from "../../components/icons/signOut";
 import CustomImage from "../../components/image";
+import { cn } from "../../../lib/utils";
 
 const FEEDBACK_GIVEN = "feedback_given";
 
 type AvatarProps = {
   avatarUrl?: string;
   defaultText?: string;
+  imageClassName?: string;
 };
 
-const Avatar: React.FC<AvatarProps> = ({ avatarUrl, defaultText }) => {
+const Avatar: React.FC<AvatarProps> = ({
+  avatarUrl,
+  defaultText,
+  imageClassName,
+}) => {
   const router = useRouter();
   const { userBooksData } = useSelector(selectUserBooks);
   const [showDropdown, setShowDropdown] = React.useState<boolean>(false);
@@ -97,9 +103,10 @@ const Avatar: React.FC<AvatarProps> = ({ avatarUrl, defaultText }) => {
       {defaultText && (defaultText.substring(0, 2) || "").toUpperCase()}
     </div>
   );
+  
   return (
     <div
-      className="relative rounded-full h-[50px] w-[50px] z-50"
+      className="relative rounded-full h-full w-full z-50"
       onClick={toggleDropdown}
     >
       {
@@ -110,7 +117,7 @@ const Avatar: React.FC<AvatarProps> = ({ avatarUrl, defaultText }) => {
           height={42}
           width={42}
           alt={"avatar"}
-          className="cursor-pointer rounded-full mt-1"
+          className={cn("cursor-pointer rounded-full mt-1", imageClassName)}
           thumbnailSize={"sm"}
         />
       }
@@ -144,20 +151,6 @@ const Avatar: React.FC<AvatarProps> = ({ avatarUrl, defaultText }) => {
                 position: 3,
                 onClick: () => handleSignOut(),
               },
-              // {
-              //   label: "Export Data",
-              //   leftIcon: (
-              //     <img
-              //       src="/export.svg"
-              //       height={24}
-              //       width={24}
-              //       alt="export"
-              //     />
-              //   ),
-              //   onClick: () => {
-              //     handleExportData();
-              //   },
-              // },
             ]}
             onClose={() => {
               setShowDropdown(false);
