@@ -74,7 +74,7 @@ export default function Home(): React.ReactNode {
             title="Recommended for you"
             onClick={() => router.push("/see-all/recommended")}
           />
-          <div className="flex flex-row gap-3.5 overflow-auto">
+          <div className="flex flex-row gap-[15px] overflow-auto">
             {allRecommendations.length > 0 &&
               allRecommendations
                 .slice()
@@ -83,7 +83,7 @@ export default function Home(): React.ReactNode {
                   const match = parseInt(`${recommendationList.matchRate}`, 10);
                   return (
                     <div
-                      className="flex flex-row gap-4 cursor-pointer"
+                      className="flex flex-row gap-4 cursor-pointer hover:bg-slate-400/20 rounded-lg md:p-2"
                       key={`recommendation-${recommendationList.publicURL}`}
                       onClick={() => {
                         showBooksListModal({
