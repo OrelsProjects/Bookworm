@@ -223,7 +223,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         className={`w-full pr-[72px] transition-all duration-300 ease-in-out rounded-full ${
           className ?? ""
         }`}
-        formClassName="h-fit max-h-full w-full absolute inset-0 z-20 bg-background pr-[72px]"
+        formClassName="h-fit max-h-full w-full absolute inset-0 z-20 bg-background pr-[72px] md:pr-0"
         placeholder="Search all books, authors..."
         autoFocus={autoFocus}
         onFocus={onFocus}

@@ -84,7 +84,7 @@ const SideNavigationBar = () => {
   }, [pathname]);
 
   return (
-    <div className="w-64 h-full hidden md:flex flex-col justify-start items-center z-20 fixed left-0 border-r-1 border-gray-600 bg-background pl-6 pt-10 gap-8">
+    <div className="w-[264px] h-full hidden md:flex flex-col justify-start items-center z-20 fixed left-0 border-r-1 border-gray-600 bg-background pl-6 pt-10 gap-8">
       <div className="w-full flex flex-row justify-start items-center gap-1 flex-shrink-0">
         <div className="w-15 h-15">
           <Avatar

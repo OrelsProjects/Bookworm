@@ -103,7 +103,7 @@ const Avatar: React.FC<AvatarProps> = ({
       {defaultText && (defaultText.substring(0, 2) || "").toUpperCase()}
     </div>
   );
-  
+
   return (
     <div
       className="relative rounded-full h-full w-full z-50"
@@ -122,7 +122,7 @@ const Avatar: React.FC<AvatarProps> = ({
         />
       }
       {showDropdown && (
-        <div className="absolute top-full right-0 w-36 mt-2 z-50">
+        <div className="absolute top-full right-0 md:left-0 w-36 mt-2 z-50">
           <Dropdown
             items={[
               {

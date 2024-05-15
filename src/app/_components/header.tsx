@@ -28,7 +28,7 @@ const Header = ({ className }: HeaderProps): React.ReactNode => {
           }`}
         >
           {user ? (
-            <div className="h-[50px] w-[50px]">
+            <div className="h-[50px] w-[50px] md:hidden">
               <Avatar
                 avatarUrl={user?.profilePictureUrl}
                 defaultText={user?.displayName ?? user.email}
