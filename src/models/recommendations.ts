@@ -1,19 +1,3 @@
-import { TabItem } from "../../../components/ui/tabs";
-
-export const sorterTabItems: TabItem[] = [
-  {
-    label: "Match",
-    value: "Match",
-  },
-  // {
-  //   label: "Rating",
-  //   value: "Rating",
-  // },
-  {
-    label: "Views",
-    value: "Views",
-  },
-];
 
 // filters are possible keys of SafeBooksListData. Specifically, only genres
 export type RecommentionFilterTypes = "genres";

@@ -10,10 +10,8 @@ import { User } from "../models";
 import { IResponse } from "../models/dto/response";
 import { SafeBooksListData } from "../models/booksList";
 import { useAppDispatch, useAppSelector } from "../lib/hooks";
-import {
-  RecommendationFilters,
-  RecommentionFilterTypes,
-} from "../app/see-all/_consts";
+import { RecommendationFilters, RecommentionFilterTypes } from "../models/recommendations";
+
 
 const RECOMMENDATIONS_DATA_KEY = "userRecommendationsData";
 
