@@ -56,7 +56,7 @@ const List = ({
           onBookClick(book);
         }
       }}
-      className="h-fit"
+      className="h-fit cursor-pointer md:hover:bg-slate-400/20 md:hover:rounded-lg md:p-2"
       key={`book-in-books-list-${book?.bookId}`}
     >
       {CustomBookComponent ? (

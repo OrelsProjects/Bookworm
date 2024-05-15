@@ -58,7 +58,7 @@ const Dropdown: React.FC<DropdownProps> = ({
         .map((item) => (
           <div
             key={`dropdown-item-${item.label}`}
-            className="w-full h-12 flex items-center justify-start px-4 hover:cursor-pointer sm:hover:bg-primary rounded-lg"
+            className="w-full h-12 flex items-center justify-start px-4 hover:bg-slate-400/30 hover:rounded-sm rounded-lg cursor-pointer"
             onClick={(e) => {
               e.stopPropagation();
               item.onClick();
