@@ -147,13 +147,15 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   const ListsComponent = () => (
     <div className="flex flex-col gap-[15px]">
-      <SeeAll
-        title="Readlists"
-        onClick={() => {
-          setSeeAllLists(!seeAllLists);
-        }}
-        loading={isLoading}
-      />
+      {(lists?.length || 0) > (itemsToShowListsCount || 0) && (
+        <SeeAll
+          title="Readlists"
+          onClick={() => {
+            setSeeAllLists(!seeAllLists);
+          }}
+          loading={isLoading}
+        />
+      )}
       <div className="flex flex-col gap-[22px]">
         {isLoading
           ? Array.from(Array(MAX_RESULTS_NO_SEE_ALL)).map((_, index) => (

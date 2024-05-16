@@ -10,6 +10,7 @@ import { Button } from "../ui/button";
 import Avatar from "../../app/_components/avatar";
 import { useAppSelector } from "../../lib/hooks";
 import { cn } from "../../lib/utils";
+import { selectAuth } from "../../lib/features/auth/authSlice";
 
 const BottomNavigationBar = () => {
   const router = useRouter();
@@ -71,9 +72,10 @@ const BottomNavigationBar = () => {
 
 const SideNavigationBar = () => {
   const router = useRouter();
-  const { user } = useAppSelector((state) => state.auth);
   const pathname = usePathname();
   const { clearStack } = useModal();
+  const { user } = useAppSelector(selectAuth);
+
   const [selected, setSelected] = React.useState<NavigationBarItem | null>();
 
   useEffect(() => {
@@ -114,9 +116,9 @@ const SideNavigationBar = () => {
                     router.refresh();
                   } else {
                     router.push(item.path);
-                    clearStack();
                     setSelected(item);
                   }
+                  clearStack();
                 }}
               >
                 <item.icon

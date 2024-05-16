@@ -18,8 +18,8 @@ const thumbnailSizes = {
     height: "h-thumbnail-lg md:h-thumbnail-2xl",
   },
   ["xl"]: {
-    width: "w-thumbnail-xl md:w-thumbnail-5xl",
-    height: "h-thumbnail-xl md:h-thumbnail-5xl",
+    width: "w-thumbnail-xl md:w-thumbnail-2xl",
+    height: "h-thumbnail-xl md:h-thumbnail-2xl",
   },
   ["2xl"]: {
     width: "w-thumbnail-xl 2xs:w-thumbnail-xl xs:w-thumbnail-2xl md:w-thumbnail-3xl",

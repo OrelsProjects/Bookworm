@@ -8,8 +8,8 @@ import { IoCheckmarkCircleOutline as Checkmark } from "react-icons/io5";
 import { IoCheckmarkCircle as CheckmarkFill } from "react-icons/io5";
 
 import BookThumbnail from "../book/bookThumbnail";
-import GenericTitle from "../book/bookTitle";
-import GenericAuthors from "../book/authors";
+import ModalTitle from "../book/bookTitle";
+import ModalAuthors from "../book/authors";
 import BookButtons from "../book/bookButtons";
 import { useModal } from "../../hooks/useModal";
 import useBook from "../../hooks/useBook";
@@ -69,16 +69,16 @@ const SearchResultComponent: React.FC<SearchResultProps> = ({
 
   const Title = () =>
     book ? (
-      <GenericTitle title={book.title} />
+      <ModalTitle title={book.title} />
     ) : (
-      <GenericTitle title={booksList?.name || ""} />
+      <ModalTitle title={booksList?.name || ""} />
     );
 
   const Authors = () =>
     book ? (
-      <GenericAuthors authors={book.authors} prefix="by" />
+      <ModalAuthors authors={book.authors} prefix="by" />
     ) : (
-      <GenericAuthors
+      <ModalAuthors
         authors={booksList?.curatorName ? [booksList.curatorName] : []}
       />
     );

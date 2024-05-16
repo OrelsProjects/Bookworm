@@ -6,11 +6,12 @@ interface ModalContentContainer {
 }
 
 interface ModalContentProps {
+  className?: string;
+  children?: React.ReactNode;
   thumbnail?: React.ReactNode;
-  thumbnailDetails?: React.ReactNode;
   buttonsRow?: React.ReactNode;
   bottomSection?: React.ReactNode;
-  children?: React.ReactNode;
+  thumbnailDetails?: React.ReactNode;
 }
 
 const TopSectionContainer: React.FC<
@@ -73,13 +74,14 @@ const ContentContainer: React.FC<ModalContentContainer> = ({
 );
 
 export const ModalContent: React.FC<ModalContentProps> = ({
+  className,
   thumbnail,
-  thumbnailDetails,
   buttonsRow,
   bottomSection,
+  thumbnailDetails,
 }) => (
-  <ContentContainer>
-    <div className="w-fit h-fit flex flex-col items-center md:flex-shrink-0 md:ml-[35px]">
+  <ContentContainer className={className}>
+    <div className="w-full h-fit flex flex-col items-center md:w-fit md:flex-shrink-0 md:ml-[35px]">
       <TopSectionContainer thumbnail={thumbnail} className="md:hidden">
         <div className="h-full w-full flex flex-col justify-center items-start gap-1">
           {thumbnailDetails}

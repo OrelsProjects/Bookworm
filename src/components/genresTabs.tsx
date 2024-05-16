@@ -1,27 +1,33 @@
 import React from "react";
 import Tabs, { TabItem } from "./ui/tabs";
 import { unslugifyText } from "../utils/textUtils";
+import { cn } from "../../lib/utils";
 interface GenresTabsProps {
-  genres: string[];
   take: number;
-  selectable?: boolean;
-  onSelected?: (genre: string) => void;
+  genres: string[];
   className?: string;
+  selectable?: boolean;
+  itemClassName?: string;
+  onSelected?: (genre: string) => void;
 }
 
 const GenresTabs: React.FC<GenresTabsProps> = ({
   genres,
   selectable,
   onSelected,
-  take = 3,
   className,
+  itemClassName,
+  take = 3,
 }) => {
   return (
     <Tabs
       items={genres.slice(0, take).map((genre: string) => ({
         label: unslugifyText(genre),
         value: genre,
-        className: "!h-5 !py-3 !border-2 font-bold leading-6",
+        className: cn(
+          "h-5 py-3 md:h-10 border-2 font-bold leading-6 md:text-base ",
+          itemClassName
+        ),
       }))}
       selectable={selectable}
       onClick={(item: TabItem) => {

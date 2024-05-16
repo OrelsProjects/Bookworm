@@ -1,8 +1,8 @@
 import React from "react";
 import { Book } from "../../models";
 import BookThumbnail from "./bookThumbnail";
-import GenericAuthors from "./authors";
-import GenericTitle from "./bookTitle";
+import ModalAuthors from "./authors";
+import ModalTitle from "./bookTitle";
 import { ThumbnailSize, getThumbnailSize } from "../../consts/thumbnail";
 
 export type BookDetailsProps = {
@@ -43,7 +43,7 @@ const BookDetails: React.FC<BookDetailsProps> = ({
           <div className="text-sm md:text-base text-start line-clamp-1">
             {book?.title ?? ""}
           </div>
-          <GenericAuthors
+          <ModalAuthors
             authors={book?.authors}
             className="text-sm md:text-base text-primary text-start line-clamp-1"
           />

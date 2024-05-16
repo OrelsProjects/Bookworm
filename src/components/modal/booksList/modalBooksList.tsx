@@ -14,6 +14,7 @@ import { unslugifyText } from "../../../utils/textUtils";
 export const ModalBooksList = <T extends SafeBooksListData>({
   safeBooksListData,
   loading,
+  className,
 }: ModalBooksListProps<T>) => {
   const ThumbnailDetails = () => (
     <div className="w-full h-full justify-start items-start">

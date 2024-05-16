@@ -20,13 +20,15 @@ export interface BookThumbnailProps {
 
 const ImagePlaceholder = ({
   thumbnailSize,
+  className,
 }: {
   thumbnailSize: ThumbnailSize;
+  className?: string;
 }) => (
   <Skeleton
     className={`${getThumbnailSize(thumbnailSize).className} ${
       thumbnailSize === "xs" ? "rounded-[6px]" : "rounded-2xl"
-    }`}
+    } ${className ?? ""}`}
   />
 );
 
@@ -61,7 +63,7 @@ const BookThumbnail: React.FC<BookThumbnailProps> = ({
     <div
       className={`relative flex-shrink-0 ${
         getThumbnailSize(thumbnailSize).className
-      }`}
+      } md:h-fit md:w-fit`}
     >
       {!imageLoaded && !imageError && (
         <ImagePlaceholder thumbnailSize={thumbnailSize} />
@@ -75,7 +77,7 @@ const BookThumbnail: React.FC<BookThumbnailProps> = ({
         onClick={onClick && book ? () => onClick(book) : undefined}
         className={`${
           thumbnailSize === "xs" ? "rounded-[6px]" : "rounded-2xl"
-        } ${className ?? ""} w-full h-full`}
+        } w-full h-full  ${className ?? ""}`}
         onLoad={handleImageLoaded}
         onError={handleImageError}
         style={{ display: imageLoaded ? "block" : "none" }}
