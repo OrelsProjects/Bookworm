@@ -39,7 +39,7 @@ const Thumbnail: React.FC<{
   return (
     <BooksListThumbnail
       booksInList={books}
-      thumbnailSize={thumbnailSize}
+      className="w-thumbnail-xl md:w-thumbnail-5xl h-thumbnail-xl md:h-thumbnail-5xl flex-shrink-0"
       loading={loading}
     />
   );
@@ -126,7 +126,7 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
       }
       buttonsRow={
         <div className="w-full flex items-center justify-between mt-6 mb-6">
-          <div className="w-fit flex flex-row items-center gap-2">
+          <div className="w-fit flex flex-row items-center gap-2 md:hidden">
             <BurgerLines.Fill iconSize="sm" className="!text-foreground" />
             <div className="font-bold text-xl flex flex-row gap-1 items-center justify-center">
               Book List{" "}

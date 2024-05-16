@@ -85,7 +85,7 @@ const ModalAddBookToList: React.FC<ModalBookDetailsProps> = ({ book }) => {
     <BookThumbnail
       src={book.thumbnailUrl ?? "/thumbnailPlaceholder.png"}
       book={book}
-      thumbnailSize="lg"
+      className="w-thumbnail-xl md:w-thumbnail-5xl h-thumbnail-xl md:h-thumbnail-5xl flex-shrink-0"
     />
   );
 

@@ -67,12 +67,13 @@ const SearchResultComponent: React.FC<SearchResultProps> = ({
       />
     );
 
-  const Title = () =>
-    book ? (
-      <ModalTitle title={book.title} />
-    ) : (
-      <ModalTitle title={booksList?.name || ""} />
-    );
+  const Title = () => (
+    <div className="flex flex-grow w-full">
+      <div className="text-xl text-foreground text-start line-clamp-1 flex-1">
+        {book ? book.title : booksList?.name}
+      </div>
+    </div>
+  );
 
   const Authors = () =>
     book ? (
