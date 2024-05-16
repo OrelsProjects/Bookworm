@@ -125,7 +125,7 @@ const ModalBooksListEdit: React.FC<ModalBooksListProps> = ({
         </div>
       }
       buttonsRow={
-        <div className="w-full flex items-center justify-between mt-6">
+        <div className="w-full flex items-center justify-between mt-6 mb-6">
           <div className="w-fit flex flex-row items-center gap-2">
             <BurgerLines.Fill iconSize="sm" className="!text-foreground" />
             <div className="font-bold text-xl flex flex-row gap-1 items-center justify-center">

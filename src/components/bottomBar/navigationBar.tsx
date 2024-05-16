@@ -14,16 +14,8 @@ import { selectAuth } from "../../lib/features/auth/authSlice";
 
 const BottomNavigationBar = () => {
   const router = useRouter();
-  const pathname = usePathname();
   const { clearStack } = useModal();
   const [selected, setSelected] = React.useState<NavigationBarItem | null>();
-
-  useEffect(() => {
-    const selected = navigationBarItems.find((item) =>
-      pathname.includes(item.path)
-    );
-    setSelected(selected);
-  }, [pathname]);
 
   return (
     <div className="w-full h-fit flex flex-row justify-center items-center z-20 fixed bottom-0 md:hidden">
@@ -36,7 +28,7 @@ const BottomNavigationBar = () => {
               key={item.name}
               className="flex items-center justify-center rounded-full w-fit h-fit cursor-pointer bg-transparent p-0"
               onClick={() => {
-                if (pathname.includes(item.path)) {
+                if (window.location.origin.includes(item.path)) {
                   router.refresh();
                 } else {
                   router.push(item.path);
@@ -77,13 +69,46 @@ const SideNavigationBar = () => {
   const { user } = useAppSelector(selectAuth);
 
   const [selected, setSelected] = React.useState<NavigationBarItem | null>();
+  const [previousPath, setPreviousPath] = React.useState<string>(pathname);
 
   useEffect(() => {
     const selected = navigationBarItems.find((item) =>
       pathname.includes(item.path)
     );
+    clearStack();
     setSelected(selected);
   }, [pathname]);
+
+  // This is for the usecase when I use window.history.pushState to change the url
+  useEffect(() => {
+    const pushState = history.pushState;
+    history.pushState = function (state, title, url) {
+      pushState.call(history, state, title, url);
+      const selected = navigationBarItems.find((item) => {
+        return item.path && window.location.pathname.includes(item.path);
+      });
+      setSelected(selected);
+    };
+    return () => {
+      history.pushState = pushState;
+    };
+  }, []);
+
+  // onpopstate - set the right nav item
+  useEffect(() => {
+    const onPopState = () => {
+      const selected = navigationBarItems.find((item) => {
+        return item.path && window.location.pathname.includes(item.path);
+      });
+      setSelected(selected);
+    };
+
+    window.addEventListener("popstate", onPopState);
+
+    return () => {
+      window.removeEventListener("popstate", onPopState);
+    };
+  }, []);
 
   return (
     <div className="w-[264px] h-full hidden md:flex flex-col justify-start items-center z-40 fixed left-0 border-r-1 border-gray-600 bg-background pl-6 pt-10 gap-8">
@@ -112,13 +137,16 @@ const SideNavigationBar = () => {
                 key={item.name}
                 className="flex items-center justify-start rounded-full w-fit h-fit cursor-pointer bg-transparent p-0 gap-4"
                 onClick={() => {
-                  if (pathname.includes(item.path)) {
-                    router.refresh();
+                  if (window.location.pathname.includes(item.path)) {
+                    clearStack();
                   } else {
                     router.push(item.path);
                     setSelected(item);
+                    if (item.path === previousPath) {
+                      clearStack();
+                    }
+                    setPreviousPath(item.path);
                   }
-                  clearStack();
                 }}
               >
                 <item.icon

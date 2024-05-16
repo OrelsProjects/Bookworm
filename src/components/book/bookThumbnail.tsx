@@ -4,18 +4,18 @@ import { ThumbnailSize, getThumbnailSize } from "../../consts/thumbnail";
 import { Skeleton } from "../ui/skeleton";
 
 export interface BookThumbnailProps {
-  title?: string;
   src?: string;
   book?: Book;
-  height?: number;
+  title?: string;
   width?: number;
-  blurDataURL?: string;
+  height?: number;
   className?: string;
-  imageClassName?: string;
-  onClick?: (book: Book) => void;
+  blurDataURL?: string;
   Icon?: React.ReactNode;
-  thumbnailSize?: ThumbnailSize;
+  imageClassName?: string;
   loading?: "lazy" | "eager";
+  thumbnailSize?: ThumbnailSize;
+  onClick?: (book: Book) => void;
 }
 
 const ImagePlaceholder = ({
@@ -33,16 +33,16 @@ const ImagePlaceholder = ({
 );
 
 const BookThumbnail: React.FC<BookThumbnailProps> = ({
-  title,
   src,
   book,
-  height,
-  width,
-  className,
-  onClick,
   Icon,
-  thumbnailSize = "md",
+  title,
+  width,
+  height,
   loading,
+  onClick,
+  className,
+  thumbnailSize = "md",
 }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
@@ -60,11 +60,7 @@ const BookThumbnail: React.FC<BookThumbnailProps> = ({
   };
 
   return (
-    <div
-      className={`relative flex-shrink-0 ${
-        getThumbnailSize(thumbnailSize).className
-      } md:h-fit md:w-fit`}
-    >
+    <div className={`relative flex-shrink-0 h-fit w-fit`}>
       {!imageLoaded && !imageError && (
         <ImagePlaceholder thumbnailSize={thumbnailSize} />
       )}
@@ -77,7 +73,9 @@ const BookThumbnail: React.FC<BookThumbnailProps> = ({
         onClick={onClick && book ? () => onClick(book) : undefined}
         className={`${
           thumbnailSize === "xs" ? "rounded-[6px]" : "rounded-2xl"
-        } w-full h-full  ${className ?? ""}`}
+        } w-full h-full  ${className ?? ""} ${
+          getThumbnailSize(thumbnailSize).className
+        }`}
         onLoad={handleImageLoaded}
         onError={handleImageError}
         style={{ display: imageLoaded ? "block" : "none" }}

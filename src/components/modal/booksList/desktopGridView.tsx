@@ -22,6 +22,7 @@ import { Skeleton } from "../../ui/skeleton";
 import BooksListThumbnail from "../../booksList/booksListThumbnail";
 import GenresTabs from "../../genresTabs";
 import ReadMoreText from "../../readMoreText";
+import { motion } from "framer-motion";
 
 export function DesktopBooksListGridViewLoading() {
   const ListThumbnail = () => (
@@ -98,12 +99,12 @@ export default function DesktopBooksListGridView({
 }: BooksListViewProps & { curator?: string } & { loading?: boolean }) {
   const thumbnailSize = "2xl";
   const {
-    getBookFullData,
-    updateBookReadingStatus,
     addUserBook,
-    loading: loadingBook,
     userBooksData,
     deleteUserBook,
+    getBookFullData,
+    loading: loadingBook,
+    updateBookReadingStatus,
   } = useBook();
   const { showBookDetailsModal, showBooksListEditModal } = useModal();
 
@@ -216,7 +217,7 @@ export default function DesktopBooksListGridView({
   );
 
   const ListHeader = () => (
-    <div className="w-full flex flex-row items-center justify-between">
+    <div className="w-full flex flex-row items-center justify-start gap-32">
       <div className="w-fit flex flex-row items-center gap-2">
         <BurgerLines.Fill iconSize="sm" className="!text-foreground" />
         <div className="text-2xl flex flex-row gap-1 items-center justify-center">
@@ -288,14 +289,17 @@ export default function DesktopBooksListGridView({
   );
 
   const Thumbnail = ({ bookInList }: { bookInList: BookInListWithBook }) => (
-    <BookThumbnail
-      book={bookInList.book}
-      thumbnailSize={thumbnailSize}
-      loading="eager"
-      Icon={
-        <div className="w-full h-full z-40 absolute top-0">
-          <div className="w-full h-full flex flex-row items-end justify-center gap-6 p-2">
-            <div className="h-fit w-fit p-2 px-2.5 rounded-full bg-background">
+    <div className="w-full h-full relative overflow-visible">
+      <BookThumbnail
+        book={bookInList.book}
+        thumbnailSize={thumbnailSize}
+        loading="eager"
+        Icon={
+          <div className="w-full h-full md:h-fit absolute z-30 bottom-0 flex flex-row items-end justify-center gap-6 p-2">
+            <motion.div
+              className="h-fit w-fit p-2 px-2.5 rounded-full bg-background"
+              whileHover={{ scale: 1.2 }}
+            >
               <Bookmark.Fill
                 onClick={(e) => {
                   e.stopPropagation();
@@ -313,26 +317,34 @@ export default function DesktopBooksListGridView({
                       }
                       `}
               />
-            </div>
-            <Checkmark.Fill
-              onClick={(e) => {
-                e.stopPropagation();
-                handleUpdateBookReadingStatus(
-                  bookInList.book,
-                  ReadingStatusEnum.READ
-                );
-              }}
-              iconSize="md"
-              className={`rounded-full p-1.5 ${
-                isRead[bookInList.book.bookId]
-                  ? "!bg-primary !text-background"
-                  : "!bg-background !text-foreground"
-              }`}
-            />
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.2 }}>
+              <Checkmark.Fill
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleUpdateBookReadingStatus(
+                    bookInList.book,
+                    ReadingStatusEnum.READ
+                  );
+                }}
+                iconSize="md"
+                className={`rounded-full p-1.5 ${
+                  isRead[bookInList.book.bookId]
+                    ? "!bg-primary !text-background"
+                    : "!bg-background !text-foreground"
+                }`}
+              />
+            </motion.div>
           </div>
-        </div>
-      }
-    />
+        }
+      />
+      <motion.div
+        initial={{ scale: 1, opacity: 0.4 }}
+        whileHover={{ scale: 1.4, opacity: 1 }}
+        style={{ transformOrigin: "bottom" }}
+        className="w-full h-full absolute inset-0 z-20 rounded-2xl bg-red-500 cursor-pointer"
+      ></motion.div>
+    </div>
   );
 
   const BooksInList = () => (

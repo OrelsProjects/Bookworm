@@ -200,8 +200,6 @@ const Modal: React.FC<ModalProps> = ({
               } z-10`}
               onClick={onClose}
             >
-              {/* Hide borders */}
-              {/* <div className="bg-background w-full h-2 self-end absolute -bottom-[1px] z-30"></div> */}
               <div
                 className="-z-10 absolute inset-0 w-full h-full bg-background"
                 style={{
