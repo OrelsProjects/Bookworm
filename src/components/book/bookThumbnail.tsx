@@ -60,7 +60,11 @@ const BookThumbnail: React.FC<BookThumbnailProps> = ({
   };
 
   return (
-    <div className={`relative flex-shrink-0 h-fit w-fit`}>
+    <div
+      className={`relative flex-shrink-0 h-fit w-fit shadow-md ${
+        thumbnailSize === "xs" ? "rounded-[6px]" : "rounded-2xl"
+      }`}
+    >
       {!imageLoaded && !imageError && (
         <ImagePlaceholder thumbnailSize={thumbnailSize} />
       )}

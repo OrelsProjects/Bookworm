@@ -32,7 +32,7 @@ const ExplorePage: React.FC<ExplorePageProps> = () => {
   });
 
   const LoadingGenresTabs = () => (
-    <div className="w-full flex flex-row gap-[9px] my-8 justify-between overflow-auto">
+    <div className="w-full flex flex-row gap-[9px] my-8 justify-between md:justify-start overflow-auto">
       <Skeleton className="w-20 h-6 rounded-full flex-shrink-0" />
       <Skeleton className="w-20 h-6 rounded-full flex-shrink-0" />
       <Skeleton className="w-20 h-6 rounded-full flex-shrink-0" />

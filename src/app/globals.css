@@ -24,7 +24,7 @@ input[type="text"]:-moz-ui-autofill {
 
 @layer base {
   :root {
-    --background: 0 0% 7%;
+    --background: 0 0% 96%;
 
     --primary: 39, 95%, 39%, 1;
     --primary-foreground: 210 40% 98%;
@@ -32,10 +32,10 @@ input[type="text"]:-moz-ui-autofill {
     --secondary: 217.4 42.7% 16.5%;
     --secondary-foreground: 210 40% 96.1%;
 
-    --foreground: 0 0% 100%;
+    --foreground: 0 0% 7%;
 
-    --muted: 220 10.5% 78.2%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 0 0% 44%;
+    --muted-foreground: 0 0% 7%;
 
     --card: 215.4 42.7% 33.3%;
     --card-foreground: 210 40% 98%;
