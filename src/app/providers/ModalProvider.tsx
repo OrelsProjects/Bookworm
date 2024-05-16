@@ -217,10 +217,10 @@ const ModalProvider: React.FC = () => {
     }
     return (
       <div
-        className="w-full h-14 bg-background flex justify-between items-center gap-3 px-4"
+        className="w-full h-14 md:h-fit md:py-2 bg-background flex flex-row md:flex-row-reverse justify-between md:justify-end items-center gap-3 px-4"
         style={{ backgroundColor: modalBackgroundColor }}
       >
-        <div className="ml-10 text-lg text-foreground max-w-xs line-clamp-1">
+        <div className="ml-10 md:ml-0 text-lg md:text-2xl md:font-semibold text-foreground max-w-xs md:max-w-md line-clamp-1">
           {title}
         </div>
         <div>{thumbnail}</div>
@@ -258,6 +258,7 @@ const ModalProvider: React.FC = () => {
           <DesktopBooksListGridView
             safeBooksListData={data.booksList}
             loading={options?.loading}
+            topBarCollapsed={topBarCollapsed}
           />
         </>
       );

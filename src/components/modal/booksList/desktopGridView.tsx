@@ -23,6 +23,47 @@ import BooksListThumbnail from "../../booksList/booksListThumbnail";
 import GenresTabs from "../../genresTabs";
 import ReadMoreText from "../../readMoreText";
 import { motion } from "framer-motion";
+import { cn } from "../../../lib/utils";
+import { unslugifyText } from "../../../utils/textUtils";
+
+const TopBarCollapsed = ({
+  children,
+  scrollRef,
+  onClose,
+}: {
+  onClose?: () => void;
+  children: React.ReactNode;
+  scrollRef?: React.RefObject<HTMLDivElement>;
+}) => {
+  const [currentScrollPosition, setScrollPosition] = useState<number>(0);
+
+  const handleScroll = () => {
+    const scrollTop = scrollRef?.current?.scrollTop ?? 0;
+    if (scrollTop > 120) {
+      const scrolled = (scrollRef?.current?.scrollTop ?? 0) / 200;
+      console.log("scrolled", scrolled);
+      setScrollPosition(scrolled);
+    } else {
+      setScrollPosition(0);
+    }
+  };
+
+  useEffect(() => {
+    const scrollbar = scrollRef?.current;
+    if (!scrollbar) return;
+    scrollbar.addEventListener("scroll", handleScroll);
+    return () => scrollbar.removeEventListener("scroll", handleScroll);
+  }, [scrollRef]);
+
+  return (
+    <div
+      className="w-full h-fit absolute top-0 left-0 z-30 flex flex-row-reverse justify-start items-center"
+      style={{ opacity: currentScrollPosition }}
+    >
+      {children}
+    </div>
+  );
+};
 
 export function DesktopBooksListGridViewLoading() {
   const ListThumbnail = () => (
@@ -94,10 +135,15 @@ export function DesktopBooksListGridViewLoading() {
 
 export default function DesktopBooksListGridView({
   safeBooksListData,
+  topBarCollapsed,
   curator,
   loading,
-}: BooksListViewProps & { curator?: string } & { loading?: boolean }) {
+}: BooksListViewProps & { curator?: string } & { loading?: boolean } & {
+  topBarCollapsed: React.ReactNode;
+}) {
   const thumbnailSize = "2xl";
+
+  const scrollRef = React.useRef<HTMLDivElement>(null);
   const {
     addUserBook,
     userBooksData,
@@ -288,62 +334,125 @@ export default function DesktopBooksListGridView({
     </div>
   );
 
+  const ThumbnailIcons = ({
+    bookInList,
+    className,
+  }: {
+    bookInList: BookInListWithBook;
+    className?: string;
+  }) => (
+    <div
+      className={cn(
+        "w-full h-full md:h-fit absolute z-30 bottom-0 flex flex-row items-end justify-center gap-6 p-2",
+        className
+      )}
+    >
+      <motion.div
+        className="h-fit w-fit p-2 px-2.5 rounded-full bg-background"
+        whileHover={{ scale: 1.2 }}
+      >
+        <Bookmark.Fill
+          onClick={(e) => {
+            e.stopPropagation();
+            handleUpdateBookReadingStatus(
+              bookInList.book,
+              ReadingStatusEnum.TO_READ
+            );
+          }}
+          iconSize="xs"
+          className={`
+            ${
+              isToRead[bookInList.book.bookId]
+                ? "!text-primary"
+                : "!text-foreground"
+            }
+            `}
+        />
+      </motion.div>
+      <motion.div whileHover={{ scale: 1.2 }}>
+        <Checkmark.Fill
+          onClick={(e) => {
+            e.stopPropagation();
+            handleUpdateBookReadingStatus(
+              bookInList.book,
+              ReadingStatusEnum.READ
+            );
+          }}
+          iconSize="md"
+          className={`rounded-full p-1.5 ${
+            isRead[bookInList.book.bookId]
+              ? "!bg-primary !text-background"
+              : "!bg-background !text-foreground"
+          }`}
+        />
+      </motion.div>
+    </div>
+  );
+
+  const ThumbnailHover = ({
+    bookInList,
+  }: {
+    bookInList: BookInListWithBook;
+  }) => {
+    const [isHover, setIsHover] = useState(false);
+    const scale = 1.5;
+
+    return (
+      <div
+        className={`w-full h-full rounded-2xl absolute inset-0 ${
+          isHover ? "z-40" : "z-20"
+        }`}
+      >
+        <motion.div
+          initial={{ scale: 1, opacity: 0 }}
+          whileHover={{ scale, opacity: 1 }}
+          onHoverStart={() => {
+            setIsHover(true);
+          }}
+          onHoverEnd={() => {
+            setIsHover(false);
+          }}
+          style={{ transformOrigin: "bottom" }}
+          className="w-full h-full rounded-2xl cursor-pointer"
+        >
+          <div className="absolute inset-0 bg-background/80 z-20 rounded-2xl border border-foreground" />
+          <div className="absolute inset-0 z-10">
+            <BookThumbnail
+              book={bookInList.book}
+              thumbnailSize={thumbnailSize}
+            />
+          </div>
+          <div className="h-full w-full absolute inset-0 flex flex-col justify-start items-center gap-5 px-4 pt-5 pb-2.5 z-30 bg-transparent">
+            <span className="w-full font-light line-clamp-5">
+              {bookInList.book.description}
+            </span>
+            <div className="w-full flex flex-row justify-center items-center gap-1">
+              {bookInList.book.genres?.slice(0, 1)?.map?.((genre, index) => (
+                <span
+                  key={`genre-${index}`}
+                  className="text-xs font-semibold bg-background border border-foreground rounded-full h-6 px-2 py-1 flex justify-center items-center line-clamp-1 truncate"
+                >
+                  {unslugifyText(genre)}
+                </span>
+              ))}
+            </div>
+          </div>
+          {/* <Rating rating={bookInList.book.genres} /> */}
+          <ThumbnailIcons bookInList={bookInList} />
+        </motion.div>
+      </div>
+    );
+  };
+
   const Thumbnail = ({ bookInList }: { bookInList: BookInListWithBook }) => (
     <div className="w-full h-full relative overflow-visible">
       <BookThumbnail
         book={bookInList.book}
         thumbnailSize={thumbnailSize}
         loading="eager"
-        Icon={
-          <div className="w-full h-full md:h-fit absolute z-30 bottom-0 flex flex-row items-end justify-center gap-6 p-2">
-            <motion.div
-              className="h-fit w-fit p-2 px-2.5 rounded-full bg-background"
-              whileHover={{ scale: 1.2 }}
-            >
-              <Bookmark.Fill
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleUpdateBookReadingStatus(
-                    bookInList.book,
-                    ReadingStatusEnum.TO_READ
-                  );
-                }}
-                iconSize="xs"
-                className={`
-                      ${
-                        isToRead[bookInList.book.bookId]
-                          ? "!text-primary"
-                          : "!text-foreground"
-                      }
-                      `}
-              />
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.2 }}>
-              <Checkmark.Fill
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleUpdateBookReadingStatus(
-                    bookInList.book,
-                    ReadingStatusEnum.READ
-                  );
-                }}
-                iconSize="md"
-                className={`rounded-full p-1.5 ${
-                  isRead[bookInList.book.bookId]
-                    ? "!bg-primary !text-background"
-                    : "!bg-background !text-foreground"
-                }`}
-              />
-            </motion.div>
-          </div>
-        }
+        Icon={<ThumbnailIcons bookInList={bookInList} />}
       />
-      <motion.div
-        initial={{ scale: 1, opacity: 0.4 }}
-        whileHover={{ scale: 1.4, opacity: 1 }}
-        style={{ transformOrigin: "bottom" }}
-        className="w-full h-full absolute inset-0 z-20 rounded-2xl bg-red-500 cursor-pointer"
-      ></motion.div>
+      <ThumbnailHover bookInList={bookInList} />
     </div>
   );
 
@@ -386,15 +495,23 @@ export default function DesktopBooksListGridView({
   );
 
   return (
-    <div className="h-full w-full hidden md:flex flex-col gap-5 absolute inset-0 z-20 bg-background pl-72">
+    <div className="h-full w-full hidden md:flex flex-col gap-5 absolute inset-0 z-20 bg-background pl-[264px]">
       {loading ? (
         <DesktopBooksListGridViewLoading />
       ) : (
-        <div className="h-full w-full flex flex-col px-14 py-16 gap-10">
-          <ListThumbnail />
-          <ListComments />
-          <ListHeader />
-          <BooksInList />
+        <div className="w-full h-full relative">
+          <div
+            className="h-full w-full flex flex-col px-14 py-16 gap-10 overflow-auto relative"
+            ref={scrollRef}
+          >
+            <ListThumbnail />
+            <ListComments />
+            <ListHeader />
+            <BooksInList />
+          </div>
+          <TopBarCollapsed scrollRef={scrollRef}>
+            {topBarCollapsed}
+          </TopBarCollapsed>
         </div>
       )}
     </div>

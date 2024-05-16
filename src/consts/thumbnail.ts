@@ -9,7 +9,7 @@ export type ThumbnailSize =
   | "3xl";
 
 const thumbnailSizes = {
-  ["2xs"]: { width: "w-thumbnail-2xs", height: "h-thumbnail-2xs" },
+  ["2xs"]: { width: "w-thumbnail-2xs md:w-thumbnail-xs", height: "h-thumbnail-2xs md:h-thumbnail-xs" },
   ["xs"]: { width: "w-thumbnail-xs", height: "h-thumbnail-xs" },
   ["sm"]: { width: "w-thumbnail-sm", height: "h-thumbnail-sm" },
   ["md"]: { width: "w-thumbnail-md", height: "h-thumbnail-md" },
