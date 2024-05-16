@@ -11,11 +11,13 @@ export const SeeAll = ({
   onClick,
   loading,
   className,
+  showSeeAll = true,
 }: {
   title?: string;
   onClick: () => void;
   loading?: boolean;
   className?: string;
+  showSeeAll?: boolean;
 }) =>
   loading ? (
     title ? (
@@ -24,10 +26,14 @@ export const SeeAll = ({
       <SeeAllComponentLoading />
     )
   ) : title ? (
-    <SeeAllWithTitle title={title} onSeeAllClick={onClick} />
+    <SeeAllWithTitle
+      title={title}
+      onSeeAllClick={onClick}
+      showSeeAll={showSeeAll}
+    />
   ) : (
     <SeeAllText
-      className={className}
+      className={cn(className, { hidden: !showSeeAll })}
       onClick={() => {
         EventTracker.track("See all clicked", { title });
         onClick();
@@ -55,10 +61,12 @@ const SeeAllWithTitle = ({
   loading,
   className,
   onSeeAllClick,
+  showSeeAll = true,
 }: {
   title: string;
   loading?: boolean;
   className?: string;
+  showSeeAll?: boolean;
   onSeeAllClick: () => void;
 }) =>
   loading ? (
@@ -71,7 +79,10 @@ const SeeAllWithTitle = ({
       )}
     >
       <div className="text-2xl">{title}</div>
-      <SeeAllText onClick={onSeeAllClick} />
+      <SeeAllText
+        onClick={onSeeAllClick}
+        className={cn({ hidden: !showSeeAll })}
+      />
     </div>
   );
 

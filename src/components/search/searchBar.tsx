@@ -147,12 +147,13 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   const ListsComponent = () => (
     <div className="flex flex-col gap-[15px]">
-      {(lists?.length || 0) > (itemsToShowListsCount || 0) && (
+      {(lists?.length || 0) > 0 && (
         <SeeAll
           title="Readlists"
           onClick={() => {
             setSeeAllLists(!seeAllLists);
           }}
+          showSeeAll={(lists?.length || 0) > (itemsToShowListsCount || 0)}
           loading={isLoading}
         />
       )}
@@ -241,7 +242,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
       {searchHook.status !== "idle" && (
         <div
           className={cn("h-full flex flex-col gap-3 overflow-auto", {
-            "mt-[88px]": !booksOnly,
+            "mt-[88px]": !booksOnly && searchHook.searchValue,
             "mt-4": booksOnly,
           })}
           ref={scrollbarRef}

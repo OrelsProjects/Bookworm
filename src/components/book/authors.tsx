@@ -15,7 +15,7 @@ const ModalAuthors: React.FC<AuthorsProps> = ({
 }) => (
   <div className="flex flex-grow">
     <div
-      className={`text-muted text-lg text-start font-normal flex-1 line-clamp-1 ${className ?? ""}`}
+      className={`text-muted/70 text-lg text-start font-normal flex-1 line-clamp-1 ${className ?? ""}`}
       style={style}
     >
       {prefix} {authors?.join(", ")}
