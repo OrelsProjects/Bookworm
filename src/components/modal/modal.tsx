@@ -78,7 +78,7 @@ const TopBarCollapsed = ({
   );
 };
 
-const BackButton = ({
+export const BackButton = ({
   onClick,
   className,
 }: {
@@ -86,11 +86,14 @@ const BackButton = ({
   className?: string;
 }) => (
   <div
-    className="absolute top-[25px] md:top-[66px] left-[31px] flex flex-row justify-center items-center gap-2.5 cursor-pointer"
+    className={cn(
+      "absolute top-[25px] md:top-[66px] left-[31px] flex flex-row justify-center items-center gap-2.5 cursor-pointer md:hover:bg-slate-500/40 md:rounded-full md:p-2",
+      className
+    )}
     onClick={onClick}
   >
     <motion.div
-      className={`h-10 w-10 z-30 ${className}`}
+      className={`h-10 w-10 z-30`}
       // whileHover={{ scale: 1.2 }}
     >
       <div className="bg-background h-10 w-10 rounded-full shadow-md flex justify-center items-center md:border md:border-foreground">

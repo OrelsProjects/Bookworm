@@ -25,6 +25,7 @@ import ReadMoreText from "../../readMoreText";
 import { motion } from "framer-motion";
 import { cn } from "../../../lib/utils";
 import { unslugifyText } from "../../../utils/textUtils";
+import { BackButton } from "../modal";
 
 const TopBarCollapsed = ({
   children,
@@ -152,7 +153,8 @@ export default function DesktopBooksListGridView({
     loading: loadingBook,
     updateBookReadingStatus,
   } = useBook();
-  const { showBookDetailsModal, showBooksListEditModal } = useModal();
+  const { showBookDetailsModal, showBooksListEditModal, closeModal } =
+    useModal();
 
   const [sortedBooksInList, setSortedBooksInList] = React.useState<
     BookInListWithBook[]
@@ -501,7 +503,7 @@ export default function DesktopBooksListGridView({
       ) : (
         <div className="w-full h-full relative">
           <div
-            className="h-full w-full flex flex-col px-14 py-16 gap-10 overflow-auto relative"
+            className="h-full w-full flex flex-col px-14 py-20 gap-10 overflow-auto relative"
             ref={scrollRef}
           >
             <ListThumbnail />
@@ -509,6 +511,7 @@ export default function DesktopBooksListGridView({
             <ListHeader />
             <BooksInList />
           </div>
+          <BackButton onClick={() => closeModal()} className="!top-3 z-50" />
           <TopBarCollapsed scrollRef={scrollRef}>
             {topBarCollapsed}
           </TopBarCollapsed>
