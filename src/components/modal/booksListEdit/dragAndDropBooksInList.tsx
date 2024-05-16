@@ -27,12 +27,12 @@ interface BookInListDetailsProps extends ListBookAndBookDetailsProps {
 }
 
 const BookInListDetails: React.FC<BookInListDetailsProps> = ({
+  key,
+  name,
+  position,
+  onChange,
   bookInList,
   onDeleteBookClick,
-  onChange,
-  name,
-  key,
-  position,
 }) => {
   return (
     <div className="w-full flex flex-row gap-2 justify-start items-start relative">

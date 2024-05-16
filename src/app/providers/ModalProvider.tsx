@@ -237,6 +237,7 @@ const ModalProvider: React.FC = () => {
         if (!currentPath.includes(data.booksList.publicURL)) {
           window.history.pushState({}, "", data.booksList.publicURL);
           onBack = () => {
+            debugger;
             window.history.pushState({}, "", currentPath);
           };
         }
