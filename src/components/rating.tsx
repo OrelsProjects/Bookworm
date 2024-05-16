@@ -1,9 +1,8 @@
 // use client
 import * as React from "react";
-// Next.js Image component for optimized image serving
-import { Button } from "./ui/button"; // Adjust the import path as necessary
 import Loading from "./ui/loading";
 import Image from "next/image";
+import { cn } from "../lib/utils";
 
 type StarProps = {
   filled?: boolean;
@@ -18,11 +17,11 @@ function clamp(num: number, min: number, max: number): number {
 }
 
 export const RatingStar: React.FC<StarProps> = ({
-  imageFill,
-  filled,
   user,
-  className,
+  filled,
   onClick,
+  imageFill,
+  className,
 }) => {
   const starSrc = filled
     ? user
@@ -39,21 +38,27 @@ export const RatingStar: React.FC<StarProps> = ({
 };
 
 type RatingProps = {
-  rating?: number | null;
-  totalRatings?: number | null;
-  userRating?: number | null;
-  goodreadsUrl?: string | null;
   loading?: boolean;
   className?: string;
+  rating?: number | null;
+  textClassName?: string;
+  starClassName?: string;
+  userRating?: number | null;
+  totalRatings?: number | null;
+  goodreadsUrl?: string | null;
+  startsContainerClassName?: string;
 };
 
 const Rating: React.FC<RatingProps> = ({
   rating,
-  totalRatings,
-  goodreadsUrl,
-  userRating,
   loading,
   className,
+  userRating,
+  totalRatings,
+  goodreadsUrl,
+  textClassName,
+  starClassName,
+  startsContainerClassName,
 }) => {
   const fullStars = clamp(rating ? Math.round(rating) : 0, 0, 5);
   const emptyStars = clamp(5 - fullStars, 0, 5);
@@ -76,15 +81,33 @@ const Rating: React.FC<RatingProps> = ({
         className ?? ""
       }`}
     >
-      <div className="flex flex-row gap-1 md:gap-2.5">
+      <div
+        className={cn(
+          "flex flex-row gap-1 md:gap-2.5",
+          startsContainerClassName
+        )}
+      >
         {[...Array(user ? fullStarsUser : fullStars)].map((_, index) => (
-          <RatingStar key={index} filled user={user} className="inline-block" />
+          <RatingStar
+            key={index}
+            filled
+            user={user}
+            className={cn("inline-block", starClassName)}
+          />
         ))}
         {[...Array(user ? emptyStarsUser : emptyStars)].map((_, index) => (
-          <RatingStar key={index} className="inline-block" />
+          <RatingStar
+            key={index}
+            className={cn("inline-block", starClassName)}
+          />
         ))}
       </div>
-      <p className="ms-1 md:ms-0 text-lg font-thin text-foreground md:text-[24px] leading-[48px]">
+      <p
+        className={cn(
+          "ms-1 md:ms-0 text-lg font-thin text-foreground md:text-[24px] leading-[48px]",
+          textClassName
+        )}
+      >
         {(user ? userRating : rating)?.toFixed(2)}
         {!user && totalRatings && ` (${totalRatings})`}
       </p>

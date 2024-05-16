@@ -51,7 +51,7 @@ const BooksListsPage: React.FC<BooksListsPageProps> = ({
   if (!booksList && !loadingBooksList) {
     router.push("/404");
   }
-  return <div className="w-full h-full hidden md:flex ">HI</div>;
+  return <div className="w-full h-full hidden md:flex "></div>;
 };
 
 export default BooksListsPage;

@@ -26,13 +26,12 @@ import { motion } from "framer-motion";
 import { cn } from "../../../lib/utils";
 import { unslugifyText } from "../../../utils/textUtils";
 import { BackButton } from "../modal";
+import Rating from "../../rating";
 
 const TopBarCollapsed = ({
   children,
   scrollRef,
-  onClose,
 }: {
-  onClose?: () => void;
   children: React.ReactNode;
   scrollRef?: React.RefObject<HTMLDivElement>;
 }) => {
@@ -42,7 +41,6 @@ const TopBarCollapsed = ({
     const scrollTop = scrollRef?.current?.scrollTop ?? 0;
     if (scrollTop > 120) {
       const scrolled = (scrollRef?.current?.scrollTop ?? 0) / 200;
-      console.log("scrolled", scrolled);
       setScrollPosition(scrolled);
     } else {
       setScrollPosition(0);
@@ -139,7 +137,10 @@ export default function DesktopBooksListGridView({
   topBarCollapsed,
   curator,
   loading,
-}: BooksListViewProps & { curator?: string } & { loading?: boolean } & {
+  onClose,
+}: BooksListViewProps & { onClose?: () => void } & { curator?: string } & {
+  loading?: boolean;
+} & {
   topBarCollapsed: React.ReactNode;
 }) {
   const thumbnailSize = "2xl";
@@ -166,6 +167,16 @@ export default function DesktopBooksListGridView({
       return a.position - b.position;
     });
     setSortedBooksInList(booksInlistSorted);
+  }, [safeBooksListData]);
+
+  const booksRating = useMemo(() => {
+    const booksRating: { [key: number]: number } = {};
+    safeBooksListData?.booksInList?.forEach((bookInList) => {
+      const bookData = getBookFullData(bookInList.book);
+      booksRating[bookInList.book.bookId] =
+        bookData?.goodreadsData?.goodreadsRating || 0;
+    });
+    return booksRating;
   }, [safeBooksListData]);
 
   const isRead = useMemo(() => {
@@ -424,10 +435,19 @@ export default function DesktopBooksListGridView({
               thumbnailSize={thumbnailSize}
             />
           </div>
-          <div className="h-full w-full absolute inset-0 flex flex-col justify-start items-center gap-5 px-4 pt-5 pb-2.5 z-30 bg-transparent">
-            <span className="w-full font-light line-clamp-5">
+          <div className="h-full w-full absolute inset-0 flex flex-col justify-start items-center gap-3 px-4 pt-5 pb-2.5 z-30 bg-transparent">
+            <span className="w-full font-light line-clamp-4">
               {bookInList.book.description}
             </span>
+            {booksRating[bookInList.book.bookId] > 0 && (
+              <Rating
+                rating={booksRating[bookInList.book.bookId]}
+                startsContainerClassName="md:gap-0.5 md:w-full"
+                className="md:!gap-1"
+                starClassName="md:w-4 md:h-4"
+                textClassName="md:text-sm"
+              />
+            )}
             <div className="w-full flex flex-row justify-center items-center gap-1">
               {bookInList.book.genres?.slice(0, 1)?.map?.((genre, index) => (
                 <span
@@ -511,7 +531,13 @@ export default function DesktopBooksListGridView({
             <ListHeader />
             <BooksInList />
           </div>
-          <BackButton onClick={() => closeModal()} className="!top-3 z-50" />
+          <BackButton
+            onClick={() => {
+              closeModal();
+              onClose?.();
+            }}
+            className="!top-3 z-50"
+          />
           <TopBarCollapsed scrollRef={scrollRef}>
             {topBarCollapsed}
           </TopBarCollapsed>
