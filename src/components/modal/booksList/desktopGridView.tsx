@@ -437,7 +437,7 @@ export default function DesktopBooksListGridView({
           </div>
           <div className="h-full w-full absolute inset-0 flex flex-col justify-start items-center gap-3 px-4 pt-5 pb-2.5 z-30 bg-transparent">
             <span className="w-full font-light line-clamp-4">
-              {bookInList.book.description}
+              {bookInList.book.description || bookInList.comments}
             </span>
             {booksRating[bookInList.book.bookId] > 0 && (
               <Rating

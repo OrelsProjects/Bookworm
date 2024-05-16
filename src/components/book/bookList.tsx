@@ -56,7 +56,7 @@ const List = ({
           onBookClick(book);
         }
       }}
-      className="h-fit cursor-pointer transition-all md:hover:bg-slate-400/20 md:hover:rounded-lg md:p-2"
+      className="h-fit cursor-pointer transition-all md:hover:bg-slate-400/40 md:hover:rounded-xl"
       key={`book-in-books-list-${book?.bookId}`}
     >
       {CustomBookComponent ? (
@@ -80,7 +80,7 @@ const List = ({
                     }
                   }}
                 >
-                  <div className="w-10 h-10 bg-black rounded-full text-2xl flex justify-center items-center">
+                  <div className="w-10 h-10 bg-background first-letter:rounded-full text-2xl flex justify-center items-center">
                     {showDelete && book && <FaTrashCan className="w-3 h-3.5" />}
                     {showAdd && <span>+</span>}
                   </div>

@@ -25,7 +25,7 @@ const GenresTabs: React.FC<GenresTabsProps> = ({
         label: unslugifyText(genre),
         value: genre,
         className: cn(
-          "h-5 py-3 md:h-10 border-2 font-bold leading-6 md:text-base ",
+          "h-5 py-3 md:h-10 border-2 font-bold leading-6 md:text-base bg-foreground text-background dark:bg-background dark:text-foreground dark:border-foreground dark:hover:bg-foreground dark:hover:text-background dark:hover:border-foreground",
           itemClassName
         ),
       }))}
