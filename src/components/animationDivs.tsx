@@ -40,7 +40,6 @@ const GeneralDiv = ({
   isOpen = true,
   animationProps,
 }: AnimationDivProps) => {
-  console.log("opacityKey, isOpen", opacityKey, isOpen);
   return (
     <AnimatePresence mode="wait">
       {isOpen && (

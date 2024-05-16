@@ -236,12 +236,17 @@ const ModalProvider: React.FC = () => {
 
         if (!currentPath.includes(data.booksList.publicURL)) {
           window.history.pushState({}, "", data.booksList.publicURL);
-          onBack = () => {
-            debugger;
-            window.history.pushState({}, "", currentPath);
-          };
         }
+        
+        onBack = () => {
+          if (options?.fromUrl) {
+            window.history.pushState({}, "", options.fromUrl);
+          } else {
+            window.history.pushState({}, "", "/explore");
+          }
+        };
       }
+
       return (
         <>
           <RenderModal
@@ -256,6 +261,7 @@ const ModalProvider: React.FC = () => {
             />
           </RenderModal>
           <DesktopBooksListGridView
+            onClose={onBack}
             safeBooksListData={data.booksList}
             loading={options?.loading}
             topBarCollapsed={topBarCollapsed}
@@ -263,7 +269,7 @@ const ModalProvider: React.FC = () => {
         </>
       );
     },
-    [shouldRenderBooksListDetailsModal, topBarCollapsed]
+    []
   );
 
   const RenderBooksListDetailsEdit = (
@@ -379,7 +385,7 @@ const ModalProvider: React.FC = () => {
       {modalStack.map((modalData) => (
         <RenderComponent
           modalData={modalData}
-          key={`modal-${modalData.type}`}
+          key={`modal-${modalData.type}-${Math.random()}`}
         />
       ))}
       <RenderRegisterModal />

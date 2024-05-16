@@ -81,6 +81,7 @@ const SideNavigationBar = () => {
 
   // This is for the usecase when I use window.history.pushState to change the url
   useEffect(() => {
+    debugger;
     const pushState = history.pushState;
     history.pushState = function (state, title, url) {
       pushState.call(history, state, title, url);
@@ -98,6 +99,7 @@ const SideNavigationBar = () => {
   useEffect(() => {
     const onPopState = () => {
       const selected = navigationBarItems.find((item) => {
+        console.log(item.path, window.location.pathname);
         return item.path && window.location.pathname.includes(item.path);
       });
       setSelected(selected);
@@ -130,7 +132,10 @@ const SideNavigationBar = () => {
       <div className="w-full h-fit">
         {navigationBarItems.map((item) => {
           return (
-            <div className="w-full justify-start items-center h-15">
+            <div
+              className="w-full justify-start items-center h-15"
+              key={`navbar-item-${item.name}-${item.path}`}
+            >
               <Button
                 data-ripple-light={false}
                 data-ripple-dark={false}

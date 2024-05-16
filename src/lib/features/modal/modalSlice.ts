@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../../store";
 
 export interface ShowModalOptions {
+  fromUrl?: string;
   popLast?: boolean;
   loading?: boolean;
   shallow?: boolean;
@@ -84,6 +85,9 @@ const modalSlice = createSlice({
       if (action.payload.options?.popLast) {
         state.modalStack.pop();
       }
+      const options = action.payload.options ?? {};
+      options.fromUrl = window.location.href;
+      action.payload.options = { ...options };
       state.modalStack.push(action.payload);
       state.error = null;
     },
