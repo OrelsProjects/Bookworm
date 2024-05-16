@@ -15,6 +15,7 @@ import SizeContext from "../../lib/context/sizeContext";
 import { EventTracker } from "../../eventTracker";
 import { ModalTypes } from "../../lib/features/modal/modalSlice";
 import ModalContext from "../../lib/context/modalContext";
+import { cn } from "../../../lib/utils";
 
 interface ContentDivProps extends HTMLAttributes<HTMLDivElement> {
   isOpen: boolean;
@@ -24,13 +25,18 @@ interface ContentDivProps extends HTMLAttributes<HTMLDivElement> {
 
 export interface ModalProps {
   isOpen: boolean;
-  backgroundColor?: string;
-  type: ModalTypes;
-  topBarCollapsed: React.ReactNode;
-  onClose?: () => void;
-  className?: string;
   shouldAnimate?: boolean;
+
+  className?: string;
+  backgroundColor?: string;
+  contentClassName?: string;
+
+  type: ModalTypes;
+
   children?: React.ReactNode;
+  topBarCollapsed: React.ReactNode;
+
+  onClose?: () => void;
 }
 
 const TopBarCollapsed = ({
@@ -53,16 +59,6 @@ const TopBarCollapsed = ({
       setScrollPosition(0);
     }
   };
-
-  // record event onPopState
-  useEffect(() => {
-    const handleBackButtonClick = () => {
-      EventTracker.track("modal back button click");
-    };
-    window.addEventListener("popstate", handleBackButtonClick);
-
-    return () => window.removeEventListener("popstate", handleBackButtonClick);
-  }, []);
 
   useEffect(() => {
     const scrollbar = scrollRef?.current;
@@ -106,18 +102,20 @@ const BackButton = ({
 );
 
 const Modal: React.FC<ModalProps> = ({
-  isOpen,
   type,
-  topBarCollapsed,
+  isOpen,
   onClose,
-  className,
   children,
+  className,
+  topBarCollapsed,
+  contentClassName,
   shouldAnimate = true,
 }) => {
-  const { width, height } = useContext(SizeContext);
-  const modalContext = useContext(ModalContext);
-  const scrollableDivRef = useRef<HTMLDivElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
+  const scrollableDivRef = useRef<HTMLDivElement>(null);
+
+  const modalContext = useContext(ModalContext);
+  const { width, height } = useContext(SizeContext);
 
   useEffect(() => {
     const handleBackButtonClick = () => {
@@ -171,7 +169,10 @@ const Modal: React.FC<ModalProps> = ({
 
   return (
     <div
-      className="absolute top-0 left-0 right-0 bottom-0 w-full h-full z-30 overscroll-none overflow-auto bg-background md:bg-transparent md:pl-[262px]"
+      className={cn(
+        "absolute top-0 left-0 right-0 bottom-0 w-full h-full md:!h-[100vh] z-30 overscroll-none overflow-auto bg-background md:bg-transparent md:pl-[262px]",
+        className
+      )}
       style={{ height, width }}
       ref={scrollableDivRef}
       id="modal"
@@ -195,7 +196,7 @@ const Modal: React.FC<ModalProps> = ({
           <div className="flex justify-center items-center relative w-full h-full z-20">
             <div
               className={`relative z-40 w-full flex items-end  justify-start md:justify-end self-start h-full ${
-                className ?? ""
+                contentClassName ?? ""
               } z-10`}
               onClick={onClose}
             >

@@ -32,6 +32,7 @@ import {
   BookVisit,
   ListVisit,
 } from "../../models/statistics/visit";
+import DesktopBooksListGridView from "../../components/modal/booksList/desktopGridView";
 
 const ModalProvider: React.FC = () => {
   const router = useRouter();
@@ -231,8 +232,8 @@ const ModalProvider: React.FC = () => {
     (data?: any, options?: ShowModalOptions) => {
       let onBack = options?.onBack;
       if (!options?.loading) {
-        // set window state to show books list url
         const currentPath = window.location.pathname;
+
         if (!currentPath.includes(data.booksList.publicURL)) {
           window.history.pushState({}, "", data.booksList.publicURL);
           onBack = () => {
@@ -241,16 +242,23 @@ const ModalProvider: React.FC = () => {
         }
       }
       return (
-        <RenderModal
-          onClose={onBack}
-          type={ModalTypes.BOOKS_LIST_DETAILS}
-          shouldAnimate={options?.shouldAnimate ?? true}
-        >
-          <ModalBooksList
+        <>
+          <RenderModal
+            onClose={onBack}
+            type={ModalTypes.BOOKS_LIST_DETAILS}
+            shouldAnimate={options?.shouldAnimate ?? true}
+            className="md:hidden"
+          >
+            <ModalBooksList
+              safeBooksListData={data.booksList}
+              loading={options?.loading}
+            />
+          </RenderModal>
+          <DesktopBooksListGridView
             safeBooksListData={data.booksList}
             loading={options?.loading}
           />
-        </RenderModal>
+        </>
       );
     },
     [shouldRenderBooksListDetailsModal, topBarCollapsed]
@@ -302,17 +310,18 @@ const ModalProvider: React.FC = () => {
   }, [modalStack]);
 
   const RenderModal = ({
-    children,
     type,
     onClose,
+    children,
+    className,
     shouldAnimate = true,
   }: {
-    children: React.ReactNode;
     type: ModalTypes;
+    className?: string;
     onClose?: () => void;
     shouldAnimate?: boolean;
+    children: React.ReactNode;
   }) => {
-    const pathname = usePathname();
     const isOpen = useMemo<boolean>(
       () => modalStack.some((modal) => modal.type === type),
       [modalStack]
@@ -329,6 +338,7 @@ const ModalProvider: React.FC = () => {
         backgroundColor={modalBackgroundColor}
         shouldAnimate={shouldAnimate}
         key={`modal-${type}`}
+        className={className}
       >
         {children}
       </Modal>

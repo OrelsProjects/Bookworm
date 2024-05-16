@@ -7,7 +7,7 @@ type AuthorsProps = {
   style?: React.CSSProperties;
 };
 
-const GenericAuthors: React.FC<AuthorsProps> = ({
+const ModalAuthors: React.FC<AuthorsProps> = ({
   authors,
   prefix,
   className,
@@ -15,7 +15,7 @@ const GenericAuthors: React.FC<AuthorsProps> = ({
 }) => (
   <div className="flex flex-grow">
     <div
-      className={`text-primary text-sm font-normal flex-1 line-clamp-1 ${className ?? ""}`}
+      className={`text-muted text-lg text-start font-normal flex-1 line-clamp-1 ${className ?? ""}`}
       style={style}
     >
       {prefix} {authors?.join(", ")}
@@ -23,4 +23,4 @@ const GenericAuthors: React.FC<AuthorsProps> = ({
   </div>
 );
 
-export default GenericAuthors;
+export default ModalAuthors;

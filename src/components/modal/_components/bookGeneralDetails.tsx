@@ -2,8 +2,8 @@ import React from "react";
 import Rating from "../../rating";
 import MarqueeText from "../../ui/marquee";
 import Tooltip from "../../ui/tooltip";
-import GenericTitle from "../../book/bookTitle";
-import GenericAuthors from "../../book/authors";
+import ModalTitle from "../../book/bookTitle";
+import ModalAuthors from "../../book/authors";
 
 const BookGeneralDetails: React.FC<{
   title?: string | null;
@@ -19,9 +19,9 @@ const BookGeneralDetails: React.FC<{
           </div>
         }
       >
-        <GenericTitle title={title ?? ""} />
+        <ModalTitle title={title ?? ""} />
       </Tooltip>
-      <GenericAuthors
+      <ModalAuthors
         authors={authors || []}
         className="!text-muted text-lg md:text-[40px] leading-10 md:line-clamp-none font-normal"
       />

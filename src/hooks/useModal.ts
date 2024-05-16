@@ -44,11 +44,7 @@ export const useModal = () => {
       return;
     }
 
-    // if there's no back route, options.onBack will navigate to /explore. Otherwise, it will navigate to the back route
-    // Regardless of if there's options.onBack or not
-    const onBack =
-      window.history.length > 1 ? router.back : () => router.push("/explore");
-    onShowModal(data, type, { ...options, onBack });
+    onShowModal(data, type, { ...options });
   };
 
   const showAddBookToListModal = (data: Book) =>

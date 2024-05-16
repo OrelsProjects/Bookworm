@@ -57,14 +57,14 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
   }, [userBooksData]);
 
   const Summary = () => (
-    <div className="w-full h-full flex relative flex-col justify-start gap-1 ">
+    <div className="w-full h-full flex relative flex-col justify-start gap-1 md:gap-10">
       <GenresTabs genres={book?.genres ?? []} take={3} className="mb-6 mt-6" />
 
-      <div className="h-full flex flex-col gap-4 text-foreground font-thin shadow-inner pb-6">
+      <div className="h-full flex flex-col gap-4 md:gap-10 text-foreground font-thin shadow-inner pb-6">
         {bookInList && bookInList.comments && (
-          <div>
+          <div className="md:w-full md:flex md:flex-col md:gap-2">
             <div className="text-foreground font-bold text-xl md:text-[32px] md:leading-[48px] md:font-normal">
-              {curatorsFirstNames + "'s" ?? "List Creator"} Comment
+              {curatorsFirstNames || "List Creator" + "'s"} Comment
             </div>
             {bookInList.comments ? (
               <ReadMoreText
@@ -74,13 +74,13 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
               />
             ) : (
               <div>
-                {curator ?? "The List Creator"} Didn't Add His Comment Yet
+                {curator || "The List Creator"} Didn't Add His Comment Yet
               </div>
             )}
           </div>
         )}
         {book?.description && (
-          <div>
+          <div className="md:w-full md:flex md:flex-col md:gap-2">
             <div className="text-foreground font-bold text-xl md:text-[32px] md:leading-[48px] md:font-normal">
               Summary
             </div>
@@ -99,7 +99,7 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
     <BookThumbnail
       src={book?.thumbnailUrl ?? "/thumbnailPlaceholder.png"}
       book={book}
-      thumbnailSize="xl"
+      className="w-thumbnail-xl md:w-thumbnail-5xl h-thumbnail-xl md:h-thumbnail-5xl "
     />
   );
 

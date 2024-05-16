@@ -42,26 +42,6 @@ export function BooksListGridViewLoading() {
                   getThumbnailSize("3xl").className
                 }`}
               />
-              {/* <BookThumbnail
-                thumbnailSize="3xl"
-                loading="eager"
-                Icon={
-                  <div className="w-full h-full z-40 absolute top-0">
-                    <div className="w-full h-full flex flex-row items-end justify-center gap-6 p-2">
-                      <div className="h-fit w-fit p-2 px-2.5 rounded-full bg-background">
-                        <Bookmark.Fill
-                          iconSize="xs"
-                          className="!text-foreground"
-                        />
-                      </div>
-                      <Checkmark.Fill
-                        iconSize="md"
-                        className={`rounded-full p-1.5 !bg-background !text-foreground`}
-                      />
-                    </div>
-                  </div>
-                }
-              /> */}
               <div className="w-full flex flex-col gap-1">
                 <Skeleton className="w-full h-3 rounded-full" />
                 <Skeleton className="w-[90%] h-3 rounded-full" />
