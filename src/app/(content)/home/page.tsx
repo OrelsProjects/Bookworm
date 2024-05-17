@@ -4,10 +4,7 @@ import React, { useCallback, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import BookList from "../../../components/book/bookList";
 import useRecommendations from "../../../hooks/useRecommendations";
-import ReadingStatus, {
-  ReadStatus,
-  ReadingStatusEnum,
-} from "../../../models/readingStatus";
+import { ReadStatus, ReadingStatusEnum } from "../../../models/readingStatus";
 import SearchBar from "../../../components/search/searchBar";
 import Loading from "../../../components/ui/loading";
 import BooksListThumbnail from "../../../components/booksList/booksListThumbnail";
@@ -16,7 +13,6 @@ import { cn } from "../../../lib/utils";
 import { getThumbnailSize } from "../../../consts/thumbnail";
 import { useModal } from "../../../hooks/useModal";
 import { SeeAll } from "../../../components/ui/seeAll";
-import useNavigation from "../../../lib/navigation";
 import { useAppSelector } from "../../../lib/hooks";
 
 export default function Home(): React.ReactNode {
@@ -53,7 +49,7 @@ export default function Home(): React.ReactNode {
     title: string;
     readStatus: ReadStatus;
   }) => (
-    <div className="flex flex-col gap-3.5">
+    <div className="flex flex-col gap-1.5 md:gap-2">
       <SeeAll title={title} onClick={() => onSeeAllClick(readStatus)} />
       <BookList
         readStatus={readStatus}
@@ -69,7 +65,7 @@ export default function Home(): React.ReactNode {
 
     return allRecommendations && allRecommendations.length > 0 ? (
       <div className="flex flex-col gap-2">
-        <div className="w-full flex flex-col gap-3.5">
+        <div className="w-full flex flex-col gap-1.5 md:gap-2">
           <SeeAll
             title="Recommended for you"
             onClick={() => router.push("/see-all/recommended")}
