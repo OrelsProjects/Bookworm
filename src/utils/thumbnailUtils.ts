@@ -60,12 +60,3 @@ export function increaseLuminosity(
   // Return the updated RGB string
   return `rgb(${r}, ${g}, ${b})`;
 }
-
-export function getBackgroundColorOfBooks(books: Book[] | undefined): string {
-  const defaultColor = "rgb(200, 200, 200)";
-  if (books && (books.length || 0) > 0) {
-    return books[0]?.thumbnailColor || defaultColor;
-  } else {
-    return "rgb(200, 200, 200)";
-  }
-}

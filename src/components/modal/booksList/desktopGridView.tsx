@@ -27,27 +27,6 @@ import { cn } from "../../../lib/utils";
 import { unslugifyText } from "../../../utils/textUtils";
 import { BackButton } from "../modal";
 import Rating from "../../rating";
-import { getBackgroundColorOfBooks } from "../../../utils/thumbnailUtils";
-
-const TopBar = ({
-  title,
-  thumbnail,
-  modalBackgroundColor,
-}: {
-  title: string;
-  thumbnail: React.ReactNode;
-  modalBackgroundColor: string;
-}) => (
-  <div
-    className="w-full h-14 md:h-fit md:py-2 bg-background flex flex-row md:flex-row-reverse justify-between md:justify-center items-center gap-3 px-4"
-    style={{ backgroundColor: modalBackgroundColor }}
-  >
-    <div className="ml-10 md:ml-0 text-lg md:text-2xl md:font-semibold text-foreground max-w-xs md:max-w-md line-clamp-1">
-      {title}
-    </div>
-    <div>{thumbnail}</div>
-  </div>
-);
 
 const TopBarCollapsed = ({
   children,
@@ -156,10 +135,13 @@ export function DesktopBooksListGridViewLoading() {
 
 export default function DesktopBooksListGridView({
   safeBooksListData,
+  topBarCollapsed,
   curator,
   loading,
   onClose,
 }: BooksListViewProps & { onClose?: () => void } & { curator?: string } & {
+  topBarCollapsed: React.ReactNode;
+} & {
   loading?: boolean;
 }) {
   const thumbnailSize = "2xl";
@@ -186,12 +168,6 @@ export default function DesktopBooksListGridView({
       return a.position - b.position;
     });
     setSortedBooksInList(booksInlistSorted);
-  }, [safeBooksListData]);
-
-  const backgroundColor = useMemo(() => {
-    return getBackgroundColorOfBooks(
-      safeBooksListData?.booksInList.map((bookInList) => bookInList.book)
-    );
   }, [safeBooksListData]);
 
   const booksRating = useMemo(() => {
@@ -542,7 +518,7 @@ export default function DesktopBooksListGridView({
   );
 
   return (
-    <div className="h-full w-full hidden md:flex flex-col gap-5 absolute inset-0 z-20 bg-background pl-[264px]">
+    <div className="h-full w-full flex flex-col gap-5 absolute inset-0 z-20 bg-background pl-[264px]">
       {loading ? (
         <DesktopBooksListGridViewLoading />
       ) : (
@@ -564,16 +540,7 @@ export default function DesktopBooksListGridView({
             className="!top-3 z-50"
           />
           <TopBarCollapsed scrollRef={scrollRef}>
-            <TopBar
-              title={safeBooksListData?.name || ""}
-              thumbnail={
-                <BooksListThumbnail
-                  booksInList={safeBooksListData?.booksInList}
-                  thumbnailSize="xs"
-                />
-              }
-              modalBackgroundColor={backgroundColor}
-            />
+            {topBarCollapsed}
           </TopBarCollapsed>
         </div>
       )}

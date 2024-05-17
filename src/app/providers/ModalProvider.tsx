@@ -262,13 +262,14 @@ const ModalProvider: React.FC = () => {
           </RenderModal>
           <DesktopBooksListGridView
             onClose={onBack}
+            topBarCollapsed={topBarCollapsed}
             safeBooksListData={data.booksList}
             loading={options?.loading}
           />
         </>
       );
     },
-    []
+    [shouldRenderBooksListDetailsModal, topBarCollapsed]
   );
 
   const RenderBooksListDetailsEdit = (
