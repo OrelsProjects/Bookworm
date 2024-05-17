@@ -2,15 +2,9 @@ import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
 import React from "react";
 import StoreProvider from "./providers/StoreProvider";
-import { ToastContainer, Slide } from "react-toastify";
-import Header from "./_components/header";
-import APIProvider from "./providers/APIProvider";
 import AuthProvider from "./providers/AuthProvider";
-import BrowserDetector from "./providers/BrowserDetector";
-import ContentProvider from "./providers/ContentProvider";
-import DataProvider from "./providers/DataProvider";
 import NavigationProvider from "./providers/NavigationProvider";
-import AnimationProvider from "./providers/AnimationProvider";
+import ThemeProvider from "./providers/ThemeProvider";
 
 export default function RootLayout({
   children,
@@ -23,9 +17,11 @@ export default function RootLayout({
         <StoreProvider>
           <AuthProvider>
             <NavigationProvider>
-              {/* <AnimationProvider> */}
-              {children}
-              {/* </AnimationProvider> */}
+              <ThemeProvider>
+                {/* <AnimationProvider> */}
+                {children}
+                {/* </AnimationProvider> */}
+              </ThemeProvider>
             </NavigationProvider>
           </AuthProvider>
         </StoreProvider>

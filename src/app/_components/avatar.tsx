@@ -14,6 +14,7 @@ import { Privacy } from "../../components/icons/privacy";
 import { SignOut } from "../../components/icons/signOut";
 import CustomImage from "../../components/image";
 import { cn } from "../../../lib/utils";
+import { ThemeToggle } from "../../components/ui/themeToggle";
 
 const FEEDBACK_GIVEN = "feedback_given";
 
@@ -137,6 +138,7 @@ const Avatar: React.FC<AvatarProps> = ({
                 onClick: () => {
                   handleFeedbackClick();
                 },
+                closeOnClick: true,
               },
               {
                 label: "Privacy",
@@ -145,14 +147,23 @@ const Avatar: React.FC<AvatarProps> = ({
                 ),
                 position: 2,
                 onClick: () => handleNavigateToPolicy(),
+                closeOnClick: true,
+              },
+              {
+                label: "Theme",
+                leftIcon: <ThemeToggle />,
+                position: 3,
+                onClick: () => {},
+                closeOnClick: false,
               },
               {
                 label: "Sign Out",
                 leftIcon: (
                   <SignOut.Fill iconSize="sm" className="!text-background" />
                 ),
-                position: 3,
+                position: 4,
                 onClick: () => handleSignOut(),
+                closeOnClick: true,
               },
             ]}
             onClose={() => {
