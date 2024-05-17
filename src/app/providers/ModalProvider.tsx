@@ -161,9 +161,10 @@ const ModalProvider: React.FC = () => {
     return color;
   }, [type, data]);
 
-  const topBarCollapsed = useMemo<React.ReactNode>(() => {
+  const topBarCollapsedData = () => {
     const thumbnailSize = "2xs";
     const rounded = "!rounded-md";
+
     let thumbnail: React.ReactNode;
     let title: string = "";
     switch (type) {
@@ -212,9 +213,17 @@ const ModalProvider: React.FC = () => {
       default:
         thumbnail = undefined;
     }
+    return { title, thumbnail };
+  };
+
+  const topBarCollapsed = () => {
+    const { thumbnail, title }: { thumbnail: React.ReactNode; title: string } =
+      topBarCollapsedData();
     if (!thumbnail || !title) {
+      console.error("Thumbnail or title is missing");
       return undefined;
     }
+
     return (
       <div
         className="w-full h-14 md:h-fit md:py-2 bg-background flex flex-row md:flex-row-reverse justify-between md:justify-center items-center gap-3 px-4"
@@ -226,7 +235,7 @@ const ModalProvider: React.FC = () => {
         <div>{thumbnail}</div>
       </div>
     );
-  }, [type, data]);
+  };
 
   const RenderBooksListDetails = useCallback(
     (data?: any, options?: ShowModalOptions) => {
@@ -247,6 +256,10 @@ const ModalProvider: React.FC = () => {
         };
       }
 
+      const barCollapsed = topBarCollapsed();
+      if (!barCollapsed) {
+        debugger
+      }
       return (
         <>
           <RenderModal
@@ -264,7 +277,7 @@ const ModalProvider: React.FC = () => {
             onClose={onBack}
             safeBooksListData={data.booksList}
             loading={options?.loading}
-            topBarCollapsed={topBarCollapsed}
+            topBarCollapsed={barCollapsed}
           />
         </>
       );
@@ -342,7 +355,7 @@ const ModalProvider: React.FC = () => {
           onClose?.();
           handleOnClose();
         }}
-        topBarCollapsed={topBarCollapsed}
+        topBarCollapsed={topBarCollapsed()}
         backgroundColor={modalBackgroundColor}
         shouldAnimate={shouldAnimate}
         key={`modal-${type}`}
