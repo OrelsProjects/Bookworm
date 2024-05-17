@@ -17,8 +17,8 @@ const CratorNameAndTitle = ({
   className?: string;
 }) => (
   <div className={`w-full flex flex-col gap-0 ${className}`}>
-    <h2 className="text-base text-start md:text-xl">{name}</h2>
-    <h3 className="text-sm text-start md:text-lg">{title}</h3>
+    <h2 className="text-base text-start md:text-xl text-black">{name}</h2>
+    <h3 className="text-sm text-start md:text-lg text-black">{title}</h3>
   </div>
 );
 
