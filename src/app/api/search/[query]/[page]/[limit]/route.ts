@@ -1,8 +1,6 @@
 import Logger from "@/src/utils/loggerServer";
 import { GetAxiosInstance, getUserIdFromRequest } from "@/src/utils/apiUtils";
-import { Book } from "../../../../../../models";
 import { NextRequest, NextResponse } from "next/server";
-import { setThumbnailColorsToBooks } from "../../../../list/_utils/thumbnailUtils";
 import { SearchResults } from "../../../../../../models/search";
 
 export async function GET(

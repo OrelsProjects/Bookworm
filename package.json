@@ -7,7 +7,7 @@
 		"dev": "next dev -p 3001",
 		"test": "next dev -p 3001 NODE_ENV=test",
 		"build": "next build",
-		"start": "next start -p 3002",
+		"start": "next start -p 3001",
 		"lint": "next lint"
 	},
 	"dependencies": {

@@ -2,7 +2,6 @@ import Logger from "@/src/utils/loggerServer";
 import { GetAxiosInstance, getUserIdFromRequest } from "@/src/utils/apiUtils";
 import { NextRequest, NextResponse } from "next/server";
 import { Book } from "../../../../../../../models";
-import { setThumbnailColorsToBooks } from "../../../../../list/_utils/thumbnailUtils";
 
 type SearchBooksParams = {
   query: string;
@@ -35,7 +34,6 @@ export async function GET(
     );
     let top3BooksWithColors = books.slice(0, 3);
     const restOfBooks = books.slice(3);
-    top3BooksWithColors = await setThumbnailColorsToBooks(top3BooksWithColors);
     const booksWithColors = top3BooksWithColors.concat(restOfBooks);
 
     return NextResponse.json({ result: booksWithColors }, { status: 200 });

@@ -237,7 +237,7 @@ const ModalProvider: React.FC = () => {
         if (!currentPath.includes(data.booksList.publicURL)) {
           window.history.pushState({}, "", data.booksList.publicURL);
         }
-        
+
         onBack = () => {
           if (options?.fromUrl) {
             window.history.pushState({}, "", options.fromUrl);

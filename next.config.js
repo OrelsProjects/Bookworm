@@ -10,6 +10,7 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 });
 
 module.exports = {
+  reactStrictMode: false,
   images: {
     unoptimized: true,
     remotePatterns: [

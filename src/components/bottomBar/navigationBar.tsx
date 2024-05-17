@@ -75,7 +75,6 @@ const SideNavigationBar = () => {
     const selected = navigationBarItems.find((item) =>
       pathname.includes(item.path)
     );
-    clearStack();
     setSelected(selected);
   }, [pathname]);
 

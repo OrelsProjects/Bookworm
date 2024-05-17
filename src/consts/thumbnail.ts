@@ -9,10 +9,16 @@ export type ThumbnailSize =
   | "3xl";
 
 const thumbnailSizes = {
-  ["2xs"]: { width: "w-thumbnail-2xs md:w-thumbnail-xs", height: "h-thumbnail-2xs md:h-thumbnail-xs" },
+  ["2xs"]: {
+    width: "w-thumbnail-2xs md:w-thumbnail-xs",
+    height: "h-thumbnail-2xs md:h-thumbnail-xs",
+  },
   ["xs"]: { width: "w-thumbnail-xs", height: "h-thumbnail-xs" },
   ["sm"]: { width: "w-thumbnail-sm", height: "h-thumbnail-sm" },
-  ["md"]: { width: "w-thumbnail-md", height: "h-thumbnail-md" },
+  ["md"]: {
+    width: "w-thumbnail-md md:w-thumbnail-lg",
+    height: "h-thumbnail-md md:h-thumbnail-lg",
+  },
   ["lg"]: {
     width: "w-thumbnail-lg md:w-thumbnail-2xl",
     height: "h-thumbnail-lg md:h-thumbnail-2xl",
@@ -22,8 +28,10 @@ const thumbnailSizes = {
     height: "h-thumbnail-xl md:h-thumbnail-2xl",
   },
   ["2xl"]: {
-    width: "w-thumbnail-xl 2xs:w-thumbnail-xl xs:w-thumbnail-2xl md:w-thumbnail-3xl",
-    height: "h-thumbnail-xl 2xs:h-thumbnail-xl xs:h-thumbnail-2xl md:h-thumbnail-3xl",
+    width:
+      "w-thumbnail-xl 2xs:w-thumbnail-xl xs:w-thumbnail-2xl md:w-thumbnail-3xl",
+    height:
+      "h-thumbnail-xl 2xs:h-thumbnail-xl xs:h-thumbnail-2xl md:h-thumbnail-3xl",
   },
   ["3xl"]: {
     width: "w-thumbnail-xl 2xs:w-thumbnail-2xl xs:w-thumbnail-3xl md:w-[225px]",
