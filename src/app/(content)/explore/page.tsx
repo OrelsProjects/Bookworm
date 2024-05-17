@@ -73,7 +73,7 @@ const ExplorePage: React.FC<ExplorePageProps> = () => {
             </>
           ) : (
             <div className="flex flex-col gap-3">
-              <RecommendationsList lists={lists} showIndex />
+              <RecommendationsList lists={lists} showIndex/>
               {loadingNewPage && (
                 <>
                   {Array.from({ length: 3 }).map((_, i) => (

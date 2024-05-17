@@ -86,7 +86,7 @@ const SearchResultComponent: React.FC<SearchResultProps> = ({
 
   return (
     <div
-      className={`flex flex-row justify-start items-start gap-2 w-full`}
+      className={`flex flex-row justify-start items-start md:items-center gap-2 w-full md:hover:bg-slate-400/40 cursor-pointer md:rounded-lg md:p-2.5`}
       onClick={(e) => {
         e.stopPropagation();
         if (book) {
