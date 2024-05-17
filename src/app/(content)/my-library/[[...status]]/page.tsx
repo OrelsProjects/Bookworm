@@ -142,6 +142,7 @@ export default function MyLibrary({
                   />
                 ),
                 onClick: () => onFilterClick(list.name),
+                closeOnClick: false,
               };
             })}
             onClose={() => setShowFilterDropdown(false)}

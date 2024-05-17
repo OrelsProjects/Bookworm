@@ -108,6 +108,7 @@ export default function MyLibrary({
                   />
                 ),
                 onClick: () => onFilterClick("genres", genre),
+                closeOnClick: false,
               };
             })}
             onClose={() => setShowFilterDropdown(false)}
