@@ -6,12 +6,20 @@ import { FaEye as Eye } from "react-icons/fa";
 import Tag from "../../components/ui/Tag";
 import BooksListThumbnail from "./booksListThumbnail";
 import { unslugifyText } from "../../utils/textUtils";
-import useNavigation from "../../lib/navigation";
+import { cn } from "../../lib/utils";
 
-export const LoadingRecommendationsList = () => {
+export const LoadingRecommendationsList = ({
+  thumbnailClassName,
+}: {
+  thumbnailClassName?: string;
+}) => {
   return (
     <div className="w-full flex flex-row gap-3 justify-start items-center">
-      <BooksListThumbnail loading thumbnailSize="md" />
+      <BooksListThumbnail
+        loading
+        thumbnailSize="md"
+        className={thumbnailClassName}
+      />
       <div className="flex flex-col gap-3">
         <div className="flex flex-col gap-1" id="loading-title-subtitle">
           <Skeleton className="w-48 h-3 rounded-xl" />
@@ -36,7 +44,7 @@ const ListTitleAndCurator = ({ list }: { list: SafeBooksListData }) => (
     <div className="text-foreground font-semibold text-base leading-4 tracking-[0.15px] truncate">
       {list.name}
     </div>
-    <div className="text-primary font-normal text-sm leading-[12px] tracking-[0.15px] truncate">
+    <div className="text-primary font-normal text-sm tracking-[0.15px] truncate">
       {list.curatorName}
     </div>
   </div>
@@ -81,9 +89,11 @@ const ListTags = ({ list }: { list: SafeBooksListData }) => {
 const RecommendationsList = ({
   lists,
   showIndex,
+  thumbnailClassName,
 }: {
   lists: SafeBooksListData[];
   showIndex?: boolean;
+  thumbnailClassName?: string;
 }) => {
   const { showBooksListModal } = useModal();
 
@@ -91,14 +101,14 @@ const RecommendationsList = ({
     <div className="flex flex-col gap-3">
       {lists.map((list, index) => (
         <div
-          className="w-full flex flex-row gap-2.5 justify-start items-start py-1 cursor-pointer transition-all hover:bg-slate-400/40 hover:rounded-lg"
+          className="w-full flex flex-row gap-2.5 justify-start items-start py-1 cursor-pointer transition-all p-2.5 hover:bg-slate-400/40 hover:rounded-lg"
           onClick={() => showBooksListModal({ booksList: list })}
           key={`recommendation-list-${list.name}`}
         >
           <BooksListThumbnail
-            thumbnailSize="md"
+            thumbnailSize={"md"}
             booksInList={list.booksInList}
-            className="relative"
+            className={cn("relative", thumbnailClassName)}
             Icon={
               showIndex && (
                 <div className="absolute bottom-0 left-0 h-[27px] w-[29px] rounded-r-lg bg-background font-bold text-xs flex justify-center items-center">

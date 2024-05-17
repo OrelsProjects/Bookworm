@@ -74,7 +74,7 @@ export default function Home(): React.ReactNode {
             title="Recommended for you"
             onClick={() => router.push("/see-all/recommended")}
           />
-          <div className="flex flex-row gap-[15px] overflow-x-auto">
+          <div className="flex flex-row gap-[15px] md:gap-5 overflow-x-auto">
             {allRecommendations.length > 0 &&
               allRecommendations
                 .slice()
@@ -138,9 +138,9 @@ export default function Home(): React.ReactNode {
   };
 
   const Content = () => (
-    <div className="h-fit w-full flex flex-col gap-[35px] mt-[48px] overflow-auto">
-      <RecommendationsList />
+    <div className="h-fit w-full flex flex-col gap-[35px] md:gap-[45px] mt-[48px] overflow-auto">
       {hasBooksToRead && <Books title="Next read" readStatus="to-read" />}
+      <RecommendationsList />
       {hasBooksRead && <Books title="Books I've read" readStatus="read" />}
     </div>
   );
