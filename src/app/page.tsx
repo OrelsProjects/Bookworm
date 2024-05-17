@@ -117,7 +117,7 @@ const PageContent = ({
   title: string;
   sections: React.ReactNode[];
 }) => (
-  <div className="w-full h-full flex flex-col flex-start justify-start items-start gap-[17px] text-background rounded-lg">
+  <div className="w-full h-full flex flex-col flex-start justify-start items-start gap-[17px] text-black rounded-lg">
     <div className="w-full flex flex-col justify-center items-center gap-2 pt-4">
       <PageHeader />
     </div>
