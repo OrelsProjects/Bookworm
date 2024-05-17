@@ -29,7 +29,7 @@ export default function ContentProvider({
         <div
           className={cn(
             "w-full h-full py-10 pb-16 px-7.5 flex flex-col z-10 tracking-semiwide relative overflow-clip",
-            { "md:pl-72": user },
+            { "md:px-72": user },
             className,
             {
               "h-screen": browser === "safari",

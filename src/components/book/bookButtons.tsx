@@ -186,7 +186,7 @@ export const BookButtons = () => {
             <div
               className={`rounded-full ${
                 getIconSize({ size: iconSize }).className
-              } ${isBookRead ? "bg-primary" : "border-1"}
+              } ${isBookRead ? "bg-primary" : "border-1 md:border-foreground"}
               flex justify-center items-center"
               `}
             >

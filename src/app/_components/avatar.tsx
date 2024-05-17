@@ -106,7 +106,7 @@ const Avatar: React.FC<AvatarProps> = ({
 
   return (
     <div
-      className="relative rounded-full h-full w-full z-50"
+      className="h-[70px] w-[70px] relative rounded-full z-50 p-[5px] md:hover:bg-slate-400/40 cursor-pointer transition-all"
       onClick={toggleDropdown}
     >
       {
@@ -117,7 +117,10 @@ const Avatar: React.FC<AvatarProps> = ({
           height={42}
           width={42}
           alt={"avatar"}
-          className={cn("cursor-pointer rounded-full mt-1", imageClassName)}
+          className={cn(
+            "cursor-pointer rounded-full mb-1 flex-shrink-0",
+            imageClassName
+          )}
           thumbnailSize={"sm"}
         />
       }

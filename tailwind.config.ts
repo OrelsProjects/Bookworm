@@ -129,7 +129,7 @@ module.exports = {
         "thumbnail-lg": "92px",
         "thumbnail-xl": "120px",
         "thumbnail-2xl": "133px",
-        "thumbnail-3xl": "170px",
+        "thumbnail-3xl": "212px",
         "thumbnail-5xl": "266.67px",
       },
       letterSpacing: {
@@ -155,7 +155,7 @@ module.exports = {
         "thumbnail-lg": "140px",
         "thumbnail-xl": "180px",
         "thumbnail-2xl": "200px",
-        "thumbnail-3xl": "240px",
+        "thumbnail-3xl": "300px",
         "thumbnail-5xl": "400px",
       },
       minHeight: {
