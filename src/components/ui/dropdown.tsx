@@ -6,6 +6,7 @@ interface DropdownItem {
   leftIcon?: React.ReactNode;
   position?: number;
   onClick: () => void;
+  closeOnClick: boolean;
 }
 
 interface DropdownProps {
@@ -21,7 +22,6 @@ const Dropdown: React.FC<DropdownProps> = ({
   onClose,
   className,
   expandType = ExpandType.TopLeft,
-  closeOnSelection = true,
 }) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -62,7 +62,7 @@ const Dropdown: React.FC<DropdownProps> = ({
             onClick={(e) => {
               e.stopPropagation();
               item.onClick();
-              closeOnSelection && onClose?.();
+              item.closeOnClick && onClose?.();
             }}
           >
             {item.leftIcon && (
