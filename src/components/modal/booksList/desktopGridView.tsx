@@ -528,7 +528,7 @@ export default function DesktopBooksListGridView({
       {loading ? (
         <DesktopBooksListGridViewLoading />
       ) : (
-        <div className="w-full h-full relative px-auto flex flex-col gap-4 overflow-x-visible">
+        <div className="w-full h-full relative px-auto flex flex-col gap-4 overflow-x-visible overflow-y-auto">
           <BackButton
             onClick={() => {
               closeModal();
