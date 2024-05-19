@@ -127,10 +127,7 @@ export function DesktopBooksListGridViewLoading() {
   );
 
   const BackButton = () => (
-    <Skeleton
-      className="w-24 h-10 rounded-full flex-shrink-0
-  "
-    />
+    <Skeleton className="w-24 h-10 rounded-full flex-shrink-0" />
   );
 
   return (
