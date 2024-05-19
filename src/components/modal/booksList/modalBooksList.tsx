@@ -9,7 +9,7 @@ import BooksListGridView, { BooksListGridViewLoading } from "./gridView";
 import { Skeleton } from "../../ui/skeleton";
 import { getThumbnailSize } from "../../../consts/thumbnail";
 import Tag from "../../ui/Tag";
-import { unslugifyText } from "../../../utils/textUtils";
+import { formatNumber, unslugifyText } from "../../../utils/textUtils";
 
 export const ModalBooksList = <T extends SafeBooksListData>({
   safeBooksListData,
@@ -32,9 +32,10 @@ export const ModalBooksList = <T extends SafeBooksListData>({
       <div className="line-clamp-1 text-muted text-lg">
         {safeBooksListData?.curatorName}
       </div>
-      {(safeBooksListData?.visitCount || 0) > 0 && (
-        <Tag>{safeBooksListData?.visitCount} views</Tag>
-      )}
+      {safeBooksListData?.visitCount &&
+        (safeBooksListData?.visitCount || 0) > 0 && (
+          <Tag>{formatNumber(safeBooksListData.visitCount)} views</Tag>
+        )}
     </div>
   );
 
