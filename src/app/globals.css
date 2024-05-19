@@ -37,7 +37,7 @@ input[type="text"]:-moz-ui-autofill {
     --muted: 0 0% 44%;
     --muted-foreground: 0 0% 7%;
 
-    --card: 215.4 42.7% 33.3%;
+    --card: 0 0% 89%;
     --card-foreground: 210 40% 98%;
 
     --accent: 160.9 70.3% 39.6%;
@@ -59,6 +59,10 @@ input[type="text"]:-moz-ui-autofill {
     --landing-page: 35 51% 93%;
     --landing-cover: 227 71% 45%;
     --landing-cover-brighter: 227 71% 55%;
+    
+    --books-in-list-blocks-number-sm: 2;
+    --books-in-list-blocks-number-md: 4;
+    --books-in-list-blocks-number: 5;
   }
 
   .dark {
@@ -74,7 +78,7 @@ input[type="text"]:-moz-ui-autofill {
     --muted: 220 10.5% 78.2%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --card: 215.4 42.7% 33.3%;
+    --card: 225 5% 10%;
     --card-foreground: 210 40% 98%;
     --accent: 160.9 70.3% 39.6%;
     --accent-foreground: 210 40% 98%;

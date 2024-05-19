@@ -47,7 +47,7 @@ const Dropdown: React.FC<DropdownProps> = ({
   return (
     <div
       key="dropdown"
-      className={`bg-primary rounded-lg flex-col justify-center items-start shadow-xl ${
+      className={`bg-card rounded-lg flex-col justify-center items-start shadow-xl ${
         className ?? ""
       }`}
       ref={dropdownRef}
@@ -58,7 +58,7 @@ const Dropdown: React.FC<DropdownProps> = ({
         .map((item) => (
           <div
             key={`dropdown-item-${item.label}`}
-            className="w-full h-12 flex items-center justify-start px-4 transition-all hover:bg-slate-400/40 hover:rounded-sm rounded-lg cursor-pointer"
+            className="w-full h-12 flex items-center justify-start px-4 transition-all md:hover:bg-slate-400/40 hover:rounded-sm rounded-lg cursor-pointer"
             onClick={(e) => {
               e.stopPropagation();
               item.onClick();
@@ -70,7 +70,7 @@ const Dropdown: React.FC<DropdownProps> = ({
                 {item.leftIcon}
               </div>
             )}
-            <div className="text-background line-clamp-1">{item.label}</div>
+            <div className="text-foreground line-clamp-1">{item.label}</div>
           </div>
         ))}
     </div>

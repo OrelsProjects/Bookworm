@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Book } from "../../models";
 import { ThumbnailSize, getThumbnailSize } from "../../consts/thumbnail";
 import { Skeleton } from "../ui/skeleton";
+import { cn } from "../../../lib/utils";
 
 export interface BookThumbnailProps {
   src?: string;
@@ -12,8 +13,8 @@ export interface BookThumbnailProps {
   className?: string;
   blurDataURL?: string;
   Icon?: React.ReactNode;
-  imageClassName?: string;
   loading?: "lazy" | "eager";
+  containerClassName?: string;
   thumbnailSize?: ThumbnailSize;
   onClick?: (book: Book) => void;
 }
@@ -42,6 +43,7 @@ const BookThumbnail: React.FC<BookThumbnailProps> = ({
   loading,
   onClick,
   className,
+  containerClassName,
   thumbnailSize = "md",
 }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -61,12 +63,15 @@ const BookThumbnail: React.FC<BookThumbnailProps> = ({
 
   return (
     <div
-      className={`relative flex-shrink-0 h-fit w-fit shadow-md ${
-        thumbnailSize === "xs" ? "rounded-[6px]" : "rounded-2xl"
-      }`}
+      className={cn(
+        `relative flex-shrink-0 h-fit w-fit shadow-md ${
+          thumbnailSize === "xs" ? "rounded-[6px]" : "rounded-2xl"
+        }`,
+        containerClassName
+      )}
     >
       {!imageLoaded && !imageError && (
-        <ImagePlaceholder thumbnailSize={thumbnailSize} />
+        <ImagePlaceholder thumbnailSize={thumbnailSize} className={className} />
       )}
       <img
         src={imageError ? placeholderSrc : thumbnailUrl ?? placeholderSrc}

@@ -218,7 +218,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   return (
     <div
       className={cn("h-fit max-h-full w-full flex flex-col flex-shrink-0", {
-        "h-full": seeAllBooks || seeAllLists,
+        "md:h-full": seeAllBooks || seeAllLists,
       })}
     >
       <SearchBarComponent

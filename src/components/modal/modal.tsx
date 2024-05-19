@@ -87,7 +87,7 @@ export const BackButton = ({
 }) => (
   <div
     className={cn(
-      "absolute top-[25px] md:top-[66px] left-[31px] flex flex-row justify-center items-center gap-2.5 cursor-pointer md:hover:bg-slate-500/40 md:rounded-full md:p-1",
+      "md:w-fit md:h-fit absolute top-[25px] md:top-[66px] left-[31px] flex flex-row justify-center items-center gap-2.5 cursor-pointer md:hover:bg-slate-500/40 md:rounded-full md:p-1",
       className
     )}
     onClick={onClick}

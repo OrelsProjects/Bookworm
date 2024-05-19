@@ -33,6 +33,7 @@ import {
   ListVisit,
 } from "../../models/statistics/visit";
 import DesktopBooksListGridView from "../../components/modal/booksList/desktopGridView";
+import { cn } from "../../../lib/utils";
 
 const ModalProvider: React.FC = () => {
   const router = useRouter();
@@ -217,7 +218,10 @@ const ModalProvider: React.FC = () => {
     }
     return (
       <div
-        className="w-full h-14 md:h-fit md:py-2 bg-background flex flex-row md:flex-row-reverse justify-between md:justify-center items-center gap-3 px-4"
+        className={cn(
+          "w-full h-14 md:h-fit md:py-2 bg-background flex flex-row md:flex-row-reverse justify-between md:justify-center items-center gap-3 px-4",
+          "md:!bg-card"
+        )}
         style={{ backgroundColor: modalBackgroundColor }}
       >
         <div className="ml-10 md:ml-0 text-lg md:text-2xl md:font-semibold text-foreground max-w-xs md:max-w-md line-clamp-1">
