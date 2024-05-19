@@ -56,10 +56,13 @@ input[type="text"]:-moz-ui-autofill {
     --radius: 0.5rem;
     --tw-shadow-color: 0 0% 8%;
 
+    --scroll-thumb: 0, 0%, 7%, 0.4;
+    --scroll-thumb-background: 0, 0%, 37%, 0.6;
+
     --landing-page: 35 51% 93%;
     --landing-cover: 227 71% 45%;
     --landing-cover-brighter: 227 71% 55%;
-    
+
     --books-in-list-blocks-number-sm: 2;
     --books-in-list-blocks-number-md: 4;
     --books-in-list-blocks-number: 5;
@@ -93,6 +96,8 @@ input[type="text"]:-moz-ui-autofill {
     --radius: 0.5rem;
     --tw-shadow-color: 0 0% 8%;
 
+    --scroll-thumb: 0, 0%, 100%, 0.4;
+    --scroll-thumb-background: 215.4, 16.3%, 46.9%, 0.6;
     --landing-page: 35 51% 93%;
     --landing-cover: 227 71% 45%;
     --landing-cover-brighter: 227 71% 55%;
@@ -126,13 +131,13 @@ input[type="text"]:-moz-ui-autofill {
   }
   /* Hide scrollbar for IE, Edge and Firefox */
   .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+    /* -ms-overflow-style: none;
+    scrollbar-width: none; */
   }
 
   .scrollbar-visible {
-    -ms-overflow-style: auto;
-    scrollbar-width: auto;
+    /* -ms-overflow-style: auto;
+    scrollbar-width: auto; */
   }
 
   .tooltipContent {
@@ -151,47 +156,57 @@ input[type="text"]:-moz-ui-autofill {
   height: 0px;
 }
 
+
 @media (min-width: 768px) {
   /* Size */
   ::-webkit-scrollbar {
     width: 0px;
     height: 10px;
-    background: hsla(var(--muted-foreground), 0.3);
-    border-radius: 999999px;
   }
 
   /* Track */
-  ::-webkit-scrollbar-track {
-    /* background: red; */
+  ::-webkit-scrollbar-track,
+  .scrollbar-visible::-webkit-scrollbar-track {
+    border-radius: 999999px;
+    background: hsla(var(--scroll-thumb-background));
   }
 
   /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: hsla(var(--foreground), 0.35);
+  ::-webkit-scrollbar-thumb,
+  .scrollbar-visible::-webkit-scrollbar-thumb {
+    background: hsla(var(--scroll-thumb));
     border-radius: 9999px;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar-thumb {
+    background: transparent;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar-track {
+    background: transparent;
   }
 
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
-    background: hsla(var(--foreground), 0.5);
-    height: 10px;
+    /* background: hsla(var(--foreground), 0.5);
+    height: 10px; */
   }
 
   .placeholder-gray-300-70::placeholder {
-    color: hsla(var(--foreground), 0.5);
+    /* color: hsla(var(--foreground), 0.5); */
   }
 }
 
 /* Animations */
 @keyframes errorFade {
   0% {
-    background-color: rgba(var(--background), 1);
+    background-color: hsla(var(--background), 1);
   }
   30% {
-    background-color: rgba(var(--error), 0.5);
+    background-color: hsla(var(--error), 0.5);
   }
   100% {
-    background-color: rgba(var(--background), 1);
+    background-color: hsla(var(--background), 1);
   }
 }
 
