@@ -101,8 +101,10 @@ export function DesktopBooksListGridViewLoading() {
         <Skeleton className="w-36 h-10 rounded-full" />
         <Skeleton className="w-20 h-10 rounded-full" />
       </div>
-      <div className={`flex flex-wrap gap-14 justify-start`}>
-        {[1, 2, 3, 4, 5, 6, 8, 9].map((index) => (
+      <div
+        className={`grid grid-cols-[repeat(var(--books-in-list-blocks-number),minmax(0,1fr))] gap-8 auto-rows-auto`}
+      >
+        {[0, 1, 2, 3, 4, 5, 6, 8, 9, 10].map((index) => (
           <div
             key={`book-in-list-${index}`}
             className={`flex flex-col justify-start items-start gap-2 
@@ -124,13 +126,19 @@ export function DesktopBooksListGridViewLoading() {
     </div>
   );
 
+  const BackButton = () => (
+    <Skeleton
+      className="w-24 h-10 rounded-full flex-shrink-0
+  "
+    />
+  );
+
   return (
     <div className="h-full w-full hidden md:flex flex-col gap-5">
-      <div className="h-full w-full flex flex-col px-14 py-16 gap-10">
-        <ListThumbnail />
-        <ListComments />
-        <BooksInList />
-      </div>
+      <BackButton />
+      <ListThumbnail />
+      <ListComments />
+      <BooksInList />
     </div>
   );
 }
@@ -519,11 +527,11 @@ export default function DesktopBooksListGridView({
   );
 
   return (
-    <div className="h-full w-full flex flex-col justify-start items-center gap-5 absolute inset-0 z-20 bg-background">
+    <div className="h-full md:max-w-[1200px] mx-auto mt-10 flex flex-col justify-start items-center gap-5 absolute inset-0 z-20 bg-background">
       {loading ? (
         <DesktopBooksListGridViewLoading />
       ) : (
-        <div className="w-full h-full relative md:max-w-[1200px] px-auto flex flex-col gap-4">
+        <div className="w-full h-full relative px-auto flex flex-col gap-4 overflow-x-visible">
           <BackButton
             onClick={() => {
               closeModal();
@@ -544,7 +552,7 @@ export default function DesktopBooksListGridView({
             </div>
           </TopBarCollapsed>
           <div
-            className="h-full w-full flex flex-col gap-10 overflow-auto relative"
+            className="h-full w-full flex flex-col gap-10 overflow-visible relative"
             ref={scrollRef}
           >
             <ListThumbnail />
