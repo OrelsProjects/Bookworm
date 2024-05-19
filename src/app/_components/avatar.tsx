@@ -107,7 +107,7 @@ const Avatar: React.FC<AvatarProps> = ({
 
   return (
     <div
-      className="h-[70px] w-[70px] relative rounded-full z-50 p-[5px] md:hover:bg-slate-400/40 cursor-pointer transition-all"
+      className="h-[50px] md:h-[70px] w-[50px] md:w-[70px] md:p-[5px] relative rounded-full z-50 md:hover:bg-slate-400/40 cursor-pointer transition-all"
       onClick={toggleDropdown}
     >
       {
@@ -115,24 +115,22 @@ const Avatar: React.FC<AvatarProps> = ({
           src={avatarUrl}
           placeholder={<DefaultAvatar />}
           defaultImage={<DefaultAvatar />}
-          height={42}
-          width={42}
           alt={"avatar"}
           className={cn(
-            "cursor-pointer rounded-full mb-1 flex-shrink-0",
+            "cursor-pointer rounded-full h-full w-full flex-shrink-0",
             imageClassName
           )}
           thumbnailSize={"sm"}
         />
       }
       {showDropdown && (
-        <div className="absolute top-full right-0 md:left-0 w-36 mt-2 z-50">
+        <div className="absolute md:top-full right-6 md:left-0 w-36 mt-2 z-50">
           <Dropdown
             items={[
               {
                 label: "Feedback",
                 leftIcon: (
-                  <Feedback.Fill iconSize="sm" className="!text-background" />
+                  <Feedback.Fill iconSize="sm" className="!text-foreground" />
                 ),
                 position: 1,
                 onClick: () => {
@@ -143,7 +141,7 @@ const Avatar: React.FC<AvatarProps> = ({
               {
                 label: "Privacy",
                 leftIcon: (
-                  <Privacy.Fill iconSize="sm" className="!text-background" />
+                  <Privacy.Fill iconSize="sm" className="!text-foreground" />
                 ),
                 position: 2,
                 onClick: () => handleNavigateToPolicy(),
@@ -159,7 +157,7 @@ const Avatar: React.FC<AvatarProps> = ({
               {
                 label: "Sign Out",
                 leftIcon: (
-                  <SignOut.Fill iconSize="sm" className="!text-background" />
+                  <SignOut.Fill iconSize="sm" className="!text-foreground" />
                 ),
                 position: 4,
                 onClick: () => handleSignOut(),

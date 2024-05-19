@@ -23,20 +23,28 @@ export default function ContentProvider({
 
   return (
     <ScreenSizeProvider>
-      <div className="w-full h-full scrollbar-hide md:scrollbar-visible">
+      <div
+        className="w-full h-full relative scrollbar-hide md:scrollbar-visible"
+        id="content container"
+      >
         <ModalProvider />
         <BottomBarProvider />
         <div
           className={cn(
-            "w-full h-full pt-10 md:pt-4 md:pb-0 pb-16 px-7.5 flex flex-col z-10 tracking-semiwide relative overflow-clip",
-            { "md:px-72": user },
+            "w-full h-full pt-10 md:pb-0 pb-16 px-7.5 flex flex-col z-10 tracking-semiwide relative overflow-clip md:max-w-[1200px] md:mx-auto",
             className,
             {
               "h-screen": browser === "safari",
             }
           )}
         >
-          {children}
+          <div
+            className={cn("w-full h-full", className, {
+              "h-screen": browser === "safari",
+            })}
+          >
+            {children}
+          </div>
         </div>
       </div>
     </ScreenSizeProvider>

@@ -36,13 +36,15 @@ const TopBarCollapsed = ({
   scrollRef?: React.RefObject<HTMLDivElement>;
 }) => {
   const [currentScrollPosition, setScrollPosition] = useState<number>(0);
-
+  const [zIndex, setZIndex] = useState<number>(0);
   const handleScroll = () => {
     const scrollTop = scrollRef?.current?.scrollTop ?? 0;
 
     if (scrollTop > 120) {
       const scrolled = (scrollRef?.current?.scrollTop ?? 0) / 200;
       setScrollPosition(scrolled);
+      // set zIndex up to 50, according to the scroll position. Normalized to 50
+      setZIndex(Math.min(50, Math.floor(scrolled * 50)));
     } else {
       setScrollPosition(0);
     }
@@ -57,8 +59,8 @@ const TopBarCollapsed = ({
 
   return (
     <div
-      className="w-full h-fit absolute top-0 left-0 z-30 flex flex-row-reverse justify-start items-center"
-      style={{ opacity: currentScrollPosition }}
+      className="w-full h-fit absolute top-0 left-0 flex flex-row-reverse justify-start items-center"
+      style={{ opacity: currentScrollPosition, zIndex }}
     >
       {children}
     </div>
@@ -474,20 +476,19 @@ export default function DesktopBooksListGridView({
         thumbnailSize={thumbnailSize}
         loading="eager"
         Icon={<ThumbnailIcons bookInList={bookInList} />}
+        className="!w-full"
+        containerClassName="!w-full"
       />
       <ThumbnailHover bookInList={bookInList} />
     </div>
   );
 
   const BooksInList = () => (
-    <div
-      className={`flex flex-wrap justify-between gap-4  md:justify-between md:items-center md:gap-[44px]`}
-    >
+    <div className="w-full grid grid-cols-[repeat(var(--books-in-list-blocks-number),minmax(0,1fr))] gap-8 auto-rows-auto">
       {sortedBooksInList.map((bookInList, index) => (
         <div
           key={`book-in-list-${index}`}
-          className={`flex flex-col justify-start items-start gap-2 
-            ${getThumbnailSize(thumbnailSize).width}
+          className={`flex flex-col justify-start items-start gap-2 w-full
             ${
               isOddNumberOfBooks &&
               index === lastIndexOfBooksInList &&
@@ -518,13 +519,32 @@ export default function DesktopBooksListGridView({
   );
 
   return (
-    <div className="h-full w-full flex flex-col gap-5 absolute inset-0 z-20 bg-background pl-[264px]">
+    <div className="h-full w-full flex flex-col justify-start items-center gap-5 absolute inset-0 z-20 bg-background">
       {loading ? (
         <DesktopBooksListGridViewLoading />
       ) : (
-        <div className="w-full h-full relative">
+        <div className="w-full h-full relative md:max-w-[1200px] px-auto flex flex-col gap-4">
+          <BackButton
+            onClick={() => {
+              closeModal();
+              onClose?.();
+            }}
+            className="justify-start md:top-0 md:relative md:left-0 z-20"
+          />
+          <TopBarCollapsed scrollRef={scrollRef}>
+            <div className="w-full h-full relative flex justify-center">
+              <BackButton
+                onClick={() => {
+                  closeModal();
+                  onClose?.();
+                }}
+                className="!top-2.5 !left-0"
+              />
+              {topBarCollapsed}
+            </div>
+          </TopBarCollapsed>
           <div
-            className="h-full w-full flex flex-col px-14 py-20 gap-10 overflow-auto relative"
+            className="h-full w-full flex flex-col gap-10 overflow-auto relative"
             ref={scrollRef}
           >
             <ListThumbnail />
@@ -532,16 +552,6 @@ export default function DesktopBooksListGridView({
             <ListHeader />
             <BooksInList />
           </div>
-          <BackButton
-            onClick={() => {
-              closeModal();
-              onClose?.();
-            }}
-            className="!top-3 z-50"
-          />
-          <TopBarCollapsed scrollRef={scrollRef}>
-            {topBarCollapsed}
-          </TopBarCollapsed>
         </div>
       )}
     </div>

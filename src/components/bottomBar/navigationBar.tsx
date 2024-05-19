@@ -111,8 +111,8 @@ const SideNavigationBar = () => {
   }, []);
 
   return (
-    <div className="w-[264px] h-full hidden md:flex flex-col justify-start items-center z-40 fixed left-0 border-r-1 border-gray-600 bg-background pl-6 pt-10 gap-8">
-      <div className="w-full flex flex-row justify-start items-center gap-1 flex-shrink-0">
+    <div className="w-[264px] h-full hidden md:flex flex-col justify-start items-center z-40 fixed left-0 bg-background pl-6 gap-8">
+      <div className="w-full flex flex-row justify-start items-center gap-1 flex-shrink-0 mt-10">
         <div className="w-15 h-15 md:w-fit md:h-fit">
           <Avatar
             avatarUrl={user?.profilePictureUrl}

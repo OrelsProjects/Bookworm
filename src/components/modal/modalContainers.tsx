@@ -1,4 +1,5 @@
 import React from "react";
+import { cn } from "../../../lib/utils";
 
 interface ModalContentContainer {
   children?: React.ReactNode;
@@ -65,9 +66,11 @@ const ContentContainer: React.FC<ModalContentContainer> = ({
   className,
 }) => (
   <div
-    className={`h-fit md:h-full w-full flex flex-col md:flex-row justify-start md:justify-center items-center gap-[25px] px-8 md:px-0 bg-background rounded-tl-5xl rounded-tr-5xl md:rounded-tr-none md:rounded-l-2xl md:overscroll-none ${
-      className ?? ""
-    }`}
+    className={cn(
+      "h-fit md:h-full w-full flex flex-col md:flex-row justify-start md:justify-center items-center gap-[25px] px-8 md:px-0 bg-background rounded-tl-5xl rounded-tr-5xl md:rounded-tr-none md:rounded-l-2xl md:overscroll-none",
+      "md:max-w-[1200px] mx-auto",
+      className
+    )}
   >
     {children}
   </div>
