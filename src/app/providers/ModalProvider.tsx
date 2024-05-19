@@ -243,10 +243,10 @@ const ModalProvider: React.FC = () => {
         }
 
         onBack = () => {
-          if (options?.fromUrl) {
+          if (options?.fromUrl && !options?.fromUrl.includes(currentPath)) {
             window.history.pushState({}, "", options.fromUrl);
           } else {
-            window.history.pushState({}, "", "/explore");
+            router.push("/explore");
           }
         };
       }
