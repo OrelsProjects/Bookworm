@@ -24,7 +24,7 @@ import GenresTabs from "../../genresTabs";
 import ReadMoreText from "../../readMoreText";
 import { motion } from "framer-motion";
 import { cn } from "../../../lib/utils";
-import { unslugifyText } from "../../../utils/textUtils";
+import { formatNumber, unslugifyText } from "../../../utils/textUtils";
 import { BackButton } from "../modal";
 import Rating from "../../rating";
 
@@ -333,7 +333,7 @@ export default function DesktopBooksListGridView({
         <div className="w-full flex flex-row gap-4">
           {safeBooksListData?.visitCount ? (
             <GenresTabs
-              genres={[`${safeBooksListData?.visitCount} views`]}
+              genres={[`${formatNumber(safeBooksListData.visitCount)} views`]}
               take={1}
               itemClassName="font-normal"
             />

@@ -5,7 +5,7 @@ import { useModal } from "../../hooks/useModal";
 import { FaEye as Eye } from "react-icons/fa";
 import Tag from "../../components/ui/Tag";
 import BooksListThumbnail from "./booksListThumbnail";
-import { unslugifyText } from "../../utils/textUtils";
+import { formatNumber, unslugifyText } from "../../utils/textUtils";
 import { cn } from "../../lib/utils";
 
 export const LoadingRecommendationsList = ({
@@ -66,7 +66,7 @@ const ListTags = ({ list }: { list: SafeBooksListData }) => {
       {list.visitCount !== undefined && list.visitCount > 0 && (
         <Tag className="flex-shrink-0">
           <div className="flex flex-row gap-[3px] justify-center items-center">
-            {list.visitCount} <Eye />
+            {formatNumber(list.visitCount)} <Eye />
           </div>
         </Tag>
       )}
