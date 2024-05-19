@@ -11,7 +11,6 @@ import { BooksListData, SafeBooksListData } from "../models/booksList";
 import { useSelector } from "react-redux";
 import { AuthStateType, selectAuth } from "../lib/features/auth/authSlice";
 import { ModalBookDetailsProps } from "../components/modal/modalBookDetails";
-import { useRouter } from "next/navigation";
 
 const modalsThatRequireAuth = [
   ModalTypes.ADD_BOOK_TO_LIST,
@@ -21,7 +20,6 @@ const modalsThatRequireAuth = [
 export const useModal = () => {
   const { state } = useSelector(selectAuth);
   const dispatch = useDispatch();
-  const router = useRouter();
 
   const onShowModal = (
     data: any,

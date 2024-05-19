@@ -3,12 +3,41 @@ import GoogleLogin from "../googleLogin";
 import { ExpandType, ExpandingDiv } from "../animationDivs";
 import { useModal } from "../../hooks/useModal";
 import { IoClose } from "react-icons/io5";
+import {
+  DialogHeader,
+  DialogFooter,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
+import { Button } from "../ui/button";
+import { cn } from "../../lib/utils";
+
+const Title = () => <div className="text-lg font-bold leading-9">Whoops!</div>;
+const Body = ({ className }: { className?: string }) => (
+  <div className={cn("text-lg font-normal leading-9", className)}>
+    It looks like you're not part of the club yet. <br />
+    Join us with a quick login and start building you dream library!
+  </div>
+);
 
 export default function ModalSignup() {
   const { closeModal } = useModal();
 
-  return (
-    <div className="full h-full absolute bottom-0 left-0 top-0 right-0 overscroll-none z-50">
+  const Login = () => (
+    <GoogleLogin
+      text="Continue with Google"
+      onClickBefore={() => {
+        localStorage.setItem("redirect", window.location.pathname);
+      }}
+      className="!w-full justify-start gap-3 pl-5"
+    />
+  );
+
+  const Mobile = () => (
+    <div className="full h-full absolute bottom-0 left-0 top-0 right-0 overscroll-none z-50 md:hidden">
       <div
         className="absolute h-screen w-screen top-0 left-0 z-10 bg-background opacity-50"
         onClick={() => closeModal()}
@@ -24,21 +53,48 @@ export default function ModalSignup() {
             onClick={() => closeModal()}
           />
           <div>
-            <div className="text-lg font-bold leading-9">Whoops!</div>
-            <div className="text-lg font-normal leading-9">
-              It looks like you're not part of the club yet. <br />
-              Join us with a quick login and start building you dream library!
-            </div>
+            <Title />
+            <Body />
           </div>
-          <GoogleLogin
-            text="Continue with Google"
-            onClickBefore={() => {
-              localStorage.setItem("redirect", window.location.pathname);
-            }}
-            className="!w-full justify-start gap-3 pl-5"
-          />
+          <Login />
         </div>
       </ExpandingDiv>
     </div>
+  );
+
+  const Desktop = () => (
+    <Dialog
+      open
+      onOpenChange={(open) => {
+        if (!open) closeModal();
+      }}
+    >
+      <DialogTrigger asChild>
+        <Button variant="outline">Edit Profile</Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>
+            <Title />
+          </DialogTitle>
+          <DialogDescription>
+            <Body className="leading-6" />
+          </DialogDescription>
+        </DialogHeader>
+        <div className="grid gap-4 py-4">
+          <div className="grid grid-cols-4 items-center gap-4"></div>
+        </div>
+        <DialogFooter>
+          <Login />
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+
+  return (
+    <>
+      <Mobile />
+      <Desktop />
+    </>
   );
 }

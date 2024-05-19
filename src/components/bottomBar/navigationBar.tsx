@@ -140,9 +140,8 @@ const SideNavigationBar = () => {
                 key={item.name}
                 className="flex items-center justify-start rounded-full w-fit h-fit cursor-pointer bg-transparent p-0 gap-4"
                 onClick={() => {
-                  if (window.location.pathname.includes(item.path)) {
-                    clearStack();
-                  } else {
+                  clearStack();
+                  {
                     router.push(item.path);
                     setSelected(item);
                     if (item.path === previousPath) {
