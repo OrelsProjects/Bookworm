@@ -17,7 +17,7 @@ export const ModalBooksList = <T extends SafeBooksListData>({
   className,
 }: ModalBooksListProps<T>) => {
   const ThumbnailDetails = () => (
-    <div className="w-full h-full justify-start items-start">
+    <div className="w-full h-full justify-between items-start">
       <Tooltip
         tooltipContent={
           <div className="text-sm text-muted line-clamp-4 tracking-tighter max-w-xs">

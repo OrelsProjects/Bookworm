@@ -118,6 +118,10 @@ input[type="text"]:-moz-ui-autofill {
   button {
     @apply font-roboto;
   }
+  html {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: subpixel-antialiased !important;
+  }
 }
 
 .modal-background {
@@ -140,6 +144,10 @@ input[type="text"]:-moz-ui-autofill {
     scrollbar-width: auto; */
   }
 
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
   .tooltipContent {
     display: -webkit-box;
     -webkit-line-clamp: 20;
@@ -155,7 +163,6 @@ input[type="text"]:-moz-ui-autofill {
   width: 0px;
   height: 0px;
 }
-
 
 @media (min-width: 768px) {
   /* Size */

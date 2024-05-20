@@ -341,6 +341,7 @@ export default function DesktopBooksListGridView({
               genres={[`${formatNumber(safeBooksListData.visitCount)} views`]}
               take={1}
               itemClassName="font-normal"
+              selectable={false}
             />
           ) : (
             <></>
@@ -349,6 +350,7 @@ export default function DesktopBooksListGridView({
             genres={safeBooksListData?.genres ?? []}
             take={3}
             itemClassName="font-normal"
+            selectable={false}
           />
         </div>
       </div>
@@ -443,32 +445,34 @@ export default function DesktopBooksListGridView({
               thumbnailSize={thumbnailSize}
             />
           </div>
-          <div className="h-full w-full absolute inset-0 flex flex-col justify-start items-center gap-3 px-4 pt-5 pb-2.5 z-30 bg-transparent">
-            <span className="w-full font-light line-clamp-4">
-              {bookInList.book.description || bookInList.comments}
-            </span>
-            {booksRating[bookInList.book.bookId] > 0 && (
-              <Rating
-                rating={booksRating[bookInList.book.bookId]}
-                startsContainerClassName="md:gap-0.5 md:w-full"
-                className="md:!gap-1"
-                starClassName="md:w-4 md:h-4"
-                textClassName="md:text-sm"
-              />
-            )}
-            <div className="w-full flex flex-row justify-center items-center gap-1">
-              {bookInList.book.genres?.slice(0, 1)?.map?.((genre, index) => (
-                <span
-                  key={`genre-${index}`}
-                  className="text-xs font-semibold bg-background border border-foreground rounded-full h-6 px-2 py-1 flex justify-center items-center line-clamp-1 truncate"
-                >
-                  {unslugifyText(genre)}
-                </span>
-              ))}
+          <div className="h-full w-full absolute inset-0 flex flex-col justify-between items-center gap-3 px-4 pt-5 pb-0 z-30 bg-transparent">
+            <div className="h-full w-full flex flex-col justify-between items-center">
+              <span className="w-full font-light line-clamp-6">
+                {bookInList.book.description || bookInList.comments}
+              </span>
+              {booksRating[bookInList.book.bookId] > 0 && (
+                <Rating
+                  rating={booksRating[bookInList.book.bookId]}
+                  startsContainerClassName="md:gap-0.5 md:w-full"
+                  className="md:!gap-1"
+                  starClassName="md:w-4 md:h-4"
+                  textClassName="md:text-sm"
+                />
+              )}
+              <div className="w-full flex flex-row justify-center items-center gap-1">
+                {bookInList.book.genres?.slice(0, 1)?.map?.((genre, index) => (
+                  <span
+                    key={`genre-${index}`}
+                    className="text-xs font-semibold bg-background border border-foreground rounded-full h-6 px-2 py-1 flex justify-center items-center line-clamp-1 truncate"
+                  >
+                    {unslugifyText(genre)}
+                  </span>
+                ))}
+              </div>
             </div>
+            <ThumbnailIcons bookInList={bookInList} className="!relative" />
           </div>
           {/* <Rating rating={bookInList.book.genres} /> */}
-          <ThumbnailIcons bookInList={bookInList} />
         </motion.div>
       </div>
     );
@@ -489,7 +493,7 @@ export default function DesktopBooksListGridView({
   );
 
   const BooksInList = () => (
-    <div className="w-full grid grid-cols-[repeat(var(--books-in-list-blocks-number),minmax(0,1fr))] gap-8 auto-rows-auto">
+    <div className="w-full grid grid-cols-[repeat(var(--books-in-list-blocks-number),minmax(0,1fr))] gap-8 auto-rows-auto overflow-x-visible pb-10">
       {sortedBooksInList.map((bookInList, index) => (
         <div
           key={`book-in-list-${index}`}
@@ -524,11 +528,11 @@ export default function DesktopBooksListGridView({
   );
 
   return (
-    <div className="h-full md:max-w-[1200px] mx-auto mt-10 flex flex-col justify-start items-center gap-5 absolute inset-0 z-20 bg-background">
+    <div className="h-full max-w-[1200px] mx-auto mt-10 absolute inset-0 z-20 flex flex-col justify-start items-center gap-5 bg-background overflow-x-visible">
       {loading ? (
         <DesktopBooksListGridViewLoading />
       ) : (
-        <div className="w-full h-full relative px-auto flex flex-col gap-4 overflow-x-visible overflow-y-auto">
+        <div className="w-full h-full relative px-auto flex flex-col gap-4 overflow-x-visible">
           <BackButton
             onClick={() => {
               closeModal();
@@ -549,7 +553,7 @@ export default function DesktopBooksListGridView({
             </div>
           </TopBarCollapsed>
           <div
-            className="h-full w-full flex flex-col gap-10 overflow-visible relative"
+            className="h-full w-full flex flex-col gap-10 overflow-x-visible relative"
             ref={scrollRef}
           >
             <ListThumbnail />

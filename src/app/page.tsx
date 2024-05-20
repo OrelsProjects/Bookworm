@@ -217,7 +217,11 @@ function App() {
     },
   ];
 
-  return <BookPageFlip items={items} />;
+  return (
+    <div className="w-full h-[100svh] md:h-full overflow-clip">
+      <BookPageFlip items={items} />;
+    </div>
+  );
 }
 
 export default App;
