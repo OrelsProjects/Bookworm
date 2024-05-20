@@ -418,7 +418,7 @@ export default function DesktopBooksListGridView({
     bookInList: BookInListWithBook;
   }) => {
     const [isHover, setIsHover] = useState(false);
-    const scale = 1.5;
+    const scale = 1.3;
 
     return (
       <div
@@ -479,7 +479,7 @@ export default function DesktopBooksListGridView({
   };
 
   const Thumbnail = ({ bookInList }: { bookInList: BookInListWithBook }) => (
-    <div className="w-full h-full relative overflow-visible">
+    <div className="w-full h-full relative">
       <BookThumbnail
         book={bookInList.book}
         thumbnailSize={thumbnailSize}
@@ -493,7 +493,7 @@ export default function DesktopBooksListGridView({
   );
 
   const BooksInList = () => (
-    <div className="w-full grid grid-cols-[repeat(var(--books-in-list-blocks-number),minmax(0,1fr))] gap-8 auto-rows-auto overflow-x-visible pb-10">
+    <div className="w-full grid grid-cols-[repeat(var(--books-in-list-blocks-number),minmax(0,1fr))] gap-8 auto-rows-auto pb-10">
       {sortedBooksInList.map((bookInList, index) => (
         <div
           key={`book-in-list-${index}`}
@@ -511,6 +511,8 @@ export default function DesktopBooksListGridView({
               bookInList,
               curator,
             });
+            // scroll scrollRef to top
+            scrollRef.current?.scrollTo(0, 0);
           }}
         >
           <Thumbnail bookInList={bookInList} />
@@ -528,11 +530,14 @@ export default function DesktopBooksListGridView({
   );
 
   return (
-    <div className="h-full max-w-[1200px] mx-auto mt-10 absolute inset-0 z-20 flex flex-col justify-start items-center gap-5 bg-background overflow-x-visible">
+    <div
+      className="h-full max-w-[1300px] mx-auto mt-10 absolute inset-0 z-20 flex flex-col justify-start items-center gap-5 bg-background overflow-auto"
+      ref={scrollRef}
+    >
       {loading ? (
         <DesktopBooksListGridViewLoading />
       ) : (
-        <div className="w-full h-full relative px-auto flex flex-col gap-4 overflow-x-visible">
+        <div className="w-full h-full relative px-auto flex flex-col gap-4 max-w-[1200px]">
           <BackButton
             onClick={() => {
               closeModal();
@@ -552,14 +557,13 @@ export default function DesktopBooksListGridView({
               {topBarCollapsed}
             </div>
           </TopBarCollapsed>
-          <div
-            className="h-full w-full flex flex-col gap-10 overflow-x-visible relative"
-            ref={scrollRef}
-          >
+          <div className="h-full w-full flex flex-col gap-10 relative">
             <ListThumbnail />
-            <ListComments />
-            <ListHeader />
-            <BooksInList />
+            <div className="h-full w-full flex flex-col gap-10">
+              <ListComments />
+              <ListHeader />
+              <BooksInList />
+            </div>
           </div>
         </div>
       )}
