@@ -169,7 +169,7 @@ module.exports = {
       fontFamily: {
         sans: ["DM Sans", "sans-serif"],
         roboto: ["Roboto", "sans-serif"],
-        risque: ["Risque", "cursive"],
+        risque: ["Risque", "Neuton"],
       },
     },
   },

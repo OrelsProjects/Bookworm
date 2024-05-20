@@ -77,7 +77,7 @@ const Cover = ({
         transformOrigin: "left center", // Set transform origin to left center
         transform:
           isFlipped && !backCover ? "rotateY(180deg)" : "rotateY(0deg)", // Rotate based on flipped state
-        height: isFlipped ? "100vh" : "100%",
+        height: isFlipped ? "100svh" : "100%",
       }}
     >
       {!backCover && (
@@ -224,7 +224,7 @@ const BookPageFlip: React.FC<BookPageFlipProps> = ({
           {isBookOpen ? (
             <motion.div
               initial={{ scale: 1 }}
-              animate={{ width: "86vw", height: "98vh", left: 6, top: 7 }}
+              animate={{ width: "86vw", height: "98svh", left: 6, top: 7 }}
               transition={{ duration: 0.8 }}
               exit={{ scale: 1 }}
               className={cn(
@@ -282,7 +282,7 @@ const BookPageFlip: React.FC<BookPageFlipProps> = ({
               <motion.div
                 key={`back-cover`}
                 initial={{ scale: 1 }}
-                animate={{ width: "90vw", height: "100vh", left: 0, top: 0 }}
+                animate={{ width: "90vw", height: "100svh", left: 0, top: 0 }}
                 exit={{ scale: 1 }}
                 transition={{ duration: 0.7, ease: "easeOut" }}
                 className={cn(

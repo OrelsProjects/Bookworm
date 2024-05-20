@@ -52,7 +52,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }), {
-          "pointer-events-none": !clickable,
+          "pointer-events-none hover:bg-inherit hover:cursor-default":
+            !clickable,
         })}
         ref={ref}
         {...props}

@@ -58,7 +58,12 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
 
   const Summary = () => (
     <div className="w-full h-full flex relative flex-col justify-start gap-1 md:gap-10">
-      <GenresTabs genres={book?.genres ?? []} take={3} className="mb-6 mt-6" />
+      <GenresTabs
+        genres={book?.genres ?? []}
+        take={3}
+        className="mb-6 mt-6"
+        selectable={false}
+      />
 
       <div className="h-full flex flex-col gap-4 md:gap-10 text-foreground font-thin shadow-inner pb-6">
         {bookInList && bookInList.comments && (
