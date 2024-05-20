@@ -66,10 +66,10 @@ const Tabs = ({
   };
 
   return (
-    <div className={`flex flex-col gap-2.5 w-full md:w-fit md:overflow-auto`}>
+    <div className={`flex flex-col gap-2.5 w-full md:w-fit`}>
       {Title && <Title />}
       <div
-        className={`w-full md:w-fit rounded-full overflow-x-auto flex items-center gap-2 md:pb-2 ${className}`}
+        className={`w-full md:w-fit rounded-full flex items-center gap-2 md:pb-2 ${className}`}
       >
         {items.map((item) => (
           <Button
