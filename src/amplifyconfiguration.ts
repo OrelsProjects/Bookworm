@@ -34,4 +34,6 @@ const config = {
   aws_cognito_verification_mechanisms: ["EMAIL"],
 };
 
+console.log("config", config);
+
 Amplify.configure(config);
