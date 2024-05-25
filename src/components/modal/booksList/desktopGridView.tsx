@@ -443,6 +443,8 @@ export default function DesktopBooksListGridView({
             <BookThumbnail
               book={bookInList.book}
               thumbnailSize={thumbnailSize}
+              className="!w-full"
+              containerClassName="!w-full"
             />
           </div>
           <div className="h-full w-full absolute inset-0 flex flex-col justify-between items-center gap-3 px-4 pt-5 pb-0 z-30 bg-transparent">
@@ -531,13 +533,13 @@ export default function DesktopBooksListGridView({
 
   return (
     <div
-      className="h-full max-w-[1300px] mx-auto mt-10 absolute inset-0 z-20 flex flex-col justify-start items-center gap-5 bg-background overflow-auto"
+      className="h-full content-size mx-auto mt-10 absolute inset-0 z-20 flex flex-col justify-start items-center gap-5 bg-background overflow-auto"
       ref={scrollRef}
     >
       {loading ? (
         <DesktopBooksListGridViewLoading />
       ) : (
-        <div className="w-full h-full relative px-auto flex flex-col gap-4 max-w-[1200px]">
+        <div className="w-11/12 h-full relative px-auto flex flex-col gap-4">
           <BackButton
             onClick={() => {
               closeModal();

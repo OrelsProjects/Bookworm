@@ -94,7 +94,7 @@ export async function DELETE(
     if (!userBookId) throw new Error("userBookId is null");
     const axios = GetAxiosInstance(req);
     const data: DeleteUserBookBody = {
-      userBookId: userBookId,
+      userBookId,
     };
     const response = await axios.delete<IResponse<void>>("/user-book", {
       data,

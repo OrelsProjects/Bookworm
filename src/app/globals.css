@@ -26,7 +26,7 @@ input[type="text"]:-moz-ui-autofill {
   :root {
     --background: 0 0% 96%;
 
-    --primary: 25 70% 50%;
+    --primary: 210 70% 50%;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 217.4 42.7% 16.5%;
@@ -71,7 +71,6 @@ input[type="text"]:-moz-ui-autofill {
   .dark {
     --background: 0 0% 7%;
 
-    --primary: 25 70% 50%;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 217.4 42.7% 16.5%;
@@ -142,6 +141,11 @@ input[type="text"]:-moz-ui-autofill {
   .scrollbar-visible {
     /* -ms-overflow-style: auto;
     scrollbar-width: auto; */
+  }
+
+  .content-size {
+    /* @apply w-full h-full md:w-3/4 */
+    @apply w-full h-full md:max-w-[300px] lg:max-w-[500px] xl:max-w-[750px] 2xl:max-w-[1000px] ;
   }
 
   .pb-safe {

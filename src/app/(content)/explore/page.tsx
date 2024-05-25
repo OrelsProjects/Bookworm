@@ -32,7 +32,7 @@ const ExplorePage: React.FC<ExplorePageProps> = () => {
   });
 
   const LoadingGenresTabs = () => (
-    <div className="w-full flex flex-row gap-[9px] my-8 justify-between md:justify-start overflow-auto">
+    <div className="w-full flex flex-row gap-[9px] my-8 justify-between lg:justify-start overflow-auto">
       <Skeleton className="w-20 h-6 rounded-full flex-shrink-0" />
       <Skeleton className="w-20 h-6 rounded-full flex-shrink-0" />
       <Skeleton className="w-20 h-6 rounded-full flex-shrink-0" />
@@ -54,10 +54,10 @@ const ExplorePage: React.FC<ExplorePageProps> = () => {
         </div>
       ) : (
         <div
-          className="flex flex-col gap-8 overflow-auto"
+          className="flex flex-col gap-8 mt-[88px] overflow-y-auto"
           ref={scrollableDivRef}
         >
-          <div className="w-full flex flex-row gap-[9px] justify-start mt-[88px]">
+          <div className="h-fitw-full flex flex-row gap-[9px] justify-start overflow-x-auto flex-shrink-0">
             <GenresTabs
               genres={genres}
               take={10}
@@ -73,7 +73,7 @@ const ExplorePage: React.FC<ExplorePageProps> = () => {
             </>
           ) : (
             <div className="flex flex-col gap-3">
-              <RecommendationsList lists={lists} showIndex/>
+              <RecommendationsList lists={lists} showIndex />
               {loadingNewPage && (
                 <>
                   {Array.from({ length: 3 }).map((_, i) => (

@@ -56,6 +56,7 @@ export default function Home(): React.ReactNode {
         direction="row"
         thumbnailSize="2xl"
         showDelete
+        className="md:pb-3"
       />
     </div>
   );
@@ -70,7 +71,7 @@ export default function Home(): React.ReactNode {
             title="Recommended for you"
             onClick={() => router.push("/see-all/recommended")}
           />
-          <div className="flex flex-row gap-[10px] md:gap-5 overflow-x-auto transition-all">
+          <div className="flex flex-row gap-[10px] md:gap-5 overflow-x-auto transition-all md:pb-3">
             {allRecommendations.length > 0 &&
               allRecommendations
                 .slice()

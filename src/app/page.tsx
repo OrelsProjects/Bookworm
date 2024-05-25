@@ -17,8 +17,8 @@ const CratorNameAndTitle = ({
   className?: string;
 }) => (
   <div className={`w-full flex flex-col gap-0 ${className}`}>
-    <h2 className="text-base text-start md:text-xl text-black">{name}</h2>
-    <h3 className="text-sm text-start md:text-lg text-black">{title}</h3>
+    <h2 className="text-base text-start lg:text-xl text-black">{name}</h2>
+    <h3 className="text-sm text-start lg:text-lg text-black">{title}</h3>
   </div>
 );
 
@@ -35,23 +35,23 @@ const Creator = ({
   favoriteAuthors: string[];
   favoriteBooks: string[];
 }) => (
-  <div className="w-full flex flex-col md:flex-row gap-2">
-    <div className="flex flex-row gap-1 flex-shrink-0 md:items-center">
+  <div className="w-full flex flex-col lg:flex-row gap-2">
+    <div className="flex flex-row gap-1 flex-shrink-0 lg:items-center">
       <Image
         src={photoUrl}
         about="http://schema.org/ImageObject"
         alt={"Photo of " + name}
         fill
         loading="eager"
-        className="!relative !h-15 !max-h-15 md:!h-30 md:!max-h-30 !w-15 !max-w-15 md:!w-30 md:!max-w-30 rounded-full flex-shrink-0 text-xs"
+        className="!relative !h-15 !max-h-15 lg:!h-30 lg:!max-h-30 !w-15 !max-w-15 lg:!w-30 lg:!max-w-30 rounded-full flex-shrink-0 text-xs"
       />
-      <CratorNameAndTitle name={name} title={title} className="md:hidden" />
+      <CratorNameAndTitle name={name} title={title} className="lg:hidden" />
     </div>
     <div className="flex flex-col gap-2">
       <CratorNameAndTitle
         name={name}
         title={title}
-        className="hidden md:flex"
+        className="hidden lg:flex"
       />
       <div className="flex flex-col gap-0 text-xs justify-start items-start">
         <span className="underline flex-shrink-0 text-start">
@@ -122,7 +122,7 @@ const PageContent = ({
       <PageHeader />
     </div>
     <div className="w-full flex flex-col items-start overflow-auto gap-[30px]">
-      <h1 className="w-full text-[40px] md:text-5xl leading-10 md:leading-[48px] text-center">
+      <h1 className="w-full text-[40px] lg:text-5xl leading-10 lg:leading-[48px] text-center">
         {title}
       </h1>
       {sections.map((section, index) => (
@@ -218,7 +218,7 @@ function App() {
   ];
 
   return (
-    <div className="w-full h-[100svh] md:h-full overflow-clip">
+    <div className="w-full h-[100svh] lg:h-full overflow-clip">
       <BookPageFlip items={items} />;
     </div>
   );
