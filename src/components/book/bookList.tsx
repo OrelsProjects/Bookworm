@@ -124,6 +124,7 @@ const BookList: React.FC<BookListProps> = ({
   CustomBookComponent,
 }) => {
   const { userBooks, nextPage } = useTable(readStatus);
+  console.log("userBooks", userBooks);
   const { deleteUserBookWithBook } = useBook();
   const { showBookDetailsModal, showAddBookToListModal } = useModal();
   const { scrollableDivRef } = useScrollPosition({

@@ -93,6 +93,7 @@ const useTable = (readingStatus?: ReadStatus) => {
     }
 
     // Clear existing state if it's the first page
+    
     if (page === 1) {
       setUserBooks(userBooksToAdd);
     } else {
@@ -145,7 +146,7 @@ const useTable = (readingStatus?: ReadStatus) => {
         filters = filters.filter((f) => f.value !== value);
       }
     }
-    
+
     try {
       for (const { filter, value } of filters) {
         switch (filter) {

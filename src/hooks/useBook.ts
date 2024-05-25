@@ -213,7 +213,7 @@ const useBook = () => {
   };
 
   const loadUserBooks = async (user?: User | null) => {
-    try {
+    try {    debugger;
       if (loading.current) {
         return;
       }
