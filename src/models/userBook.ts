@@ -5,7 +5,7 @@ import ReadingStatus, { ReadingStatusEnum } from "./readingStatus";
 
 interface UserBook {
   bookId: number;
-  userBookId: number;
+  id: number;
   userId: string;
   readingStatusId?: number;
   dateAdded?: string;
@@ -39,7 +39,7 @@ export interface UserBookData {
 
 export type CreateUserBookBody = Omit<
   UserBook,
-  "userBookId" | "userId" | "isDeleted"
+  "id" | "userId" | "isDeleted"
 >;
 
 export type UpdateUserBookBody = Omit<UserBook, "bookId">;

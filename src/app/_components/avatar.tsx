@@ -20,12 +20,14 @@ const FEEDBACK_GIVEN = "feedback_given";
 
 type AvatarProps = {
   avatarUrl?: string;
+  className?: string;
   defaultText?: string;
   imageClassName?: string;
 };
 
 const Avatar: React.FC<AvatarProps> = ({
   avatarUrl,
+  className,
   defaultText,
   imageClassName,
 }) => {
@@ -107,7 +109,10 @@ const Avatar: React.FC<AvatarProps> = ({
 
   return (
     <div
-      className="h-[50px] md:h-[70px] w-[50px] md:w-[70px] md:p-[5px] relative rounded-full z-50 md:hover:bg-slate-400/40 cursor-pointer transition-all"
+      className={cn(
+        "h-[50px] md:h-[70px] w-[50px] md:w-[70px] md:p-[5px] relative rounded-full z-50 md:hover:bg-slate-400/40 cursor-pointer transition-all flex justify-center items-center",
+        className
+      )}
       onClick={toggleDropdown}
     >
       {

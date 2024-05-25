@@ -74,16 +74,17 @@ const useBook = () => {
     }
     loading.current = true;
     try {
+      debugger;
       const response = await axios.delete<IResponse<void>>("/api/user-books", {
         data: {
-          userBookId: userBook.userBookId,
+          userBookId: userBook.id,
         },
       });
       if (response.status !== 200) {
         // throw ErrorDeleteUserBook
         throw new ErrorDeleteUserBook("Failed to delete book");
       }
-      dispatch(deleteUserBookRedux(userBook.userBookId));
+      dispatch(deleteUserBookRedux(userBook.id));
     } catch (error: any) {
       if (error! instanceof ErrorDeleteUserBook) {
         // ErrorDeleteUserBook is logged in route
@@ -307,7 +308,7 @@ const useBook = () => {
       }
       let userBookData: UserBookData | undefined = userBooksData.find(
         (userBookData) =>
-          userBookData.userBook.userBookId === newUserBook.userBookId
+          userBookData.userBook.id === newUserBook.id
       );
 
       if (!userBookData) {
@@ -338,7 +339,7 @@ const useBook = () => {
     readingStatus: ReadingStatusEnum
   ) => {
     const updateBookBody: UpdateUserBookBody = {
-      userBookId: userBook.userBookId,
+      id: userBook.id,
       userId: userBook.userId,
       readingStatusId: readingStatus,
     };

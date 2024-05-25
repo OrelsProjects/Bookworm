@@ -66,7 +66,7 @@ const userBooksSlice = createSlice({
     updateUserBook: (state, action: PayloadAction<UserBook>) => {
       const index = state.userBooksData.findIndex(
         (userBookData) =>
-          userBookData.userBook.userBookId === action.payload.userBookId
+          userBookData.userBook.id === action.payload.id
       );
       if (index !== -1) {
         const userBooksDataNew = [...state.userBooksData];
@@ -77,7 +77,7 @@ const userBooksSlice = createSlice({
     },
     deleteUserBook: (state, action: PayloadAction<UserBookId>) => {
       const index = state.userBooksData.findIndex(
-        (userBookData) => userBookData.userBook.userBookId === action.payload
+        (userBookData) => userBookData.userBook.id === action.payload
       );
       if (index !== -1) {
         const userBooksDataNew = [...state.userBooksData];
@@ -101,8 +101,8 @@ const userBooksSlice = createSlice({
     updateUserBookData: (state, action: PayloadAction<UserBookData>) => {
       const index = state.userBooksData.findIndex(
         (userBookData) =>
-          userBookData.userBook.userBookId ===
-          action.payload.userBook.userBookId
+          userBookData.userBook.id ===
+          action.payload.userBook.id
       );
       if (index !== -1) {
         state.userBooksData[index] = action.payload;

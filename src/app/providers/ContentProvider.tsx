@@ -18,7 +18,6 @@ export default function ContentProvider({
   children: React.ReactNode;
   className?: string;
 }) {
-  const { user } = useAppSelector((state) => state.auth);
   const browser = useContext(BrowserContext);
 
   return (
@@ -31,7 +30,7 @@ export default function ContentProvider({
         <BottomBarProvider />
         <div
           className={cn(
-            "w-full h-full pt-10 md:pb-0 pb-16 px-7.5 flex flex-col z-10 tracking-semiwide relative overflow-clip md:max-w-[1200px] md:mx-auto",
+            "content-size pt-10 md:pb-0 pb-16 px-7.5 flex flex-col z-10 tracking-semiwide relative overflow-clip md:mx-auto",
             className,
             {
               "h-screen": browser === "safari",
