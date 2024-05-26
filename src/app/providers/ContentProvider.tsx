@@ -30,7 +30,7 @@ export default function ContentProvider({
         <BottomBarProvider className="z-30" />
         <div
           className={cn(
-            "h-full content-size mt-2 md:pb-0 pb-16 px-[29px]  flex flex-col z-10 tracking-semiwide relative overflow-auto md:mx-auto",
+            "h-full content-size md:mt-2 md:pb-0 pb-16 px-[29px]  flex flex-col z-10 tracking-semiwide relative overflow-auto md:mx-auto",
             className,
             {
               "h-screen": browser === "safari",
@@ -38,7 +38,7 @@ export default function ContentProvider({
           )}
         >
           <div
-            className={cn("w-full h-full", className, {
+            className={cn("w-full h-full mt-4 md:mt-0", className, {
               "h-screen": browser === "safari",
             })}
           >
