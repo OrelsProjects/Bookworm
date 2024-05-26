@@ -41,10 +41,10 @@ const ExplorePage: React.FC<ExplorePageProps> = () => {
   );
 
   return (
-    <div className="w-full h-full flex flex-col relative">
+    <div className="w-full h-full flex flex-col relative gap-6">
       <SearchBar />
       {loadingGenres ? (
-        <div className="w-full flex flex-col justify-start mt-[44px] ">
+        <div className="w-full flex flex-col justify-start">
           {loadingGenres && <LoadingGenresTabs />}
           <div className="flex flex-col gap-[22px]">
             {Array.from({ length: 3 }).map((_, i) => (
@@ -54,10 +54,10 @@ const ExplorePage: React.FC<ExplorePageProps> = () => {
         </div>
       ) : (
         <div
-          className="flex flex-col gap-8 mt-[88px] overflow-y-auto"
+          className="flex flex-col gap-8 overflow-auto mb-16 md:mb-20"
           ref={scrollableDivRef}
         >
-          <div className="h-fitw-full flex flex-row gap-[9px] justify-start overflow-x-auto flex-shrink-0">
+          <div className="h-fit w-full flex flex-row gap-[9px] justify-start overflow-x-auto flex-shrink-0">
             <GenresTabs
               genres={genres}
               take={10}
@@ -68,20 +68,22 @@ const ExplorePage: React.FC<ExplorePageProps> = () => {
           {loading ? (
             <>
               {Array.from({ length: 3 }).map((_, i) => (
-                <LoadingRecommendationsList key={i} />
+                <LoadingRecommendationsList
+                  key={`loading-recommendations-list-${i}`}
+                />
               ))}
             </>
           ) : (
-            <div className="flex flex-col gap-3">
-              <RecommendationsList lists={lists} showIndex />
-              {loadingNewPage && (
-                <>
-                  {Array.from({ length: 3 }).map((_, i) => (
-                    <LoadingRecommendationsList key={i} />
-                  ))}
-                </>
-              )}
-            </div>
+            <RecommendationsList lists={lists} showIndex />
+          )}
+          {loadingNewPage && (
+            <>
+              {Array.from({ length: 3 }).map((_, i) => (
+                <LoadingRecommendationsList
+                  key={`loading-recommendations-list-${i}`}
+                />
+              ))}
+            </>
           )}
         </div>
       )}

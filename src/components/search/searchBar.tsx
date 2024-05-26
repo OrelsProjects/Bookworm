@@ -233,7 +233,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
           className ?? ""
         }`}
         formClassName={cn(
-          "h-fit max-h-full w-full absolute inset-0 z-20 bg-background pr-[72px]",
+          "h-fit max-h-full w-full bg-background pr-[72px]",
           {
             "md:pr-0": user,
           }
