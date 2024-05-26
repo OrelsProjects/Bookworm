@@ -98,7 +98,7 @@ const Avatar: React.FC<AvatarProps> = ({
   };
 
   const handleNavigateToPolicy = () => {
-    router.push("/privacy-policy", );
+    router.push("/privacy-policy");
     toggleDropdown();
   };
 
@@ -111,7 +111,7 @@ const Avatar: React.FC<AvatarProps> = ({
   return (
     <div
       className={cn(
-        "h-fit w-fit relative rounded-full z-50 cursor-pointer transition-all flex justify-center items-center",
+        "h-12 w-12 md:h-fit md:w-fit relative rounded-full z-50 cursor-pointer transition-all flex justify-center items-center mr-2 md:mr-0",
         className
       )}
       onClick={toggleDropdown}
