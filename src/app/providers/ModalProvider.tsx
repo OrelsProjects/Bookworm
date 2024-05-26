@@ -35,7 +35,7 @@ import {
 import DesktopBooksListGridView from "../../components/modal/booksList/desktopGridView";
 import { cn } from "../../../lib/utils";
 
-const ModalProvider: React.FC = () => {
+const ModalProvider: React.FC<{ className?: string }> = ({ className }) => {
   const router = useRouter();
   const pathname = usePathname();
   const modalContext = useContext(ModalContext);
@@ -233,7 +233,7 @@ const ModalProvider: React.FC = () => {
   }, [type, data]);
 
   const RenderBooksListDetails = useCallback(
-    (data?: any, options?: ShowModalOptions) => {
+    (data?: any, options?: ShowModalOptions, className?: string) => {
       let onBack = options?.onBack;
       if (!options?.loading) {
         const currentPath = window.location.pathname;
@@ -257,7 +257,7 @@ const ModalProvider: React.FC = () => {
             onClose={onBack}
             type={ModalTypes.BOOKS_LIST_DETAILS}
             shouldAnimate={options?.shouldAnimate ?? true}
-            className="md:hidden"
+            className={cn("md:hidden", className)}
           >
             <ModalBooksList
               safeBooksListData={data.booksList}
@@ -278,12 +278,14 @@ const ModalProvider: React.FC = () => {
 
   const RenderBooksListDetailsEdit = (
     booksListData?: BooksListData,
-    options?: ShowModalOptions
+    options?: ShowModalOptions,
+    className?: string
   ) => {
     return (
       <RenderModal
         type={ModalTypes.BOOKS_LIST_DETAILS_EDIT}
         shouldAnimate={options?.shouldAnimate ?? true}
+        className={className}
       >
         <ModalBooksListEdit booksListData={booksListData} />
       </RenderModal>
@@ -291,9 +293,9 @@ const ModalProvider: React.FC = () => {
   };
 
   const RenderBookDetails = useCallback(
-    (data?: ModalBookDetailsProps) =>
+    (data?: ModalBookDetailsProps, className?: string) =>
       data && (
-        <RenderModal type={ModalTypes.BOOK_DETAILS}>
+        <RenderModal type={ModalTypes.BOOK_DETAILS} className={className}>
           <ModalBookDetails {...data} />
         </RenderModal>
       ),
@@ -301,10 +303,10 @@ const ModalProvider: React.FC = () => {
   );
 
   const RenderAddBookToList = useCallback(
-    (book?: Book) => {
+    (book?: Book, className?: string) => {
       return (
         book && (
-          <RenderModal type={ModalTypes.ADD_BOOK_TO_LIST}>
+          <RenderModal type={ModalTypes.ADD_BOOK_TO_LIST} className={className}>
             <ModalAddBookToList book={book} />
           </RenderModal>
         )
@@ -358,16 +360,30 @@ const ModalProvider: React.FC = () => {
   };
 
   const RenderComponent = useCallback(
-    ({ modalData }: { modalData: ModalData }) => {
+    ({
+      modalData,
+      className,
+    }: {
+      modalData: ModalData;
+      className?: string;
+    }) => {
       switch (modalData.type) {
         case ModalTypes.BOOK_DETAILS:
-          return RenderBookDetails(modalData.data);
+          return RenderBookDetails(modalData.data, className);
         case ModalTypes.BOOKS_LIST_DETAILS:
-          return RenderBooksListDetails(modalData.data, modalData.options);
+          return RenderBooksListDetails(
+            modalData.data,
+            modalData.options,
+            className
+          );
         case ModalTypes.BOOKS_LIST_DETAILS_EDIT:
-          return RenderBooksListDetailsEdit(modalData.data, modalData.options);
+          return RenderBooksListDetailsEdit(
+            modalData.data,
+            modalData.options,
+            className
+          );
         case ModalTypes.ADD_BOOK_TO_LIST:
-          return RenderAddBookToList(modalData.data);
+          return RenderAddBookToList(modalData.data, className);
         default:
           return null;
       }
@@ -390,6 +406,7 @@ const ModalProvider: React.FC = () => {
         <RenderComponent
           modalData={modalData}
           key={`modal-${modalData.type}-${Math.random()}`}
+          className={className}
         />
       ))}
       <RenderRegisterModal />

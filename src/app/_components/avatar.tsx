@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import Dropdown from "@/src/components/ui/dropdown";
 import useAuth from "@/src/hooks/useAuth";
 import { toast } from "react-toastify";
-import { useDispatch, useSelector } from "react-redux";
 import { selectUserBooks } from "@/src/lib/features/userBooks/userBooksSlice";
 import Papa from "papaparse";
 import { EventTracker } from "@/src/eventTracker";
@@ -13,8 +12,10 @@ import { Feedback } from "../../components/icons/feedback";
 import { Privacy } from "../../components/icons/privacy";
 import { SignOut } from "../../components/icons/signOut";
 import CustomImage from "../../components/image";
+import { IoIosArrowDown } from "react-icons/io";
 import { cn } from "../../../lib/utils";
 import { ThemeToggle } from "../../components/ui/themeToggle";
+import { useAppSelector } from "../../lib/hooks";
 
 const FEEDBACK_GIVEN = "feedback_given";
 
@@ -32,7 +33,7 @@ const Avatar: React.FC<AvatarProps> = ({
   imageClassName,
 }) => {
   const router = useRouter();
-  const { userBooksData } = useSelector(selectUserBooks);
+  const { userBooksData } = useAppSelector(selectUserBooks);
   const [showDropdown, setShowDropdown] = React.useState<boolean>(false);
   const [isClosing, setIsClosing] = React.useState<boolean>(false);
   const [avatarImageLoaded, setAvatarImageLoaded] =
@@ -97,7 +98,7 @@ const Avatar: React.FC<AvatarProps> = ({
   };
 
   const handleNavigateToPolicy = () => {
-    router.push("/privacy-policy");
+    router.push("/privacy-policy", );
     toggleDropdown();
   };
 
@@ -110,26 +111,29 @@ const Avatar: React.FC<AvatarProps> = ({
   return (
     <div
       className={cn(
-        "h-[50px] md:h-[70px] w-[50px] md:w-[70px] md:p-[5px] relative rounded-full z-50 md:hover:bg-slate-400/40 cursor-pointer transition-all flex justify-center items-center",
+        "h-fit w-fit relative rounded-full z-50 cursor-pointer transition-all flex justify-center items-center",
         className
       )}
       onClick={toggleDropdown}
     >
-      {
-        <CustomImage
-          src={avatarUrl}
-          placeholder={<DefaultAvatar />}
-          defaultImage={<DefaultAvatar />}
-          alt={"avatar"}
-          className={cn(
-            "cursor-pointer rounded-full h-full w-full flex-shrink-0",
-            imageClassName
-          )}
-          thumbnailSize={"sm"}
-        />
-      }
+      <div className="w-fit h-fit flex flex-row justify-center items-center gap-1">
+        {
+          <CustomImage
+            src={avatarUrl}
+            placeholder={<DefaultAvatar />}
+            defaultImage={<DefaultAvatar />}
+            alt={"avatar"}
+            className={cn(
+              "cursor-pointer rounded-full h-full w-full flex-shrink-0",
+              imageClassName
+            )}
+            thumbnailSize={"sm"}
+          />
+        }
+        <IoIosArrowDown className="text-foreground h-4 w-4" />
+      </div>
       {showDropdown && (
-        <div className="absolute md:top-full right-6 md:left-0 w-36 mt-2 z-50">
+        <div className="absolute md:top-full right-6 w-36 mt-2 z-50">
           <Dropdown
             items={[
               {

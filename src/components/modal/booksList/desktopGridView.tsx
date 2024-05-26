@@ -22,7 +22,7 @@ import { Skeleton } from "../../ui/skeleton";
 import BooksListThumbnail from "../../booksList/booksListThumbnail";
 import GenresTabs from "../../genresTabs";
 import ReadMoreText from "../../readMoreText";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "../../../lib/utils";
 import { formatNumber, unslugifyText } from "../../../utils/textUtils";
 import { BackButton } from "../modal";
@@ -418,7 +418,7 @@ export default function DesktopBooksListGridView({
     bookInList: BookInListWithBook;
   }) => {
     const [isHover, setIsHover] = useState(false);
-    const scale = 1.3;
+    const scale = 1;
 
     return (
       <div
@@ -531,44 +531,54 @@ export default function DesktopBooksListGridView({
     </div>
   );
 
-  return (
-    <div
-      className="h-full content-size mx-auto mt-10 absolute inset-0 z-20 flex flex-col justify-start items-center gap-5 bg-background overflow-auto"
-      ref={scrollRef}
-    >
-      {loading ? (
-        <DesktopBooksListGridViewLoading />
-      ) : (
-        <div className="w-11/12 h-full relative px-auto flex flex-col gap-4">
-          <BackButton
-            onClick={() => {
-              closeModal();
-              onClose?.();
-            }}
-            className="justify-start md:top-0 md:relative md:left-0 z-20"
-          />
-          <TopBarCollapsed scrollRef={scrollRef}>
-            <div className="w-full h-full relative flex justify-center">
-              <BackButton
-                onClick={() => {
-                  closeModal();
-                  onClose?.();
-                }}
-                className="!top-2.5 !left-0"
-              />
-              {topBarCollapsed}
-            </div>
-          </TopBarCollapsed>
-          <div className="h-full w-full flex flex-col gap-10 relative">
-            <ListThumbnail />
-            <div className="h-full w-full flex flex-col gap-10">
-              <ListComments />
-              <ListHeader />
-              <BooksInList />
-            </div>
+  const Content = () =>
+    loading ? (
+      <DesktopBooksListGridViewLoading />
+    ) : (
+      <div className="w-full h-full relative px-auto flex flex-col gap-4">
+        <BackButton
+          onClick={() => {
+            closeModal();
+            onClose?.();
+          }}
+          className="justify-start md:top-0 md:relative md:left-0 z-20"
+        />
+        <TopBarCollapsed scrollRef={scrollRef}>
+          <div className="w-full h-full relative flex justify-center">
+            <BackButton
+              onClick={() => {
+                closeModal();
+                onClose?.();
+              }}
+              className="!top-2.5 !left-0"
+            />
+            {topBarCollapsed}
+          </div>
+        </TopBarCollapsed>
+        <div className="h-full w-full flex flex-col gap-10 relative">
+          <ListThumbnail />
+          <div className="h-full w-full flex flex-col gap-10">
+            <ListComments />
+            <ListHeader />
+            <BooksInList />
           </div>
         </div>
-      )}
-    </div>
+      </div>
+    );
+
+  return (
+    <motion.div
+      // Move from bottom to top animation
+      initial={{opacity: 0 }}
+      animate={{opacity: 1 }}
+      transition={{ duration: 0.3 }}
+      exit={{ y: "100%" }}
+      className="h-full content-size mx-auto absolute inset-0 z-40 flex flex-col justify-start items-center gap-5 bg-background overflow-auto"
+      ref={scrollRef}
+    >
+      <div className="w-full h-full">
+        <Content />
+      </div>
+    </motion.div>
   );
 }

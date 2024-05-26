@@ -11,14 +11,20 @@ import Avatar from "../../app/_components/avatar";
 import { useAppSelector } from "../../lib/hooks";
 import { cn } from "../../lib/utils";
 import { selectAuth } from "../../lib/features/auth/authSlice";
+import Image from "next/image";
 
-const BottomNavigationBar = () => {
+const BottomNavigationBar = ({ className }: { className?: string }) => {
   const router = useRouter();
   const { clearStack } = useModal();
   const [selected, setSelected] = React.useState<NavigationBarItem | null>();
 
   return (
-    <div className="w-full h-fit flex flex-row justify-center items-center z-20 fixed bottom-0 md:hidden">
+    <div
+      className={cn(
+        "w-full h-fit flex flex-row justify-center items-center z-20 fixed bottom-0 md:hidden",
+        className
+      )}
+    >
       <div className="w-full h-15 flex items-center justify-center gap-[70px] rounded-xl fixed bottom-0 bg-background">
         {navigationBarItems.map((item) => {
           return (
@@ -62,7 +68,7 @@ const BottomNavigationBar = () => {
   );
 };
 
-const SideNavigationBar = () => {
+const SideNavigationBar = ({ className }: { className?: string }) => {
   const router = useRouter();
   const pathname = usePathname();
   const { clearStack } = useModal();
@@ -111,34 +117,46 @@ const SideNavigationBar = () => {
   }, []);
 
   return (
-    <div className="w-[264px] h-full hidden md:flex flex-col justify-start items-center z-40 fixed left-0 bg-background pl-6 gap-8">
-      <div className="w-full flex flex-row justify-start items-center gap-1 flex-shrink-0 mt-10">
-        <div className="w-15 h-15 md:w-fit md:h-fit">
-          <Avatar
-            avatarUrl={user?.profilePictureUrl}
-            defaultText={user?.displayName || user?.email}
-            imageClassName="!w-15 !h-15 flex-shrink-0"
-          />
-        </div>
-        <div className="flex flex-col justify-start items-start pointer-events-none">
-          <span className="text-base">Welcome!</span>
-          <span className="text-2xl leading-6">
-            {user?.displayName || user?.email}
-          </span>
-        </div>
+    <div
+      className={cn(
+        "content-size h-16 hidden md:flex flex-row justify-between items-center z-40 sticky top-0 mx-auto bg-background",
+        className
+      )}
+    >
+      <div
+        className="w-fit h-fit flex flex-row justify-center items-center gap-1 hover:!text-muted"
+        onClick={() => {
+          router.push("/explore");
+          clearStack();
+        }}
+      >
+        <Image
+          src="/favicon.png"
+          alt="logo"
+          width={50}
+          height={50}
+          className="cursor-pointer"
+        />
+        <span className="text-3xl font-thin cursor-pointer">BookWiz</span>
       </div>
-      <div className="w-full h-fit">
+      <div className="w-fit h-full flex flex-row gap-12">
         {navigationBarItems.map((item) => {
           return (
             <div
-              className="w-full justify-start items-center h-15"
+              className={cn(
+                "w-fit h-full flex flex-row justify-center items-center relative cursor-pointer before:h-1.5 before:w-full before:absolute before:bottom-0  before:rounded-full before:transition-all",
+                {
+                  "before:bg-primary": selected?.path === item.path,
+                  "before:hover:bg-muted": selected?.path !== item.path,
+                }
+              )}
               key={`navbar-item-${item.name}-${item.path}`}
             >
               <Button
                 data-ripple-light={false}
                 data-ripple-dark={false}
                 key={item.name}
-                className="flex items-center justify-start rounded-full w-fit h-fit cursor-pointer bg-transparent p-0 gap-4"
+                className="flex items-center justify-start rounded-full w-fit h-fit cursor-pointer bg-transparent p-0 gap-1"
                 onClick={() => {
                   clearStack();
                   {
@@ -152,17 +170,9 @@ const SideNavigationBar = () => {
                 }}
               >
                 <item.icon
-                  className={cn("h-6 w-6", {
-                    "text-primary": selected?.path === item.path,
-                    "text-foreground": selected?.path !== item.path,
-                  })}
+                  className={cn("h-[22px] w-[22px] text-foreground")}
                 />
-                <span
-                  className={cn("text-xl", {
-                    "text-primary": selected?.path === item.path,
-                    "text-foreground": selected?.path !== item.path,
-                  })}
-                >
+                <span className={cn("text-base leading-5 text-foreground")}>
                   {item.name}
                 </span>
               </Button>
@@ -170,15 +180,20 @@ const SideNavigationBar = () => {
           );
         })}
       </div>
+      <Avatar
+        avatarUrl={user?.profilePictureUrl}
+        defaultText={user?.displayName || user?.email}
+        imageClassName="!w-10 !h-10 flex-shrink-0"
+      />
     </div>
   );
 };
 
-const NavigationBar = () => {
+const NavigationBar = ({ className }: { className?: string }) => {
   return (
     <>
-      <BottomNavigationBar />
-      <SideNavigationBar />
+      <BottomNavigationBar className={className} />
+      <SideNavigationBar className={className} />
     </>
   );
 };

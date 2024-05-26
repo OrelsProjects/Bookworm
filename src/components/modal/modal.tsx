@@ -173,7 +173,7 @@ const Modal: React.FC<ModalProps> = ({
   return (
     <div
       className={cn(
-        "absolute top-0 left-0 right-0 bottom-0 w-full h-full md:!h-[100vh] z-30 overscroll-none overflow-auto bg-background md:bg-transparent md:pl-[262px]",
+        "absolute top-0 left-0 right-0 bottom-0 w-full h-full md:!h-[100vh] z-30 overscroll-none overflow-auto bg-background md:bg-transparent",
         className
       )}
       style={{ height, width }}

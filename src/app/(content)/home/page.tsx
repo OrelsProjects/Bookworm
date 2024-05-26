@@ -135,7 +135,7 @@ export default function Home(): React.ReactNode {
   };
 
   const Content = () => (
-    <div className="h-fit w-full flex flex-col gap-[35px] md:gap-[45px] mt-[48px] overflow-auto pb-4">
+    <div className="h-fit w-full flex flex-col gap-[35px] md:gap-[45px] mt-[48px] pb-4">
       {hasBooksToRead && <Books title="Next read" readStatus="to-read" />}
       <RecommendationsList />
       {hasBooksRead && <Books title="Books I've read" readStatus="read" />}
@@ -144,7 +144,7 @@ export default function Home(): React.ReactNode {
 
   return (
     <div
-      className={`h-full w-full flex flex-col relative justify-top items-start gap-10`}
+      className={`h-full w-full flex flex-col relative justify-top items-start gap-10 overflow-auto pb-5 `}
     >
       <SearchBar
         onEmpty={() => setSearchFocused(false)}
