@@ -25,7 +25,7 @@ const BottomNavigationBar = ({ className }: { className?: string }) => {
         className
       )}
     >
-      <div className="w-full h-15 flex items-center justify-center gap-[70px] rounded-xl fixed bottom-0 bg-background">
+      <div className="w-full h-15 flex items-center justify-center gap-[70px] fixed bottom-0 bg-background">
         {navigationBarItems.map((item) => {
           return (
             <Button
