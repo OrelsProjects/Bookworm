@@ -481,14 +481,14 @@ export default function DesktopBooksListGridView({
   };
 
   const Thumbnail = ({ bookInList }: { bookInList: BookInListWithBook }) => (
-    <div className="w-full h-full relative">
+    <div className="w-full relative h-40 md:h-48 lg:h-56 xl:h-full">
       <BookThumbnail
         book={bookInList.book}
         thumbnailSize={thumbnailSize}
         loading="eager"
         Icon={<ThumbnailIcons bookInList={bookInList} />}
-        className="!w-full"
-        containerClassName="!w-full"
+        className="!w-full !h-full"
+        containerClassName="!w-full !h-full"
       />
       <ThumbnailHover bookInList={bookInList} />
     </div>

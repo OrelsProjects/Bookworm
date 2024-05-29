@@ -185,14 +185,6 @@ export default function BooksListGridView({
             <BurgerLines.Fill iconSize="sm" className="!text-foreground" />
             <div className="text-2xl flex flex-row gap-1 items-center justify-center">
               Book List
-              {/* {safeBooksListData?.booksInList &&
-              safeBooksListData.booksInList.length > 0 ? (
-                <div className="text-muted font-normal">
-                  ({safeBooksListData.booksInList.length})
-                </div>
-              ) : (
-                ""
-              )} */}
             </div>
           </div>
         </div>

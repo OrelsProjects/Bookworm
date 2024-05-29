@@ -145,7 +145,7 @@ input[type="text"]:-moz-ui-autofill {
 
   .content-size {
     /* @apply w-full h-full md:w-3/4 */
-    @apply w-full md:max-w-[600px] lg:max-w-[800px] xl:max-w-[1100px] 2xl:max-w-[1200px] ;
+    @apply w-full md:max-w-[800px] lg:max-w-[900px] 2xl:max-w-[1200px] ;
   }
 
   .pb-safe {
