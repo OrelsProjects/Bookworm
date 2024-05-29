@@ -146,7 +146,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   );
 
   const ListsComponent = () => (
-    <div className="flex flex-col gap-[15px]">
+    <div className="flex flex-col gap-4">
       {(lists?.length || 0) > 0 && (
         <SeeAll
           title="Readlists"
@@ -155,9 +155,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
           }}
           showSeeAll={(lists?.length || 0) > (itemsToShowListsCount || 0)}
           loading={isLoading}
+          className="text-3xl"
         />
       )}
-      <div className="flex flex-col gap-[22px]">
+      <div className="flex flex-col gap-4">
         {isLoading
           ? Array.from(Array(MAX_RESULTS_NO_SEE_ALL)).map((_, index) => (
               <SearchItemSkeleton key={`search-item-skeleton-books-${index}`} />
@@ -175,7 +176,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   );
 
   const BooksComponent = () => (
-    <div className="flex flex-col gap-[15px]">
+    <div className="flex flex-col gap-4">
       {booksOnly ? (
         <SeeAllTitle title="Books" loading={isLoading} />
       ) : (
@@ -187,7 +188,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
           loading={isLoading}
         />
       )}
-      <div className="flex flex-col gap-[22px]">
+      <div className="flex flex-col gap-4">
         {isLoading
           ? Array.from(Array(MAX_RESULTS_NO_SEE_ALL)).map((_, index) => (
               <SearchItemSkeleton
@@ -245,9 +246,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
       />
       {searchHook.status !== "idle" && (
         <div
-          className={cn("h-full flex flex-col gap-3 overflow-auto", {
-            "mt-4 md:mt-[88px]": !booksOnly && searchHook.searchValue,
-            "mt-4": booksOnly,
+          className={cn("h-full flex flex-col gap-3 overflow-auto mt-4 md:mb-12", {
+            // "mt-4": !booksOnly && searchHook.searchValue,
+            // "mt-4": booksOnly,
           })}
           ref={scrollbarRef}
         >

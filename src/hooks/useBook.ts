@@ -74,7 +74,6 @@ const useBook = () => {
     }
     loading.current = true;
     try {
-      debugger;
       const response = await axios.delete<IResponse<void>>("/api/user-books", {
         data: {
           userBookId: userBook.id,

@@ -81,7 +81,7 @@ const SeeAllWithTitle = ({
         className
       )}
     >
-      <div className="text-2xl">{title}</div>
+      <div className="text-2xl md:text-3xl">{title}</div>
       <SeeAllText
         onClick={onSeeAllClick}
         className={cn({ hidden: !showSeeAll })}
@@ -101,7 +101,7 @@ export const SeeAllTitle = ({
   loading ? (
     <SeeAllTitleLoading />
   ) : (
-    <div className={cn("text-2xl", className)}>{title}</div>
+    <div className={cn("text-2xl md:text-3xl", className)}>{title}</div>
   );
 
 const SeeAllComponentLoading = () => (
