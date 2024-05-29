@@ -48,7 +48,7 @@ export default function RootLayout({
           />
           <ContentProvider>
             <BrowserDetector>
-              <div className="w-full h-full font-roboto">
+              <div className="w-full h-full font-roboto overflow-auto md:overflow-viible">
                 <Header className="h-fit w-fit" />
                 {/* <AnimationProvider> */}
                 {children}

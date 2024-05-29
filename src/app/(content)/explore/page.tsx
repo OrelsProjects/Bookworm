@@ -32,7 +32,7 @@ const ExplorePage: React.FC<ExplorePageProps> = () => {
   });
 
   const LoadingGenresTabs = () => (
-    <div className="w-full flex flex-row gap-[9px] my-8 justify-between lg:justify-start overflow-auto">
+    <div className="w-full flex flex-row gap-[9px] my-4 justify-between lg:justify-start overflow-auto">
       <Skeleton className="w-20 h-6 rounded-full flex-shrink-0" />
       <Skeleton className="w-20 h-6 rounded-full flex-shrink-0" />
       <Skeleton className="w-20 h-6 rounded-full flex-shrink-0" />
@@ -54,7 +54,7 @@ const ExplorePage: React.FC<ExplorePageProps> = () => {
         </div>
       ) : (
         <div
-          className="flex flex-col gap-8 overflow-auto mb-16 md:mb-20"
+          className="flex flex-col gap-8 overflow-auto "
           ref={scrollableDivRef}
         >
           <div className="h-fit w-full flex flex-row gap-[9px] justify-start overflow-x-auto flex-shrink-0">

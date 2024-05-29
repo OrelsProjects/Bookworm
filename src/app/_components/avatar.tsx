@@ -111,12 +111,12 @@ const Avatar: React.FC<AvatarProps> = ({
   return (
     <div
       className={cn(
-        "h-12 w-12 md:h-fit md:w-fit relative rounded-full z-50 cursor-pointer transition-all flex justify-center items-center mr-2 md:mr-0",
+        "h-12 w-12 md:h-[2.5rem] md:w-[3.5rem] relative rounded-full z-50 cursor-pointer transition-all flex justify-center items-center mr-2 md:mr-0",
         className
       )}
       onClick={toggleDropdown}
     >
-      <div className="w-fit h-fit flex flex-row justify-center items-center gap-1">
+      <div className="w-full h-full flex flex-row justify-center items-center gap-1">
         {
           <CustomImage
             src={avatarUrl}
@@ -130,10 +130,10 @@ const Avatar: React.FC<AvatarProps> = ({
             thumbnailSize={"sm"}
           />
         }
-        <IoIosArrowDown className="text-foreground h-4 w-4" />
+        <IoIosArrowDown className="text-foreground h-4 w-4 hidden md:flex" />
       </div>
       {showDropdown && (
-        <div className="absolute md:top-full right-6 w-36 mt-2 z-50">
+        <div className="absolute top-12 md:top-full right-6 w-36 md:mt-2 z-50">
           <Dropdown
             items={[
               {

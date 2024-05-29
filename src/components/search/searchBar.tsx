@@ -246,7 +246,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
       {searchHook.status !== "idle" && (
         <div
           className={cn("h-full flex flex-col gap-3 overflow-auto", {
-            "mt-[88px]": !booksOnly && searchHook.searchValue,
+            "mt-4 md:mt-[88px]": !booksOnly && searchHook.searchValue,
             "mt-4": booksOnly,
           })}
           ref={scrollbarRef}
