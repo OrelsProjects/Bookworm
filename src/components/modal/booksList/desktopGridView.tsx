@@ -22,7 +22,7 @@ import { Skeleton } from "../../ui/skeleton";
 import BooksListThumbnail from "../../booksList/booksListThumbnail";
 import GenresTabs from "../../genresTabs";
 import ReadMoreText from "../../readMoreText";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { cn } from "../../../lib/utils";
 import { formatNumber, unslugifyText } from "../../../utils/textUtils";
 import { BackButton } from "../modal";
@@ -107,15 +107,11 @@ export function DesktopBooksListGridViewLoading() {
         {[0, 1, 2, 3, 4, 5, 6, 8, 9, 10].map((index) => (
           <div
             key={`book-in-list-${index}`}
-            className={`flex flex-col justify-start items-start gap-2 
-          ${getThumbnailSize("2xl").width}
+            className={`flex flex-col justify-start items-start gap-2 w-full relative h-40 md:h-48 lg:h-56 xl:h-[260px] 2xl:h-[330px]
+
           `}
           >
-            <Skeleton
-              className={`w-full h-full rounded-2xl ${
-                getThumbnailSize("2xl").className
-              }`}
-            />
+            <Skeleton className={`w-full h-full rounded-2xl `} />
             <div className="w-full flex flex-col gap-1">
               <Skeleton className="w-full h-3 rounded-full" />
               <Skeleton className="w-[90%] h-3 rounded-full" />
@@ -569,8 +565,8 @@ export default function DesktopBooksListGridView({
   return (
     <motion.div
       // Move from bottom to top animation
-      initial={{opacity: 0 }}
-      animate={{opacity: 1 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
       exit={{ y: "100%" }}
       className="h-full content-size mx-auto absolute inset-0 z-40 flex flex-col justify-start items-center gap-5 bg-background overflow-auto"
