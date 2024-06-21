@@ -47,7 +47,9 @@ const useBook = () => {
   const loading = useRef(false);
   const dispatch = useAppDispatch();
   const { user, state } = useAppSelector(selectAuth);
-  const { userBooksData } = useAppSelector((state: RootState) => state.userBooks);
+  const { userBooksData } = useAppSelector(
+    (state: RootState) => state.userBooks
+  );
   const { showRegisterModal } = useModal();
 
   const openRegisterModal = () => {
@@ -76,14 +78,14 @@ const useBook = () => {
     try {
       const response = await axios.delete<IResponse<void>>("/api/user-books", {
         data: {
-          userBookId: userBook.id,
+          userBookId: userBook.userBookId,
         },
       });
       if (response.status !== 200) {
         // throw ErrorDeleteUserBook
         throw new ErrorDeleteUserBook("Failed to delete book");
       }
-      dispatch(deleteUserBookRedux(userBook.id));
+      dispatch(deleteUserBookRedux(userBook.userBookId));
     } catch (error: any) {
       if (error! instanceof ErrorDeleteUserBook) {
         // ErrorDeleteUserBook is logged in route
@@ -306,8 +308,7 @@ const useBook = () => {
         throw new Error("No user book returned from backend");
       }
       let userBookData: UserBookData | undefined = userBooksData.find(
-        (userBookData) =>
-          userBookData.userBook.id === newUserBook.id
+        (userBookData) => userBookData.userBook.userBookId === newUserBook.userBookId
       );
 
       if (!userBookData) {
@@ -338,7 +339,7 @@ const useBook = () => {
     readingStatus: ReadingStatusEnum
   ) => {
     const updateBookBody: UpdateUserBookBody = {
-      id: userBook.id,
+      userBookId: userBook.userBookId,
       userId: userBook.userId,
       readingStatusId: readingStatus,
     };

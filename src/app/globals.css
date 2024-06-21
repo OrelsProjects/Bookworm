@@ -24,36 +24,27 @@ input[type="text"]:-moz-ui-autofill {
 
 @layer base {
   :root {
-    --background: 0 0% 96%;
+    --background: 36 42% 97%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 47.9 95.8% 53.1%;
+    --primary-foreground: 26 83.3% 14.1%;
+    --secondary: 60 4.8% 95.9%;
+    --secondary-foreground: 24 9.8% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 142.1 76.2% 36.3%;
+    --radius: 0.75rem;
 
-    --primary: 210 70% 50%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 217.4 42.7% 16.5%;
-    --secondary-foreground: 210 40% 96.1%;
-
-    --foreground: 0 0% 7%;
-
-    --muted: 0 0% 44%;
-    --muted-foreground: 0 0% 7%;
-
-    --card: 0 0% 89%;
-    --card-foreground: 210 40% 98%;
-
-    --accent: 160.9 70.3% 39.6%;
-    --accent-foreground: 210 40% 98%;
-
-    --rating: 38.8 100% 70.2%;
-    --statistic-card-gradient-start: 0 100% 61.6%; /* 50% opacity */
-    --statistic-card-gradient-end: 0 100% 61.6%; /* 3.5% opacity */
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --error: 3 100% 61%;
-
-    --radius: 0.5rem;
     --tw-shadow-color: 0 0% 8%;
 
     --scroll-thumb: 0, 0%, 7%, 0.4;
@@ -69,30 +60,24 @@ input[type="text"]:-moz-ui-autofill {
   }
 
   .dark {
-    --background: 0 0% 7%;
+    --background: 220 15% 13%;
+    --foreground: 0 0% 95%;
+    --card: 220 17% 18%;
+    --card-foreground: 0 0% 95%;
+    --popover: 0 0% 9%;
+    --popover-foreground: 0 0% 95%;
+    /* --primary: 329 75% 56%;
+    --primary-foreground: 144.9 80.4% 10%; */
+    --muted: 0 0% 15%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 12 6.5% 15.1%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 85.7% 97.3%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 142.4 71.8% 29.2%;
 
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 217.4 42.7% 16.5%;
-    --secondary-foreground: 210 40% 96.1%;
-
-    --foreground: 0 0% 100%;
-    --muted: 220 10.5% 78.2%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --card: 225 5% 10%;
-    --card-foreground: 210 40% 98%;
-    --accent: 160.9 70.3% 39.6%;
-    --accent-foreground: 210 40% 98%;
-    --rating: 38.8 100% 70.2%;
-    --statistic-card-gradient-start: 0 100% 61.6%;
-    --statistic-card-gradient-end: 0 100% 61.6%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-    --error: 3 100% 61%;
-
-    --radius: 0.5rem;
     --tw-shadow-color: 0 0% 8%;
 
     --scroll-thumb: 0, 0%, 100%, 0.4;
@@ -145,7 +130,7 @@ input[type="text"]:-moz-ui-autofill {
 
   .content-size {
     /* @apply w-full h-full md:w-3/4 */
-    @apply w-full md:max-w-[800px] lg:max-w-[900px] 2xl:max-w-[1200px] ;
+    @apply w-full md:max-w-[800px] lg:max-w-[900px] 2xl:max-w-[1200px];
   }
 
   .pb-safe {
