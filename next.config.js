@@ -1,16 +1,20 @@
-const { optimizeImage } = require("next/dist/server/image-optimizer");
+const PWA = require("@ducanh2912/next-pwa");
 
 const cdnUrl = process.env.NEXT_PUBLIC_CDN_URL;
-// const withPWA = require("next-pwa")({
-//   dest: "public",
-// });
 
-const withBundleAnalyzer = require("@next/bundle-analyzer")({
-  enabled: process.env.ANALYZE === "true",
-});
-
-module.exports = {
+const nextConfig = {
   reactStrictMode: false,
+  headers: async () => [
+    {
+      source: "/sw.js",
+      headers: [
+        {
+          key: "Service-Worker-Allowed",
+          value: "/",
+        },
+      ],
+    },
+  ],
   images: {
     unoptimized: true,
     remotePatterns: [
@@ -37,3 +41,11 @@ module.exports = {
     ],
   },
 };
+
+const withPWA = PWA.default({
+  dest: "public",
+  cacheOnFrontEndNav: true,
+  aggressiveFrontEndNavCaching: true,
+});
+
+module.exports = withPWA(nextConfig);

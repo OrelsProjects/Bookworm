@@ -439,8 +439,8 @@ export default function DesktopBooksListGridView({
             <BookThumbnail
               book={bookInList.book}
               thumbnailSize={thumbnailSize}
-              className="!w-full"
-              containerClassName="!w-full"
+              className="!w-full !h-full"
+              containerClassName="!w-full !h-full"
             />
           </div>
           <div className="h-full w-full absolute inset-0 flex flex-col justify-between items-center gap-3 px-4 pt-5 pb-0 z-30 bg-transparent">
@@ -477,7 +477,7 @@ export default function DesktopBooksListGridView({
   };
 
   const Thumbnail = ({ bookInList }: { bookInList: BookInListWithBook }) => (
-    <div className="w-full relative h-40 md:h-48 lg:h-56 xl:h-full">
+    <div className="w-full relative h-40 md:h-48 lg:h-[240px] 2xl:h-72">
       <BookThumbnail
         book={bookInList.book}
         thumbnailSize={thumbnailSize}

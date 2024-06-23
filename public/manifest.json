@@ -1,0 +1,150 @@
+{
+  "name": "BookWiz",
+  "id": "com.bookwiz.www",
+  "short_name": "BookWiz",
+  "theme_color": "#1C2026",
+  "background_color": "#1C2026",
+  "display": "standalone",
+  "display_override": ["standalone", "window-controls-overlay"],
+  "description": "With BookWiz you will find your next, personally tailored read.",
+
+  "scope": "/home",
+
+  "orientation": "portrait",
+  "start_url": "/home",
+  "dir": "auto",
+
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "144x144"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "72x72"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "48x48"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "16x16"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "20x20"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "29x29"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "32x32"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "40x40"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "50x50"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "57x57"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "58x58"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "60x60"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "64x64"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "72x72"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "76x76"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "80x80"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "87x87"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "100x100"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "114x114"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "120x120"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "128x128"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "144x144"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "152x152"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "167x167"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "180x180"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "256x256"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "1024x1024"
+    }
+  ],
+
+  "lang": "en",
+  "categories": ["entertainment", "productivity"]
+}
