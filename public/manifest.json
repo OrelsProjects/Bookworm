@@ -8,10 +8,10 @@
   "display_override": ["standalone", "window-controls-overlay"],
   "description": "With BookWiz you will find your next, personally tailored read.",
 
-  "scope": "/home",
+  "scope": "/",
 
   "orientation": "portrait",
-  "start_url": "/home",
+  "start_url": "/",
   "dir": "auto",
 
   "icons": [
