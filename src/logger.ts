@@ -39,12 +39,8 @@ export const setUserLogger = (user?: User | null) => {
 };
 
 const log = (type: StatusType, message: string, logItem?: LogItem) => {
-  _logger.log({
-    level: type,
-    message,
-    data: logItem?.data,
-    error: logItem?.error,
-  });
+  datadogLogs.logger.log(message, logItem?.data, type, logItem?.error);
+  printLog(type, message, logItem);
 };
 
 const printLog = (type: StatusType, message?: string, logItem?: LogItem) => {
