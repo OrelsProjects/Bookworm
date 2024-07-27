@@ -1,4 +1,4 @@
-import { Logger } from "@/src/logger";
+import Logger from "@/src/loggerServer";
 import { UserBook, UserBookData } from "@/src/models";
 import { IResponse } from "@/src/models/dto/response";
 import {
@@ -8,7 +8,6 @@ import {
 } from "@/src/models/userBook";
 import { GetAxiosInstance } from "@/src/utils/apiUtils";
 import { NextRequest, NextResponse } from "next/server";
-
 
 export async function GET(
   req: NextRequest
@@ -23,9 +22,9 @@ export async function GET(
     };
     return NextResponse.json(result, { status: 200 });
   } catch (error: any) {
-    Logger.error("Error getting user books", {
+    Logger.error("Error getting user books", "", {
       error,
-    }); 
+    });
     return NextResponse.json({}, { status: 500 });
   }
 }
@@ -49,7 +48,7 @@ export async function POST(req: NextRequest) {
       { status: 200 }
     );
   } catch (error: any) {
-    Logger.error("Error creating user book", {
+    Logger.error("Error creating user book", "", {
       data: {
         createUserBookBody,
       },
@@ -74,7 +73,7 @@ export async function PATCH(
     const userBook: UserBook = response.data;
     return NextResponse.json({ result: userBook }, { status: 200 });
   } catch (error: any) {
-    Logger.error("Error updating user book", {
+    Logger.error("Error updating user book", "", {
       data: {
         updateUserBookBody,
       },
@@ -101,7 +100,7 @@ export async function DELETE(
     });
     return NextResponse.json(response.data, { status: 200 });
   } catch (error: any) {
-    Logger.error("Error deleting user book", {
+    Logger.error("Error deleting user book", "", {
       data: {
         userBookId,
       },
