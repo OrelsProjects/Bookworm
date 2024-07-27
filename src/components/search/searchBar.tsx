@@ -218,13 +218,16 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   return (
     <div
-      className={cn("h-fit max-h-full w-full flex flex-col flex-shrink-0 md:pr-16", {
-        "md:h-full": seeAllBooks || seeAllLists,
-        "h-full":
-          searchHook.status !== "idle" &&
-          searchHook.status !== "error" &&
-          searchHook.searchValue,
-      })}
+      className={cn(
+        "h-fit max-h-full w-full flex flex-col flex-shrink-0 md:pr-16",
+        {
+          "md:h-full": seeAllBooks || seeAllLists,
+          "h-full":
+            searchHook.status !== "idle" &&
+            searchHook.status !== "error" &&
+            searchHook.searchValue,
+        }
+      )}
     >
       <SearchBarComponent
         onBlur={onBlur}
@@ -233,23 +236,23 @@ const SearchBar: React.FC<SearchBarProps> = ({
         className={`w-full transition-all duration-300 ease-in-out rounded-full ${
           className ?? ""
         }`}
-        formClassName={cn(
-          "h-fit max-h-full w-full bg-background pr-[72px]",
-          {
-            "md:pr-0": user,
-          }
-        )}
-        placeholder="Search all books, authors..."
+        formClassName={cn("h-fit max-h-full w-full bg-background pr-[72px]", {
+          "md:pr-0": user,
+        })}
+        placeholder="Search all lists and books"
         autoFocus={autoFocus}
         onFocus={onFocus}
         {...props}
       />
       {searchHook.status !== "idle" && (
         <div
-          className={cn("h-full flex flex-col gap-3 overflow-auto mt-4 md:mb-12", {
-            // "mt-4": !booksOnly && searchHook.searchValue,
-            // "mt-4": booksOnly,
-          })}
+          className={cn(
+            "h-full flex flex-col gap-3 overflow-auto mt-4 md:mb-12",
+            {
+              // "mt-4": !booksOnly && searchHook.searchValue,
+              // "mt-4": booksOnly,
+            }
+          )}
           ref={scrollbarRef}
         >
           <div

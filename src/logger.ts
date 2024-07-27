@@ -1,9 +1,18 @@
 import { StatusType, datadogLogs } from "@datadog/browser-logs";
 import { User } from "./models";
+import { createLogger, format, transports } from "winston";
 
 interface Dict {
   [key: string]: any;
 }
+
+const isServer = () => typeof window === "undefined";
+
+const httpTransportOptions = {
+  host: process.env.DD_HOST,
+  path: process.env.DD_PATH,
+  ssl: true,
+};
 
 export interface LogItem {
   data?: Dict;
@@ -13,14 +22,17 @@ export interface LogItem {
 export const initLogger = () => {
   try {
     const env = process.env.NODE_ENV ?? "development";
-    datadogLogs.init({
-      clientToken: process.env.NEXT_PUBLIC_DATADOG_CLIENT_TOKEN ?? "",
-      site: process.env.NEXT_PUBLIC_DATADOG_SITE ?? "",
-      forwardErrorsToLogs: true,
-      sessionSampleRate: 100,
-      service: process.env.NEXT_PUBLIC_DATADOG_SERVICE ?? "",
-      env,
-    });
+    if (!isServer()) {
+      datadogLogs.init({
+        clientToken: process.env.NEXT_PUBLIC_DATADOG_CLIENT_TOKEN ?? "",
+        site: process.env.NEXT_PUBLIC_DATADOG_SITE ?? "",
+        forwardErrorsToLogs: true,
+        sessionSampleRate: 100,
+        service: process.env.NEXT_PUBLIC_DATADOG_SERVICE ?? "",
+        env,
+      });
+    } else {
+    }
   } catch (error: any) {
     Logger.error("Error initializing logger", {
       error,
@@ -42,7 +54,22 @@ const log = (type: StatusType, message: string, logItem?: LogItem) => {
     if (process.env.NODE_ENV === "test") {
       return;
     }
-    datadogLogs.logger.log(message, logItem?.data, type, logItem?.error);
+    if (isServer()) {
+      const _logger = createLogger({
+        level: "info",
+        exitOnError: false,
+        format: format.json(),
+        transports: [new transports.Http(httpTransportOptions)],
+      });
+      _logger.log({
+        level: type,
+        message,
+        data: logItem?.data,
+        error: logItem?.error,
+      });
+    } else {
+      datadogLogs.logger.log(message, logItem?.data, type, logItem?.error);
+    }
   } catch (error: any) {}
 };
 

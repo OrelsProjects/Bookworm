@@ -40,13 +40,13 @@ const ModalAddBookToList: React.FC<ModalBookDetailsProps> = ({ book }) => {
     const isBookInList = list.booksInList?.some((bookInList) =>
       isBooksEqual(book, bookInList.book)
     );
-    const loadingMessage = isBookInList
-      ? `Removing ${book.title} from list: ${list.name}...`
-      : `Adding ${book.title} to list: ${list.name}...`;
+    // const loadingMessage = isBookInList
+    //   ? `Removing ${book.title} from list: ${list.name}...`
+    //   : `Adding ${book.title} to list: ${list.name}...`;
 
-    const successMessage = isBookInList
-      ? `${book.title} removed from list: ${list.name}`
-      : `${book.title} added to list: ${list.name}`;
+    // const successMessage = isBookInList
+    //   ? `${book.title} removed from list: ${list.name}`
+    //   : `${book.title} added to list: ${list.name}`;
 
     const errorMessage = isBookInList
       ? `Failed to remove ${book.title}`
@@ -57,8 +57,8 @@ const ModalAddBookToList: React.FC<ModalBookDetailsProps> = ({ book }) => {
         ? removeBookFromList(list.listId, book.bookId)
         : addBookToList(list.listId, book),
       {
-        pending: loadingMessage,
-        success: successMessage,
+        // pending: loadingMessage,
+        // success: successMessage,
         error: errorMessage,
       }
     );

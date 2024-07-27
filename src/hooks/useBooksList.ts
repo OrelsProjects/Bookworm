@@ -152,7 +152,6 @@ const useBooksList = () => {
   };
 
   const loadUserBooksLists = async (user?: User | null) => {
-
     if (loading.current) {
       throw new LoadingError(
         "Operation in progress. Please wait until the current operation completes."
@@ -354,7 +353,18 @@ const useBooksList = () => {
       );
     }
     loading.current = true;
+
+    // for optimistic update
+    const bookInList: BookInListWithBook = {
+      book,
+      bookId: book.bookId,
+      position: 999,
+      listId,
+      comments,
+    };
+
     try {
+      dispatch(addBookToListAction(bookInList));
       let newBook = { ...book };
       if (!book.bookId) {
         newBook = await addBook(book);
@@ -364,12 +374,13 @@ const useBooksList = () => {
         bookId: newBook.bookId,
         comments,
       });
-      const bookInList = response.data;
-      const bookInListWithBook = { ...bookInList, book };
-
-      dispatch(addBookToListAction(bookInListWithBook));
+      const bookInListResponse = response.data;
+      const bookInListWithBook = { ...bookInListResponse, book };
+      dispatch(updateBookInListAction({ bookInList: bookInListWithBook }));
       addBookToListInLocalStorage(bookInListWithBook);
     } catch (error: any) {
+      // rollback
+      dispatch(removeBookFromListAction({ listId, bookId: book.bookId }));
       Logger.error("Failed to add book to list", error);
       throw error;
     } finally {
@@ -378,7 +389,17 @@ const useBooksList = () => {
   };
 
   const removeBookFromList = async (listId: string, bookId: number) => {
+    // for optimistic update
+    const currentList = booksLists.find((list) => list.listId === listId);
+    const bookInList = currentList?.booksInList?.find(
+      (bookInList) => bookInList.bookId === bookId
+    );
+    if (!bookInList) {
+      throw new Error("Book not found in list");
+    }
     try {
+      // optimistic update
+      dispatch(removeBookFromListAction({ listId, bookId }));
       const urlParams = new URLSearchParams();
       urlParams.append("listId", listId);
       urlParams.append("bookId", bookId.toString());
@@ -386,9 +407,10 @@ const useBooksList = () => {
       await axios.delete(`/api/list/book`, {
         params: urlParams,
       });
-      dispatch(removeBookFromListAction({ listId, bookId }));
       deleteBookFromListInLocalStorage(listId, bookId);
     } catch (error: any) {
+      // rollback
+      dispatch(addBookToListAction(bookInList));
       Logger.error("Failed to remove book from list", error);
       throw error;
     }
