@@ -1,6 +1,5 @@
 import { StatusType, datadogLogs } from "@datadog/browser-logs";
-import { User } from "./models";
-import { createLogger, format, transports } from "winston";
+import type { User } from "./models";
 
 interface Dict {
   [key: string]: any;
@@ -19,6 +18,18 @@ export interface LogItem {
   error?: Error;
 }
 
+let _logger: any;
+
+if (isServer()) {
+  const { createLogger, format, transports } = require("winston");
+  _logger = createLogger({
+    level: "info",
+    exitOnError: false,
+    format: format.json(),
+    transports: [new transports.Http(httpTransportOptions)],
+  });
+}
+
 export const initLogger = () => {
   try {
     const env = process.env.NODE_ENV ?? "development";
@@ -31,46 +42,35 @@ export const initLogger = () => {
         service: process.env.NEXT_PUBLIC_DATADOG_SERVICE ?? "",
         env,
       });
-    } else {
     }
   } catch (error: any) {
-    Logger.error("Error initializing logger", {
-      error,
-    });
+    if (_logger) {
+      _logger.error("Error initializing logger", { error });
+    }
   }
 };
 
 export const setUserLogger = (user?: User | null) => {
-  datadogLogs.setUser({
-    id: user?.userId,
-    name: user?.displayName,
-    email: user?.email,
-  });
+  if (!isServer()) {
+    datadogLogs.setUser({
+      id: user?.userId,
+      name: user?.displayName,
+      email: user?.email,
+    });
+  }
 };
 
 const log = (type: StatusType, message: string, logItem?: LogItem) => {
-  printLog(type, message, logItem);
-  try {
-    if (process.env.NODE_ENV === "test") {
-      return;
-    }
-    if (isServer()) {
-      const _logger = createLogger({
-        level: "info",
-        exitOnError: false,
-        format: format.json(),
-        transports: [new transports.Http(httpTransportOptions)],
-      });
-      _logger.log({
-        level: type,
-        message,
-        data: logItem?.data,
-        error: logItem?.error,
-      });
-    } else {
-      datadogLogs.logger.log(message, logItem?.data, type, logItem?.error);
-    }
-  } catch (error: any) {}
+  if (!isServer() && process.env.NODE_ENV !== "test") {
+    datadogLogs.logger.log(message, logItem?.data, type, logItem?.error);
+  } else if (_logger) {
+    _logger.log({
+      level: type,
+      message,
+      data: logItem?.data,
+      error: logItem?.error,
+    });
+  }
 };
 
 const printLog = (type: StatusType, message?: string, logItem?: LogItem) => {
