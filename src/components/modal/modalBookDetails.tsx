@@ -65,7 +65,7 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
         selectable={false}
       />
 
-      <div className="h-full flex flex-col gap-4 md:gap-10 text-foreground font-thin shadow-inner pb-6">
+      <div className="h-full flex flex-col gap-4 md:gap-10 text-foreground font-thin pb-6">
         {bookInList && bookInList.comments && (
           <div className="md:w-full md:flex md:flex-col md:gap-2">
             <div className="text-foreground font-bold text-xl md:text-[32px] md:leading-[48px] md:font-normal">

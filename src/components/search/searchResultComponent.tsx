@@ -100,7 +100,7 @@ const SearchResultComponent: React.FC<SearchResultProps> = ({
         <Thumbnail />
       </div>
       <div className="h-full flex flex-col justify-between items-start">
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-1">
           <Title />
           <Authors />
         </div>

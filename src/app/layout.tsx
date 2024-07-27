@@ -9,7 +9,7 @@ import { Metadata, Viewport } from "next";
 
 const APP_NAME = "BookWiz";
 const APP_DEFAULT_TITLE = "BookWiz";
-const APP_TITLE_TEMPLATE = "%s - BookWiz";
+const APP_TITLE_TEMPLATE = "%s";
 const APP_DESCRIPTION =
   "With BookWiz you will find your next, personally tailored read.";
 

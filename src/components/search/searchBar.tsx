@@ -218,7 +218,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   return (
     <div
-      className={cn("h-fit max-h-full w-full flex flex-col flex-shrink-0", {
+      className={cn("h-fit max-h-full w-full flex flex-col flex-shrink-0 md:pr-16", {
         "md:h-full": seeAllBooks || seeAllLists,
         "h-full":
           searchHook.status !== "idle" &&

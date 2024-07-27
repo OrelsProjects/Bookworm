@@ -39,7 +39,7 @@ const BookDetails: React.FC<BookDetailsProps> = ({
         thumbnailSize={bookThumbnailSize}
       />
       <div className={`grid gap-1.5 h-full justify-start`}>
-        <div className={`flex flex-col h-fit`}>
+        <div className="flex flex-col h-fit gap-2">
           <div className="text-sm md:text-xl text-start line-clamp-1 md:font-bold leading-[16px] md:line-clamp-2">
             {book?.title ?? ""}
           </div>

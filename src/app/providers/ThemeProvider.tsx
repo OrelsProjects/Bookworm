@@ -9,7 +9,7 @@ export default function ThemeProvider({
   ...props
 }: ThemeProviderProps) {
   return (
-    <NextThemesProvider attribute="class" defaultTheme="light" {...props}>
+    <NextThemesProvider attribute="class" defaultTheme="system" {...props}>
       {children}
     </NextThemesProvider>
   );

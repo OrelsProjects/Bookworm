@@ -11,7 +11,7 @@ const BookGeneralDetails: React.FC<{
   goodreadsRating?: number | null;
 }> = ({ title, authors, goodreadsRating }) => (
   <div className="h-full md:h-fit w-full flex flex-col gap-4 mt-2.5 md:flex-shrink-0">
-    <div className="h-full w-full flex flex-col">
+    <div className="h-full w-full flex flex-col gap-2">
       <Tooltip
         tooltipContent={
           <div className="w-full font text-foreground line-clamp-4">
@@ -23,7 +23,7 @@ const BookGeneralDetails: React.FC<{
       </Tooltip>
       <ModalAuthors
         authors={authors || []}
-        className="!text-muted text-lg md:text-[40px] leading-10 md:line-clamp-none font-normal"
+        className="!text-muted text-lg md:text-4xl leading-10 md:line-clamp-none font-normal"
       />
     </div>
     <Rating rating={goodreadsRating} />
