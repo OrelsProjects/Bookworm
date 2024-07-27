@@ -5,14 +5,6 @@ interface Dict {
   [key: string]: any;
 }
 
-const isServer = () => typeof window === "undefined";
-
-const httpTransportOptions = {
-  host: process.env.DD_HOST,
-  path: process.env.DD_PATH,
-  ssl: true,
-};
-
 export interface LogItem {
   data?: Dict;
   error?: Error;
@@ -20,29 +12,17 @@ export interface LogItem {
 
 let _logger: any;
 
-if (isServer()) {
-  const { createLogger, format, transports } = require("winston");
-  _logger = createLogger({
-    level: "info",
-    exitOnError: false,
-    format: format.json(),
-    transports: [new transports.Http(httpTransportOptions)],
-  });
-}
-
 export const initLogger = () => {
   try {
     const env = process.env.NODE_ENV ?? "development";
-    if (!isServer()) {
-      datadogLogs.init({
-        clientToken: process.env.NEXT_PUBLIC_DATADOG_CLIENT_TOKEN ?? "",
-        site: process.env.NEXT_PUBLIC_DATADOG_SITE ?? "",
-        forwardErrorsToLogs: true,
-        sessionSampleRate: 100,
-        service: process.env.NEXT_PUBLIC_DATADOG_SERVICE ?? "",
-        env,
-      });
-    }
+    datadogLogs.init({
+      clientToken: process.env.NEXT_PUBLIC_DATADOG_CLIENT_TOKEN ?? "",
+      site: process.env.NEXT_PUBLIC_DATADOG_SITE ?? "",
+      forwardErrorsToLogs: true,
+      sessionSampleRate: 100,
+      service: process.env.NEXT_PUBLIC_DATADOG_SERVICE ?? "",
+      env,
+    });
   } catch (error: any) {
     if (_logger) {
       _logger.error("Error initializing logger", { error });
@@ -51,26 +31,20 @@ export const initLogger = () => {
 };
 
 export const setUserLogger = (user?: User | null) => {
-  if (!isServer()) {
-    datadogLogs.setUser({
-      id: user?.userId,
-      name: user?.displayName,
-      email: user?.email,
-    });
-  }
+  datadogLogs.setUser({
+    id: user?.userId,
+    name: user?.displayName,
+    email: user?.email,
+  });
 };
 
 const log = (type: StatusType, message: string, logItem?: LogItem) => {
-  if (!isServer() && process.env.NODE_ENV !== "test") {
-    datadogLogs.logger.log(message, logItem?.data, type, logItem?.error);
-  } else if (_logger) {
-    _logger.log({
-      level: type,
-      message,
-      data: logItem?.data,
-      error: logItem?.error,
-    });
-  }
+  _logger.log({
+    level: type,
+    message,
+    data: logItem?.data,
+    error: logItem?.error,
+  });
 };
 
 const printLog = (type: StatusType, message?: string, logItem?: LogItem) => {
