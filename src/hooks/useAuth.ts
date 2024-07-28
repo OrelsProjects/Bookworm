@@ -40,6 +40,7 @@ const useAuth = () => {
         return;
       }
       Logger.error("Error signing in with Google", { error });
+      debugger;
       dispatch(setError("Failed to sign in"));
       console.error(error);
     }

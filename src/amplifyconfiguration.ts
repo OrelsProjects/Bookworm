@@ -9,7 +9,7 @@ const config = {
     process.env.NEXT_PUBLIC_AWS_USER_POOLS_WEB_CLIENT_ID,
   aws_cognito_region: "us-east-1",
   oauth: {
-    domain: process.env.NEXT_PUBLIC_OAUTH_DOMAIN ?? "",
+    domain: process.env.NEXT_PUBLIC_OAUTH_DOMAIN || "",
     scope: [
       "phone",
       "email",

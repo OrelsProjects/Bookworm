@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import BookList from "../../../components/book/bookList";
 import useRecommendations from "../../../hooks/useRecommendations";
@@ -14,6 +14,9 @@ import { getThumbnailSize } from "../../../consts/thumbnail";
 import { useModal } from "../../../hooks/useModal";
 import { SeeAll } from "../../../components/ui/seeAll";
 import { useAppSelector } from "../../../lib/hooks";
+import { Hub } from "aws-amplify/utils";
+import { setLoading } from "../../../lib/features/explore/exploreSlice";
+import { setError } from "../../../lib/features/userBooks/userBooksSlice";
 
 export default function Home(): React.ReactNode {
   const router = useRouter();

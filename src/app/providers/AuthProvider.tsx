@@ -18,6 +18,7 @@ import { Logger, initLogger, setUserLogger } from "@/src/logger";
 import axios from "axios";
 import { IResponse } from "@/src/models/dto/response";
 import { CreateUser } from "@/src/models/user";
+import { Router } from "lucide-react";
 
 interface AuthProviderProps {
   children?: React.ReactNode;

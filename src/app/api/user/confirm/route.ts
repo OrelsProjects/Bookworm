@@ -1,5 +1,4 @@
 import Logger from "@/src/utils/loggerServer";
-import { User } from "@/src/models";
 import { IResponse } from "@/src/models/dto/response";
 import { CreateUser } from "@/src/models/user";
 import { GetAxiosInstance } from "@/src/utils/apiUtils";
