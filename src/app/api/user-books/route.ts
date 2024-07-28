@@ -7,6 +7,7 @@ import {
   UpdateUserBookBody,
 } from "@/src/models/userBook";
 import { GetAxiosInstance } from "@/src/utils/apiUtils";
+import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -24,6 +25,7 @@ export async function GET(
   } catch (error: any) {
     Logger.error("Error getting user books", "", {
       error,
+      data: { baseUrl: axios.defaults.baseURL },
     });
     return NextResponse.json({}, { status: 500 });
   }
