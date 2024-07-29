@@ -7,7 +7,7 @@ import NavigationProvider from "./providers/NavigationProvider";
 import ThemeProvider from "./providers/ThemeProvider";
 import { Metadata, Viewport } from "next";
 
-const OG_IMAGE_URL = "/favicon.ico";
+const OG_IMAGE_URL = "/favicon.png";
 const APP_NAME = "BookWiz";
 const APP_DEFAULT_TITLE = "BookWiz";
 const APP_TITLE_TEMPLATE = "%s";
@@ -64,6 +64,17 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="theme-color" content="#00000000" />
+        <link rel="manifest" href="/manifest.json" />
+        <meta property="og:image" content="<generated>" />
+        <meta property="og:image:type" content="<generated>" />
+        <meta property="og:image:width" content="<generated>" />
+        <meta property="og:image:height" content="<generated>" />
+      </head>
       <body className="w-[100vw] h-[100vh] pb-[calc(max(env(safe-area-inset-bottom),16px)-16px)]">
         <StoreProvider>
           <AuthProvider>
