@@ -133,11 +133,13 @@ const SideNavigationBar = ({ className }: { className?: string }) => {
         <Image
           src="/favicon.png"
           alt="logo"
-          width={50}
-          height={50}
+          width={30}
+          height={30}
           className="cursor-pointer"
         />
-        <span className="text-3xl font-thin cursor-pointer">BookWiz</span>
+        <div className="flex justify-start items-start">
+          <span className="text-3xl font-thin cursor-pointer pt-2">BookWiz</span>
+        </div>
       </div>
       <div className="w-fit h-full flex flex-row gap-12">
         {navigationBarItems.map((item) => {
