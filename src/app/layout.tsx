@@ -7,11 +7,15 @@ import NavigationProvider from "./providers/NavigationProvider";
 import ThemeProvider from "./providers/ThemeProvider";
 import { Metadata, Viewport } from "next";
 
+const OG_IMAGE_URL = "/favicon.ico";
 const APP_NAME = "BookWiz";
 const APP_DEFAULT_TITLE = "BookWiz";
 const APP_TITLE_TEMPLATE = "%s";
 const APP_DESCRIPTION =
   "With BookWiz you will find your next, personally tailored read.";
+
+const APP_URL = "https://www.bookwiz.app";
+const APP_STARTUP_IMAGE = "/favicon.ico";
 
 export const metadata: Metadata = {
   applicationName: APP_NAME,
@@ -25,19 +29,22 @@ export const metadata: Metadata = {
     capable: true,
     statusBarStyle: "default",
     title: APP_DEFAULT_TITLE,
-    // startUpImage: [],
+    startupImage: APP_STARTUP_IMAGE,
   },
   formatDetection: {
     telephone: false,
   },
   openGraph: {
     type: "website",
+    locale: "en_US",
     siteName: APP_NAME,
+    url: APP_URL,
     title: {
       default: APP_DEFAULT_TITLE,
       template: APP_TITLE_TEMPLATE,
     },
     description: APP_DESCRIPTION,
+    images: { url: OG_IMAGE_URL, width: 1200, height: 630 },
   },
   twitter: {
     card: "summary",
@@ -46,6 +53,7 @@ export const metadata: Metadata = {
       template: APP_TITLE_TEMPLATE,
     },
     description: APP_DESCRIPTION,
+    images: { url: OG_IMAGE_URL, width: 1200, height: 630 },
   },
 };
 

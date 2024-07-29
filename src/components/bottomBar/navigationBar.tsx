@@ -131,7 +131,7 @@ const SideNavigationBar = ({ className }: { className?: string }) => {
         }}
       >
         <Image
-          src="/favicon.png"
+          src="/favicon.ico"
           alt="logo"
           width={30}
           height={30}
