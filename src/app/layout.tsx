@@ -15,7 +15,7 @@ const APP_DESCRIPTION =
   "With BookWiz you will find your next, personally tailored read.";
 
 const APP_URL = "https://www.bookwiz.app";
-const APP_STARTUP_IMAGE = "/favicon.ico";
+const APP_STARTUP_IMAGE = "/favicon.png";
 
 export const metadata: Metadata = {
   applicationName: APP_NAME,
