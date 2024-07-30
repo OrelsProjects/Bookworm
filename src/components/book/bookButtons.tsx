@@ -191,7 +191,7 @@ export const BookButtons = () => {
               `}
             >
               <FaCheck
-                className={`!text-primary  cursor-pointer ${
+                className={`!text-primary  cursor-pointer hover:bg-slate-400/70 ${
                   isBookRead ? "fill-background" : "fill-foreground"
                 } h-full w-full
                 p-[5px] sm:p-2
@@ -208,7 +208,7 @@ export const BookButtons = () => {
             Icon={isBookToRead ? BookmarkFill : Bookmark}
             iconSize={iconSize}
             selected={isBookToRead}
-            className="w-1/3 md:w-fit"
+            className="w-1/3 md:w-fit hover:bg-primary/10"
             onClick={() =>
               handleUpdateBookReadingStatus(
                 ReadingStatusEnum.TO_READ,

@@ -58,12 +58,12 @@ const SearchResultComponent: React.FC<SearchResultProps> = ({
       <BookThumbnail
         src={book.thumbnailUrl}
         className="rounded-xl !relative"
-        thumbnailSize="sm"
+        thumbnailSize="md"
       />
     ) : (
       <BooksListThumbnail
         booksInList={booksList?.booksInList || []}
-        thumbnailSize="sm"
+        thumbnailSize="md"
       />
     );
 
@@ -114,7 +114,7 @@ const SearchResultComponent: React.FC<SearchResultProps> = ({
               }}
             >
               <CheckmarkIcon
-                className={`text-2xl w-5 h-5 ${
+                className={`text-2xl w-[26px] h-[26px] ${
                   isBookRead ? "!text-primary" : ""
                 }`}
               />
@@ -128,7 +128,7 @@ const SearchResultComponent: React.FC<SearchResultProps> = ({
               }}
             >
               <BookmarkIcon
-                className={`text-2xl w-5 h-5 ml-1 ${
+                className={`text-2xl w-[26px] h-[26px] ml-1 ${
                   isBookToRead ? "!text-primary" : ""
                 }`}
               />
@@ -142,7 +142,7 @@ const SearchResultComponent: React.FC<SearchResultProps> = ({
                   handleAddBookToList(book);
                 }}
               >
-                <Plus className="text-2xl w-5 h-5" />
+                <Plus className="text-2xl w-[26px] h-[26px]" />
                 <div className="leading-4">Readlist</div>
               </div>
             )}

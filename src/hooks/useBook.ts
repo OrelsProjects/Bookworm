@@ -50,6 +50,8 @@ const useBook = () => {
   const { userBooksData } = useAppSelector(
     (state: RootState) => state.userBooks
   );
+  const { books: searchResultsBooks, lists: searchResultsLists } =
+    useAppSelector((state: RootState) => state.search);
   const { showRegisterModal } = useModal();
 
   const openRegisterModal = () => {
@@ -308,7 +310,8 @@ const useBook = () => {
         throw new Error("No user book returned from backend");
       }
       let userBookData: UserBookData | undefined = userBooksData.find(
-        (userBookData) => userBookData.userBook.userBookId === newUserBook.userBookId
+        (userBookData) =>
+          userBookData.userBook.userBookId === newUserBook.userBookId
       );
 
       if (!userBookData) {
@@ -346,27 +349,74 @@ const useBook = () => {
     await updateUserBook(updateBookBody);
   };
 
+  function getBookFullData(isbn: string): UserBookData | null;
   function getBookFullData(bookId: number): UserBookData | null;
   function getBookFullData(book: Book): UserBookData | null;
-  function getBookFullData(bookOrBookId: Book | number): UserBookData | null {
-    if (typeof bookOrBookId === "number") {
+  function getBookFullData(value: Book | number | string): UserBookData | null {
+    if (typeof value === "string") {
       return (
         userBooksData.find(
-          (userBookData) => userBookData.bookData?.book?.bookId === bookOrBookId
-        ) ?? null
+          (userBookData) =>
+            userBookData.bookData?.book?.isbn10 === value ||
+            userBookData.bookData?.book?.isbn === value
+        ) || null
+      );
+    }
+    if (typeof value === "number") {
+      return (
+        userBooksData.find(
+          (userBookData) => userBookData.bookData?.book?.bookId === value
+        ) || null
       );
     } else {
       return (
         userBooksData.find((userBookData) => {
           const isEqual = isBooksEqualExactly(
             userBookData.bookData?.book,
-            bookOrBookId
+            value
           );
           return isEqual;
         }) ?? null
       );
     }
   }
+
+  const getBook = async (isbn: string): Promise<Book | undefined> => {
+    // search in search results and userBooks. If not found, fetch from backend at /api/book/:bookId
+    const book = getBookFullData(isbn);
+    if (book) {
+      return book.bookData.book;
+    }
+    // search in books from search results
+    const searchBook = searchResultsBooks?.find(
+      (b) => b.isbn === isbn || b.isbn10 === isbn
+    );
+    if (searchBook) {
+      return searchBook;
+    }
+
+    // search in books from search results
+    const booksInList = searchResultsLists?.map((l) => l.booksInList).flat();
+    const searchListBook = booksInList?.find(
+      (b) => b.book.isbn === isbn || b.book.isbn10 === isbn
+    );
+    if (searchListBook) {
+      return searchListBook.book;
+    }
+
+    try {
+      const response = await axios.get<Book>(`/api/book/${isbn}`);
+      return response.data;
+    } catch (error: any) {
+      Logger.error("Error getting book", {
+        data: {
+          isbn,
+        },
+        error,
+      });
+      throw error;
+    }
+  };
 
   return {
     addBook,
@@ -375,6 +425,7 @@ const useBook = () => {
     userBooksData,
     updateUserBook,
     deleteUserBook,
+    getBook,
     getBookFullData,
     getBookGoodreadsData,
     deleteUserBookWithBook,
