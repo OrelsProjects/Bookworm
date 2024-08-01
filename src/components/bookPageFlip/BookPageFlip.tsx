@@ -67,9 +67,9 @@ const Cover = ({
     <div
       onClick={onClick}
       className={cn(
-        "w-full rounded-lg flex flex-col justify-center items-center relative bg-landing-cover shadow-xl overflow-clip cursor-pointer",
+        "w-full rounded-lg flex flex-col justify-center items-center relative bg-primary shadow-xl overflow-clip cursor-pointer",
         coverSizeClass,
-        { isFlipped: "bg-landing-cover-brighter" },
+        { isFlipped: "bg-primary-brighter" },
         className
       )}
       style={{
@@ -88,7 +88,7 @@ const Cover = ({
         >
           <>
             <h1 className="text-background text-6.5xl">BookWiz</h1>
-            <h3 className="text-foreground text-2xl">Reading With Purpose</h3>
+            <h3 className="text-foreground text-2xl">Find Your Next Read</h3>
           </>
           <Image
             src="/landing-cover-half.png"
@@ -286,7 +286,7 @@ const BookPageFlip: React.FC<BookPageFlipProps> = ({
                 exit={{ scale: 1 }}
                 transition={{ duration: 0.7, ease: "easeOut" }}
                 className={cn(
-                  "w-full h-full absolute bg-landing-cover z-30 left-2 rounded-lg top-2",
+                  "w-full h-full absolute bg-primary z-30 left-2 rounded-lg top-2",
                   coverSizeClass
                 )}
               />
