@@ -98,7 +98,7 @@ const RecommendationsList = ({
   const { showBooksListModal } = useModal();
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 pb-20">
       {lists.map((list, index) => (
         <div
           className="w-full flex flex-row gap-2.5 justify-start items-start md:items-center py-1 cursor-pointer transition-all md:p-2.5 hover:bg-slate-400/40 hover:rounded-lg"
