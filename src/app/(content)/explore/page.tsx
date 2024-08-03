@@ -41,10 +41,10 @@ const ExplorePage: React.FC<ExplorePageProps> = () => {
   );
 
   return (
-    <div className="w-full h-full flex flex-col relative gap-6">
-      <SearchBar />
+    <div className="w-full h-full flex flex-col relative gap-8 md:pb-28">
+      <SearchBar containerClassName="md:w-full md:!pr-0" />
       {loadingGenres ? (
-        <div className="w-full flex flex-col justify-start">
+        <div className="w-full flex flex-col justify-start gap-2">
           {loadingGenres && <LoadingGenresTabs />}
           <div className="flex flex-col gap-[22px]">
             {Array.from({ length: 3 }).map((_, i) => (
@@ -54,7 +54,7 @@ const ExplorePage: React.FC<ExplorePageProps> = () => {
         </div>
       ) : (
         <div
-          className="flex flex-col gap-8 overflow-auto "
+          className="flex flex-col gap-2 overflow-auto "
           ref={scrollableDivRef}
         >
           <div className="h-fit w-full flex flex-row gap-[9px] justify-start overflow-x-auto flex-shrink-0">

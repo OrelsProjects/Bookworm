@@ -23,6 +23,7 @@ const MAX_RESULTS_NO_SEE_ALL = 4;
 export type SearchBarProps = {
   CustomSearchItemSkeleton?: React.FC;
   CustomSearchItem?: typeof SearchResultComponent;
+  containerClassName?: string;
   clearOnExit?: boolean; // Clear redux state on exit. Used for when navigating to a new page that uses the search data.
   booksFirst?: boolean;
   booksOnly?: boolean;
@@ -39,6 +40,7 @@ export type SearchBarProps = {
 
 const SearchBar: React.FC<SearchBarProps> = ({
   CustomSearchItemSkeleton,
+  containerClassName,
   CustomSearchItem,
   clearOnExit,
   booksFirst,
@@ -226,7 +228,8 @@ const SearchBar: React.FC<SearchBarProps> = ({
             searchHook.status !== "idle" &&
             searchHook.status !== "error" &&
             searchHook.searchValue,
-        }
+        },
+        containerClassName
       )}
     >
       <SearchBarComponent

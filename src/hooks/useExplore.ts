@@ -27,10 +27,9 @@ const useExplore = () => {
     loadingNewPage,
     lastPageReached,
   } = useAppSelector((state) => state.explore);
-  
-  const lastFetchTimestamp = useRef<number>(0);
 
   const [limit, _] = useState(10);
+  const selectedGenreRef = useRef(selectedGenre);
 
   useEffect(() => {
     if (!genres.length) {
@@ -67,51 +66,55 @@ const useExplore = () => {
     }
   };
 
-  const fetchLists = async (genre?: string, page: number = 1) => {
-    if (lastPageReached) {
-      return;
-    }
-    if (!genre) {
-      return;
-    }
-    if (page > 1) {
-      if (loadingNewPage) {
+  const fetchLists = useCallback(
+    async (genre?: string, page: number = 1) => {
+      if (!genre) {
         return;
       }
-      dispatch(setLoadingNewPage(true));
-    } else {
-      if (loading) {
-        return;
-      }
-      dispatch(setLoading(true));
-    }
-    try {
-      const now = Date.now();
-      lastFetchTimestamp.current = now;
-      const response = await getListsByGenre({
-        page,
-        limit,
-        genre,
-      });
-      if (lastFetchTimestamp.current != now) {
-        return;
-      }
-      if (response.length === 0) {
-        dispatch(setLastPageReached(true));
-        return;
-      }
-      let newList = [...response];
       if (page > 1) {
-        newList = [...lists, ...response];
+        if (loadingNewPage) {
+          return;
+        }
+        dispatch(setLoadingNewPage(true));
+      } else if (genre === selectedGenreRef.current) {
+        return;
       }
-      dispatch(setLists(newList));
-    } catch (error: any) {
-      Logger.error("Error getting lists by genre", { error });
-    } finally {
-      dispatch(setLoading(false));
-      dispatch(setLoadingNewPage(false));
-    }
-  };
+      selectedGenreRef.current = genre;
+      dispatch(setLoading(true));
+
+      if (lastPageReached) {
+        return;
+      }
+
+      try {
+        const response = await getListsByGenre({
+          page,
+          limit,
+          genre,
+        });
+        if (genre !== selectedGenreRef.current) {
+          return;
+        }
+        if (response.length === 0) {
+          dispatch(setLastPageReached(true));
+          return;
+        }
+        let newList = [...response];
+        if (page > 1) {
+          newList = [...lists, ...response];
+        }
+        dispatch(setLists(newList));
+      } catch (error: any) {
+        Logger.error("Error getting lists by genre", { error });
+      } finally {
+        if (genre === selectedGenreRef.current) {
+          dispatch(setLoading(false));
+          dispatch(setLoadingNewPage(false));
+        }
+      }
+    },
+    [selectedGenreRef, lists, loading, loadingNewPage, lastPageReached]
+  );
 
   const selectGenre = (genre: string) => {
     dispatch(setSelectedGenre(genre));

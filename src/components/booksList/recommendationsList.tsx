@@ -71,10 +71,22 @@ const ListTags = ({ list }: { list: SafeBooksListData }) => {
         </Tag>
       )}
       {/* TODO: REMOVE THE FIXED NUMBER OF 50% AND COME UP WITH A BETTER SOLUTION IN THE FUTURE */}
-      {matchRate && matchRate > 50 && (
+      {matchRate && (
         <>
-          <Tag className="flex sm:hidden">{matchRate}%</Tag>
-          <Tag className="hidden sm:flex">{matchRate}% Match</Tag>
+          <Tag
+            className={cn("flex sm:hidden", {
+              "opacity-80": matchRate <= 50,
+            })}
+          >
+            {matchRate <= 50 ? "<50" : matchRate}%
+          </Tag>
+          <Tag
+            className={cn("hidden sm:flex", {
+              "opacity-80": matchRate <= 50,
+            })}
+          >
+            {matchRate <= 50 ? "<50" : matchRate}% Match
+          </Tag>
         </>
       )}
       {list.genres && list.genres.length > 0 && (
@@ -98,7 +110,7 @@ const RecommendationsList = ({
   const { showBooksListModal } = useModal();
 
   return (
-    <div className="flex flex-col gap-3 pb-20">
+    <div className="flex flex-col gap-3 overflow-auto">
       {lists.map((list, index) => (
         <div
           className="w-full flex flex-row gap-2.5 justify-start items-start md:items-center py-1 cursor-pointer transition-all md:p-2.5 hover:bg-slate-400/40 hover:rounded-lg"

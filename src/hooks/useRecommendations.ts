@@ -51,10 +51,10 @@ const useRecommendations = () => {
   >([]);
 
   useEffect(() => {
-    const storedRecommendations = getRecommendationsFromLocalStorage();
-    if (storedRecommendations) {
-      dispatch(setRecommendations(storedRecommendations));
-    }
+    // const storedRecommendations = getRecommendationsFromLocalStorage();
+    // if (storedRecommendations) {
+    //   dispatch(setRecommendations(storedRecommendations));
+    // }
   }, []);
 
   useEffect(() => {

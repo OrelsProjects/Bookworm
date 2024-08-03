@@ -60,8 +60,6 @@ const exploreSlice = createSlice({
     },
     reset: (state) => {
       state.page = 1;
-      state.loading = false;
-      state.loadingNewPage = false;
       state.lastPageReached = false;
     },
     setLastPageReached: (state, action: PayloadAction<boolean>) => {

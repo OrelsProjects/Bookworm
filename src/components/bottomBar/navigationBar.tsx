@@ -68,7 +68,7 @@ const BottomNavigationBar = ({ className }: { className?: string }) => {
   );
 };
 
-const SideNavigationBar = ({ className }: { className?: string }) => {
+const TopNavigationBar = ({ className }: { className?: string }) => {
   const router = useRouter();
   const pathname = usePathname();
   const { clearStack } = useModal();
@@ -119,7 +119,7 @@ const SideNavigationBar = ({ className }: { className?: string }) => {
   return (
     <div
       className={cn(
-        "content-size h-16 hidden md:flex flex-row justify-between items-center z-40 sticky top-0 mx-auto bg-background",
+        "content-size h-16 hidden md:flex flex-row justify-between items-center z-40 sticky top-0 mx-auto bg-background mb-10",
         className
       )}
     >
@@ -195,7 +195,7 @@ const NavigationBar = ({ className }: { className?: string }) => {
   return (
     <>
       <BottomNavigationBar className={className} />
-      <SideNavigationBar className={className} />
+      <TopNavigationBar className={className} />
     </>
   );
 };

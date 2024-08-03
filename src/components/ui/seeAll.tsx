@@ -105,11 +105,15 @@ export const SeeAllTitle = ({
   );
 
 const SeeAllComponentLoading = () => (
-  <Skeleton className="w-16 h-4 rounded-full" />
+  <Skeleton
+  key={`loading-see-all`}
+  className="w-16 h-4 rounded-full" />
 );
 
 const SeeAllTitleLoading = () => (
-  <Skeleton className="w-1/3 h-5 rounded-full" />
+  <Skeleton 
+  key={`loading-see-all-title`}
+  className="w-48 h-5 md:h-7 rounded-full" />
 );
 
 const SeeAllWithTitleLoading = () => (
