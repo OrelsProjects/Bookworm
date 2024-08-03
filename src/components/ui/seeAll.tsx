@@ -50,7 +50,7 @@ const SeeAllText = ({
 }) => (
   <div
     className={cn(
-      "text-see-all cursor-pointer p-2.5 hover:bg-slate-400/10 rounded-full",
+      "text-see-all hover:cursor-pointer p-2.5 hover:bg-slate-400/10 rounded-full",
       className
     )}
     onClick={onClick}

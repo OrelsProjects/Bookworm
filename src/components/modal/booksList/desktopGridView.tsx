@@ -432,7 +432,7 @@ export default function DesktopBooksListGridView({
             setIsHover(false);
           }}
           style={{ transformOrigin: "bottom" }}
-          className="w-full h-full rounded-2xl cursor-pointer"
+          className="w-full h-full rounded-2xl hover:cursor-pointer"
         >
           <div className="absolute inset-0 bg-background/80 z-20 rounded-2xl border border-foreground" />
           <div className="absolute inset-0 z-10">

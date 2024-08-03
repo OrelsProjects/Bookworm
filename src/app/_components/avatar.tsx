@@ -103,7 +103,7 @@ const Avatar: React.FC<AvatarProps> = ({
   };
 
   const DefaultAvatar = () => (
-    <div className="w-full h-full text-sm rounded-full bg-background border-2 border-foreground flex justify-center items-center cursor-pointer">
+    <div className="w-full h-full text-sm rounded-full bg-background border-2 border-foreground flex justify-center items-center hover:cursor-pointer">
       {defaultText && (defaultText.substring(0, 2) || "").toUpperCase()}
     </div>
   );
@@ -111,7 +111,7 @@ const Avatar: React.FC<AvatarProps> = ({
   return (
     <div
       className={cn(
-        "h-12 w-12 md:h-[2.5rem] md:w-[3.5rem] relative rounded-full z-50 cursor-pointer transition-all flex justify-center items-center mr-2 md:mr-0",
+        "h-12 w-12 md:h-[2.5rem] md:w-[3.5rem] relative rounded-full z-50 hover:cursor-pointer transition-all flex justify-center items-center mr-2 md:mr-0",
         className
       )}
       onClick={toggleDropdown}
@@ -124,7 +124,7 @@ const Avatar: React.FC<AvatarProps> = ({
             defaultImage={<DefaultAvatar />}
             alt={"avatar"}
             className={cn(
-              "cursor-pointer rounded-full h-full w-full flex-shrink-0",
+              "hover:cursor-pointer rounded-full h-full w-full flex-shrink-0",
               imageClassName
             )}
             thumbnailSize={"sm"}

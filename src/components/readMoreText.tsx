@@ -55,7 +55,7 @@ const ReadMoreText: React.FC<ReadMoreTextProps> = ({
         </p>
         {(isOverflow || !isCollapsed) && (
           <p
-            className="leading-7.5 underline cursor-pointer"
+            className="leading-7.5 underline hover:cursor-pointer"
             onClick={toggleCollapse}
           >
             {isCollapsed ? "Read more" : "Read less"}

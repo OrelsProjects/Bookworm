@@ -102,7 +102,7 @@ const PageHeader = () => (
         onClick={(e) => {
           e.stopPropagation();
         }}
-        className="text-primary underline-offset-4 hover:underline cursor-pointer"
+        className="text-primary underline-offset-4 hover:underline hover:cursor-pointer"
       >
         Let's Do It!
       </Link>
@@ -159,7 +159,7 @@ function App() {
                   onClick={(e) => {
                     e.stopPropagation();
                   }}
-                  className="underline-offset-4 hover:underline cursor-pointer text-primary"
+                  className="underline-offset-4 hover:underline hover:cursor-pointer text-primary"
                 >
                   Check out this one
                 </Link>
@@ -176,7 +176,7 @@ function App() {
                   onClick={(e) => {
                     e.stopPropagation();
                   }}
-                  className="underline-offset-4 hover:underline cursor-pointer text-primary"
+                  className="underline-offset-4 hover:underline hover:cursor-pointer text-primary"
                 >
                   {<br />}
                   We've got you covered!

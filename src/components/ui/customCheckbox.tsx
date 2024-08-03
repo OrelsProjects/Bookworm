@@ -51,7 +51,7 @@ const CustomCheckbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
           checked={checked}
           {...props}
         />
-        <div className={cn("cursor-pointer", className)}>
+        <div className={cn("hover:cursor-pointer", className)}>
           {checked
             ? checkedComponent ?? defaultCheckedComponent
             : uncheckedComponent ?? defaultUncheckedComponent}

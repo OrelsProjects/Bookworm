@@ -86,7 +86,7 @@ const SearchResultComponent: React.FC<SearchResultProps> = ({
 
   return (
     <div
-      className={`flex flex-row justify-start items-start md:items-center gap-2 w-full md:hover:bg-slate-400/40 cursor-pointer md:rounded-lg md:p-2.5`}
+      className={`flex flex-row justify-start items-start md:items-center gap-2 w-full md:hover:bg-slate-400/40 hover:cursor-pointer md:rounded-lg md:p-2.5`}
       onClick={(e) => {
         e.stopPropagation();
         if (book) {
@@ -107,7 +107,7 @@ const SearchResultComponent: React.FC<SearchResultProps> = ({
         {book && (
           <div className="w-full h-full flex justify-start items-end gap-6 mt-6">
             <div
-              className="flex flex-col gap-0 text-sm justify-center items-center flex-shrink-0 cursor-pointer"
+              className="flex flex-col gap-0 text-sm justify-center items-center flex-shrink-0 hover:cursor-pointer"
               onClick={(e) => {
                 e.stopPropagation();
                 updateBookStatusToRead(book, bookData);

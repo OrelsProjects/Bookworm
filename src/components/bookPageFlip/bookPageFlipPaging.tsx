@@ -21,7 +21,7 @@ const Arrow = ({
 }) => (
   <div
     className={cn(
-      "cursor-pointer flex justify-center items-center border border-black h-[50px] w-[50px] rounded-full",
+      "hover:cursor-pointer flex justify-center items-center border border-black h-[50px] w-[50px] rounded-full",
       {
         "transform rotate-180": direction === "right",
       },
@@ -32,7 +32,7 @@ const Arrow = ({
       onClick();
     }}
   >
-    <FaArrowLeft className="w-[17px] h-[15px] text-black cursor-pointer" />
+    <FaArrowLeft className="w-[17px] h-[15px] text-black hover:cursor-pointer" />
   </div>
 );
 
@@ -50,7 +50,7 @@ const Progress = ({
       <div
         key={`book-page-flip-paging-page-${page}`}
         className={cn(
-          "bg-transparent cursor-pointer w-[18px] h-[18px] border border-black rounded-full",
+          "bg-transparent hover:cursor-pointer w-[18px] h-[18px] border border-black rounded-full",
           {
             "bg-black": page === currentPage,
           }

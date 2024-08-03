@@ -32,7 +32,7 @@ const BottomNavigationBar = ({ className }: { className?: string }) => {
               data-ripple-light={false}
               data-ripple-dark={false}
               key={item.name}
-              className="flex items-center justify-center rounded-full w-fit h-fit cursor-pointer bg-transparent p-0"
+              className="flex items-center justify-center rounded-full w-fit h-fit hover:cursor-pointer bg-transparent p-0"
               onClick={() => {
                 if (window.location.origin.includes(item.path)) {
                   router.refresh();
@@ -135,10 +135,12 @@ const TopNavigationBar = ({ className }: { className?: string }) => {
           alt="logo"
           width={30}
           height={30}
-          className="cursor-pointer"
+          className="hover:cursor-pointer"
         />
         <div className="flex justify-start items-start">
-          <span className="text-3xl font-thin cursor-pointer pt-2">BookWiz</span>
+          <span className="text-3xl font-thin hover:cursor-pointer pt-2">
+            BookWiz
+          </span>
         </div>
       </div>
       <div className="w-fit h-full flex flex-row gap-12">
@@ -146,7 +148,7 @@ const TopNavigationBar = ({ className }: { className?: string }) => {
           return (
             <div
               className={cn(
-                "w-fit h-full flex flex-row justify-center items-center relative cursor-pointer before:h-1.5 before:w-full before:absolute before:bottom-0  before:rounded-full before:transition-all",
+                "w-fit h-full flex flex-row justify-center items-center relative hover:cursor-pointer before:h-1.5 before:w-full before:absolute before:bottom-0  before:rounded-full before:transition-all",
                 {
                   "before:bg-primary": selected?.path === item.path,
                   "before:hover:bg-muted": selected?.path !== item.path,
@@ -158,7 +160,7 @@ const TopNavigationBar = ({ className }: { className?: string }) => {
                 data-ripple-light={false}
                 data-ripple-dark={false}
                 key={item.name}
-                className="flex items-center justify-start rounded-full w-fit h-fit cursor-pointer bg-transparent p-0 gap-1"
+                className="flex items-center justify-start rounded-full w-fit h-fit hover:cursor-pointer bg-transparent p-0 gap-1"
                 onClick={() => {
                   clearStack();
                   {

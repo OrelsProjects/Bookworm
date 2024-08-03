@@ -113,7 +113,7 @@ const RecommendationsList = ({
     <div className="flex flex-col gap-3 overflow-auto">
       {lists.map((list, index) => (
         <div
-          className="w-full flex flex-row gap-2.5 justify-start items-start md:items-center py-1 cursor-pointer transition-all md:p-2.5 hover:bg-slate-400/40 hover:rounded-lg"
+          className="w-full flex flex-row gap-2.5 justify-start items-start md:items-center py-1 hover:cursor-pointer transition-all md:p-2.5 hover:bg-slate-400/40 hover:rounded-lg"
           onClick={() => showBooksListModal({ booksList: list })}
           key={`recommendation-list-${list.name}`}
         >

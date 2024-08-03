@@ -67,7 +67,7 @@ const Cover = ({
     <div
       onClick={onClick}
       className={cn(
-        "w-full rounded-lg flex flex-col justify-center items-center relative bg-primary shadow-xl overflow-clip cursor-pointer",
+        "w-full rounded-lg flex flex-col justify-center items-center relative bg-primary shadow-xl overflow-clip hover:cursor-pointer",
         coverSizeClass,
         { isFlipped: "bg-primary-brighter" },
         className

@@ -75,7 +75,7 @@ const BooksListList: React.FC<Props> = ({
       {booksListsData?.length ?? 0 > 0 ? (
         booksListsData?.map((listData) => (
           <div
-            className="h-full w-full flex flex-col gap-2 cursor-pointer md:hover:bg-slate-400/40 md:hover:rounded-xl transition-all"
+            className="h-full w-full flex flex-col gap-2 hover:cursor-pointer md:hover:bg-slate-400/40 md:hover:rounded-xl transition-all"
             key={`books-list-${listData.listId}`}
           >
             <div

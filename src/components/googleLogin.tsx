@@ -29,7 +29,7 @@ export default function GoogleLogin({
         handleGoogleLogin();
       }}
       variant="outline"
-      className={`rounded-full w-max-full h-[50px] w-[50px] cursor-pointer border-2 p-0 ${className}`}
+      className={`rounded-full w-max-full h-[50px] w-[50px] hover:cursor-pointer border-2 p-0 ${className}`}
       clickable={true}
     >
       <img
