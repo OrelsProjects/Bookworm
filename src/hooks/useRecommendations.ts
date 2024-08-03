@@ -21,18 +21,19 @@ const RECOMMENDATIONS_DATA_KEY = "userRecommendationsData";
 export type RecommendationSort = "Match" | "Rating" | "Views";
 
 const getRecommendationsFromLocalStorage = (): SafeBooksListData[] => {
-  return JSON.parse(
-    localStorage.getItem(RECOMMENDATIONS_DATA_KEY) ?? "[]"
-  ) as SafeBooksListData[];
+  // return JSON.parse(
+  //   localStorage.getItem(RECOMMENDATIONS_DATA_KEY) ?? "[]"
+  // ) as SafeBooksListData[];
+  return [];
 };
 
 const setRecommendationsInLocalStorage = (
   recommendations: SafeBooksListData[]
 ) => {
-  localStorage.setItem(
-    RECOMMENDATIONS_DATA_KEY,
-    JSON.stringify(recommendations)
-  );
+  // localStorage.setItem(
+  //   RECOMMENDATIONS_DATA_KEY,
+  //   JSON.stringify(recommendations)
+  // );
 };
 
 const useRecommendations = () => {

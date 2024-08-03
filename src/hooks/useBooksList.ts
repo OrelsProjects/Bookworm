@@ -30,66 +30,67 @@ import { useAppDispatch, useAppSelector } from "../lib/hooks";
 const BOOK_LIST_DATA_KEY = "booksListData";
 
 const getBooksListFromLocalStorage = (): BooksListData[] => {
-  return JSON.parse(
-    localStorage.getItem(BOOK_LIST_DATA_KEY) ?? "[]"
-  ) as BooksListData[];
+  // return JSON.parse(
+  //   localStorage.getItem(BOOK_LIST_DATA_KEY) ?? "[]"
+  // ) as BooksListData[];
+  return [];
 };
 
 const setListInLocalStorage = (booksList: BooksListData[]) => {
   localStorage.removeItem(BOOK_LIST_DATA_KEY);
-  localStorage.setItem(BOOK_LIST_DATA_KEY, JSON.stringify(booksList));
+  // localStorage.setItem(BOOK_LIST_DATA_KEY, JSON.stringify(booksList));
 };
 
 const addBookToListInLocalStorage = (bookInList: BookInListWithBook) => {
-  const booksListData: BooksListData[] = getBooksListFromLocalStorage();
-  booksListData?.forEach((list) => {
-    if (list.listId === bookInList.listId) {
-      list.booksInList?.push(bookInList);
-    }
-  });
-  setListInLocalStorage(booksListData);
+  // const booksListData: BooksListData[] = getBooksListFromLocalStorage();
+  // booksListData?.forEach((list) => {
+  //   if (list.listId === bookInList.listId) {
+  //     list.booksInList?.push(bookInList);
+  //   }
+  // });
+  // setListInLocalStorage(booksListData);
 };
 
 const updateBookInListInLocalStorage = (bookInList: BookInList) => {
-  const booksListData: BooksListData[] = getBooksListFromLocalStorage();
-  booksListData?.forEach((list) => {
-    if (list.listId === bookInList.listId && list.booksInList) {
-      list.booksInList = list.booksInList?.map((bookInListWithBook) =>
-        bookInListWithBook.bookId === bookInList.bookId
-          ? { ...bookInListWithBook, ...bookInList }
-          : bookInListWithBook
-      );
-    }
-  });
-  setListInLocalStorage(booksListData);
+  // const booksListData: BooksListData[] = getBooksListFromLocalStorage();
+  // booksListData?.forEach((list) => {
+  //   if (list.listId === bookInList.listId && list.booksInList) {
+  //     list.booksInList = list.booksInList?.map((bookInListWithBook) =>
+  //       bookInListWithBook.bookId === bookInList.bookId
+  //         ? { ...bookInListWithBook, ...bookInList }
+  //         : bookInListWithBook
+  //     );
+  //   }
+  // });
+  // setListInLocalStorage(booksListData);
 };
 
 const deleteBookFromListInLocalStorage = (listId: string, bookId: number) => {
-  const booksListData: BooksListData[] = getBooksListFromLocalStorage();
-  booksListData?.forEach((list) => {
-    if (list.listId === listId) {
-      list.booksInList = list.booksInList?.filter(
-        (bookInList) => bookInList.bookId !== bookId
-      );
-    }
-  });
-  setListInLocalStorage(booksListData);
+  // const booksListData: BooksListData[] = getBooksListFromLocalStorage();
+  // booksListData?.forEach((list) => {
+  //   if (list.listId === listId) {
+  //     list.booksInList = list.booksInList?.filter(
+  //       (bookInList) => bookInList.bookId !== bookId
+  //     );
+  //   }
+  // });
+  // setListInLocalStorage(booksListData);
 };
 
 const deleteListInLocalStorage = (listId: string) => {
-  const booksListData: BooksListData[] = getBooksListFromLocalStorage();
-  const updatedBooksListData = booksListData.filter(
-    (list) => list.listId !== listId
-  );
-  setListInLocalStorage(updatedBooksListData);
+  // const booksListData: BooksListData[] = getBooksListFromLocalStorage();
+  // const updatedBooksListData = booksListData.filter(
+  //   (list) => list.listId !== listId
+  // );
+  // setListInLocalStorage(updatedBooksListData);
 };
 
 const updateListInLocalStorage = (booksListData: BooksListData) => {
-  const booksListDataFromLocalStorage = getBooksListFromLocalStorage();
-  const updatedBooksListData = booksListDataFromLocalStorage.map((list) =>
-    list.listId === booksListData.listId ? booksListData : list
-  );
-  setListInLocalStorage(updatedBooksListData);
+  // const booksListDataFromLocalStorage = getBooksListFromLocalStorage();
+  // const updatedBooksListData = booksListDataFromLocalStorage.map((list) =>
+  //   list.listId === booksListData.listId ? booksListData : list
+  // );
+  // setListInLocalStorage(updatedBooksListData);
 };
 
 const useBooksList = () => {
