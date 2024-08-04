@@ -157,7 +157,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
           }}
           showSeeAll={(lists?.length || 0) > (itemsToShowListsCount || 0)}
           loading={isLoading}
-          className="text-3xl"
+          className="text-3xl md:pl-2"
         />
       )}
       <div className="flex flex-col gap-4">
@@ -167,7 +167,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
             ))
           : lists
               ?.slice(0, itemsToShowListsCount)
-              .map((list, i) => (
+              .map((list) => (
                 <SearchResultComponent
                   key={`search-result-list-${list.name}`}
                   booksList={list}
@@ -178,11 +178,12 @@ const SearchBar: React.FC<SearchBarProps> = ({
   );
 
   const BooksComponent = () => (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-2">
       {booksOnly ? (
-        <SeeAllTitle title="Books" loading={isLoading} />
+        <SeeAllTitle title="Books" loading={isLoading} className="md:pl-2" />
       ) : (
         <SeeAll
+          className="md:pl-2"
           title={"Books"}
           onClick={() => {
             setSeeAllBooks(!seeAllBooks);

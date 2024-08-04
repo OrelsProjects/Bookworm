@@ -16,22 +16,22 @@ import { useAppSelector } from "../../../lib/hooks";
 import { Skeleton } from "../../../components/ui/skeleton";
 
 const ListSkeleton = () => (
-  <div className="flex flex-col gap-1.5 md:gap-2">
+  <div className="flex flex-col gap-4 md:gap-4">
     <SeeAllLoading title />
-    <div className="flex flex-row gap-[10px] md:gap-5 overflow-x-auto transition-all md:pb-3 md:mt-10">
+    <div className="flex flex-row gap-4 md:gap-5 overflow-x-auto transition-all md:pb-3 md:mt-10">
       {Array.from({ length: 5 }).map((_, index) => (
-        <div className="w-full flex flex-col gap-3 justify-start items-center">
+        <div className="w-full flex flex-col gap-2 justify-start items-start">
           <BooksListThumbnail
             loading
-            thumbnailSize="2xl"
+            thumbnailSize="xl"
             className="relative"
           />
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-1.5">
             <div className="flex flex-col gap-1">
-              <Skeleton className="w-48 h-3 rounded-xl" />
+              <Skeleton className="w-24 h-2 md:w-48 md:h-3  rounded-xl" />
             </div>
             <div className="flex flex-col gap-1">
-              <Skeleton className="w-40 h-3 rounded-xl" />
+              <Skeleton className="w-20 h-2 md:w-40 md:h-3 rounded-xl" />
             </div>
           </div>
         </div>
@@ -75,7 +75,11 @@ export default function Home(): React.ReactNode {
     readStatus: ReadStatus;
   }) => (
     <div className="flex flex-col gap-1.5 md:gap-2">
-      <SeeAll title={title} onClick={() => onSeeAllClick(readStatus)} />
+      <SeeAll
+        title={title}
+        onClick={() => onSeeAllClick(readStatus)}
+        className="md:pl-2"
+      />
       <BookList
         readStatus={readStatus}
         direction="row"
@@ -95,6 +99,12 @@ export default function Home(): React.ReactNode {
           <SeeAll
             title="Recommended for you"
             onClick={() => router.push("/see-all/recommended")}
+            className="hidden md:flex md:pl-2"
+          />
+          <SeeAll
+            title="Recommended"
+            onClick={() => router.push("/see-all/recommended")}
+            className="md:hidden"
           />
           <div className="flex flex-row gap-[10px] md:gap-5 overflow-x-auto transition-all md:pb-3">
             {allRecommendations?.length > 0 &&
@@ -171,7 +181,7 @@ export default function Home(): React.ReactNode {
 
   return (
     <div
-      className={`h-full w-full flex flex-col relative justify-top items-start gap-4 md:pb-28 md:overflow-auto`}
+      className={`h-full w-full flex flex-col relative justify-top items-start gap-6 md:pb-28 md:overflow-auto`}
     >
       <SearchBar
         onEmpty={() => setSearchFocused(false)}
@@ -181,7 +191,7 @@ export default function Home(): React.ReactNode {
           }
         }}
         booksFirst
-        containerClassName="md:w-full md:!pr-0"
+        containerClassName="md:w-full md:!pr-0 md:h-[50px]"
       />
       {searchFocused ? <></> : <Content />}
     </div>

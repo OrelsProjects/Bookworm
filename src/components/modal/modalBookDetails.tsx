@@ -114,7 +114,7 @@ const ModalBookDetails: React.FC<ModalBookDetailsProps> = ({
         getThumbnailSize("xl").height
       }`}
     >
-      <Buttons book={book} iconSize="sm" showAddToListButton={!!user} />
+      <Buttons book={book} iconSize="md" showAddToListButton={!!user} />
     </div>
   );
 

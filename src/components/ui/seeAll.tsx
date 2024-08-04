@@ -30,6 +30,7 @@ export const SeeAll = ({
       title={title}
       onSeeAllClick={onClick}
       showSeeAll={showSeeAll}
+      className={className}
     />
   ) : (
     <SeeAllText
@@ -105,15 +106,14 @@ export const SeeAllTitle = ({
   );
 
 const SeeAllComponentLoading = () => (
-  <Skeleton
-  key={`loading-see-all`}
-  className="w-16 h-4 rounded-full" />
+  <Skeleton key={`loading-see-all`} className="w-12 h-4 md:w-16 rounded-full" />
 );
 
 const SeeAllTitleLoading = () => (
-  <Skeleton 
-  key={`loading-see-all-title`}
-  className="w-48 h-5 md:h-7 rounded-full" />
+  <Skeleton
+    key={`loading-see-all-title`}
+    className="w-24 h-5 md:w-48 md:h-7 rounded-full"
+  />
 );
 
 const SeeAllWithTitleLoading = () => (

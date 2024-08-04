@@ -6,7 +6,6 @@ import Dropdown from "@/src/components/ui/dropdown";
 import useAuth from "@/src/hooks/useAuth";
 import { toast } from "react-toastify";
 import { selectUserBooks } from "@/src/lib/features/userBooks/userBooksSlice";
-import Papa from "papaparse";
 import { EventTracker } from "@/src/eventTracker";
 import { Feedback } from "../../components/icons/feedback";
 import { Privacy } from "../../components/icons/privacy";
@@ -86,24 +85,13 @@ const Avatar: React.FC<AvatarProps> = ({
     window.open("https://forms.gle/q3XqsasS6pwC5Ezb6", "_blank");
   };
 
-  const handleExportData = async () => {
-    const csv = Papa.unparse(userBooksData);
-    const blob = new Blob([csv], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "my-books.csv";
-    a.click();
-    toggleDropdown();
-  };
-
   const handleNavigateToPolicy = () => {
     router.push("/privacy-policy");
     toggleDropdown();
   };
 
   const DefaultAvatar = () => (
-    <div className="w-full h-full text-sm rounded-full bg-background border-2 border-foreground flex justify-center items-center hover:cursor-pointer">
+    <div className="w-full h-full text-sm rounded-full bg-background border-2 border-foreground flex justify-center items-center cursor-pointer">
       {defaultText && (defaultText.substring(0, 2) || "").toUpperCase()}
     </div>
   );
@@ -111,7 +99,7 @@ const Avatar: React.FC<AvatarProps> = ({
   return (
     <div
       className={cn(
-        "h-12 w-12 md:h-[2.5rem] md:w-[3.5rem] relative rounded-full z-50 hover:cursor-pointer transition-all flex justify-center items-center mr-2 md:mr-0",
+        "h-12 w-12 md:h-[2.5rem] md:w-[3.5rem] relative rounded-full z-50 cursor-pointer transition-all flex justify-center items-center mr-2 md:mr-0",
         className
       )}
       onClick={toggleDropdown}
@@ -124,7 +112,7 @@ const Avatar: React.FC<AvatarProps> = ({
             defaultImage={<DefaultAvatar />}
             alt={"avatar"}
             className={cn(
-              "hover:cursor-pointer rounded-full h-full w-full flex-shrink-0",
+              "cursor-pointer rounded-full h-full w-full flex-shrink-0",
               imageClassName
             )}
             thumbnailSize={"sm"}

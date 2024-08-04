@@ -8,7 +8,6 @@ import { IoCheckmarkCircleOutline as Checkmark } from "react-icons/io5";
 import { IoCheckmarkCircle as CheckmarkFill } from "react-icons/io5";
 
 import BookThumbnail from "../book/bookThumbnail";
-import ModalTitle from "../book/bookTitle";
 import ModalAuthors from "../book/authors";
 import BookButtons from "../book/bookButtons";
 import { useModal } from "../../hooks/useModal";
@@ -58,12 +57,12 @@ const SearchResultComponent: React.FC<SearchResultProps> = ({
       <BookThumbnail
         src={book.thumbnailUrl}
         className="rounded-xl !relative"
-        thumbnailSize="sm"
+        thumbnailSize="md"
       />
     ) : (
       <BooksListThumbnail
         booksInList={booksList?.booksInList || []}
-        thumbnailSize="sm"
+        thumbnailSize="md"
       />
     );
 
@@ -97,7 +96,8 @@ const SearchResultComponent: React.FC<SearchResultProps> = ({
       }}
     >
       <div className="flex-shrink-0">
-        <Thumbnail />
+        <Thumbnail 
+        />
       </div>
       <div className="h-full flex flex-col justify-between items-start">
         <div className="flex flex-col gap-1">
@@ -114,7 +114,7 @@ const SearchResultComponent: React.FC<SearchResultProps> = ({
               }}
             >
               <CheckmarkIcon
-                className={`text-2xl w-5 h-5 ${
+                className={`w-6 h-6 ${
                   isBookRead ? "!text-primary" : ""
                 }`}
               />
@@ -128,7 +128,7 @@ const SearchResultComponent: React.FC<SearchResultProps> = ({
               }}
             >
               <BookmarkIcon
-                className={`text-2xl w-5 h-5 ml-1 ${
+                className={`w-6 h-6 ml-1 ${
                   isBookToRead ? "!text-primary" : ""
                 }`}
               />
@@ -142,7 +142,7 @@ const SearchResultComponent: React.FC<SearchResultProps> = ({
                   handleAddBookToList(book);
                 }}
               >
-                <Plus className="text-2xl w-5 h-5" />
+                <Plus className="w-6 h-6" />
                 <div className="leading-4">Readlist</div>
               </div>
             )}

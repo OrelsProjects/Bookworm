@@ -16,6 +16,7 @@ import { IconSize, getIconSize } from "../../consts/icon";
 import { useModal } from "../../hooks/useModal";
 import { ErrorUnauthenticated } from "../../models/errors/unauthenticatedError";
 import { IconType } from "react-icons";
+import { cn } from "../../lib/utils";
 
 type BookButtonsProps = {
   book: Book;
@@ -184,21 +185,21 @@ export const BookButtons = () => {
             }
           >
             <div
-              className={`rounded-full ${
-                getIconSize({ size: iconSize }).className
-              } ${isBookRead ? "bg-primary" : "border-1 md:border-foreground"}
-              flex justify-center items-center"
-              `}
+              className={cn(
+                "rounded-full flex justify-center items-center border-1 border-foreground",
+                getIconSize({ size: iconSize }).className,
+                { "bg-primary border-primary": isBookRead }
+              )}
             >
               <FaCheck
-                className={`!text-primary  hover:cursor-pointer ${
+                className={`!text-primary hover:cursor-pointer ${
                   isBookRead ? "fill-background" : "fill-foreground"
                 } h-full w-full
                 p-[5px] sm:p-2
                 `}
               />
             </div>
-            <div className={`text-foreground text-lg`}>Read</div>
+            <div className={`text-foreground text-lg`}>Read?</div>
           </div>
         )}
 
@@ -219,15 +220,31 @@ export const BookButtons = () => {
           />
         )}
         {showAddToListButton && (
-          <ButtonImage
-            title={"Add to list"}
-            Icon={Plus}
-            iconSize={iconSize}
-            className={"w-1/3 md:w-fit"}
-            selected={false}
-            buttonsColor={buttonsColor}
-            onClick={() => handleAddBookToList(book)}
-          />
+          <div
+            className={`flex flex-col justify-center items-center gap-2 hover:cursor-pointer w-1/3 md:w-fit`}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleAddBookToList(book);
+            }}
+          >
+            <Plus
+              className={`!text-foreground ${
+                getIconSize({ size: "lg" }).className
+              } md:${getIconSize({ size: "md" }).className}`}
+            />
+            <div className={`text-foreground text-lg sm:text-lg`}>
+              Add to list
+            </div>
+          </div>
+          // <ButtonImage
+          //   title={"Add to list"}
+          //   Icon={Plus}
+          //   iconSize={iconSize}
+          //   className={"w-1/3 md:w-fit"}
+          //   selected={false}
+          //   buttonsColor={buttonsColor}
+          //   onClick={() => handleAddBookToList(book)}
+          // />
         )}
       </div>
     );
