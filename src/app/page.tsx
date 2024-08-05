@@ -103,7 +103,7 @@ const PageHeader = () => (
         onClick={(e) => {
           e.stopPropagation();
         }}
-        className="text-primary underline-offset-4 hover:underline hover:cursor-pointer"
+        className="text-blue-600 underline-offset-4 hover:underline hover:cursor-pointer"
       >
         Let's Do It!
       </Link>
