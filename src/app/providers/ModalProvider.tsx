@@ -293,12 +293,42 @@ const ModalProvider: React.FC<{ className?: string }> = ({ className }) => {
   };
 
   const RenderBookDetails = useCallback(
-    (data?: ModalBookDetailsProps, className?: string) =>
-      data && (
-        <RenderModal type={ModalTypes.BOOK_DETAILS} className={className}>
-          <ModalBookDetails {...data} />
-        </RenderModal>
-      ),
+    (data?: ModalBookDetailsProps, className?: string) => {
+      const isBookInListDetails = !!data?.bookInList;
+      let currentUrl = window.location.pathname;
+      if (!isBookInListDetails) {
+        const urlFromCache = localStorage.getItem("nav-after-book-details");
+        currentUrl = urlFromCache || window.location.pathname;
+        localStorage.setItem("nav-after-book-details", currentUrl);
+
+        const bookUrlData =
+          data?.bookData?.isbn || data?.bookData?.isbn10 || "";
+        const bookUrl = `/book/${bookUrlData}`;
+        if (!currentUrl.includes(bookUrl)) {
+          window.history.pushState({}, "", bookUrl);
+        }
+      }
+      return (
+        data && (
+          <RenderModal
+            type={ModalTypes.BOOK_DETAILS}
+            className={className}
+            onClose={() => {
+              if (!isBookInListDetails) {
+                if (currentUrl.includes("/book/")) {
+                  router.push("/explore");
+                } else {
+                  router.push(currentUrl);
+                }
+                localStorage.removeItem("nav-after-book-details");
+              }
+            }}
+          >
+            <ModalBookDetails {...data} />
+          </RenderModal>
+        )
+      );
+    },
     [shouldRenderBookDetailsModal]
   );
 

@@ -6,21 +6,31 @@ import { ModalTypes } from "../../../../lib/features/modal/modalSlice";
 import ModalBookDetails from "../../../../components/modal/modalBookDetails";
 import useBook from "../../../../hooks/useBook";
 import { Book } from "../../../../models";
+import { useModal } from "../../../../hooks/useModal";
+import { useRouter } from "next/navigation";
 
 export default function BookPage({ params }: { params: { isbn: string } }) {
+  const router = useRouter();
   const [bookData, setBookData] = useState<Book | undefined>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const { getBook } = useBook();
+  const { showBookDetailsModal } = useModal();
+
+  useEffect(() => {
+    if (bookData) {
+      showBookDetailsModal({ bookData });
+    }
+  }, [bookData]);
 
   const findBook = async () => {
     if (loading) return;
     setLoading(true);
     try {
       const book = await getBook(params.isbn);
-      debugger;
       setBookData(book);
     } catch (error: any) {
+      router.push("/explore");
       setError(error.message);
     } finally {
       setLoading(false);
@@ -39,9 +49,9 @@ export default function BookPage({ params }: { params: { isbn: string } }) {
     return <div>Error loading book {error}</div>;
   }
 
-  return (
-    <Modal isOpen type={ModalTypes.BOOK_DETAILS} topBarCollapsed={undefined}>
-      <ModalBookDetails bookData={bookData} />
-    </Modal>
-  );
+  // return (
+  //   <Modal isOpen type={ModalTypes.BOOK_DETAILS} topBarCollapsed={undefined}>
+  //     <ModalBookDetails bookData={bookData} />
+  //   </Modal>
+  // );
 }

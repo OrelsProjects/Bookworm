@@ -23,7 +23,7 @@ const ListSkeleton = () => (
         <div className="w-full flex flex-col gap-2 justify-start items-start">
           <BooksListThumbnail
             loading
-            thumbnailSize="xl"
+            thumbnailSize="2xl"
             className="relative"
           />
           <div className="flex flex-col gap-1.5">
