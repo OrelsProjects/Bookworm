@@ -1,4 +1,5 @@
 import React from "react";
+import { cn } from "../../../lib/utils";
 
 interface LoadingProps {
   text?: string;
@@ -59,7 +60,7 @@ const Loading: React.FC<LoadingProps> = ({
     } ${className ?? ""}`}
     role="status"
   >
-    <LoadingSvg className={spinnerClassName} />
+    <LoadingSvg className={cn("fill-primary", spinnerClassName)} />
     <div className="text-foreground line-clamp-2 w-full text-center gap-0">
       {text ? separateBackslashN(text) : null}
     </div>

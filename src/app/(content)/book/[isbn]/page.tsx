@@ -8,6 +8,7 @@ import useBook from "../../../../hooks/useBook";
 import { Book } from "../../../../models";
 import { useModal } from "../../../../hooks/useModal";
 import { useRouter } from "next/navigation";
+import Loading from "../../../../components/ui/loading";
 
 export default function BookPage({ params }: { params: { isbn: string } }) {
   const router = useRouter();
@@ -42,12 +43,14 @@ export default function BookPage({ params }: { params: { isbn: string } }) {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="w-full h-full flex justify-center items-center md:pb-48">
+      <Loading spinnerClassName="w-20 h-20" text="We're looking for your book :)" />
+    </div>;
   }
 
-  if (error || !bookData) {
-    return <div>Error loading book {error}</div>;
-  }
+  // if (error || !bookData) {
+  //   return <div>Error loading book {error}</div>;
+  // }
 
   // return (
   //   <Modal isOpen type={ModalTypes.BOOK_DETAILS} topBarCollapsed={undefined}>
