@@ -8,7 +8,7 @@ import APIProvider from "../providers/APIProvider";
 import BrowserDetector from "../providers/BrowserDetector";
 import ContentProvider from "../providers/ContentProvider";
 import DataProvider from "../providers/DataProvider";
-
+import WelcomeProvider from "../providers/WelcomeProvider";
 
 export default function RootLayout({
   children,
@@ -27,9 +27,10 @@ export default function RootLayout({
             className="!mb-16 z-50"
             transition={Slide}
           />
+          <WelcomeProvider />
           <ContentProvider>
             <BrowserDetector>
-              <div className="w-full h-full font-roboto overflow-auto md:overflow-viible">
+              <div className="w-full h-full font-roboto md:overflow-visible">
                 <Header className="h-fit w-fit" />
                 {/* <AnimationProvider> */}
                 {children}

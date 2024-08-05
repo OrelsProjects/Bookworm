@@ -41,7 +41,7 @@ const ExplorePage: React.FC<ExplorePageProps> = () => {
   );
 
   return (
-    <div className="w-full h-full flex flex-col relative gap-8 md:pb-28">
+    <div className="w-full h-full flex flex-col relative gap-8">
       <SearchBar containerClassName="md:w-full md:!pr-0" />
       {loadingGenres ? (
         <div className="w-full flex flex-col justify-start gap-2">

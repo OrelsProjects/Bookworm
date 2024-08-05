@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "./ui/button";
 import useAuth from "../hooks/useAuth";
 import { EventTracker } from "../eventTracker";
+import { cn } from "../../lib/utils";
 
 interface GoogleLoginProps {
   onClickBefore?: () => void;
@@ -29,7 +30,10 @@ export default function GoogleLogin({
         handleGoogleLogin();
       }}
       variant="outline"
-      className={`rounded-full w-max-full h-[50px] w-[50px] hover:cursor-pointer border-2 p-0 ${className}`}
+      className={cn(
+        `rounded-full w-max-full h-[50px] w-[50px] hover:cursor-pointer border-2 p-0 ${className}`,
+        { "w-[fit] flex flex-row gap-2 p-0 px-2 ": text }
+      )}
       clickable={true}
     >
       <img
