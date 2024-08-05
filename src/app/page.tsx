@@ -6,6 +6,7 @@ import BookPageFlip, {
 } from "../components/bookPageFlip/BookPageFlip";
 import Link from "next/link";
 import Image from "next/image";
+import { Button } from "../components/ui/button";
 
 const CratorNameAndTitle = ({
   name,
@@ -117,7 +118,7 @@ const PageContent = ({
   title: string;
   sections: React.ReactNode[];
 }) => (
-  <div className="w-full h-[90%] flex flex-col flex-start justify-start items-start gap-[17px] text-black rounded-lg">
+  <div className="w-full h-full flex flex-col flex-start justify-start items-start gap-[17px] text-black rounded-lg">
     <div className="w-full flex flex-col justify-center items-center gap-2 pt-4">
       <PageHeader />
     </div>
@@ -211,6 +212,16 @@ function App() {
             "Here, you'll end up with the exact book you'll enjoy.",
             <Orel />,
             <Anton />,
+            <Button asChild className="bg-blue-600 text-xl mt-4">
+              <Link
+                href="/explore"
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
+                I want to explore!
+              </Link>
+            </Button>,
           ]}
         />
       ),
