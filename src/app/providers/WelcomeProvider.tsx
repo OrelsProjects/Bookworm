@@ -29,7 +29,7 @@ export default function WelcomeProvider() {
     }, TIME_TO_WAIT_TO_SHOW_WELCOME);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [state, showWelcome]);
 
   return (
     <AnimatePresence>
