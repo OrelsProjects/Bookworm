@@ -18,7 +18,7 @@ export default function WelcomeProvider() {
 
   useEffect(() => {
     const shouldShowWelcome =
-      state === AuthStateType.SIGNED_IN ||
+      state !== AuthStateType.SIGNED_IN ||
       localStorage.getItem("shouldShowWelcome") !== "false";
     if (!shouldShowWelcome) {
       return;
