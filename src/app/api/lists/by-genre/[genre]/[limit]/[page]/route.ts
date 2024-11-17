@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { BooksListData, SafeBooksListData } from "@/src/models/booksList";
-import { IResponse } from "@/src/models/dto/response";
-import { GetAxiosInstance, getUserIdFromRequest } from "@/src/utils/apiUtils";
-import Logger from "@/src/utils/loggerServer";
+import { BooksListData, SafeBooksListData } from "@/models/booksList";
+import { IResponse } from "@/models/dto/response";
+import { GetAxiosInstance, getUserIdFromRequest } from "@/utils/apiUtils";
+import Logger from "@/utils/loggerServer";
 
 type GetListsByGenreParams = {
   page: number;

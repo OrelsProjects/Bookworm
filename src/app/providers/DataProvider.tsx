@@ -7,11 +7,11 @@ import {
   setAllDataFetched,
 } from "../../lib/features/auth/authSlice";
 import useBook from "../../hooks/useBook";
-import { Logger } from "@/src/logger";
+import { Logger } from "@/logger";
 import useBooksList from "../../hooks/useBooksList";
 import useRecommendations from "../../hooks/useRecommendations";
 import axios from "axios";
-import { useAppDispatch, useAppSelector } from "../../lib/hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 
 interface DataProviderProps {
   children?: React.ReactNode;

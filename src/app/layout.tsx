@@ -6,6 +6,7 @@ import AuthProvider from "./providers/AuthProvider";
 import NavigationProvider from "./providers/NavigationProvider";
 import ThemeProvider from "./providers/ThemeProvider";
 import { Metadata, Viewport } from "next";
+import SessionWrapper from "./providers/SessionWrapper";
 
 const OG_IMAGE_URL = "/favicon.png";
 const APP_NAME = "BookWiz";
@@ -75,17 +76,19 @@ export default function RootLayout({
         <meta property="og:image:width" content="<generated>" />
         <meta property="og:image:height" content="<generated>" />
       </head>
-      <body className="w-[100vw] h-[100vh] pb-[calc(max(env(safe-area-inset-bottom),16px)-16px)]">
+      <body>
         <StoreProvider>
-          <AuthProvider>
-            <NavigationProvider>
-              <ThemeProvider>
-                {/* <AnimationProvider> */}
-                {children}
-                {/* </AnimationProvider> */}
-              </ThemeProvider>
-            </NavigationProvider>
-          </AuthProvider>
+          <SessionWrapper>
+            <AuthProvider>
+              <NavigationProvider>
+                <ThemeProvider>
+                  {/* <AnimationProvider> */}
+                  {children}
+                  {/* </AnimationProvider> */}
+                </ThemeProvider>
+              </NavigationProvider>
+            </AuthProvider>
+          </SessionWrapper>
         </StoreProvider>
       </body>
     </html>

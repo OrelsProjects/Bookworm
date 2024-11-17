@@ -2,9 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { SafeBooksListData } from "@/src/models/booksList";
-import useBooksList from "@/src/hooks/useBooksList";
-import { useModal } from "@/src/hooks/useModal";
+import { SafeBooksListData } from "@/models/booksList";
+import useBooksList from "@/hooks/useBooksList";
+import { useModal } from "@/hooks/useModal";
 
 interface BooksListsPageProps {
   params: { listUrl: string };

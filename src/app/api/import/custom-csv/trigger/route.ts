@@ -1,4 +1,4 @@
-import { IResponse } from "@/src/models/dto/response";
+import { IResponse } from "@/models/dto/response";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(

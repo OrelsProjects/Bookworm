@@ -16,7 +16,7 @@ import { SearchResults } from "../../models/search";
 import { Book } from "../../models";
 import { SafeBooksListData } from "../../models/booksList";
 import { SeeAll, SeeAllTitle } from "../ui/seeAll";
-import { useAppSelector } from "../../lib/hooks";
+import { useAppSelector } from "../../hooks/redux";
 
 const MAX_RESULTS_NO_SEE_ALL = 4;
 

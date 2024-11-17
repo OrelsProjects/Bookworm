@@ -12,7 +12,7 @@ import { cn } from "../../../lib/utils";
 import { getThumbnailSize } from "../../../consts/thumbnail";
 import { useModal } from "../../../hooks/useModal";
 import { SeeAll, SeeAllLoading } from "../../../components/ui/seeAll";
-import { useAppSelector } from "../../../lib/hooks";
+import { useAppSelector } from "../../../hooks/redux";
 import { Skeleton } from "../../../components/ui/skeleton";
 
 const ListSkeleton = () => (

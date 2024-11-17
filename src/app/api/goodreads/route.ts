@@ -1,7 +1,7 @@
-import Logger from "@/src/utils/loggerServer";
-import { GetAxiosInstance, getUserIdFromRequest } from "@/src/utils/apiUtils";
-import { GoodreadsData } from "@/src/models";
-import { IResponse } from "@/src/models/dto/response";
+import Logger from "@/utils/loggerServer";
+import { GetAxiosInstance, getUserIdFromRequest } from "@/utils/apiUtils";
+import { GoodreadsData } from "@/models";
+import { IResponse } from "@/models/dto/response";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(

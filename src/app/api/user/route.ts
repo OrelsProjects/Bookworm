@@ -1,11 +1,11 @@
-import Logger from "@/src/utils/loggerServer";
+import Logger from "@/utils/loggerServer";
 import {
   GetAxiosInstance,
   getUserIdFromRequest,
   getTokenFromRequest,
-} from "@/src/utils/apiUtils";
-import { User } from "@/src/models";
-import { IResponse } from "@/src/models/dto/response";
+} from "@/utils/apiUtils";
+import { User } from "@/models";
+import { IResponse } from "@/models/dto/response";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(

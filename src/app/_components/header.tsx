@@ -1,9 +1,9 @@
 "use client";
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { selectAuth } from "@/src/lib/features/auth/authSlice";
+import { selectAuth } from "@/lib/features/auth/authSlice";
 import Avatar from "./avatar";
-import { Logger } from "@/src/logger";
+import { Logger } from "@/logger";
 import GoogleLogin from "../../components/googleLogin";
 
 export interface HeaderProps {

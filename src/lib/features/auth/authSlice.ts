@@ -1,7 +1,7 @@
 // authSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { RootState } from "../../store"; // Adjust the import path as necessary
-import { User } from "../../../models";
+import type { RootState } from "@/lib/store"; // Adjust the import path as necessary
+import { User } from "@/models";
 import { isEqual } from "lodash";
 
 type LoadingState = {

@@ -9,7 +9,7 @@ import {
 import { User } from "../models";
 import { IResponse } from "../models/dto/response";
 import { SafeBooksListData } from "../models/booksList";
-import { useAppDispatch, useAppSelector } from "../lib/hooks";
+import { useAppDispatch, useAppSelector } from "./redux";
 import {
   RecommendationFilters,
   RecommentionFilterTypes,

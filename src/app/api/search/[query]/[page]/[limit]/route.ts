@@ -1,5 +1,5 @@
-import Logger from "@/src/utils/loggerServer";
-import { GetAxiosInstance, getUserIdFromRequest } from "@/src/utils/apiUtils";
+import Logger from "@/utils/loggerServer";
+import { GetAxiosInstance, getUserIdFromRequest } from "@/utils/apiUtils";
 import { NextRequest, NextResponse } from "next/server";
 import { SearchResults } from "../../../../../../models/search";
 

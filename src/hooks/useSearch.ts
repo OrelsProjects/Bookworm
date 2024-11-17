@@ -4,7 +4,7 @@ import { debounce } from "lodash";
 import { Logger } from "../logger";
 import { searchAll } from "../lib/api";
 import { SearchResults, SearchStatus } from "../models/search";
-import { useAppDispatch, useAppSelector } from "../lib/hooks";
+import { useAppDispatch, useAppSelector } from "./redux";
 import {
   clearResults,
   setSearchResults,

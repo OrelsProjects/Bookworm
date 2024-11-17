@@ -27,7 +27,7 @@ import { isBooksEqualExactly, sortByDateAdded } from "../utils/bookUtils";
 import { ErrorDeleteUserBook } from "../models/errors/userBookErrors";
 import { useModal } from "./useModal";
 import { ErrorUnauthenticated } from "../models/errors/unauthenticatedError";
-import { useAppDispatch, useAppSelector } from "../lib/hooks";
+import { useAppDispatch, useAppSelector } from "./redux";
 
 const getUserBooksFromLocalStorage = (): UserBookData[] => {
   // return JSON.parse(

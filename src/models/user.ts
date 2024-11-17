@@ -6,7 +6,6 @@ export interface User {
   bio?: string;
   birthDate?: string;
   gender?: string;
-  token: string;
 }
 
 export type CreateUser = Omit<User, "token">;

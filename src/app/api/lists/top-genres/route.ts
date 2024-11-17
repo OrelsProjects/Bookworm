@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { IResponse } from "@/src/models/dto/response";
-import { GetAxiosInstance, getUserIdFromRequest } from "@/src/utils/apiUtils";
-import Logger from "@/src/utils/loggerServer";
+import { IResponse } from "@/models/dto/response";
+import { GetAxiosInstance, getUserIdFromRequest } from "@/utils/apiUtils";
+import Logger from "@/utils/loggerServer";
 
 type Genres = string[];
 

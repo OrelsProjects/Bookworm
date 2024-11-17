@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import Logger from "@/src/utils/loggerServer";
+import Logger from "@/utils/loggerServer";
 import {
   GetAxiosInstance,
   getUserIdFromRequest,

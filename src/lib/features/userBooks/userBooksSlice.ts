@@ -1,8 +1,8 @@
 // completeUserBookSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../../store"; // Adjust the import path as necessary
-import { Book, GoodreadsData, UserBook, UserBookData } from "@/src/models";
-import { compareBooks } from "@/src/models/book";
+import { Book, GoodreadsData, UserBook, UserBookData } from "@/models";
+import { compareBooks } from "@/models/book";
 
 export const USER_BOOKS_KEY = "userBooks";
 

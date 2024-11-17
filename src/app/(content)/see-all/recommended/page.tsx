@@ -1,23 +1,23 @@
 "use client";
 
 import React, { useMemo } from "react";
-import { Button } from "@/src/components/ui/button";
-import Tabs from "@/src/components/ui/tabs";
-import { RecommentionFilterTypes as RecommendationFilterTypes } from "@/src/models/recommendations";
-import { sorterTabItems } from "@/src/app/(content)/see-all/_consts";
-import { TabItem } from "@/src/components/ui/tabs";
-import { BookFilter } from "@/src/hooks/useBook";
-import { SearchBarComponent } from "@/src/components/search/searchBarComponent";
-import Dropdown from "@/src/components/ui/dropdown";
-import { Checkbox } from "@/src/components/ui/checkbox";
-import { Filter } from "@/src/components/icons/filter";
-import { ExpandType } from "@/src/components/animationDivs";
+import { Button } from "@/components/ui/button";
+import Tabs from "@/components/ui/tabs";
+import { RecommentionFilterTypes as RecommendationFilterTypes } from "@/models/recommendations";
+import { sorterTabItems } from "@/app/(content)/see-all/_consts";
+import { TabItem } from "@/components/ui/tabs";
+import { BookFilter } from "@/hooks/useBook";
+import { SearchBarComponent } from "@/components/search/searchBarComponent";
+import Dropdown from "@/components/ui/dropdown";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Filter } from "@/components/icons/filter";
+import { ExpandType } from "@/components/animationDivs";
 import { FaBars } from "react-icons/fa6";
 import useRecommendations, {
   RecommendationSort,
-} from "@/src/hooks/useRecommendations";
-import RecommendationsList from "@/src/components/booksList/recommendationsList";
-import { unslugifyText } from "@/src/utils/textUtils";
+} from "@/hooks/useRecommendations";
+import RecommendationsList from "@/components/booksList/recommendationsList";
+import { unslugifyText } from "@/utils/textUtils";
 
 export default function MyLibrary({
   params,

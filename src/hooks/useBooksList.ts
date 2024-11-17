@@ -25,7 +25,7 @@ import { BookInList, BookInListWithBook } from "../models/bookInList";
 import { LoadingError } from "../models/errors/loadingError";
 import useBook from "./useBook";
 import { CancelError } from "../models/errors/cancelError";
-import { useAppDispatch, useAppSelector } from "../lib/hooks";
+import { useAppDispatch, useAppSelector } from "./redux";
 
 const BOOK_LIST_DATA_KEY = "booksListData";
 

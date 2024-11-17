@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
-import { useAppSelector } from "../../lib/hooks";
+import { useAppSelector } from "../../hooks/redux";
 import { AuthStateType, selectAuth } from "../../lib/features/auth/authSlice";
 import { IoClose } from "react-icons/io5";
 import { Button } from "../../components/ui/button";

@@ -1,5 +1,5 @@
-import { IResponse } from "@/src/models/dto/response";
-import { GetAxiosInstance, getUserIdFromRequest } from "@/src/utils/apiUtils";
+import { IResponse } from "@/models/dto/response";
+import { GetAxiosInstance, getUserIdFromRequest } from "@/utils/apiUtils";
 import { NextRequest, NextResponse } from "next/server";
 import {
   BooksList,

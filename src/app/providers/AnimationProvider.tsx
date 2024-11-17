@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
-import { OpacityDiv } from "@/src/components/animationDivs";
+import { OpacityDiv } from "@/components/animationDivs";
 
 interface ProviderProps {
   children?: React.ReactNode;

@@ -7,7 +7,7 @@ import BottomBarProvider from "./BottomBarProvider";
 import { cn } from "../../lib/utils";
 import ModalProvider from "./ModalProvider";
 import ScreenSizeProvider from "./ScreenSizeProvider";
-import { useAppSelector } from "../../lib/hooks";
+import { useAppSelector } from "../../hooks/redux";
 
 // this one calculates the height of the screen and sets it as max height
 // for the children

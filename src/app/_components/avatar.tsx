@@ -2,11 +2,11 @@
 
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Dropdown from "@/src/components/ui/dropdown";
-import useAuth from "@/src/hooks/useAuth";
+import Dropdown from "@/components/ui/dropdown";
+import useAuth from "@/hooks/useAuth";
 import { toast } from "react-toastify";
-import { selectUserBooks } from "@/src/lib/features/userBooks/userBooksSlice";
-import { EventTracker } from "@/src/eventTracker";
+import { selectUserBooks } from "@/lib/features/userBooks/userBooksSlice";
+import { EventTracker } from "@/eventTracker";
 import { Feedback } from "../../components/icons/feedback";
 import { Privacy } from "../../components/icons/privacy";
 import { SignOut } from "../../components/icons/signOut";
@@ -14,7 +14,7 @@ import CustomImage from "../../components/image";
 import { IoIosArrowDown } from "react-icons/io";
 import { cn } from "../../../lib/utils";
 import { ThemeToggle } from "../../components/ui/themeToggle";
-import { useAppSelector } from "../../lib/hooks";
+import { useAppSelector } from "../../hooks/redux";
 
 const FEEDBACK_GIVEN = "feedback_given";
 

@@ -1,8 +1,8 @@
-import Logger from "@/src/utils/loggerServer";
-import { GetAxiosInstance, getUserIdFromRequest } from "@/src/utils/apiUtils";
-import { Book } from "@/src/models";
-import { CreateBookBody, CreateBooksResponse } from "@/src/models/book";
-import { IResponse } from "@/src/models/dto/response";
+import Logger from "@/utils/loggerServer";
+import { GetAxiosInstance, getUserIdFromRequest } from "@/utils/apiUtils";
+import { Book } from "@/models";
+import { CreateBookBody, CreateBooksResponse } from "@/models/book";
+import { IResponse } from "@/models/dto/response";
 
 import { NextRequest, NextResponse } from "next/server";
 

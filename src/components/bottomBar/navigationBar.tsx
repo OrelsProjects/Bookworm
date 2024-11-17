@@ -8,7 +8,7 @@ import { getIconSize } from "../../consts/icon";
 import { useModal } from "../../hooks/useModal";
 import { Button } from "../ui/button";
 import Avatar from "../../app/_components/avatar";
-import { useAppSelector } from "../../lib/hooks";
+import { useAppSelector } from "../../hooks/redux";
 import { cn } from "../../lib/utils";
 import { selectAuth } from "../../lib/features/auth/authSlice";
 import Image from "next/image";

@@ -7,9 +7,9 @@ import {
   ModalTypes,
   ShowModalOptions,
   hideModal,
-} from "@/src/lib/features/modal/modalSlice";
-import { RootState } from "@/src/lib/store";
-import { Book } from "@/src/models";
+} from "@/lib/features/modal/modalSlice";
+import { RootState } from "@/lib/store";
+import { Book } from "@/models";
 import { useDispatch, useSelector } from "react-redux";
 import ModalBookDetails, {
   ModalBookDetailsProps,

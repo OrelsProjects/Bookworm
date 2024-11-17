@@ -1,12 +1,12 @@
-import Logger from "@/src/loggerServer";
-import { UserBook, UserBookData } from "@/src/models";
-import { IResponse } from "@/src/models/dto/response";
+import Logger from "@/loggerServer";
+import { UserBook, UserBookData } from "@/models";
+import { IResponse } from "@/models/dto/response";
 import {
   CreateUserBookBody,
   DeleteUserBookBody,
   UpdateUserBookBody,
-} from "@/src/models/userBook";
-import { GetAxiosInstance } from "@/src/utils/apiUtils";
+} from "@/models/userBook";
+import { GetAxiosInstance } from "@/utils/apiUtils";
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 

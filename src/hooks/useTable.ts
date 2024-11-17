@@ -11,7 +11,7 @@ import {
 } from "../utils/bookUtils";
 import { ReadStatus, ReadingStatusEnum } from "../models/readingStatus";
 import { BooksListData } from "../models/booksList";
-import { useAppSelector } from "../lib/hooks";
+import { useAppSelector } from "./redux";
 
 const useTable = (readingStatus?: ReadStatus) => {
   const { userBooksData, loading, error } = useAppSelector(selectUserBooks);

@@ -2,20 +2,20 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { SearchBarComponent } from "@/src/components/search/searchBarComponent";
-import useTable from "@/src/hooks/useTable";
-import BookList from "@/src/components/book/bookList";
-import BooksListList from "@/src/components/booksList/booksListList";
-import { Plus } from "@/src/components/icons/plus";
+import { SearchBarComponent } from "@/components/search/searchBarComponent";
+import useTable from "@/hooks/useTable";
+import BookList from "@/components/book/bookList";
+import BooksListList from "@/components/booksList/booksListList";
+import { Plus } from "@/components/icons/plus";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { Logger } from "@/src/logger";
-import { useModal } from "@/src/hooks/useModal";
-import { selectAuth } from "@/src/lib/features/auth/authSlice";
-import useBooksList from "@/src/hooks/useBooksList";
-import { EmptyList } from "@/src/components/emptyList";
-import { SeeAll } from "@/src/components/ui/seeAll";
-import { EventTracker } from "@/src/eventTracker";
+import { Logger } from "@/logger";
+import { useModal } from "@/hooks/useModal";
+import { selectAuth } from "@/lib/features/auth/authSlice";
+import useBooksList from "@/hooks/useBooksList";
+import { EmptyList } from "@/components/emptyList";
+import { SeeAll } from "@/components/ui/seeAll";
+import { EventTracker } from "@/eventTracker";
 
 const MyLists = ({ params }: { params: { listUrl?: string } }) => {
   const router = useRouter();
